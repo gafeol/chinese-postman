@@ -36,17 +36,17 @@ A importância deste problema é enorme para a área da computação, já que o 
 \end{wrapfigure}
 
 Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, a_1, v_2, a_2, \dots, a_k, v_k\}$, cujos termos são alternadamente vértices $v_i$ e arestas $a_j$ e tal que, para todo $i$, $1 \leq i \leq k$, os extremos de $a_i$ são $v_{i-1}$ e $v_i$. 
-Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamaos vértices internos de P. 
+Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
 
 Uma \textbf{trilha} é um passeio sem arestas repetidas. 
 Um \textbf{caminho} é um passeio sem vértices repetidos.
-Por comprimento de um passeio, denotado por $||P||$, é o número de arestas de $P$.
+Definimos o comprimento de um passeio, denotado por $||P||$, como o número de arestas de $P$.
 
 Um passeio é considerado \textbf{fechado} se sua origem e término são iguais.
 
-Uma trilha fechada cuja origem e vértices internos são todos distintos é um \textbf{circuito}.
+Uma trilha fechada, cuja origem e vértices internos são todos distintos, é um \textbf{circuito}.
 
-Devido às contribuições de Euler ao problema descrito, definiu-se \textbf{trilha euleriana} (ou caminho euleriano) como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui uma trilha euleriana fechada (também chamado de circuito euleriano).
+Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui uma trilha euleriana fechada.
 
 Euler modelou essa área da cidade como um grafo, representado na figura \ref{konigsberg-graph}, tratando as pontes como arestas e as massas de terra como vértices.
 A partir de tal modelagem e das definições feitas, o problema de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
@@ -69,23 +69,28 @@ A prova para essa afirmação só foi publicada mais de cem anos depois, em 1873
     Um grafo é euleriano se, e somente se, é conexo e todos seus vértices possuem grau par.
 \end{theorem}
 
-Antes de trabalhar na prova de tal teorema, primeiramente trabalharemos em um lema:
+Antes de mostrar a prova de tal teorema, primeiramente apresentaremos o seguinte lema:
+
+Seja $\delta(G)$ o grau mínimo de um vértice pertencente a $G$.
 
 \begin{lemma}
-	Se $G$ é um grafo tal que todos seus vértices possuem grau maior ou igual a 2, então $G$ possui um ciclo.
+	\label{lema}
+	Se $G$ é um grafo tal que $\delta(G) \geq 2$, então $G$ possui um caminho fechada.
 \end{lemma}
 
 \begin{proof}
-	Vamos assumir que um grafo qualquer $G = \{V, A\}$ não possui um ciclo, neste caso $G$ deverá possuir no máximo $|V| - 1$ arestas, havendo assim a possibilidade de $G$ ser uma árvore. 
+	Vamos assumir que um grafo qualquer $G = \{V, A\}$ não possui um caminho fechado. 
+	Seja $P$ um caminho de comprimento maximal pertencente a $G$, denominamos $v$ um dos extremos de $P$. 
+	Como $P$ é um caminho de comprimento maximal, é impossível, por definição, que $v$ possua uma aresta $vu$ que o ligue a um vértice $u$ não pertencente a $P$.
 	
-	Como cada aresta contribui em duas unidades para a soma dos graus de um grafo, se vale que $|A| \leq |V|-1$ então vale também que $\sum_{v \in V} g(v) \leq 2|V| - 2$, sendo $g(u)$ o grau de um vértice $u$. 
+	Como, da premissa, todos vértices possuem grau maior ou igual a 2, isso implica que $v$ possuirá ao menos duas arestas que o ligam à vértices pertencentes a $P$.
 
-	Porém, faz parte da hipótese do lema que todos vértices possuem grau maior ou igual a 2, o que implica na seguinte desigualdade: $\sum_{v \in V}g(v) \geq 2|V|$, o que é inconsistente com o que havíamos descoberto.
-	
-	Por contradição, provamos que $G$ deverá possuir ciclos dadas as condições do lema.
+	Porém, como $v$ é um vértice extremo de $P$, apenas uma dessas arestas pode pertencer ao caminho $P$. Isso implica que a outra aresta, digamos $vw$, não pertencente a $P$, implica na existência de um caminho fechado.
+
+	Basta tomar o subcaminho entre os vértices $v$ e $w$ pertencente à $P$ juntamente com a aresta $vW$ que teremos um caminho fechado. Chegando assim em uma contradição.
+
+	Demonstra-se assim que $G$ deverá possuir ao menos um caminho fechado dadas as condições do lema.
 \end{proof}
-
-% TODO: o que é um ciclo?
 
 Provado tal lema, podemos agora provar o teorema \ref{euler}:
 
@@ -98,10 +103,35 @@ Começamos provando que se um grafo é euleriano e conexo então todos seus vér
 Seja $T$ uma trilha euleriana fechada, cuja existência é garantida já que $G$ é euleriano. Cada vez que um vértice $v$ ocorre em $T$ ela é precedida de uma aresta que liga um vértice qualquer a $v$ e sucedida de outra aresta ligando $v$ a um vértice qualquer. 
 Um caso especial é quando o vértice $v$ em questão é a origem (e o término) de $T$: neste caso a aresta que o precede é a última aresta presente em $T$, e a aresta que o sucede é a primeira aresta da trilha.
 
+\newline
 
 Agora, provaremos por indução no número de arestas de $G$ que se $G$ for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
-% Como tratar o caso de varios vertices de grau zero no grafo? O grafo nao é conexo, mas pode ser euleriano
+O caso base da indução é quando não há arestas em $G$. 
+O único grafo conexo que respeita tal condição é o grafo que possui apenas um vértice $v$.
+Neste exemplo, $\{v\}$ é a trilha euleriana fechada do grafo.
+
+A hipótese de indução é que todo grafo simples, conexo, que possui até $k-1$ arestas e cujos vértices tem grau par é euleriano. 
+Seja $G$ um grafo conexo, de vértices de grau par e que possua $k$ arestas.
+
+Como $G$ é conexo, vale que $\delta(G) \geq 1$, mas como todos nós de $G$ têm grau par, podemos afirmar que $\delta(G) \geq 2$. 
+Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um caminho fechado $C$.
+
+Se $C$ possui todas arestas de $G$, então $C$ é uma trilha euleriana fechada do grafo, finalizando a prova.
+
+Do contrário, retira-se de $G$ as arestas pertencentes a $C$, resultando assim em um grafo $G'$. 
+Possivelmente $G'$ será desconexo, por isso dizemos que $G'$ será igual a união de componenetes conexas $G'_1, G'_2, G'_3, \dots, G'_k$ disjuntas entre si.
+
+O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que ao retirar todas as arestas de uma trilha fechada do grafo $G$ estamos diminuindo os graus de seus vértices em uma quantidade par, mantendo assim a paridade dos graus.
+
+Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$, sendo assim, pela hipótese da indução, cada uma dessas componentes deverá possuir uma trilha euleriana fechada própria. 
+Chamaremos de $T_i$ a trilha euleriana fechada da componente $G'_i$.
+
+Agora, construiremos uma trilha euleriana fechada para $G$:
+
+Começamos a construção de nossa trilha euleriana fechada a partir de um vértice qualquer de $C$. 
+
+% TODO: terminar paragrafo da prova!!!!!
 
 \end{proof}
 

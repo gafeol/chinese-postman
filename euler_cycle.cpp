@@ -1,24 +1,18 @@
-// maximum node and edge constraints
-const int MAXN = 212345;
-const int MAXE = 2123456;
-
-int s[MAXN];
-
 // adjacency list
 vector<pii> adj[MAXN];
-int cnt;
 
 int mrk[MAXE];
 
 int temp_path[MAXE], final_path[MAXE], tsz, fsz;
 
+int edge_id = 0;
 void add_edge(int a, int b){
 	// undirected edge
-	adj[a].pb(pii(b, cnt));	
-	adj[b].pb(pii(a, cnt++));
+	adj[a].pb(pii(b, edge_id));	
+	adj[b].pb(pii(a, edge_id));
+	edge_id = edge_id + 1;
 }
 
-// Only use if graph is guaranteed to have an euler cycle
 void euler_dfs(int u){
 	temp_path[tsz++] = u;
 	for(pii ar: adj[u]){
