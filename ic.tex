@@ -46,7 +46,7 @@ Um passeio é considerado \textbf{fechado} se sua origem e término são iguais.
 
 Uma trilha fechada cuja origem e vértices internos são todos distintos é um \textbf{circuito}.
 
-Devido às contribuições de Euler ao problema descrito, definiu-se \textbf{trilha euleriana} (ou caminho euleriano) como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui uma trilha euleriana fechada.
+Devido às contribuições de Euler ao problema descrito, definiu-se \textbf{trilha euleriana} (ou caminho euleriano) como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui uma trilha euleriana fechada (também chamado de circuito euleriano).
 
 Euler modelou essa área da cidade como um grafo, representado na figura \ref{konigsberg-graph}, tratando as pontes como arestas e as massas de terra como vértices.
 A partir de tal modelagem e das definições feitas, o problema de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
@@ -95,6 +95,9 @@ Seja $G = \{V, E\}$ o grafo em questão.
 
 Começamos provando que se um grafo é euleriano e conexo então todos seus vértices possuem grau par.
 
+Seja $T$ uma trilha euleriana fechada, cuja existência é garantida já que $G$ é euleriano. Cada vez que um vértice $v$ ocorre em $T$ ela é precedida de uma aresta que liga um vértice qualquer a $v$ e sucedida de outra aresta ligando $v$ a um vértice qualquer. 
+Um caso especial é quando o vértice $v$ em questão é a origem (e o término) de $T$: neste caso a aresta que o precede é a última aresta presente em $T$, e a aresta que o sucede é a primeira aresta da trilha.
+
 
 Agora, provaremos por indução no número de arestas de $G$ que se $G$ for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
@@ -115,12 +118,13 @@ Agora, provaremos por indução no número de arestas de $G$ que se $G$ for cone
         
         \item $G$ possui dois vértices de grau ímpar. 
         Sejam $u$ e $v$ os únicos vértices de $G$ que possuem grau ímpar.
-        Adiciona-se uma aresta fictícia ao grafo $G$, a aresta $uv$, fazendo com que tanto $u$ quanto $v$ possuam graus pares. Chamaremos o grafo $G$ acrescido da aresta $uv$ de $G'$
-        Como ambos eram os únicos vértices de grau ímpar de $G$, isso implica que todos vértices de $G'$ possuirão grau par. 
-        Como, da premissa, $G$ é conexo, $G'$ também deverá ser conexo, valendo assim o teorema \ref{euler}, provando a existência de um circuito euleriano em $G'$, que chamaremos de $p$.
-        Como $p$ é um circuito euleriano, isso implica que $uv \in p$.
-        
-        A ideia então é retirar de $p$ a aresta $uv$, 
+        Adiciona-se uma aresta fictícia ao grafo $G$, a aresta $uv$, fazendo com que tanto $u$ quanto $v$ possuam graus pares. 
+		Chamaremos o grafo $G$ acrescido da aresta $uv$ de $G'$.
+        Como $u$ e $v$ eram os únicos vértices de grau ímpar de $G$, vale que todos vértices de $G'$ possuirão grau par. 
+		Além disso, vale que $G'$ é conexo, pois faz parte da premissa que o grafo original $G$ era conexo.
+
+        Sendo assim, podemos aplicar o teorema \ref{euler}, provando a existência de um circuito euleriano em $G'$, que chamaremos de $C$.
+        Como $C$ é um circuito euleriano, isso implica que $uv \in C$.
 
         \item $G$ possui três ou mais vértices de grau ímpar.
     \end{enumerate}
@@ -149,67 +153,63 @@ O grafo deverá ser conexo.
 
 \textbf{Observações:}
 \begin{itemize}
-    \item Pelo "Lema do aperto de mão" é garantido que haverá um número par de vértices de grau ímpar.
-    \item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
-    \item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
-\end{itemize}
+		\item Pelo ``Lema do aperto de mão'' é garantido que haverá um número par de vértices de grau ímpar.
+		\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
+		\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
+	\end{itemize}
 
-\section{Directed CPP}
+	\section{Directed CPP}
 
-O grafo deverá ser fortemente conexo.\\
+	O grafo deverá ser fortemente conexo.\\
 
-\textbf{Solução:}
-\begin{enumerate}
-    \item Criar um grafo $P, Q$-bipartido completo. $P$ deve conter todos os vértices do grafo original com excesso de grau de entrada, e $Q$ deve conter todos vértices com excesso de grau de saída. que possuem valores diferentes de grau de entrada e saída. O custo das arestas entre $P$ e $Q$ deverá ser igual ao custo do menor caminho entre os dois vértices que a mesma liga.
-    \item Modelar uma rede de fluxo: vértices de $P$ recebem um excesso igual a diferença do grau de entrada pelo grau de saída, vértices de $Q$ recebem uma demanda igual a diferença do grau de saída pelo grau de entrada. 
-    \item Rodar um algoritmo de fluxo de custo mínimo. 
-\end{enumerate}
+	\textbf{Solução:}
+	\begin{enumerate}
+		\item Criar um grafo $P, Q$-bipartido completo. $P$ deve conter todos os vértices do grafo original com excesso de grau de entrada, e $Q$ deve conter todos vértices com excesso de grau de saída. que possuem valores diferentes de grau de entrada e saída. O custo das arestas entre $P$ e $Q$ deverá ser igual ao custo do menor caminho entre os dois vértices que a mesma liga.
+		\item Modelar uma rede de fluxo: vértices de $P$ recebem um excesso igual a diferença do grau de entrada pelo grau de saída, vértices de $Q$ recebem uma demanda igual a diferença do grau de saída pelo grau de entrada. 
+		\item Rodar um algoritmo de fluxo de custo mínimo. 
+	\end{enumerate}
 
-\textbf{Observações:}
-\begin{itemize}
-    \item Modelagem de fluxo com arestas de capacidade unitária, aumentando a velocidade do algoritmo.
-\end{itemize}
+	\textbf{Observações:}
+	\begin{itemize}
+		\item Modelagem de fluxo com arestas de capacidade unitária, aumentando a velocidade do algoritmo.
+	\end{itemize}
 
-\section{Mixed CPP}
+	\section{Mixed CPP}
 
-NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
+	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
 
+	\section{Windy Postman Problem}
 
+	NP-hard
 
-\section{Windy Postman Problem}
+	Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
 
-NP-hard
+	\section{Hierarchical Postman Problem}
 
-Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+	NP-hard 
 
-\section{Hierarchical Postman Problem}
-
-NP-hard 
-
-Seja $P = \{A_1, A_2, \dots, A_k\}$ uma partição do conjunto de arestas $A$. Determinar um caminho em $G$ de custo mínimo que sai de um vértice $s$ e atinge um vértice $t$, respeitando uma hierarquia das arestas. O caminho só poderá possuir uma aresta pertencente a $A_j$ se o caminho passar anteriormente por todas arestas pertencentes a $A_i$, se $i < j$.
+	Seja $P = \{A_1, A_2, \dots, A_k\}$ uma partição do conjunto de arestas $A$. Determinar um caminho em $G$ de custo mínimo que sai de um vértice $s$ e atinge um vértice $t$, respeitando uma hierarquia das arestas. O caminho só poderá possuir uma aresta pertencente a $A_j$ se o caminho passar anteriormente por todas arestas pertencentes a $A_i$, se $i < j$.
 
 
-\section{Anotações}
+	\section{Anotações}
 
-\begin{itemize}
-    \item Todo mixed CPP pode ser transformado em um WPP.
-\end{itemize}
+	\begin{itemize}
+		\item Todo mixed CPP pode ser transformado em um WPP.
+	\end{itemize}
 
-\medskip
+	\medskip
 
-Euler, Leonhard (1736). "Solutio problematis ad geometriam situs pertinentis". .
+	\begin{thebibliography}{9}
+	\bibitem{konigsberg} 
+	Euler, Leonhard
+	\textit{Solution problematis ad geometriam situs pertinentis}. 
+	Comment. Acad. Sci. U. Petrop 8, 128–40, 1736.
 
-\begin{thebibliography}{9}
-\bibitem{konigsberg} 
-Euler, Leonhard
-\textit{Solution problematis ad geometriam situs pertinentis}. 
-Comment. Acad. Sci. U. Petrop 8, 128–40, 1736.
-
-\bibitem{hierholzer}
-Hierholzer, Carl
-\textit{"Ueber die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren"}, 
-Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
-\end{thebibliography}
+	\bibitem{hierholzer}
+	Hierholzer, Carl
+	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
+	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
+	\end{thebibliography}
  
 \end{document}
 
