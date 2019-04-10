@@ -9,7 +9,10 @@
 \usepackage{amsthm} % has proof
 \usepackage{listings}
 
-
+\graphicspath{
+    {.} % document root dir
+    {img/}
+}
 
 \renewcommand\refname{Referências}
 \newtheorem{theorem}{Teorema}[section]
@@ -25,15 +28,45 @@
 
 \section{As sete pontes de Königsberg}
 
-O problema das sete pontes de Königsberg foi descrito e solucionado pelo matemático Leonhard Euler em 1736, o problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pontes uma única vez, sem repetições.
-
-A importância deste problema é enorme para a área da computação, já que o artigo de Euler publicado sobre ele é considerado o primeiro artigo sobre teoria dos grafos.
-
 \begin{wrapfigure}{r}{0.5\textwidth} 
     \centering
     \includegraphics[width=0.5\textwidth]{konigsberg.png}
     \caption{Representação das sete pontes de Königsberg}
 \end{wrapfigure}
+O problema das sete pontes de Königsberg foi descrito e solucionado pelo matemático Leonhard Euler em 1736, o problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pontes uma única vez, sem repetições.
+
+A importância deste problema é enorme para a área da computação, já que o artigo de Euler publicado sobre ele é considerado o primeiro artigo sobre teoria dos grafos.
+
+Euler resolveu esse problema do seguinte modo: 
+Primeiramente, ele identificou cada uma das massas de terra do mapa com as letras A, B, C e D.
+
+Em seguida, ele definiu que um trajeto nesse mapa seria descrito por uma sequência dessas letras: por exemplo, "ACD" indicaria o trajeto que se inicia na massa de terra A, move-se para a massa de terra C, usando uma das pontes, e termina na massa D.
+
+\begin{wrapfigure}{l}{0.5\textwidth} 
+    \centering
+    \includegraphics[width=0.5\textwidth]{konigsberg-euler.png}
+    \caption{Representação de Euler do problema}
+	\label{konigsberg-euler}
+\end{wrapfigure}
+
+Euler então começou a definir algumas restrições, assumindo que o problema possuiria alguma solução:
+
+Como o trajeto final deverá passar por todas as 7 pontes exatamente uma vez, isso implica que a sequência de letras que o representa deverá ter tamanho 8.
+
+Além disso, como a massa de terra A possui 5 pontes, necessariamente a letra A aparecerá exatamente 3 vezes na sequência.
+A massa B, C e D, no entanto possuem 3 pontes, portanto, suas letras correspondentes deverão aparecer apenas 2 vezes na sequência. 
+
+Chegamos assim a um absurdo, pois inicialmente provamos que a sequência de letras que representa uma solução deveria ter tamanho 8 e depois chegamos que a mesma deveria ter tamanho 9.
+
+Provando assim, por absurdo, que não existe um trajeto como o pedido no enunciado do problema.
+
+
+A prova do problema em si não foi algo inovador, porém a modelagem de Euler sim, e foi isso que tornou esse problema tão famoso. 
+A grande mudança de Euler foi tratar a situação do problema de maneira abstrata, usando letras e linhas, identificando os elementos do problema com letras. 
+
+Essa pequena mudança motivou a criação de uma nova área na matemática, a teoria dos grafos.
+
+
 
 Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, a_1, v_2, a_2, \dots, a_k, v_k\}$, cujos termos são alternadamente vértices $v_i$ e arestas $a_j$ e tal que, para todo $i$, $1 \leq i \leq k$, os extremos de $a_i$ são $v_{i-1}$ e $v_i$. 
 Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
@@ -59,10 +92,8 @@ A partir de tal modelagem e das definições feitas, o problema de Königsberg c
     \label{konigsberg-graph}
 \end{wrapfigure}
 
-O matemático provou que uma condição necessária para que um grafo seja euleriano é que todos seus vértices possuam grau par; 
-ele também afirmou, porém sem prova, que qualquer grafo conexo cujos vértices possuem grau par é euleriano.
+Apesar de ter recebido grande parte do crédito pelas suas implicações, Euler não provou que qualquer grafo conexo com vértices de grau par era euleriano, essa prova só foi publicada mais de cem anos depois, em 1873, por Carl Hierholzer \cite{hierholzer}, no que se tornou o conhecido Teorema de Euler.
 
-A prova para essa afirmação só foi publicada mais de cem anos depois, em 1873, por Carl Hierholzer \cite{hierholzer}.
 
 \begin{theorem}[Teorema de Euler ou de Euler-Hierholzer]
     \label{euler}
@@ -87,7 +118,7 @@ Seja $\delta(G)$ o grau mínimo de um vértice pertencente a $G$.
 
 	Porém, como $v$ é um vértice extremo de $P$, apenas uma dessas arestas pode pertencer ao caminho $P$. Isso implica que a outra aresta, digamos $vw$, não pertencente a $P$, implica na existência de um caminho fechado.
 
-	Basta tomar o subcaminho entre os vértices $v$ e $w$ pertencente à $P$ juntamente com a aresta $vW$ que teremos um caminho fechado. Chegando assim em uma contradição.
+	Basta tomar o subcaminho entre os vértices $v$ e $w$ pertencente à $P$ juntamente com a aresta $vw$ que teremos um caminho fechado. Chegando assim em uma contradição.
 
 	Demonstra-se assim que $G$ deverá possuir ao menos um caminho fechado dadas as condições do lema.
 \end{proof}
@@ -103,7 +134,6 @@ Começamos provando que se um grafo é euleriano e conexo então todos seus vér
 Seja $T$ uma trilha euleriana fechada, cuja existência é garantida já que $G$ é euleriano. Cada vez que um vértice $v$ ocorre em $T$ ela é precedida de uma aresta que liga um vértice qualquer a $v$ e sucedida de outra aresta ligando $v$ a um vértice qualquer. 
 Um caso especial é quando o vértice $v$ em questão é a origem (e o término) de $T$: neste caso a aresta que o precede é a última aresta presente em $T$, e a aresta que o sucede é a primeira aresta da trilha.
 
-\newline
 
 Agora, provaremos por indução no número de arestas de $G$ que se $G$ for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
@@ -120,23 +150,49 @@ Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um caminho fechado $C$.
 Se $C$ possui todas arestas de $G$, então $C$ é uma trilha euleriana fechada do grafo, finalizando a prova.
 
 Do contrário, retira-se de $G$ as arestas pertencentes a $C$, resultando assim em um grafo $G'$. 
-Possivelmente $G'$ será desconexo, por isso dizemos que $G'$ será igual a união de componenetes conexas $G'_1, G'_2, G'_3, \dots, G'_k$ disjuntas entre si.
+Possivelmente $G'$ será desconexo, por isso dizemos que $G'$ será igual a união de $k$ componenetes conexas $G'_1, G'_2, G'_3, \dots, G'_k$ disjuntas entre si.
 
-O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que ao retirar todas as arestas de uma trilha fechada do grafo $G$ estamos diminuindo os graus de seus vértices em uma quantidade par, mantendo assim a paridade dos graus.
+O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que ao retirar todas as arestas de uma trilha fechada do grafo $G$ estamos diminuindo os graus de seus vértices em uma quantidade par, mantendo assim a paridade dos graus. Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$.
 
-Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$, sendo assim, pela hipótese da indução, cada uma dessas componentes deverá possuir uma trilha euleriana fechada própria. 
+Portanto, pela hipótese da indução, cada uma dessas componentes deverá possuir uma trilha euleriana fechada própria. 
 Chamaremos de $T_i$ a trilha euleriana fechada da componente $G'_i$.
 
-Agora, construiremos uma trilha euleriana fechada para $G$:
+Segue, assim, o procedimento para a construção de uma trilha euleriana fechada para $G$, que chamaremos de $T$:
 
-Começamos a construção de nossa trilha euleriana fechada a partir de um vértice qualquer de $C$. 
 
-% TODO: terminar paragrafo da prova!!!!!
+Definimos como $CT$ um conjunto de trilhas eulerianas que inicialmente é igual ao conjunto $\{T_1, T_2, \dots, T_k\}$.
+
+Começamos a construção de nossa trilha euleriana fechada a partir de um vértice $v$ qualquer de $C$.
+
+Define-se então uma ordem para $C$ que se inicia no vértice $v$:
+
+\[
+	C = \{v, vv_2, v_2, v_2v_3, v_3, \dots, v_n, v_nv\}
+\]
+
+Para cada elemento $e$ de $C$ devemos realizar as seguintes verificações:
+
+Começamos adicionando $e$ à trilha euleriana $T$ que estamos construindo.
+
+Se $e$ for um vértice e fizer parte de alguma trilha euleriana $T_i$ pertencente a $CT$, podemos representar $T_i$ como:
+
+\[
+	T_i = \{eu_2, u_2, u_2u_3, u_3, \dots, u_k, u_ke, e\}
+\]
+
+Basta então adicionarmos a trilha $T_i$ como representada na trilha $T$ e remover do conjunto $CT$ a trilha $T_i$, indicando que ela já foi adicionada à trilha $T$.
+
+Enquanto $e$ ainda pertença a alguma trilha $T_j$ de $CT$, então repetimos o procedimento acima, adicionando $T_j$ à $T$ e removendo a mesma de $CT$.
+
+
+Ao final desse procedimento, o conjunto $CT$ deverá ser vazio, já que toda trilha $T_i$ possui pelo menos um vértice em $C$. Além disso, toda trilha $T_i$ deverá ter sido adicionada à $T$ uma única vez, já que logo após adicionar uma trilha à $T$ já a removiamos de $CT$, impedindo que ela fosse repetida na trilha euleriana final.
+
+Comprovado o passo da indução, finalizamos a prova do Teorema de Euler.
 
 \end{proof}
 
 \begin{corollary}
-    Um grafo possui um caminho euleriano se, e somente se, é conexo e possui apenas zero ou dois vértices de grau ímpar.
+    Um grafo possui uma trilha euleriana se, e somente se, é conexo e possui apenas zero ou dois vértices de grau ímpar.
 \end{corollary}
 
 \begin{proof}
@@ -144,34 +200,83 @@ Começamos a construção de nossa trilha euleriana fechada a partir de um vért
     \begin{enumerate}
         \item $G$ não possui vértices de grau ímpar. Neste caso, $G$ possui, segundo o teorema \ref{euler}, um circuito euleriano, que é um tipo de caminho euleriano.
         
-        \item $G$ possui apenas um vértice de grau ímpar. Este caso é impossível de se acontecer, já que a soma do grau de todos vértices deve ser par.
+        \item $G$ possui apenas um vértice de grau ímpar. 
+			Este caso é impossível de se acontecer, já que a soma do grau de todos vértices deve ser par, impossibilitando assim que apenas um vértice tenha grau ímpar.
         
         \item $G$ possui dois vértices de grau ímpar. 
-        Sejam $u$ e $v$ os únicos vértices de $G$ que possuem grau ímpar.
-        Adiciona-se uma aresta fictícia ao grafo $G$, a aresta $uv$, fazendo com que tanto $u$ quanto $v$ possuam graus pares. 
-		Chamaremos o grafo $G$ acrescido da aresta $uv$ de $G'$.
-        Como $u$ e $v$ eram os únicos vértices de grau ímpar de $G$, vale que todos vértices de $G'$ possuirão grau par. 
-		Além disso, vale que $G'$ é conexo, pois faz parte da premissa que o grafo original $G$ era conexo.
 
-        Sendo assim, podemos aplicar o teorema \ref{euler}, provando a existência de um circuito euleriano em $G'$, que chamaremos de $C$.
-        Como $C$ é um circuito euleriano, isso implica que $uv \in C$.
+			Sejam $u$ e $v$ os únicos vértices de $G$ que possuem grau ímpar.
+			Adiciona-se uma aresta fictícia ao grafo $G$, a aresta $uv$, fazendo com que tanto $u$ quanto $v$ possuam graus pares. 
+			Chamaremos o grafo $G$ acrescido da aresta $uv$ de $G'$.
+			Como $u$ e $v$ eram os únicos vértices de grau ímpar de $G$, vale que todos vértices de $G'$ possuirão grau par. 
+			Além disso, vale que $G'$ é conexo, pois faz parte da premissa que o grafo original $G$ era conexo.
 
-        \item $G$ possui três ou mais vértices de grau ímpar.
+			Sendo assim, podemos aplicar o teorema \ref{euler}, provando a existência de uma trilha euleriana fechada em $G'$, que chamaremos de $T$.
+			Como $T$ é uma trilha euleriana fechada, isso implica que $uv \in T$, e portanto podemos escrever $T$ como:
+		
+			\[
+				T = \{uv, v, ve_1, e_1, e_1e_2, e_2, \dots, e_ku, u\}
+			\]
+
+			Deste modo, basta tomar $T' = T - uv$, que teremos uma trilha euleriana válida, usando apenas arestas do grafo original.
+
+
+        \item $G$ possui três ou mais vértices de grau ímpar. 
+
+			Assuma que existe uma trilha euleriana $T$ para $G$. 
+			Neste caso, como pelo menos 3 vértices possuem grau ímpar, necessariamente existirá um vértice $v$ que não é nem o primeiro nem o último vértice de $T$.
+			Isso implica que todas aparições de $v$ em $T$ são internas ao caminho, ou seja, toda aparição de $v$ será precedida e sucedida de arestas ligadas a $v$.
+			Como estamos tratando de uma trilha euleriana, sabemos que todas arestas adjacentes a $v$ estão presentes em $T$ uma única vez. 
+			Mas como todas arestas de $v$ devem aparecer em pares (precedendo e sucedendo $v$), isso implica que o grau de $v$ deverá ser par.
+			Contradizendo a premissa.
+
+			Por essa contradição provamos que  $G$ não possuirá trilha euleriana se tiver três ou mais vértices de grau ímpar.
     \end{enumerate}
 \end{proof}
 
 
-Como os quatro vértices do grafo da figura \ref{konigsberg-graph} possuem grau ímpar, é impossível, pela condição estabelecida, que exista um caminho euleriano.
-
-
 Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
-
 
  
 \lstinputlisting[language=c++]{euler_cycle.cpp}
-\section{Undirected CPP}
 
-O grafo deverá ser conexo.
+
+\section{O problema do Carteiro Chinês}
+
+Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
+
+Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de Konigsberg, o matemático chinês Meigu Guan publicou um estudo que generalizava ainda mais o problema dos grafos eulerianos. 
+Esse problema foi denominado Problema do Carteiro Chinês, ou Problema da Inspeção de Rotas.
+
+A ideia desse problema é encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez. 
+A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas mais de uma vez no trajeto final.
+
+O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a poder entregar cartas em todas as ruas da cidade e voltar ao posto de carteiros no fim de sua rota.
+
+\begin{wrapfigure}{l}{0.3\textwidth} 
+    \centering
+    \includegraphics[width=0.5\textwidth]{graph.png}
+	\label{graph}
+\end{wrapfigure}
+
+Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: $\{A, AB, B, BD, D, DC, C, CA, AD, D, DC, C, CB, B, BA\}$, sendo este um caminho fechado de custo 12.
+Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) aparecessem duas vezes no passeio, porém nem sempre é necessária esta repetição.
+
+No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente a trilha euleriana fechada do grafo.
+Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será similar a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano, ou seja, adicionar duplicatas de arestas até que todos os vértices possuam grau par.
+
+Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema:
+
+\subsection{Grafos não direcionados}
+
+Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e com arestas não direcionadas.
+
+A solução se baseia em criar um novo grafo $G'(V', E')$. 
+$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
+Já $E'$ será definido como o conjunto de arestas entre todo par de vértices de $V'$, dado que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo do menor caminho entre $u$ e $v$ no grafo original $G$.
+
+
+% TODO: Finalizar solução para grafo não direcionado. Fazer exemplo.
 \\
 
 \textbf{Solução:} 
