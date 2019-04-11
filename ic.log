@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.7)  9 APR 2019 20:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.7)  11 APR 2019 07:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -435,18 +435,18 @@ Package: listings 2015/06/04 1.6 (Carsten Heinz)
  (./ic.aux)
 \openout1 = `ic.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -519,38 +519,44 @@ e
 ))
 \c@lstlisting=\count107
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 24.
+(Font)              <12> on input line 27.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 24.
+(Font)              <8> on input line 27.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 24.
+(Font)              <6> on input line 27.
 
 
 LaTeX Warning: No \author given.
 
-<konigsberg.png, id=1, 1027.84pt x 715.67375pt>
-File: konigsberg.png Graphic file (type png)
-<use konigsberg.png>
-Package pdftex.def Info: konigsberg.png  used on input line 34.
+<img/konigsberg.png, id=1, 1027.84pt x 715.67375pt>
+File: img/konigsberg.png Graphic file (type png)
+<use img/konigsberg.png>
+Package pdftex.def Info: img/konigsberg.png  used on input line 33.
 (pdftex.def)             Requested size: 172.5pt x 120.10132pt.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 38.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 38.
 
-Underfull \hbox (badness 5924) in paragraph at lines 38--40
-\OT1/cmr/m/n/10 cu-jos ter-mos s~ao al-ter-na-da-mente
+Underfull \hbox (badness 3735) in paragraph at lines 36--37
+[]\OT1/cmr/m/n/10 O pro-blema das sete pon-tes de
  []
 
-<konigsberg-graph.png, id=3, 180.675pt x 144.54pt>
-File: konigsberg-graph.png Graphic file (type png)
-<use konigsberg-graph.png>
-Package pdftex.def Info: konigsberg-graph.png  used on input line 57.
-(pdftex.def)             Requested size: 86.25pt x 68.99905pt.
+<img/konigsberg-euler.png, id=3, 673.51625pt x 328.22626pt>
+File: img/konigsberg-euler.png Graphic file (type png)
+<use img/konigsberg-euler.png>
+Package pdftex.def Info: img/konigsberg-euler.png  used on input line 47.
+(pdftex.def)             Requested size: 172.5pt x 84.0647pt.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./konigsberg.png>]
-[2 <./konigsberg-graph.png>] [3]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/konigsberg.png> <./i
+mg/konigsberg-euler.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 71.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 71.
+<img/konigsberg-graph.png, id=13, 180.675pt x 144.54pt>
+File: img/konigsberg-graph.png Graphic file (type png)
+<use img/konigsberg-graph.png>
+Package pdftex.def Info: img/konigsberg-graph.png  used on input line 90.
+(pdftex.def)             Requested size: 86.25pt x 68.99905pt.
+ [2 <./img/konigsberg-graph.png>] [3] [4]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
@@ -567,47 +573,65 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 2.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 9.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 6.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 9.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 173--175
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 6.
+ [5])
+<img/graph.png, id=34, 357.335pt x 282.05376pt>
+File: img/graph.png Graphic file (type png)
+<use img/graph.png>
+Package pdftex.def Info: img/graph.png  used on input line 258.
+(pdftex.def)             Requested size: 172.5pt x 136.15894pt.
+
+Overfull \hbox (68.99895pt too wide) in paragraph at lines 258--260
+ [][] 
+ []
+
+
+Underfull \hbox (badness 6428) in paragraph at lines 262--264
+[][]\OT1/cmr/m/n/10 Por exem-plo, para a fi-gura 2[], um pas-
+ []
+
+
+Overfull \hbox (170.45503pt too wide) in paragraph at lines 262--264
+\OT1/cmr/m/n/10 seio fe-chado de custo ^^Sotimo se-ria: $\OMS/cmsy/m/n/10 f\OML
+/cmm/m/it/10 A; AB; B; BD; D; DC; C; CA; AD; D; DC; C; CB; B; BA\OMS/cmsy/m/n/1
+0 g$\OT1/cmr/m/n/10 ,
+ []
+
+[6 <./img/graph.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 296--297
 
  []
 
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 192--193
-
- []
-
-[5] [6] (./ic.aux) ) 
+[7] [8] [9] (./ic.aux) ) 
 Here is how much of TeX's memory you used:
- 4331 strings out of 494903
- 56843 string characters out of 6179962
- 149379 words of memory out of 5000000
- 7589 multiletter control sequences out of 15000+600000
- 7934 words of font info for 28 fonts, out of 8000000 for 9000
+ 4363 strings out of 494903
+ 57352 string characters out of 6179962
+ 146511 words of memory out of 5000000
+ 7614 multiletter control sequences out of 15000+600000
+ 8241 words of font info for 29 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 41i,6n,61p,404b,1385s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmb
-x12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmti10.pfb>
-Output written on ic.pdf (6 pages, 936501 bytes).
+ 41i,6n,61p,404b,1686s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmti10.pfb>
+Output written on ic.pdf (9 pages, 1036155 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 86 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

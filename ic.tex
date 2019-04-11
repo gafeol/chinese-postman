@@ -255,11 +255,12 @@ O nome do problema está relacionado a um problema que carteiros encontram no pl
 
 \begin{wrapfigure}{l}{0.3\textwidth} 
     \centering
-    \includegraphics[width=0.5\textwidth]{graph.png}
+    \includegraphics[width=0.3\textwidth]{graph.png}
+	\caption{Exemplo de grafo}
 	\label{graph}
 \end{wrapfigure}
 
-Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: $\{A, AB, B, BD, D, DC, C, CA, AD, D, DC, C, CB, B, BA\}$, sendo este um caminho fechado de custo 12.
+Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: \[ \{A, AB, B, BD, D, DC, C, CA, AD, D, DC, C, CB, B, BA\} \], sendo este um caminho fechado de custo 12.
 Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) aparecessem duas vezes no passeio, porém nem sempre é necessária esta repetição.
 
 No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente a trilha euleriana fechada do grafo.
@@ -275,9 +276,7 @@ A solução se baseia em criar um novo grafo $G'(V', E')$.
 $V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
 Já $E'$ será definido como o conjunto de arestas entre todo par de vértices de $V'$, dado que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo do menor caminho entre $u$ e $v$ no grafo original $G$.
 
-
 % TODO: Finalizar solução para grafo não direcionado. Fazer exemplo.
-\\
 
 \textbf{Solução:} 
 \begin{enumerate}
