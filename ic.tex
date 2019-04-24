@@ -65,7 +65,7 @@ Essa obserevação que, aos olhos de hoje, parece muito simples, teve um impacto
 A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absoluatmente inovadora e é o embrião da área da teoria dos grafos.
 
 
-Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, a_1, v_2, a_2, \dots, a_k, v_k\}$, cujos termos são alternadamente vértices $v_i$ e arestas $a_j$ e tal que, para todo $i$, $1 \leq i \leq k$, os extremos de $a_i$ são $v_{i-1}$ e $v_i$. 
+Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, v_1, \dots, v_k\}$, cujos termos são vértices $v_i$ tal que, para todo $i$, $0 \leq i < k$, os vértices $v_{i}$ e $v_{i+1}$ são ligados por uma aresta. 
 Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
 
 Uma \textbf{trilha} é um passeio sem arestas repetidas. 
@@ -222,15 +222,21 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
 			Como $u$ e $v$ eram os únicos vértices de grau ímpar de $G$, vale que todos vértices de $G'$ possuirão grau par. 
 			Além disso, vale que $G'$ é conexo, pois faz parte da premissa que o grafo original $G$ era conexo.
 
-			Sendo assim, podemos aplicar o teorema \ref{euler}, provando a existência de um circuito euleriano $G'$, que chamaremos de $T$.
-			Isso implica que a aresta $uv$ deve fazer parte do circuito, e portanto podemos escrever $T$ como:
+			Sendo assim, podemos aplicar o teorema \ref{euler}, provando a existência de um circuito euleriano $G'$, que chamaremos de $C$.
+            Por ser euleriano, $C$ deverá percorrer a aresta $uv$ inserida, portanto podemos representar $C$ com $u$ e $v$ lado a lado, do seguinte modo:
 		
 			\[
-				T = \{u, v, w_1, w_2, \dots, w_k, u\}
+				C = \{u, v, w_1, w_2, \dots, w_k, u\}
 			\]
 
-			Deste modo, basta tomar $T' = T - uv$, que teremos uma trilha euleriana válida, usando apenas arestas do grafo original.
 
+            Tome, agora, $T$ igual ao circuito $C$ sem seu vértice inicial:
+
+            \[
+                T = \{v, w_1, w_2, \dots, w_k, u\}
+			\]
+
+            Tal procedimento retira do circuito $C$ a aresta artificial $uv$, transformando-o em uma trilha $T$, que percorre todas arestas de $G`$ exceto $uv$, sendo portanto uma trilha euleriana do grafo $G$.
 
         \item $G$ possui três ou mais vértices de grau ímpar. 
 
@@ -246,10 +252,9 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
 \end{proof}
 
 
-Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
+%Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
 
- 
-\lstinputlisting[language=c++]{euler_cycle.cpp}
+%\lstinputlisting[language=c++]{euler_cycle.cpp}
 
 
 \section{O problema do Carteiro Chinês}
