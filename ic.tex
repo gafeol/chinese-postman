@@ -10,6 +10,9 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{tcolorbox}
+\usepackage {tikz}
+\usetikzlibrary {positioning}
+%\usepackage {xcolor}
 
 \graphicspath{
     {.} % document root dir
@@ -94,8 +97,8 @@ Apesar de ter recebido grande parte do crédito histórico pelas suas implicaç�
 
 
 \begin{theorem}[Teorema de Euler ou de Euler-Hierholzer]
-    \label{euler}
     Um grafo é euleriano se, e somente se, é conexo e todos seus vértices possuem grau par.
+    \label{euler}
 \end{theorem}
 
 Antes de mostrar a prova de tal teorema, primeiramente apresentaremos o seguinte lema:
@@ -307,6 +310,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 %Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
 
 \begin{lemma} 
+    \
     Para todo grafo simples e conexo, existirá uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá apenas 0 ou 1. 
 \end{lemma}
 
@@ -317,21 +321,79 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
     \[  x^*_e = x_e \bmod 2    \]
 
-    Como o grafo $G'$ induzido por $x$ era euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos vértices em ambos grafos é a mesma, e pois tanto $G'$ quanto $G^*$ possuem $G$, que é conexo, como um subgrafo, e portanto também são conexos.
+    Como o grafo $G'$ induzido por $x$ era euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos vértices em ambos grafos é a mesma, e também pois tanto $G'$ quanto $G^*$ possuem $G$, que é conexo, como um subgrafo, e portanto também são conexos.
     
-    Pela definição, $G^*$ usa um número menor ou igual de arestas que $G'$, fazendo com que a seguinte igualdade se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
+    Pela definição, $G^*$ usa um número menor ou igual de arestas duplicadas que $G'$, fazendo com que o seguinte se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
+
+    No entanto, como $x$ consistia de uma solução ótima, sabemos que $\sum_e c_ex_e$ deverá ser mínimo, e portanto, $\sum_e c_ex^*_e = \sum_e c_ex_e$. 
 
 
-    Finalmente, como $x$ era uma solução ótima, deve valer que $\sum_e c_ex^*_e = \sum_e c_ex_e$, provando assim a otimalidade de $x^*$.
+    Finalmente, como $x$ era uma solução ótima o valor de $\sum_e c_ex_e$ deverá ser mínimo, sendo assim, deve valer que $\sum_e c_ex^*_e = \sum_e c_ex_e$, provando assim a otimalidade de $x^*$, uma solução ótima que respeita as condições do lema.
 \end{proof}
 
 \begin{lemma}
+    \label{lemma-pcc}
     O conjunto de arestas duplicadas de uma solução ótima para o problema consistirá de um conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar.
 \end{lemma}
 
 \begin{proof}
+    Seja $x$ uma solução ótima do PCC para um grafo $G(V, E)$ em que cada aresta é copiada no máximo 1 vez, cuja existência é garantida pelo lema \ref{lemma-pcc}.
+    Realizaremos uma prova deste lema por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
 
-    % Inducao
+    O caso base dessa indução é quando $\sum_e x_e = 0$. 
+    Neste caso, o conjunto de areastas duplicadas será vazio, valendo então a propriedade do lema.
+
+    A hipótese de indução será que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
+
+    Analisaremos agora o caso em que $\sum_e x_e = k$, com $k > 0$.
+
+    Vamos assumir que $G$ não possui nenhum vértice de grau ímpar, isso implica na existência de um circuito $C$ de arestas com $x_e = 1$, como, por exemplo, o representado na figura \ref{pcc-case2}.  
+    
+    Se este for o caso, podemos simplesmente fazer com que $x_e = 0$ para toda aresta $e$ pertencente ao circuito $C$. 
+    Esse procedimento deleta arestas duplicadas desnecessárias à uma solução ótima. 
+
+    Podemos 
+
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (5) {5};
+            \node[main node] (1) [below left of=5]{1};
+            \node[main node] (2) [below of=1] {2};
+            \node[main node] (4) [below right of=5] {4};
+            \node[main node] (3) [below of=4] {3};
+
+          \path[every node/.style={font=\sffamily\small}]
+            (5) edge node [above] {0} (1)
+            (5) edge node [above] {0} (4)
+            (1) edge node [above] {0} (4)
+            (2) edge node [right] {1} (1)
+            (3) edge node [above] {1} (2)
+            (4) edge node [left] {1} (3)
+            ;
+        \end{tikzpicture}
+        \caption{Possível estrutura em grafo com vértices de grau ímpar}
+        \label{pcc-case1}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \node[main node] (4) [right of=1] {4};
+            \node[main node] (3) [below of=4] {3};
+
+          \path[every node/.style={font=\sffamily\small}]
+            (1) edge node [above] {1} (4)
+            (2) edge node [right] {1} (1)
+            (3) edge node [above] {1} (2)
+            (4) edge node [left] {1} (3)
+            ;
+        \end{tikzpicture}
+        \caption{Caso em que o grafo tratado não possui vértices de grau ímpar}
+        \label{pcc-case2}
+    \end{figure}
+
 \end{proof}
 
 
