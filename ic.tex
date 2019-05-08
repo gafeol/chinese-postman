@@ -7,6 +7,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel} % Separacao de silabas em portugues
 \usepackage{amsthm} % has proof
+\usepackage{amsmath}
 \usepackage{listings}
 \usepackage{tcolorbox}
 
@@ -287,11 +288,62 @@ Discutiremos nas seções a seguir a solução para o problema em questão com b
 
 Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e com arestas não direcionadas.
 
+Um circuito Euleriano é um circuito que percorre todas arestas de $G$ exatamente uma vez. 
+Já um circuito $C$ qualquer que resolva o problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez.
+Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida na solução $C$ do problema do carteiro chinês (PCC).
+
+Se $G$ é euleriano, então a solução para o PCC é o próprio circuito euleriano do grafo.
+
+Do contrário, definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
+Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes.
+Deste modo, o grafo $G'$ será euleriano, e portanto a trilha euleriana de $G'$ corresponderá à solução do PCC para o grafo $G$.
+
+Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
+
+Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
+
+%Seja $E(v)$ o conjunto de arestas ligadas ao vértice $v \in V$, e seja $c_e$ o custo de se percorrer uma aresta $e \in E$, que deverá ser não-negativo.
+
+%Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
+
+\begin{lemma} 
+    Para todo grafo simples e conexo, existirá uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá apenas 0 ou 1. 
+\end{lemma}
+
+\begin{proof}
+    Seja $x$ uma solução ótima do PCC para um grafo $G$, sabemos que $x$ deverá possuir valores inteiros não negativos, além disso, sabemos que o grafo $G'$, induzido por $x$, deverá ser euleriano e que o valor de $\sum_e c_ex_e$ será mínimo.
+
+    Seja $x^*$ um vetor definido do seguinte modo:
+
+    \[  x^*_e = x_e \bmod 2    \]
+
+    Como o grafo $G'$ induzido por $x$ era euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos vértices em ambos grafos é a mesma, e pois tanto $G'$ quanto $G^*$ possuem $G$, que é conexo, como um subgrafo, e portanto também são conexos.
+    
+    Pela definição, $G^*$ usa um número menor ou igual de arestas que $G'$, fazendo com que a seguinte igualdade se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
+
+
+    Finalmente, como $x$ era uma solução ótima, deve valer que $\sum_e c_ex^*_e = \sum_e c_ex_e$, provando assim a otimalidade de $x^*$.
+\end{proof}
+
+\begin{lemma}
+    O conjunto de arestas duplicadas de uma solução ótima para o problema consistirá de um conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar.
+\end{lemma}
+
+\begin{proof}
+
+    % Inducao
+\end{proof}
+
+
+
+
+% TODO: Finalizar solução para grafo não direcionado. Fazer exemplo.
+
+
 A solução se baseia em criar um novo grafo $G'(V', E')$. 
 $V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
 Já $E'$ será definido como o conjunto de arestas entre todo par de vértices de $V'$, dado que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo do menor caminho entre $u$ e $v$ no grafo original $G$.
 
-% TODO: Finalizar solução para grafo não direcionado. Fazer exemplo.
 
 \textbf{Solução:} 
 \begin{enumerate}
