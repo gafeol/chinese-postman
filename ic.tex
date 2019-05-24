@@ -310,6 +310,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 %Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
 
 \begin{lemma} 
+    \label{lemma-pcc}
     Para todo grafo simples e conexo, existirá uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá apenas 0 ou 1. 
 \end{lemma}
 
@@ -332,7 +333,6 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 \end{proof}
 
 \begin{lemma}
-    \label{lemma-pcc}
     Para todo grafo $G$ simples e conexo, haverá uma solução ótima do PCC cujo conjunto de arestas duplicadas consistirá na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
 \end{lemma}
 
@@ -431,15 +431,61 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
 \end{proof}
 
+\begin{lemma}
+    \label{lema-final}
+    Para todo grafo $G$ simples e conexo, haverá uma solução ótima do PCC cujo conjunto de arestas duplicadas consistirá na união de caminhos de custo mínimo entre vértices de grau ímpar.
+\end{lemma}
+
+\begin{proof}
+    Seja $S$ o conjunto de arestas duplicadas em uma solução ótima do PCC para o grafo $G$, que consiste de uma união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+
+    Imagine que um caminho $C$ pertencente a $S$, que liga os vértices quaisquer $u$ e $v$, não é o caminho mínimo entre os vértices que liga. 
+    Isto é, existe um caminho $C'$ de custo menor que $C$ que liga $u$ e $v$.
+
+    Neste caso, poderiamos retirar de $S$ as arestas do caminho $C$ e adicionar ao conjunto as arestas de $C'$. Deste modo, o conjunto $S$ possuiria um custo menor que o original, nos permitindo derivar de $S$ uma solução para o PCC de custo menor que a solução original.
+
+    Porém, fazia parte da hipótese que a solução original era ótima, nos levando assim a uma contradição.
+
+    Provamos assim o lema, garantindo a existência de uma solução para o PCC que consiste de uma união de caminhos mínimos entre vértices de grau ímpar.
+
+\end{proof}
+
+Um algoritmo que soluciona o problema se baseia em criar um novo grafo $G'(V', E')$. 
+$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$, já $E'$ é definido como o conjunto de arestas entre todo par de vértices de $V'$, sendo que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo de um caminho de menor custo entre os vértices $u$ e $v$ no grafo original $G$.
+
+
+Pelo lema \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como uma união de caminhos de custo mínimo entre vértices de grau ímpar. 
+Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original à um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
+
+Dado um emparelhamento perfeito $M$ em $G'$ de custo mínimo, é possível derivar uma solução ótima do PCC. Esta solução será dada por um circuito euleriano no grafo $G^*$ que construímos abaixo:
+
+Considere $G^* = (V, E(G))$. Agora, para cada aresta $e = uv \in M$ (emparelhamento de $G'$), tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e faça $G^* \leftarrow G^* \cup C$, ou seja, duplique as arestas de $C$ em $G^*$.
+
+A duplicação das arestas de um caminho modifica apenas a paridade dos vértices extremos.
+Como, no procedimento acima, estamos duplicando as arestas de todos caminhos derivados do emparelhamento perfeito $M$, isso implica que moficamos a paridade de todos os vértices de $G^*$, ou seja, modificamos a paridade dos vértices de grau ímpar de $G$.
+
+Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
+
+
+Analisaremos a complexidade do algoritmo descrito em quatro partes:
+
+\begin{enumerate}
+
+
+\item A criação do grafo condensado $G'$ pode ser realizada em complexidade de tempo $\mathcal{O}(|V|^3)$ com o algoritmo de Floyd-Warshall.
+
+\item Para resolver o problema do emparelhamento perfeito, podemos usar o algoritmo de Kuhn, ou algoritmo Húngaro, com a otimização de Edmonds e Karp, cuja complexidade em tempo é $\mathcal{O}(|V|^3)$.
+
+\item O caminho euleriano em $G^*$ pode ser encontrado em tempo linear no número de vértices do grafo, resultando em uma complexidade de tempo $\mathcal{O}(|V|)$.
+
+\item A reconstrução do 
+
+\end{enumerate}
 
 
 
-% TODO: Finalizar solução para grafo não direcionado. Fazer exemplo.
+ 
 
-
-A solução se baseia em criar um novo grafo $G'(V', E')$. 
-$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
-Já $E'$ será definido como o conjunto de arestas entre todo par de vértices de $V'$, dado que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo do menor caminho entre $u$ e $v$ no grafo original $G$.
 
 
 \textbf{Solução:} 
@@ -450,7 +496,7 @@ Já $E'$ será definido como o conjunto de arestas entre todo par de vértices d
 
 
 \textbf{Observações:}
-\begin{itemize}
+    \begin{itemize}
 		\item Pelo ``Lema do aperto de mão'' é garantido que haverá um número par de vértices de grau ímpar.
 		\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
 		\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
