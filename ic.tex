@@ -155,7 +155,7 @@ Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um circuito $C$.
 
 Se $C$ possui todas arestas de $G$, então $C$ é um circuito euleriano do grafo, finalizando a prova.
 
-Do contrário, aplicamos o seguinte procedimento para constuir um circuito euleriano $\cal{C}$ de $G$:
+Do contrário, aplicamos o seguinte procedimento para constuir um circuito euleriano $\mathcal{C}$ de $G$:
 
 Retira-se de $G$ as arestas pertencentes a $C$, resultando assim em um grafo $G'$. 
 Possivelmente $G'$ será desconexo, por isso definimos que $G'$ será a união de $k$ componenetes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
@@ -166,9 +166,9 @@ Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas
 Portanto, pela hipótese da indução, cada uma dessas componentes deverá possuir um circuito euleriano próprio. 
 Chamaremos de $C_i$ o circuito euleriano da componente $G'_i$.
 
-Ao longo do algoritmo, os circuitos $C_i$ serão adicionados, um a um, ao circuito resultante $\cal{C}$. 
-Definimos $\cal{T}$, como o conjunto dos circuitos eulerianos $C_i$ que ainda não fazem parte de $\cal{C}$. 
-Inicialmente, $\cal{T}$ é igual ao conjunto $\{C_1, C_2, \dots, C_k\}$.
+Ao longo do algoritmo, os circuitos $C_i$ serão adicionados, um a um, ao circuito resultante $\mathcal{C}$. 
+Definimos $\mathcal{T}$, como o conjunto dos circuitos eulerianos $C_i$ que ainda não fazem parte de $\mathcal{C}$. 
+Inicialmente, $\mathcal{T}$ é igual ao conjunto $\{C_1, C_2, \dots, C_k\}$.
 
 
 \[
@@ -179,9 +179,9 @@ Para cada vértice $u$ de $C$ devemos realizar as seguintes verificações:
 
 \begin{tcolorbox}
 
-Começamos adicionando $u$ ao circuito euleriano $\cal{C}$ que estamos construindo.
+Começamos adicionando $u$ ao circuito euleriano $\mathcal{C}$ que estamos construindo.
 
-Enquanto houver um circuito euleriano $C_i$ pertencente a $\cal{T}$ do qual $u$ faz parte, fazemos o seguinte:
+Enquanto houver um circuito euleriano $C_i$ pertencente a $\mathcal{T}$ do qual $u$ faz parte, fazemos o seguinte:
 
 
 \begin{enumerate}
@@ -190,9 +190,9 @@ Enquanto houver um circuito euleriano $C_i$ pertencente a $\cal{T}$ do qual $u$ 
         C_i = \{u, u_2, \dots, u_l, u\}
     \]
 
-\item Adicionamos ao final de $\cal{C}$ o circuito $C_i$ como representado, exceto pelo primeiro vértice $u$. 
+\item Adicionamos ao final de $\mathcal{C}$ o circuito $C_i$ como representado, exceto pelo primeiro vértice $u$. 
 
-\item Removemos de $\cal{T}$ o circuito $C_i$, indicando que a mesma já foi adicionada a $\cal{C}$.
+\item Removemos de $\mathcal{T}$ o circuito $C_i$, indicando que a mesma já foi adicionada a $\mathcal{C}$.
 
 \end{enumerate}
 
@@ -200,7 +200,7 @@ Repetem-se então as mesmas verificações para os próximos vértices de $C$.
 \end{tcolorbox}
 
 
-Ao final desse procedimento, o conjunto $\cal{T}$ deverá ser vazio, já que toda trilha $C_i$ possui pelo menos um vértice em $C$. Além disso, toda trilha $C_i$ deverá ter sido adicionada à $\cal{C}$ uma única vez, já que logo após adicionar uma trilha à $\cal{C}$ já a removiamos de $\cal{T}$, impedindo que ela fosse adicionada outra vez na trilha euleriana final.
+Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que toda trilha $C_i$ possui pelo menos um vértice em $C$. Além disso, toda trilha $C_i$ deverá ter sido adicionada à $\mathcal{C}$ uma única vez, já que logo após adicionar uma trilha à $\mathcal{C}$ já a removiamos de $\mathcal{T}$, impedindo que ela fosse adicionada outra vez na trilha euleriana final.
 
 Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por indução.
 
@@ -292,8 +292,8 @@ Discutiremos nas seções a seguir a solução para o problema em questão com b
 Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e com arestas não direcionadas.
 
 Um circuito Euleriano é um circuito que percorre todas arestas de $G$ exatamente uma vez. 
-Já um circuito $C$ qualquer que resolva o problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez.
-Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida na solução $C$ do problema do carteiro chinês (PCC).
+Já uma solução qualquer que resolva o problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
+Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em uma soluação $T$ do problema do carteiro chinês (PCC).
 
 Se $G$ é euleriano, então a solução para o PCC é o próprio circuito euleriano do grafo.
 
@@ -310,12 +310,12 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 %Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
 
 \begin{lemma} 
-    \
     Para todo grafo simples e conexo, existirá uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá apenas 0 ou 1. 
 \end{lemma}
 
 \begin{proof}
-    Seja $x$ uma solução ótima do PCC para um grafo $G$, sabemos que $x$ deverá possuir valores inteiros não negativos, além disso, sabemos que o grafo $G'$, induzido por $x$, deverá ser euleriano e que o valor de $\sum_e c_ex_e$ será mínimo.
+    Seja $T$ uma solução ótima do PCC para um grafo $G$ e $x$ um vetor indicando a quantidade de cópias necessárias de cada aresta de $G$ para a solução $T$. 
+    Sabemos que $x$ deverá possuir valores inteiros não negativos, além disso, sabemos que o grafo $G'$, induzido por $x$, deverá ser euleriano e que o valor de $\sum_e c_ex_e$ será mínimo.
 
     Seja $x^*$ um vetor definido do seguinte modo:
 
@@ -325,34 +325,69 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
     
     Pela definição, $G^*$ usa um número menor ou igual de arestas duplicadas que $G'$, fazendo com que o seguinte se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
 
-    No entanto, como $x$ consistia de uma solução ótima, sabemos que $\sum_e c_ex_e$ deverá ser mínimo, e portanto, $\sum_e c_ex^*_e = \sum_e c_ex_e$. 
+    No entanto, como $x$ foi derivado da solução ótima $T$, sabemos que $\sum_e c_ex_e$ deverá ser mínimo, e portanto, $\sum_e c_ex^*_e = \sum_e c_ex_e$. 
 
+    Sendo assim, os valores de $x^*$ serão apenas 0 ou 1, por definição, e $T^*$ consistirá em uma solução ótima, assim como $T$, provando o lema.
 
-    Finalmente, como $x$ era uma solução ótima o valor de $\sum_e c_ex_e$ deverá ser mínimo, sendo assim, deve valer que $\sum_e c_ex^*_e = \sum_e c_ex_e$, provando assim a otimalidade de $x^*$, uma solução ótima que respeita as condições do lema.
 \end{proof}
 
 \begin{lemma}
     \label{lemma-pcc}
-    O conjunto de arestas duplicadas de uma solução ótima para o problema consistirá de um conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar.
+    Para todo grafo $G$ simples e conexo, haverá uma solução ótima do PCC cujo conjunto de arestas duplicadas consistirá na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
 \end{lemma}
 
 \begin{proof}
-    Seja $x$ uma solução ótima do PCC para um grafo $G(V, E)$ em que cada aresta é copiada no máximo 1 vez, cuja existência é garantida pelo lema \ref{lemma-pcc}.
-    Realizaremos uma prova deste lema por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
+
+    Inicialmente trataremos o caso em que $G$ não possui nenhum vértice de grau ímpar:
+    Se todos vértices de $G$ tem grau par, então o mesmo deve possuir um circuito euleriano. 
+    Por isso, o vetor $x' = \{0, 0, \dots, 0\}$ induz uma solução válida para o PCC, e possui custo zero, sendo assim esta uma solução ótima.
+    Como o conjunto de arestas duplicadas nesta solução é vazio, vale o lema para este grafo.
+
+    Provado este caso, seguiremos a demonstração assumindo que $G$ possui ao menos um vértice de grau ímpar.
+
+    Seja $T$ uma solução ótima do PCC para um grafo $G(V, E)$  em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá 0 ou 1. 
+    A existência de tal solução é garantida pelo lema \ref{lemma-pcc}.
+    Realizaremos uma prova por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
 
     O caso base dessa indução é quando $\sum_e x_e = 0$. 
-    Neste caso, o conjunto de areastas duplicadas será vazio, valendo então a propriedade do lema.
+    Neste caso, o conjunto de arestas duplicadas será vazio, valendo então a propriedade do lema.
 
     A hipótese de indução será que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
 
-    Analisaremos agora o caso em que $\sum_e x_e = k$, com $k > 0$.
+    Analisaremos agora a situação em que $\sum_e x_e = k$, com $k > 0$.
 
-    Vamos assumir que $G$ não possui nenhum vértice de grau ímpar, isso implica na existência de um circuito $C$ de arestas com $x_e = 1$, como, por exemplo, o representado na figura \ref{pcc-case2}.  
-    
-    Se este for o caso, podemos simplesmente fazer com que $x_e = 0$ para toda aresta $e$ pertencente ao circuito $C$. 
-    Esse procedimento deleta arestas duplicadas desnecessárias à uma solução ótima. 
+    Seja $v$ um vértice de $G$ de grau ímpar,  $C$ um caminho de tamanho maximal que começa no vértice $v$ e percorre apenas arestas duplicadas e seja $G'$ o grafo, possivelmente desconexo, $G$ decrescido das arestas pertencentes a $C$.
 
-    Podemos 
+
+    Todos os vértices em $G$ e $G'$ terão a mesma paridade de grau, exceto pelos vértices extremos de $C$. 
+    Como estes eram vértices de grau ímpar em $G$ e apenas uma aresta foi retirada dos mesmos, ambos terão grau par em $G'$.
+
+    Sendo assim, podemos definir um vetor $x'$ que induz uma solução ótima para $G'$ do seguinte modo:
+
+    \[ 
+        x'_e = 
+        \begin{cases} 
+            0 & e \in C \\
+            x_e & e \notin C 
+        \end{cases}
+    \]
+
+
+    Vale também o seguinte:
+
+    \begin{align*}
+        \sum_e x'_e &= \sum_e x_e - |\mathcal{C}| \\ 
+        \sum_e x'_e &< \sum_e x_e \\
+        \sum_e x'_e &< k
+    \end{align*}
+
+    Sendo assim, vale a hipótese de indução para o grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto por arestas duplicadas (ou seja, para as quais $x'_e = 1$).
+
+    Como o grafo $G'$ não possui as arestas do caminho $C$, temos que todo caminho de $\mathcal{C}$ deverá ser aresta-disjunto com $C$.
+    Deste modo, o conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar $\mathcal{C} \cup C$, que induz o grafo $T$, consistirá de uma solução ótima para o PCC em $G$.
+    Provando assim o passo da indução.
+
+    Finalizando então a prova por indução do lema.
 
     \begin{figure}
         \centering
