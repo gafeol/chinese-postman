@@ -1,6 +1,5 @@
 %LLPStartPreview para rodar o pdf com mudancas automaticas
 
-
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -471,20 +470,6 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
 Analisaremos a complexidade do algoritmo descrito em quatro partes:
 
-\begin{enumerate}
-
-
-\item A criação do grafo condensado $G'$ pode ser realizada em complexidade de tempo $\mathcal{O}(|V|^3)$ com o algoritmo de Floyd-Warshall.
-
-\item Para resolver o problema do emparelhamento perfeito, podemos usar o algoritmo de Kuhn, ou algoritmo Húngaro, com a otimização de Edmonds e Karp, cuja complexidade em tempo é $\mathcal{O}(|V|^3)$.
-
-\item O caminho euleriano em $G^*$ pode ser encontrado em tempo linear no número de vértices do grafo, resultando em uma complexidade de tempo $\mathcal{O}(|V|)$.
-
-\item A reconstrução do 
-
-\end{enumerate}
-
-\href{https://codeforces.com/problemset/problem/367/C}{Sereja and the Arrangement of Numbers}
 
 \textbf{Solução:} 
 \begin{enumerate}
@@ -500,9 +485,20 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 		\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 	\end{itemize}
 
-	\section{Directed CPP}
+\section{Directed CPP}
 
 	O grafo deverá ser fortemente conexo.\\
+
+    \subsection{Problemas resolvidos}
+
+        \subsubsection{\href{https://codeforces.com/problemset/problem/367/C}{Sereja and the Arrangement of Numbers}}
+        Define-se uma sequência de $n$ inteiros $a_1, a_2,\dots, a_n$ como uma sequência ``bonita'' se: para todo par $x, y$ valores distintos que pertençam à sequência existe uma posição $i$ tal que $a_i = x, a_{i+1} = y$ ou $a_i = y, a_{i+1} = x$.
+
+        Sua tarefa é contruir uma sequência bonita que use o maior número de elementos distintos possível, sem exceder um tamanho $n$ e que possua o menor custo possível.
+
+        O custo está relacionado com os valores, na entrada do problema você recebe $m$ valores $q_i, w_i$, o primeiro sendo um valor qualquer, e o segundo sendo o custo de se utilizar esse valor em uma solução.
+
+            
 
 	\textbf{Solução:}
 	\begin{enumerate}
