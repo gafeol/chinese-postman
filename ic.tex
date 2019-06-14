@@ -472,7 +472,7 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 
 
 \textbf{Solução:} 
-\begin{enumerate}
+\begin{enumerate} % TODO: Melhorar analise de complexidade
     \item Criar um grafo completo ligando todos vértices $u, v$ que possuirem grau ímpar com arestas de custo igual ao menor caminho entre $u$ e $v$. 
     \item Rodar algoritmo de emparelhamento perfeito de custo mínimo (Húngaro com otimização do Edmonds e Karp, $\mathcal{O}(n^3)$).
 \end{enumerate}
@@ -485,20 +485,186 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 		\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 	\end{itemize}
 
+    \section{Problemas resolvidos}
+
+        Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
+
+        \subsection{Sereja and the Arrangement of Numbers}
+
+        \textbf{Problema}
+
+        Esse problema foi publicado pelo \href{https://codeforces.com}{Codeforces}, para o \href{https://codeforces.com/contest/367}{round \#215 da Div. 1}, e pode ser conferido neste \href{https://codeforces.com/problemset/problem/367/C}{link}.
+
+        Além do valor de $n$ também são fornecidos $m$ pares de inteiros positivos $q_i, w_i$, indicando que para se utilizar o valor $q_i$ na construção da sequência desejada há uma recompensa $w_i$.
+        O valor da recompensa total de uma sequência é igual a soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
+
+        Sua tarefa é descobrir a recompensa máxima que uma sequência bonita construida usando os valores $q_i$ de tamanho $n$ pode possuir.
+
+        A entrada do programa é dada pelos valores $n, m$ e pelos $m$ pares $q_i, w_i$, garante-se que todos valores de $q_i$ são distintos.
+
+        Um exemplo de entrada para este problema é:
+
+        \begin{align*}
+            & 5 \text{ }4 & \text{Neste exemplo $n = 5$ e $m = 4$}\\
+            & 1 \text{ }4 & \text{O primeiro valor é 1, e sua recompensa é 4}\\
+            & 2 \text{ }3 & \text{Segue o valor 2, com recompensa 3}\\
+            & 4 \text{ }2 & \text{Segue o valor 4, com recompensa 2}\\
+            & 3 \text{ }10 &\text{Finalmente temos o valor 3, de recompensa 10}\\
+        \end{align*}
+
+        Para este exemplo, uma solução ótima é a sequência $1,2,3,1,1,1$, que é bonita e possui recompensa total igual a $17$. 
+        Não existe uma sequência bonita que possua os quatro valores do exemplo.
+
+
+        \textbf{Solução}
+
+        Como todo valor possui uma recompensa positiva, a solução final deverá usar a maior quantidade de valores distintos que for possível.
+
+        Começaremos discutindo um problema mais simples: Qual o tamanho da menor sequência bonita que utiliza $x$ valores distintos?
+
+        Para resolver esse problema faremos uma modelagem do problema usando um grafo completo $K_x$, onde cada vértice representa um valor distinto e cada aresta possui custo unitário.
+
+        Todo passeio do grafo $K_x$ pode ser representado como uma sequência dos valores dos vértices do grafo, as sequências definidas como bonitas são aquelas que representam um passeio que percorre todas arestas do grafo $K_x$.
+
+        Para facilitar a análise deste problema, assumiremos que pode existir em um passeio dois vértices de mesmo valor em sequência, mesmo sem haver um loop neste vértice, além disso, vamos assumir que os valores distintos são $1, 2, \dots, x$.
+
+        Sendo assim, qualquer sequência que possua apenas valores entre $1$ e $x$ pode ser representada por um passeio no grafo $K_x$.
+
+        Uma sequência $s$ bonita, de acordo com a descrição do problema, é aquela para qual exsite um inteiro $i$, para cada par de valores distintos $u$, $v$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
+        Interpretando a sequência $s$ como um passeio em $K_x$, podemos interpretar os valores $u, v$ como vértices do grafo construido e a existência de $i$ tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$ como a existência da aresta $uv$ no passeio $s$.
+        Para que a sequência $s$ seja bonita, para todo par de valores $u, v$, o passeio derivado de $s$ deverá percorrer a aresta $uv$.
+
+        Em outras palavras, para que um passeio seja bonito, ele deverá percorrer todas arestas do grafo descrito, sendo assim uma solução do problema do carteiro chinês para o grafo derivado dos valores.
+
+        Portanto, voltando a pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita.
+ 
+        Vejamos agora alguns exemplos:
+
+        \begin{figure}[h]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) {1};
+                \node[main node] (2) [below left of=1] {2};
+                \node[main node] (3) [below of=2] {3};
+                \node[main node] (5) [below right of=1] {5};
+                \node[main node] (4) [below of=5] {4};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node [] {} (4)
+                    (1) edge node [] {} (3)
+                    (2) edge node [] {} (1)
+                    (1) edge node [] {} (5)
+                    (2) edge node [] {} (4)
+                    (3) edge node [] {} (2)
+                    (2) edge node [] {} (5)
+                    (4) edge node [] {} (3)
+                    (3) edge node [] {} (5)
+                    (4) edge node [] {} (5)
+                    ;
+            \end{tikzpicture}
+            \caption{Exemplo com $x=5$}
+            \label{k5}
+        \end{figure}
+
+        Para $x=5$, o grafo induzido é o $K_5$, como representado na figura \ref{k5}.
+        Como todos os vértices do $K_5$ possuem grau par, a solução ótima do Problema do Carteiro Chinês para este exemplo é também um circuito euleriano, como o seguinte:
+
+        \[ P = \{1, 2, 3, 4, 5, 1, 3, 5, 2, 4, 1\} \]
+
+        Como discutido anteriormente, $P$, além de solução do PCC é também uma sequência bonita que utiliza os $x$ valores definidos pelos vértices do grafo.
+        
+        Sendo assim, para utilizar $5$ valores distintos, é necessário ter uma sequência de tamanho no mínimo $11$, valor este que é igual a $1 + |E(K_5)| = 1 + 10 = 11$.
+
+        Analisaremos agora outro exemplo, em que $x=4$, do qual se deriva o grafo $K_4$ representado na figura \ref{k4}.
+
+
+        \begin{figure}[h]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) {1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (4) [right of=1] {4};
+                \node[main node] (3) [below of=4] {3};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node {} (4)
+                    (2) edge node {} (1)
+                    (3) edge node {} (2)
+                    (4) edge node {} (3)
+                    (1) edge node {} (3)
+                    (2) edge node {} (4)
+                    ;
+            \end{tikzpicture}
+            \caption{Exemplo com $x=4$}
+            \label{k4}
+        \end{figure}
+
+
+        Neste exemplo, todos os vértices de $K_4$ possuem grau ímpar, por isso, a primeira parte da solução do problema do carteiro chinês se baseia em duplicar algumas arestas do grafo, tornando-o um grafo euleriano.
+
+        Como estamos tratando de um grafo completo, com arestas de custo unitário, não é necessário criar uma condensação do grafo $K_x$, e achar um emparelhamento perfeito de custo mínimo.
+        Basta apenas criar uma duplicação de aresta entre todo par de vértices de índices $i$ e $i+1$ para todo índice $i$ ímpar, como representado na figura \ref{k4+} para o exemplo em questão.
+
+        \begin{figure}[h]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) {1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (4) [right of=1] {4};
+                \node[main node] (3) [below of=4] {3};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge[] node {} (4)
+                    (2) edge[bend right] node {} (1)
+                    (4) edge[bend right] node {} (3)
+                    (1) edge node {} (3)
+                    (2) edge node {} (4)
+                    (2) edge node {} (3)
+                    (1) edge[bend right] node {} (2)
+                    (3) edge[bend right] node {} (4)
+                    ;
+            \end{tikzpicture}
+            \caption{$K_4$ com arestas duplicadas}
+            \label{k4+}
+        \end{figure}
+
+        A partir do grafo euleriano criado, é possível encontrar o caminho euleriano $P$, que também é solução do PCC para o grafo $K_4$, e, finalmente, sequência bonita de tamanho mínimo que usa $4$ valores distintos.
+
+        \[ P = \{1, 2, 3, 4, 1, 3, 4, 2, 1\} \]
+
+        Sendo assim, o tamanho mínimo de uma sequência bonita que possui 4 valores distintos é $9$, valor este composto da seguinte forma: $1 + |E(K_4)| = 1 + 6 = 7$ somado ao número de arestas duplicadas $\frac{4}{2} = 2$.
+
+
+        Podemos assim abstrair uma fórmula geral para o tamanho mínimo de uma sequência bonita $P$ que utilize $k$ valores diferentes em sua composição:
+
+        
+        \[ |P_k|
+             =  1 + \frac{k(k-1)}{2} + 
+            \begin{cases} 
+                0 & k \text{ ímpar} \\
+                \frac{k}{2} & k \text{ par}
+            \end{cases}
+        \]
+
+        Todo grafo completo com número ímpar de vértices é euleriano, enquanto os ímpares não o são. 
+        Por isso a diferença na fórmula de $|P_k|$.
+
+        Utilizando essa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P_k| \leq n$.
+
+        Encontrado tal valor $k$, o máximo número de valores distintos que a solução pode possuir para ser bonita, basta descobrir quais valores da entrada escolher para maximizar a recompensa.
+        
+
+        Se possuirmos na entrada uma quantidade de valores, $m$, tal que $m \leq k$, então a solução ótima será a soma das recompensas de todos valores, já que é possível encontrar uma sequência bonita que irá conter todos valores disponíveis.
+
+        Do contrário, a solução consistirá em escolher os $k$ valores de maior recompensa disponíveis.
+    Para encontrar tal valor, basta manter uma árvore de busca binária balanceada com as $k$ maiores recompensas dos valores disponíveis, o que custa tempo $\mathcal{O}(m\lg k) = \mathcal{O}(m\lg \sqrt{n})$.
+
+    A minha solução para este problema pode ser encontrada, em C++, neste \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{link}.
+
 \section{Directed CPP}
 
 	O grafo deverá ser fortemente conexo.\\
 
-    \subsection{Problemas resolvidos}
-
-        \subsubsection{\href{https://codeforces.com/problemset/problem/367/C}{Sereja and the Arrangement of Numbers}}
-        Define-se uma sequência de $n$ inteiros $a_1, a_2,\dots, a_n$ como uma sequência ``bonita'' se: para todo par $x, y$ valores distintos que pertençam à sequência existe uma posição $i$ tal que $a_i = x, a_{i+1} = y$ ou $a_i = y, a_{i+1} = x$.
-
-        Sua tarefa é contruir uma sequência bonita que use o maior número de elementos distintos possível, sem exceder um tamanho $n$ e que possua o menor custo possível.
-
-        O custo está relacionado com os valores, na entrada do problema você recebe $m$ valores $q_i, w_i$, o primeiro sendo um valor qualquer, e o segundo sendo o custo de se utilizar esse valor em uma solução.
-
-            
 
 	\textbf{Solução:}
 	\begin{enumerate}
@@ -512,7 +678,7 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 		\item Modelagem de fluxo com arestas de capacidade unitária, aumentando a velocidade do algoritmo.
 	\end{itemize}
 
-	\section{Mixed CPP}
+        \section{Mixed CPP}
 
 	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
 

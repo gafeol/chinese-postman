@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.19)  12 JUN 2019 21:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.19)  13 JUN 2019 08:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,22 +6,6 @@ entering extended mode
 (./ic.tex
 LaTeX2e <2017-04-15>
 Babel <3.18> and hyphenation patterns for 4 language(s) loaded.
-
-! LaTeX Error: Missing \begin{document}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.2 :
-     
-? 
-Missing character: There is no : in font nullfont!
-
-Overfull \hbox (20.0pt too wide) in paragraph at lines 2--3
-[] 
- []
-
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -38,7 +22,7 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
@@ -938,20 +922,20 @@ File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
  (./ic.aux)
 \openout1 = `ic.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -987,7 +971,7 @@ e
 
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box51
-Package hyperref Info: Link coloring OFF on input line 33.
+Package hyperref Info: Link coloring OFF on input line 31.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -997,176 +981,182 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count153
 )
-LaTeX Info: Redefining \ref on input line 33.
-LaTeX Info: Redefining \pageref on input line 33.
-LaTeX Info: Redefining \nameref on input line 33.
+LaTeX Info: Redefining \ref on input line 31.
+LaTeX Info: Redefining \pageref on input line 31.
+LaTeX Info: Redefining \nameref on input line 31.
 
 (./ic.out) (./ic.out)
 \@outlinefile=\write6
 \openout6 = `ic.out'.
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 37.
-<img/konigsberg.png, id=43, 1027.84pt x 715.67375pt>
+(babel)             in language  on input line 35.
+<img/konigsberg.png, id=47, 1027.84pt x 715.67375pt>
 File: img/konigsberg.png Graphic file (type png)
 <use img/konigsberg.png>
-Package pdftex.def Info: img/konigsberg.png  used on input line 41.
+Package pdftex.def Info: img/konigsberg.png  used on input line 39.
 (pdftex.def)             Requested size: 172.5pt x 120.10132pt.
 
-Underfull \hbox (badness 3735) in paragraph at lines 45--46
+Underfull \hbox (badness 3735) in paragraph at lines 43--44
 []\OT1/cmr/m/n/10 O pro-blema das sete pon-tes de
  []
 
 
-Underfull \hbox (badness 1259) in paragraph at lines 50--51
+Underfull \hbox (badness 1259) in paragraph at lines 48--49
 \OT1/cmr/m/n/10 uma sequ^encia des-sas le-tras: por
  []
 
-<img/konigsberg-euler.png, id=45, 673.51625pt x 328.22626pt>
+<img/konigsberg-euler.png, id=49, 673.51625pt x 328.22626pt>
 File: img/konigsberg-euler.png Graphic file (type png)
 <use img/konigsberg-euler.png>
-Package pdftex.def Info: img/konigsberg-euler.png  used on input line 54.
+Package pdftex.def Info: img/konigsberg-euler.png  used on input line 52.
 (pdftex.def)             Requested size: 172.5pt x 84.0647pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 68.
+(babel)             in language  on input line 66.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 68.
-[2
+(babel)             in language  on input line 66.
+[1
 
- <./img/konigsberg.png> <./img/konigsberg-euler.png>]
-<img/konigsberg-graph.png, id=58, 180.675pt x 144.54pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/konigsberg.png> <./i
+mg/konigsberg-euler.png>]
+<img/konigsberg-graph.png, id=63, 180.675pt x 144.54pt>
 File: img/konigsberg-graph.png Graphic file (type png)
 <use img/konigsberg-graph.png>
-Package pdftex.def Info: img/konigsberg-graph.png  used on input line 94.
+Package pdftex.def Info: img/konigsberg-graph.png  used on input line 92.
 (pdftex.def)             Requested size: 86.25pt x 68.99905pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--95
+Underfull \hbox (badness 10000) in paragraph at lines 93--93
 []\OT1/cmr/m/n/10 Figura 3:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--95
+Underfull \hbox (badness 10000) in paragraph at lines 93--93
 []\OT1/cmr/m/n/10 Modelagem de
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--95
+Underfull \hbox (badness 10000) in paragraph at lines 93--93
 \OT1/cmr/m/n/10 K^^?onigs-berg como
  []
 
 
-Underfull \hbox (badness 1460) in paragraph at lines 99--100
+Underfull \hbox (badness 1460) in paragraph at lines 97--98
 [][]\OT1/cmr/m/n/10 Apesar de ter re-ce-bido grande parte do cr^^Sedito
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 122.
+(babel)             in language  on input line 120.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 122.
-[3 <./img/konigsberg-graph.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 145--146
+(babel)             in language  on input line 120.
+[2 <./img/konigsberg-graph.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 143--144
 
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 165.
+(babel)             in language  on input line 163.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 165.
-[4]
+(babel)             in language  on input line 163.
+[3]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 214.
+(babel)             in language  on input line 212.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 214.
+(babel)             in language  on input line 212.
+ [4]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 265.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 269.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 269.
  [5]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 267.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 271.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 271.
- [6]
-<img/graph.png, id=100, 357.335pt x 282.05376pt>
+<img/graph.png, id=105, 357.335pt x 282.05376pt>
 File: img/graph.png Graphic file (type png)
 <use img/graph.png>
-Package pdftex.def Info: img/graph.png  used on input line 280.
+Package pdftex.def Info: img/graph.png  used on input line 278.
 (pdftex.def)             Requested size: 103.50105pt x 81.6945pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 293.
+(babel)             in language  on input line 291.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 306.
+(babel)             in language  on input line 304.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 306.
- [7 <./img/graph.png>]
+(babel)             in language  on input line 304.
+ [6 <./img/graph.png>]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 354.
+(babel)             in language  on input line 352.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 354.
+(babel)             in language  on input line 352.
+ [7]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 443.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 443.
  [8]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 445.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 445.
+(babel)             in language  on input line 443.
  [9]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 445.
+(babel)             in language  on input line 478.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 445.
+(babel)             in language  on input line 478.
  [10]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 481.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 481.
- [11]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 499.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 483.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 499.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 483.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 504.
+(babel)             in language  on input line 488.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 492.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 513.
 
-Underfull \hbox (badness 10000) in paragraph at lines 506--507
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
 
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 520.
+(babel)             in language  on input line 522.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 524.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 524.
-[12]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 524.
+(babel)             in language  on input line 522.
+[11]
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 530.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 537.
+(babel)             in language  on input line 534.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 557.
+(babel)             in language  on input line 540.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 557.
+(babel)             in language  on input line 547.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 565.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 565.
+ [12]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 567.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 567.
  [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 557.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 557.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 567.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 567.
  (./ic.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 557.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 557.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 567.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 567.
 Package rerunfilecheck Info: File `ic.out' has not changed.
-(rerunfilecheck)             Checksum: 160B2A49FC7B15987A6876539179F387;468.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+(rerunfilecheck)             Checksum: 5C55D5090EA76B9F07C59A3984AA2D36;610.
  ) 
 Here is how much of TeX's memory you used:
- 19872 strings out of 494903
- 370677 string characters out of 6179961
- 444863 words of memory out of 5000000
- 22818 multiletter control sequences out of 15000+600000
+ 19873 strings out of 494903
+ 370705 string characters out of 6179961
+ 444873 words of memory out of 5000000
+ 22820 multiletter control sequences out of 15000+600000
  10287 words of font info for 37 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  54i,13n,73p,823b,875s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1184,10 +1174,10 @@ s12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb
 ></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/
 texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on ic.pdf (13 pages, 1086046 bytes).
+Output written on ic.pdf (13 pages, 1088769 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 181 compressed objects within 2 object streams
- 52 named destinations out of 1000 (max. 500000)
- 97 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 227 PDF objects out of 1000 (max. 8388607)
+ 188 compressed objects within 2 object streams
+ 51 named destinations out of 1000 (max. 500000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
