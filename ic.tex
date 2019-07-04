@@ -571,19 +571,19 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
-        \textbf{Problema}
+        \textbf{Definição do problema}
 
-        No enunciado do problema define-se uma sequência $s$ como bonita quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
+        No enunciado do problema define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
 
         Em outras palavras, se uma sequência é bonita todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
 
         Define-se também um sistema de recompensas:
         Para cada valor há uma recompensa positiva associada.
-        A recompensa total de uma sequência é igual a soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
+        A recompensa total de uma sequência é igual à soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
 
         O problema consiste então desenvolver um algoritmo que calcule a maior recompensa atingível para uma sequência bonita de tamanho $n$ que seja constituída apenas por valores definidos pela entrada. 
 
-        A entrada do programa, portanto será dada pelos valores $n, m$ e por $m$ pares $q_i, w_i$, indicando que $q_i$ é um valor que pode ser utilizado e que possui recompensa $w_i$, garante-se que todos valores de $q_i$ são distintos e que $w_i$ é positivo.
+        A entrada do programa, portanto será dada pelos valores $n, m$ e por $m$ pares $q_i, w_i$, indicando que $q_i$ é um valor que pode ser utilizado e que possui recompensa $w_i$, garante-se que os valores de $q_i$ são distintos e que $w_i$ é positivo.
 
         Um exemplo de entrada para este problema é:
 
@@ -599,13 +599,13 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Não existe uma sequência bonita que possua os quatro valores do exemplo.
 
 
-        \textbf{Solução}
+        \textbf{Descrição da solução}
 
         Como todo valor possui uma recompensa positiva, a solução final deverá usar a maior quantidade de valores distintos que for possível.
 
         Começaremos discutindo um problema mais simples: Qual o tamanho da menor sequência bonita que utiliza $x$ valores distintos?
 
-        Para resolver esse problema faremos uma modelagem do problema usando um grafo completo $K_x$, onde cada vértice representa um valor distinto e cada aresta possui custo unitário.
+        Para resolver esse problema faremos uma modelagem do problema usando um grafo completo $K_x$, que possui $x$ vértices, onde cada vértice representa um valor distinto e cada aresta possui custo unitário.
 
         Todo passeio do grafo $K_x$ pode ser representado como uma sequência dos valores dos vértices do grafo, as sequências definidas como bonitas são aquelas que representam um passeio que percorre todas arestas do grafo $K_x$.
 
@@ -617,7 +617,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Concluimos então que um passeio derivado de uma sequência que seja bonita, deverá percorrer todas arestas do grafo $K_x$, sendo assim uma solução do problema do carteiro chinês para o mesmo.
 
-        Voltamos assim à pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita.
+        Voltamos assim à pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita. \\
  
         Vejamos agora alguns exemplos:
 
@@ -719,7 +719,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Podemos assim abstrair uma fórmula geral para o tamanho mínimo de uma sequência bonita $P$ que utilize $k$ valores distintos em sua composição:
 
         
-        \[ |P_k|
+        \[ |P|
              =  1 + \frac{k(k-1)}{2} + 
             \begin{cases} 
                 0 & k \text{ ímpar} \\
@@ -728,9 +728,9 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \]
 
         Todo grafo completo com uma quantidade ímpar de vértices é euleriano, já que todos seus vértices possuem grau par, enquanto os grafos completos com quantidade par de vértices não são eulerianos. 
-        Por isso a diferença na fórmula de $|P_k|$.
+        Por isso a diferença na fórmula de $|P|$.
 
-        A partir dessa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P_k| \leq n$.
+        A partir dessa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P| \leq n$.
 
         Encontrado tal valor $k$, o número máximo de valores distintos que a solução pode possuir para ser bonita, basta descobrir quais valores da entrada escolher para maximizar a recompensa.
         
@@ -740,7 +740,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Do contrário, a solução consistirá em escolher os $k$ valores de maior recompensa disponíveis.
     Para encontrar tal valor, basta manter uma árvore de busca binária balanceada com as $k$ maiores recompensas dos valores disponíveis, o que custa tempo $\mathcal{O}(m\lg k) = \mathcal{O}(m\lg \sqrt{n})$.
 
-        Uma solução para este problema pode ser encontrada, em C++, neste \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{link}.
+    Uma solução para este problema foi adicionada a referência \cite{sereja-sol}. 
 
         \subsection{Jogging Trails\cite{jogging}}
         
@@ -810,6 +810,10 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \bibitem{sereja}
     Problema retirado do Codeforces, problema C do Round \#215 (Div1)\\
     \href{https://codeforces.com/problemset/problem/367/C}{codeforces.com/problemset/problem/367/C}
+
+    \bibitem{sereja-sol}
+    Solução para o problema Sereja and the Arrangement of Numbers, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}
 
     \bibitem{jogging}
     Problema retirado do UVa, problema 10296\\
