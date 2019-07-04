@@ -26,46 +26,57 @@ const ll INF = LLONG_MAX/3ll;
 int n, m, k;
 int s[MAXN];
 
+namespace match {
+    const int BITMASK = (1<<16);
+    ll min_cost[BITMASK];
+    vector<vector<ll>> dist;
+    int n;
 
-const int BITMASK = (1<<16);
-ll dp[BITMASK];
-vector<int> oddVertex; 
-vector<vector<ll>> mnDist;
+    void init(int nn, vector<vector<ll>> &mnDist) {
+        n = nn;
+        dist = mnDist;
+        for(int i=0;i<(1<<n);i++)
+            min_cost[i] = INF;
+    }
 
-ll go(int bm){
-    if(bm == 0) return 0;
-    if(dp[bm] != -1) 
-        return dp[bm];
-    dp[bm] = LLONG_MAX;
-    for(int i=0;i<oddVertex.size();i++){
-        if(!(bm&(1<<i))) continue;
-        for(int j=i+1;j<oddVertex.size();j++){
-            if(!(bm&(1<<j))) continue;
-            dp[bm] = min(dp[bm], mnDist[oddVertex[i]][oddVertex[j]] + go(bm ^ (1<<i) ^ (1<<j)));
+    ll mnCostMatch(int bm = (1<<n)-1){
+        if(bm == 0) return 0;
+        if(min_cost[bm] != INF)
+            return min_cost[bm];
+        
+        for(int u=0;u<n;u++){
+            if(!((1<<u)&bm)) continue;
+            for(int v=u+1;v<n;v++){
+                if(!((1<<v)&bm)) continue;
+                min_cost[bm] = min(min_cost[bm], mnCostMatch(bm ^ (1<<u) ^ (1<<v)) + dist[u][v]);
+            }
         }
+        return min_cost[bm];
     }
-    return dp[bm];
 }
 
-ll minCostPerfectMatch(int n) {
-    for(int a=0;a<(1<<n);a++){
-        dp[a] = -1;
-    }
-    return go((1<<n)-1);
-}
 
-ll cost_of_duplication(vector<vector<pair<int, ll>>> &adj){
-    oddVertex.clear();
+ll cost_of_duplication(vector<vector<pair<int, ll>>> &adj, vector<vector<ll>> &mnDist){
+    vector<int> oddVertex;
     for(int a=0;a<n;a++)
         if(((int)adj[a].size())&1)
             oddVertex.pb(a);
 
+    vector<vector<ll>> edges(n, vector<ll>(n));
 
-    ll cost = minCostPerfectMatch(oddVertex.size());
-    return cost;
+    for(int i=0;i<oddVertex.size();i++){
+        for(int j=i+1;j<oddVertex.size();j++){
+            int u = oddVertex[i], v = oddVertex[j];
+            edges[j][i] = edges[i][j] = mnDist[u][v];
+        }
+    }
+
+    match::init(oddVertex.size(), edges);
+
+    return match::mnCostMatch();
 }
 
-void floyd_warshall(){
+void floyd_warshall(vector<vector<ll>> &mnDist){
     for(int k=0;k<n;k++){
         for(int i=0;i<n;i++){
             for(int j =0;j<n;j++){
@@ -81,14 +92,7 @@ int main (){
     while(scanf("%d", &n) != EOF && n){
         scanf("%d", &m);
         vector<vector<pair<int, ll>>> adj(n);
-        mnDist.clear();
-        mnDist.resize(n);
-        for(int a=0;a<n;a++){
-            mnDist[a].resize(n);
-            for(int b=0;b<n;b++){
-                mnDist[a][b] = INF;
-            }
-        }
+        vector<vector<ll>> mnDist(n, vector<ll>(n, INF));
         ll sum = 0;
         for(int a=0;a<n;a++)
             mnDist[a][a] = 0;
@@ -103,9 +107,8 @@ int main (){
             mnDist[j][i] = min(mnDist[j][i], c);
             sum += c;
         }
-        floyd_warshall();
-        //vector<pair<int, int>> M = perfect_min_cost_match(adj, mnDist);  
-        printf("%lld\n", sum + cost_of_duplication(adj));
+        floyd_warshall(mnDist);
+        printf("%lld\n", sum + cost_of_duplication(adj, mnDist));
     }
 }
 

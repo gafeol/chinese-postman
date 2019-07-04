@@ -1,6 +1,6 @@
 %LLPStartPreview para rodar o pdf com mudancas automaticas
 
-\documentclass{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage[utf8]{inputenc}
@@ -12,7 +12,10 @@
 \usepackage {tikz}
 \usepackage{hyperref}
 \usetikzlibrary {positioning}
+\usetikzlibrary{arrows}
 %\usepackage {xcolor}
+
+\tikzset{edge/.style = {->,> = latex'}}
 
 \graphicspath{
     {.} % document root dir
@@ -468,39 +471,119 @@ Como, no procedimento acima, estamos duplicando as arestas de todos caminhos der
 Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
 
 
-Analisaremos a complexidade do algoritmo descrito em quatro partes:
 
+    % TODO: Expandir nesses assuntos:
+        % Complexidade de um algoritmo
+		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
+		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
-\textbf{Solução:} 
-\begin{enumerate} % TODO: Melhorar analise de complexidade
-    \item Criar um grafo completo ligando todos vértices $u, v$ que possuirem grau ímpar com arestas de custo igual ao menor caminho entre $u$ e $v$. 
-    \item Rodar algoritmo de emparelhamento perfeito de custo mínimo (Húngaro com otimização do Edmonds e Karp, $\mathcal{O}(n^3)$).
-\end{enumerate}
+    \subsection{Grafos direcionados}
 
+    Analisaremos agora o caso em que o problema do carteiro chinês é aplicado à grafos que possuam apenas arestas direcionadas, que chamaremos de arcos.
+    
+    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o problema do carteiro chinês de grafos não direcionados ao caso direcionado do mesmo problema simplesmente transformando as aresta não direcionadas em dois arcos de sentidos opostos.
 
-\textbf{Observações:}
-    \begin{itemize}
-		\item Pelo ``Lema do aperto de mão'' é garantido que haverá um número par de vértices de grau ímpar.
-		\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
-		\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
+    Um exemplo contra-exemplo para este pensamento é o seguinte:
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below right of=1] {2};
+            \node[main node] (3) [below left of=1]  {3};
+
+            \path[every node/.style={font=\sffamily\small}]
+                (1) edge (2)
+                (1) edge (3)
+                (2) edge (3)
+                ;
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below right of=1] {2};
+                \node[main node] (3) [below left of=1]  {3};
+            \draw[edge] (1) to[bend left=10] (2);
+            \draw[edge] (2) to[bend left=10] (1);
+            \draw[edge] (2) to[bend left=10] (3);
+            \draw[edge] (3) to[bend left=10] (2);
+            \draw[edge] (1) to[bend left=10] (3);
+            \draw[edge] (3) to[bend left=10] (1);
+        \end{tikzpicture}
+    \end{center}
+
+    Na esquerda temos um grafo não direcionado qualquer, e na direita temos um grafo similar, que só difere do primeiro em suas arestas. 
+    As mesmas substituidas por arcos de sentidos opostos.
+
+    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
+    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 3, 1\}$, enquanto uma solução possível para o segundo grafo é $\{1, 2, 3, 1, 3, 2, 1\}$.
+
+    Justifica-se assim a necessidade de tratarmos os grafos direcionados separadamente quando falamos do problema em questão.
+    
+    Como vértices isolados (sem ligação com arestas) não afetam a solução do problema do carteiro chinês, podemos ignorar os mesmos nos grafos analisados.
+
+    Para que um grafo direcionado conte com solução do problema do carteiro chinês é necessário que o mesmo seja fortemente conexo (isso é, ignorando os vértices isolados como discutido anteriormente).
+    Do contrário, não existiria passeio algum no grafo em questão que percorresse todas arestas e voltasse ao vértice inicial.
+
+    Quanto tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
+    Por isso, denominamos \textbf{grau de saída} de um vértice $v$ como o número de arcos que saem de $v$, e \textbf{grau de entrada} como o número de arcos que entram em $v$. 
+
+    Além disso, dizemos que um digrafo é euleriano apenas se, para todo vértice, o grau de entrada é igual ao grau de saída.
+
+    De modo análogo ao caso de grafos não direcionados, a solução do problema do carteiro chinês envolve multiplicar arestas do grafo original até que o mesmo seja euleriano.
+
+    Porém, não vale para os digrafos o lema \ref{lemma-pcc}, que indica que existe uma solução para todo PCC em que cada aresta presente na solução estará multiplicada, no máximo, uma vez.
+
+    Um contra-exemplo disso é o caso ilustrado em \ref{counter-lemma}. 
+    Nele, para que um passeio fechado percorra os três arcos de $1$ a $2$, é necessário que esse mesmo passeio percorra três vezes o arco de $2$ a $1$.
+
+    Sendo assim, o grafo euleriano derivado do grafo da figura \ref{counter-lemma} deverá possuir duas cópias adicionais do arco de $2$ a $1$. 
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [right of=1] {2};
+            \draw[edge] (1) to[bend left=50] (2);
+            \draw[edge] (1) to[bend right=50] (2);
+            \draw[edge] (1) to[] (2);
+            \draw[edge] (2) to[bend left=100] (1);
+        \end{tikzpicture}
+        \caption{Contra exemplo do lema \ref{lemma-pcc} para os digrafos}
+        \label{counter-lemma}
+    \end{figure}
+
+    
+	\textbf{Solução:}
+	\begin{enumerate}
+		\item Criar um grafo $P, Q$-bipartido completo. $P$ deve conter todos os vértices do grafo original com excesso de grau de entrada, e $Q$ deve conter todos vértices com excesso de grau de saída. que possuem valores diferentes de grau de entrada e saída. O custo das arestas entre $P$ e $Q$ deverá ser igual ao custo do menor caminho entre os dois vértices que a mesma liga.
+		\item Modelar uma rede de fluxo: vértices de $P$ recebem um excesso igual a diferença do grau de entrada pelo grau de saída, vértices de $Q$ recebem uma demanda igual a diferença do grau de saída pelo grau de entrada. 
+		\item Rodar um algoritmo de fluxo de custo mínimo. 
+	\end{enumerate}
+
+	\textbf{Observações:}
+	\begin{itemize}
+		\item Modelagem de fluxo com arestas de capacidade unitária, aumentando a velocidade do algoritmo.
 	\end{itemize}
 
     \section{Problemas resolvidos}
 
         Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
 
-        \subsection{Sereja and the Arrangement of Numbers}
+        \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
         \textbf{Problema}
 
-        Esse problema foi publicado pelo \href{https://codeforces.com}{Codeforces}, para o \href{https://codeforces.com/contest/367}{round \#215 da Div. 1}, e pode ser conferido neste \href{https://codeforces.com/problemset/problem/367/C}{link}.
+        No enunciado do problema define-se uma sequência $s$ como bonita quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
 
-        Além do valor de $n$ também são fornecidos $m$ pares de inteiros positivos $q_i, w_i$, indicando que para se utilizar o valor $q_i$ na construção da sequência desejada há uma recompensa $w_i$.
-        O valor da recompensa total de uma sequência é igual a soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
+        Em outras palavras, se uma sequência é bonita todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
 
-        Sua tarefa é descobrir a recompensa máxima que uma sequência bonita construida usando os valores $q_i$ de tamanho $n$ pode possuir.
+        Define-se também um sistema de recompensas:
+        Para cada valor há uma recompensa positiva associada.
+        A recompensa total de uma sequência é igual a soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
 
-        A entrada do programa é dada pelos valores $n, m$ e pelos $m$ pares $q_i, w_i$, garante-se que todos valores de $q_i$ são distintos.
+        O problema consiste então desenvolver um algoritmo que calcule a maior recompensa atingível para uma sequência bonita de tamanho $n$ que seja constituída apenas por valores definidos pela entrada. 
+
+        A entrada do programa, portanto será dada pelos valores $n, m$ e por $m$ pares $q_i, w_i$, indicando que $q_i$ é um valor que pode ser utilizado e que possui recompensa $w_i$, garante-se que todos valores de $q_i$ são distintos e que $w_i$ é positivo.
 
         Um exemplo de entrada para este problema é:
 
@@ -512,7 +595,7 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
             & 3 \text{ }10 &\text{Finalmente temos o valor 3, de recompensa 10}\\
         \end{align*}
 
-        Para este exemplo, uma solução ótima é a sequência $1,2,3,1,1,1$, que é bonita e possui recompensa total igual a $17$. 
+        Para este exemplo, uma solução ótima é a sequência $1,2,3,1,1$, que é bonita e possui recompensa total igual a $17$. 
         Não existe uma sequência bonita que possua os quatro valores do exemplo.
 
 
@@ -528,15 +611,13 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 
         Para facilitar a análise deste problema, assumiremos que pode existir em um passeio dois vértices de mesmo valor em sequência, mesmo sem haver um loop neste vértice, além disso, vamos assumir que os valores distintos são $1, 2, \dots, x$.
 
-        Sendo assim, qualquer sequência que possua apenas valores entre $1$ e $x$ pode ser representada por um passeio no grafo $K_x$.
+        Sendo assim, podemos interpretar uma sequência $s$ que possua apenas valores entre $1$ e $x$ como um passeio em $K_x$, os valores da sequência representam os vértices do grafo $K_x$, e dois valores adjacentes $u$ e $v$ representam que a aresta $uv$ está presente no passeio derivado de $s$. 
+        
+        Para que a sequência $s$ seja bonita, todo par de valores distintos $u, v$ deverá aparecer ao menos uma vez lado a lado, o que implica que o passeio derivado de $s$ deverá percorrer a aresta $uv$ ao menos uma vez.
 
-        Uma sequência $s$ bonita, de acordo com a descrição do problema, é aquela para qual exsite um inteiro $i$, para cada par de valores distintos $u$, $v$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
-        Interpretando a sequência $s$ como um passeio em $K_x$, podemos interpretar os valores $u, v$ como vértices do grafo construido e a existência de $i$ tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$ como a existência da aresta $uv$ no passeio $s$.
-        Para que a sequência $s$ seja bonita, para todo par de valores $u, v$, o passeio derivado de $s$ deverá percorrer a aresta $uv$.
+        Concluimos então que um passeio derivado de uma sequência que seja bonita, deverá percorrer todas arestas do grafo $K_x$, sendo assim uma solução do problema do carteiro chinês para o mesmo.
 
-        Em outras palavras, para que um passeio seja bonito, ele deverá percorrer todas arestas do grafo descrito, sendo assim uma solução do problema do carteiro chinês para o grafo derivado dos valores.
-
-        Portanto, voltando a pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita.
+        Voltamos assim à pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita.
  
         Vejamos agora alguns exemplos:
 
@@ -635,7 +716,7 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
         Sendo assim, o tamanho mínimo de uma sequência bonita que possui 4 valores distintos é $9$, valor este composto da seguinte forma: $1 + |E(K_4)| = 1 + 6 = 7$ somado ao número de arestas duplicadas $\frac{4}{2} = 2$.
 
 
-        Podemos assim abstrair uma fórmula geral para o tamanho mínimo de uma sequência bonita $P$ que utilize $k$ valores diferentes em sua composição:
+        Podemos assim abstrair uma fórmula geral para o tamanho mínimo de uma sequência bonita $P$ que utilize $k$ valores distintos em sua composição:
 
         
         \[ |P_k|
@@ -646,12 +727,12 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
             \end{cases}
         \]
 
-        Todo grafo completo com número ímpar de vértices é euleriano, enquanto os ímpares não o são. 
+        Todo grafo completo com uma quantidade ímpar de vértices é euleriano, já que todos seus vértices possuem grau par, enquanto os grafos completos com quantidade par de vértices não são eulerianos. 
         Por isso a diferença na fórmula de $|P_k|$.
 
-        Utilizando essa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P_k| \leq n$.
+        A partir dessa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P_k| \leq n$.
 
-        Encontrado tal valor $k$, o máximo número de valores distintos que a solução pode possuir para ser bonita, basta descobrir quais valores da entrada escolher para maximizar a recompensa.
+        Encontrado tal valor $k$, o número máximo de valores distintos que a solução pode possuir para ser bonita, basta descobrir quais valores da entrada escolher para maximizar a recompensa.
         
 
         Se possuirmos na entrada uma quantidade de valores, $m$, tal que $m \leq k$, então a solução ótima será a soma das recompensas de todos valores, já que é possível encontrar uma sequência bonita que irá conter todos valores disponíveis.
@@ -659,24 +740,36 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
         Do contrário, a solução consistirá em escolher os $k$ valores de maior recompensa disponíveis.
     Para encontrar tal valor, basta manter uma árvore de busca binária balanceada com as $k$ maiores recompensas dos valores disponíveis, o que custa tempo $\mathcal{O}(m\lg k) = \mathcal{O}(m\lg \sqrt{n})$.
 
-    A minha solução para este problema pode ser encontrada, em C++, neste \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{link}.
+        Uma solução para este problema pode ser encontrada, em C++, neste \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{link}.
 
-\section{Directed CPP}
+        \subsection{Jogging Trails\cite{jogging}}
+        
+        Neste problema devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
 
-	O grafo deverá ser fortemente conexo.\\
+        Este problema é uma aplicação direta do problema descrito nesse trabalho. 
+        Entretanto, em virtude do limite do número de vértices das instâncias, é possível resolver o problema de maneira mais simples.
+
+        Um dos últimos passos do algoritmo que resolve o problema do carteiro chinês em grafos não direcionados descrito neste trabalho é realizar a condensação do grafo original usando os vértices de grau ímpar e posteriormente cosntruir o emparelhamento perfeito de custo mínimo usando o algoritmo de Edmonds.
+
+        Uma alternativa viável para este problema é realizar a construção do emparelhamento perfeito usando um algoritmo de programação dinâmica, ao invés do algoritmo de Edmonds.
+
+        Uma possibilidade é memoizar o custo mínimo de emparelhamento perfeito para todo subconjunto de  vértices do grafo condensado. 
+
+        Seja $K$ o grafo completo condensado, $S$ um subconjunto dos vértices de $K$, $dist$ uma função que retorna a distância entre dois vértices quaisquer de $K$ e $min\_cost_S$ o menor custo de emparelhamento perfeito do subconjunto $S$ de vértices, podemos definir a seguinte recorrência:
+
+        \[
+            min\_cost_S = 
+            \begin{cases} 
+                0 & S = \{ \} \\
+                \min_{u, v \in S} min\_cost_{S - u - v} + dist(u, v) & \text{caso contrário}
+            \end{cases}
+        \]
+
+        Para representar os subconjuntos de vértices pode-se utilizar uma bitmask.
+        Como foi utilizado na solução\cite{jogging-sol} adicionada à referência.
 
 
-	\textbf{Solução:}
-	\begin{enumerate}
-		\item Criar um grafo $P, Q$-bipartido completo. $P$ deve conter todos os vértices do grafo original com excesso de grau de entrada, e $Q$ deve conter todos vértices com excesso de grau de saída. que possuem valores diferentes de grau de entrada e saída. O custo das arestas entre $P$ e $Q$ deverá ser igual ao custo do menor caminho entre os dois vértices que a mesma liga.
-		\item Modelar uma rede de fluxo: vértices de $P$ recebem um excesso igual a diferença do grau de entrada pelo grau de saída, vértices de $Q$ recebem uma demanda igual a diferença do grau de saída pelo grau de entrada. 
-		\item Rodar um algoritmo de fluxo de custo mínimo. 
-	\end{enumerate}
 
-	\textbf{Observações:}
-	\begin{itemize}
-		\item Modelagem de fluxo com arestas de capacidade unitária, aumentando a velocidade do algoritmo.
-	\end{itemize}
 
         \section{Mixed CPP}
 
@@ -713,6 +806,19 @@ Analisaremos a complexidade do algoritmo descrito em quatro partes:
 	Hierholzer, Carl
 	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
 	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
+
+    \bibitem{sereja}
+    Problema retirado do Codeforces, problema C do Round \#215 (Div1)\\
+    \href{https://codeforces.com/problemset/problem/367/C}{codeforces.com/problemset/problem/367/C}
+
+    \bibitem{jogging}
+    Problema retirado do UVa, problema 10296\\
+    \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=com\_onlinejudge\&Itemid=8\&page=show\\\_problem\&problem=1237}
+
+    \bibitem{jogging-sol}
+    Solução para o problema Jogging Trails, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp} 
+
 	\end{thebibliography}
  
 \end{document}

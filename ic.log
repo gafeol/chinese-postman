@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.19)  13 JUN 2019 08:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.19)  27 JUN 2019 15:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -991,7 +991,7 @@ LaTeX Info: Redefining \nameref on input line 31.
 
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 35.
-<img/konigsberg.png, id=47, 1027.84pt x 715.67375pt>
+<img/konigsberg.png, id=51, 1027.84pt x 715.67375pt>
 File: img/konigsberg.png Graphic file (type png)
 <use img/konigsberg.png>
 Package pdftex.def Info: img/konigsberg.png  used on input line 39.
@@ -1006,7 +1006,7 @@ Underfull \hbox (badness 1259) in paragraph at lines 48--49
 \OT1/cmr/m/n/10 uma sequ^encia des-sas le-tras: por
  []
 
-<img/konigsberg-euler.png, id=49, 673.51625pt x 328.22626pt>
+<img/konigsberg-euler.png, id=53, 673.51625pt x 328.22626pt>
 File: img/konigsberg-euler.png Graphic file (type png)
 <use img/konigsberg-euler.png>
 Package pdftex.def Info: img/konigsberg-euler.png  used on input line 52.
@@ -1019,7 +1019,7 @@ Package babel Info: Redefining portuges shorthand "|
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/konigsberg.png> <./i
 mg/konigsberg-euler.png>]
-<img/konigsberg-graph.png, id=63, 180.675pt x 144.54pt>
+<img/konigsberg-graph.png, id=67, 180.675pt x 144.54pt>
 File: img/konigsberg-graph.png Graphic file (type png)
 <use img/konigsberg-graph.png>
 Package pdftex.def Info: img/konigsberg-graph.png  used on input line 92.
@@ -1070,7 +1070,7 @@ Package babel Info: Redefining portuges shorthand "|
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 269.
  [5]
-<img/graph.png, id=105, 357.335pt x 282.05376pt>
+<img/graph.png, id=109, 357.335pt x 282.05376pt>
 File: img/graph.png Graphic file (type png)
 <use img/graph.png>
 Package pdftex.def Info: img/graph.png  used on input line 278.
@@ -1114,49 +1114,79 @@ Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 488.
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 492.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 513.
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--516
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 492.
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 516.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 516.
+[11]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 573.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 573.
+[12]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 608.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 608.
+ [13]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 665.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 665.
+ [14]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 665.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 665.
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 671.
+
+Underfull \hbox (badness 10000) in paragraph at lines 673--674
 
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 522.
+(babel)             in language  on input line 688.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 522.
-[11]
+(babel)             in language  on input line 692.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 530.
+(babel)             in language  on input line 698.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 534.
+(babel)             in language  on input line 702.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 540.
+(babel)             in language  on input line 702.
+[15]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 547.
+(babel)             in language  on input line 705.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 565.
+(babel)             in language  on input line 734.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 565.
- [12]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 567.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 567.
- [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 567.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 567.
+(babel)             in language  on input line 734.
+ [16]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 734.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 734.
  (./ic.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 567.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 567.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 734.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 734.
 Package rerunfilecheck Info: File `ic.out' has not changed.
-(rerunfilecheck)             Checksum: 5C55D5090EA76B9F07C59A3984AA2D36;610.
+(rerunfilecheck)             Checksum: 0F13DAC19E675D77AB46A29A2AA6C186;687.
  ) 
 Here is how much of TeX's memory you used:
- 19873 strings out of 494903
- 370705 string characters out of 6179961
- 444873 words of memory out of 5000000
- 22820 multiletter control sequences out of 15000+600000
+ 19903 strings out of 494903
+ 371157 string characters out of 6179961
+ 445061 words of memory out of 5000000
+ 22841 multiletter control sequences out of 15000+600000
  10287 words of font info for 37 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  54i,13n,73p,823b,875s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1174,10 +1204,10 @@ s12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb
 ></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/
 texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on ic.pdf (13 pages, 1088769 bytes).
+Output written on ic.pdf (16 pages, 1101726 bytes).
 PDF statistics:
- 227 PDF objects out of 1000 (max. 8388607)
- 188 compressed objects within 2 object streams
- 51 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 255 PDF objects out of 1000 (max. 8388607)
+ 212 compressed objects within 3 object streams
+ 60 named destinations out of 1000 (max. 500000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 
