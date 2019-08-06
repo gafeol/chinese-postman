@@ -196,7 +196,7 @@ Enquanto houver um circuito euleriano $C_i$ pertencente a $\mathcal{T}$ do qual 
 
 \item Adicionamos ao final de $\mathcal{C}$ o circuito $C_i$ como representado, exceto pelo primeiro vértice $u$. 
 
-\item Removemos de $\mathcal{T}$ o circuito $C_i$, indicando que a mesma já foi adicionada a $\mathcal{C}$.
+\item Removemos de $\mathcal{T}$ o circuito $C_i$, indicando que o mesmo já foi adicionado a $\mathcal{C}$.
 
 \end{enumerate}
 
@@ -259,13 +259,128 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
     \end{enumerate}
 \end{proof}
 
+% Grafos direcionados
+
+Até então tratamos apenas de grafos não direcionados, mas podemos expandir esses mesmos conceitos para grafos direcionados, os \textbf{digrafos}.
+
+Um grafo é direcionado quando suas arestas são orientadas, chamaremos de \textbf{arcos} tais arestas. 
+
+Numa analogia com trânsito, uma aresta é como uma estrada de mão dupla, pode-se percorrê-la nos dois sentidos, enquanto isso, um arco é como uma rua de mão única, em que apenas um sentido é permitido.
+
+Quanto tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
+Por isso, denominamos \textbf{grau de saída} de um vértice $v$, $\delta^-(v)$, como o número de arcos que saem de $v$, e \textbf{grau de entrada}, $\delta^+(v)$, como o número de arcos que entram em $v$. 
+
+Definimos como \textbf{fortemente conexo} um digrafo que possui um caminho entre todo par de vértices.
+
+Dadas as devidas definições, apresentamos agora o teorema de Euler para o caso de digrafos:
+
+\begin{theorem}[Teorema de Euler para digrafos]
+
+    Seja $G$ um digrafo fortemente conexo.
+$G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de entrada e saída iguais, ou seja, se para todo vértice $v$ de $G$ vale que $\delta^+(v) = \delta^-(v)$.
+\end{theorem}
+
+
+\begin{proof}
+
+    ($\Rightarrow$) Seja $G$ um digrafo euleriano e $C$ o circuito euleriano do mesmo. 
+
+    Vamos assumir, contrariando o teorema, que $G$ possui um vértice $v$ que tem valores diferentes de grau de entrada e saída.
+
+    Assumimos, sem perda de generalidade, que $\delta^-(v) > \delta^+(v)$. 
+    Para que cada arco que sai de $v$ seja percorrido uma única vez, é necessário que o circuito $C$ passe por $v$ exatamente $\delta^+$ vezes. 
+    Porém, como $v$ tem grau de entrada menor que o grau de saída, $C$ deverá percorrer algum arco que entra em $v$ mais de uma vez. 
+    Contradizendo assim a condição inicial de que $C$ é um circuito euleriano.
+
+    Por absurdo, provamos que todos vértices de um digrafo euleriano devem possuir o mesmo valor de grau de entrada e saída.
+
+    ($\Leftarrow$) Provaremos a volta por indução no número de arcos de $G$. 
+    A prova a seguir é similar à utilizada na prova do teorema \ref{euler} caso de grafos não direcionados.
+
+    O caso base desta indução é o digrafo $G$ conexo sem arcos. Neste caso $G$ consistirá de um único vértice $v$, sendo assim $\{v\}$ será um circuito euleriano válido. 
+
+    A hipótese de indução é que todo digrafo fortemente conexo, que possui vértices com grau de entrada e saída iguais e que possui até $k-1$ arcos é euleriano.
+
+    Seja $G$, portanto, um digrafo fortemente conexo, em que todos vértices têm igual grau de entrada e saída mas que possui $k > 0$ arcos.
+
+    Inicialmente provaremos que $G$ deve possuir um caminho fechado $C$:
+
+    \begin{tcolorbox}
+        \textbf{Provando a existência de um caminho fechado em um digrafo $G$ que possui vértices com grau de entrada e saída iguais}
+
+        Tome um caminho maximal $P$ de $G$, sendo $v$ o último vértice de tal caminho.
+
+        Como o grau de entrada e saída dos vértices de $G$ é igual, e que o vértice $v$ tem ao menos um arco entrando nele, que é percorrido no caminho $P$, podemos concluir que $v$ possui também um arco saindo dele, $vw$, não percorrido por $P$.
+        Além disso, como $P$ é maximal, podemos concluir $w$ já deve pertencer a $P$.
+
+        Com isso prova-se a existência de um caminho fechado no grafo $G$, formado pelo arco $vw$ e o subcaminho de $w$ a $v$ de $P$.
+    \end{tcolorbox}
+
+    Provada a existência de $C$ temos dois casos a analisar:
+
+    \begin{enumerate}
+        \item \textbf{$C$ percorre todos arcos de $G$}.
+            Neste caso, $C$ é o circuito euleriano, finalizando a prova.
+
+        \item \textbf{$C$ não percorre todos arcos de $G$}.
+            Definimos então $G'$ como o grafo $G$ sem os arcos pertencentes a $C$.
+
+            Como estamos retirando do grafo $G$ um caminho fechado, todo vértice em $C$ perderá apenas um arco de entrada e de saída, mantendo em $G'$ a característica de igualdade do grau de entrada e saída dos vértices.
+
+            Porém, não é garantido que $G'$ é fortemente conexo. 
+
+            \sloppy Seja $G$ então a união de $k$ componentes fortementes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
+
+            Sabemos que cada componente $G'_i$ possuirá uma quantidade de arcos menor que $k$. 
+            Portanto, pela hipótese de indução definida. cada componente de $G'$ é euleriana.
+            Chamaremos de $C_i$ o circuito euleriano da componente $G'_i$.
+
+            Mostraremos agora um algoritmo que construirá um circuito euleriano $\mathcal{C}$ de $G$ a partir de $C$ e dos circuitos eulerianos $C'_i$:
+
+
+            Definimos $\mathcal{T}$, como o conjunto dos circuitos eulerianos $C_i$ que ainda não fazem parte de $\mathcal{C}$. 
+            Inicialmente, $\mathcal{T}$ é igual ao conjunto $\{C_1, C_2, \dots, C_k\}$.
+
+
+            Para cada vértice $u$ de $C$ devemos realizar as seguintes verificações:
+
+            \begin{tcolorbox}
+
+                Começamos adicionando $u$ ao circuito euleriano $\mathcal{C}$ que estamos construindo.
+
+                Enquanto houver um circuito euleriano $C_i$ pertencente a $\mathcal{T}$ do qual $u$ faz parte, fazemos o seguinte:
+
+
+                \begin{enumerate}
+                    \item Representamos $C_i$ como: 
+                        \[
+                            C_i = \{u, w, \dots, v, u\}
+                        \]
+
+                    \item Adicionamos ao final de $\mathcal{C}$ o circuito $C_i$ como representado, exceto pelo primeiro vértice $u$. 
+
+                    \item Removemos de $\mathcal{T}$ o circuito $C_i$, indicando que o mesmo já foi adicionado a $\mathcal{C}$.
+
+                \end{enumerate}
+
+                Repetem-se então as mesmas verificações para os próximos vértices de $C$.
+            \end{tcolorbox}
+
+
+Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que todo circuito $C_i$ possui pelo menos um vértice em $C$. Além disso, todo circuito $C_i$ deverá ter sido adicionado a $\mathcal{C}$ uma única vez, já que logo após adicionar um circuito a $\mathcal{C}$ já o removiamos de $\mathcal{T}$, impedindo que ele fosse adicionado outra vez no circuito euleriano final.
+
+
+Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$ provamos que qualquer digrafo fortemente conexo com vértices possuindo valores iguais de grau de entrada e saída é euleriano.
+
+    \end{enumerate}
+\end{proof}
 
 %Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
 
 %\lstinputlisting[language=c++]{euler_cycle.cpp}
 
 
-\section{O problema do Carteiro Chinês}
+\section{O problema do Carteiro Chinês (PCC)}
 
 Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
 
@@ -289,7 +404,8 @@ Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) fos
 No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
 Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será similar a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano, ou seja, adicionar duplicatas de arestas até que todos os vértices possuam grau par.
 
-Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema:
+Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
+Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
 
 \subsection{Grafos não direcionados}
 
@@ -479,64 +595,38 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     \subsection{Grafos direcionados}
 
-    Analisaremos agora o caso em que o problema do carteiro chinês é aplicado à grafos que possuam apenas arestas direcionadas, que chamaremos de arcos.
+    Analisaremos agora o problema do carteiro chinês aplicado a digrafos.
+
+    \begin{lemma}
+        Um digrafo $G$ possui solução para o problema do carteiro chinês se, e somente se, é fortemente conexo.
+    \end{lemma}
+
+    \begin{proof}
+
+
+        ($\Rightarrow$) Começamos provando que para que um digrafo $G$ possua solução para o problema do carteiro chinês é necessário que o mesmo seja fortemente conexo.
+        
+        Pela definição, para que $G$ possua uma solução do PCC é necessária a existência de um passeio fechado passando por todos arcos de $G$. 
+
+        Por sua vez, a existência de um passeio fechado implica também na existência de um caminho entre qualquer par de vértices de $G$, isto é, $G$ deve ser fortemente conexo. Por isso, podemos afirmar que um digrafo deve ser fortemente conexo para possuir uma solução do problema do carteiro chinês. 
+
+
+        ($\Leftarrow$) Além disso, podemos argumentar que todo digrafo, $G$, fortemente conexo possui solução para o problema do carteiro chinês.
+
+        Seja $v$ um vértice qualquer de $G$. Podemos construir uma solução $P$ para o problema do carteiro chinês do seguinte modo:
+
+        Para todo arco $uw$ de $G$ adicionamos a $P$ um circuito que percorre tal aresta, que pode ser formado pela junção do caminho de $v$ a $u$, da aresta $uw$ e do camiho de $w$ a $v$. 
+        A existência de tais caminhos é garantida já que $G$ é fortemente conexo.
+
+        Deste modo é possível construir um passeio fechado $P$ que percorre todos arcos de $G$, sendo assim uma solução para o PCC.
+
+        Provando assim, a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
+
+    \end{proof}
+
+    De modo análogo ao caso de grafos não direcionados, o algoritmo que soluciona o problema do carteiro chinês para digrafos envolve multiplicar arestas do grafo original até que o mesmo se torne euleriano, a partir do circuito euleriano desse digrafo modificado define-se o passeio fechado que é a solução do problema do carteiro chinês no digrafo original.
     
-    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o problema do carteiro chinês de grafos não direcionados ao caso direcionado do mesmo problema simplesmente transformando as aresta não direcionadas em dois arcos de sentidos opostos.
-
-    Um exemplo contra-exemplo para este pensamento é o seguinte:
-
-    \begin{center}
-        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] (1) {1};
-            \node[main node] (2) [below right of=1] {2};
-            \node[main node] (3) [below left of=1]  {3};
-
-            \path[every node/.style={font=\sffamily\small}]
-                (1) edge (2)
-                (1) edge (3)
-                (2) edge (3)
-                ;
-        \end{tikzpicture}
-        \hspace{3cm}% NO SPACE!
-        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] (1) {1};
-            \node[main node] (2) [below right of=1] {2};
-                \node[main node] (3) [below left of=1]  {3};
-            \draw[edge] (1) to[bend left=10] (2);
-            \draw[edge] (2) to[bend left=10] (1);
-            \draw[edge] (2) to[bend left=10] (3);
-            \draw[edge] (3) to[bend left=10] (2);
-            \draw[edge] (1) to[bend left=10] (3);
-            \draw[edge] (3) to[bend left=10] (1);
-        \end{tikzpicture}
-    \end{center}
-
-    Na esquerda temos um grafo não direcionado qualquer, e na direita temos um grafo similar, que só difere do primeiro em suas arestas. 
-    As mesmas substituidas por arcos de sentidos opostos.
-
-    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
-    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 3, 1\}$, enquanto uma solução possível para o segundo grafo é $\{1, 2, 3, 1, 3, 2, 1\}$.
-
-    Justifica-se assim a necessidade de tratarmos os grafos direcionados separadamente quando falamos do problema em questão.
-    
-    Como vértices isolados (sem ligação com arestas) não afetam a solução do problema do carteiro chinês, podemos ignorar os mesmos nos grafos analisados.
-
-    Para que um grafo direcionado conte com solução do problema do carteiro chinês é necessário que o mesmo seja fortemente conexo (isso é, ignorando os vértices isolados como discutido anteriormente).
-    Do contrário, não existiria passeio algum no grafo em questão que percorresse todas arestas e voltasse ao vértice inicial.
-
-    Quanto tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
-    Por isso, denominamos \textbf{grau de saída} de um vértice $v$ como o número de arcos que saem de $v$, e \textbf{grau de entrada} como o número de arcos que entram em $v$. 
-
-    Além disso, dizemos que um digrafo é euleriano apenas se, para todo vértice, o grau de entrada é igual ao grau de saída.
-
-    De modo análogo ao caso de grafos não direcionados, a solução do problema do carteiro chinês envolve multiplicar arestas do grafo original até que o mesmo seja euleriano.
-
-    Porém, não vale para os digrafos o lema \ref{lemma-pcc}, que indica que existe uma solução para todo PCC em que cada aresta presente na solução estará multiplicada, no máximo, uma vez.
-
-    Um contra-exemplo disso é o caso ilustrado em \ref{counter-lemma}. 
-    Nele, para que um passeio fechado percorra os três arcos de $1$ a $2$, é necessário que esse mesmo passeio percorra três vezes o arco de $2$ a $1$.
-
-    Sendo assim, o grafo euleriano derivado do grafo da figura \ref{counter-lemma} deverá possuir duas cópias adicionais do arco de $2$ a $1$. 
+    Uma grande diferença na solução do problema do carteiro chinês é que, para digrafos,  não vale o lema \ref{lemma-pcc}, que garante a existência de uma solução para todo PCC em que cada aresta do grafo é percorrida no máximo duas vezes.
 
     \begin{figure}[h]
         \centering
@@ -551,6 +641,16 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \caption{Contra exemplo do lema \ref{lemma-pcc} para os digrafos}
         \label{counter-lemma}
     \end{figure}
+
+    Para os digrafos, tal lema não vale, um contra-exemplo disso é o caso ilustrado em \ref{counter-lemma}. 
+    Nele, para que um passeio fechado percorra os três arcos de $1$ a $2$, é necessário que esse mesmo passeio percorra três vezes o arco de $2$ a $1$.
+
+    O lema \ref{lemma-pcc} é utilizado para justificar a utilização de um algoritmo de emparelhamento perfeito para definir quais arestas duplicar na solução do PCC.
+    Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando um algoritmo de fluxo máximo de custo mínimo, como veremos a seguir.
+
+    
+
+
 
     
 	\textbf{Solução:}
@@ -751,9 +851,9 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Um dos últimos passos do algoritmo que resolve o problema do carteiro chinês em grafos não direcionados descrito neste trabalho é realizar a condensação do grafo original usando os vértices de grau ímpar e posteriormente cosntruir o emparelhamento perfeito de custo mínimo usando o algoritmo de Edmonds.
 
-        Uma alternativa viável para este problema é realizar a construção do emparelhamento perfeito usando um algoritmo de programação dinâmica, ao invés do algoritmo de Edmonds.
+        Uma alternativa viável para este problema é realizar a construção do emparelhamento perfeito usando, ao invés do algoritmo de Edmonds, um algoritmo de programação dinâmica:
 
-        Uma possibilidade é memoizar o custo mínimo de emparelhamento perfeito para todo subconjunto de  vértices do grafo condensado. 
+         Para esta solução devemos memoizar o custo mínimo de emparelhamento perfeito para todo subconjunto de vértices do grafo condensado.
 
         Seja $K$ o grafo completo condensado, $S$ um subconjunto dos vértices de $K$, $dist$ uma função que retorna a distância entre dois vértices quaisquer de $K$ e $min\_cost_S$ o menor custo de emparelhamento perfeito do subconjunto $S$ de vértices, podemos definir a seguinte recorrência:
 
@@ -769,10 +869,49 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Como foi utilizado na solução\cite{jogging-sol} adicionada à referência.
 
 
+    \section{Mixed CPP}
 
 
-        \section{Mixed CPP}
+    %TODO: adaptar o texto para mixed
+    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o problema do carteiro chinês de grafos não direcionados ao caso direcionado do mesmo problema simplesmente transformando as aresta não direcionadas em dois arcos de sentidos opostos.
 
+    Um contra-exemplo para este pensamento é o seguinte:
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below right of=1] {2};
+            \node[main node] (3) [below left of=1]  {3};
+
+            \path[every node/.style={font=\sffamily\small}]
+                (1) edge (2)
+                (1) edge (3)
+                (2) edge (3)
+                ;
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below right of=1] {2};
+                \node[main node] (3) [below left of=1]  {3};
+            \draw[edge] (1) to[bend left=10] (2);
+            \draw[edge] (2) to[bend left=10] (1);
+            \draw[edge] (2) to[bend left=10] (3);
+            \draw[edge] (3) to[bend left=10] (2);
+            \draw[edge] (1) to[bend left=10] (3);
+            \draw[edge] (3) to[bend left=10] (1);
+        \end{tikzpicture}
+    \end{center}
+
+    Na esquerda temos um grafo não direcionado qualquer, e na direita temos o mesmo grafo com as arestas substituidas por arcos em sentidos opostos. 
+
+    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
+    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 3, 1\}$, enquanto uma solução possível para o segundo grafo é $\{1, 2, 3, 1, 3, 2, 1\}$.
+
+    Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
+
+    Justifica-se assim a necessidade de tratarmos os grafos direcionados separadamente quando falamos do problema em questão.
+    % TODO: Adicionar a discussao de que nao da pra transformar esse em um caso direcionado
 	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
 
 	\section{Windy Postman Problem}
