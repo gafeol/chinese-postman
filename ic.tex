@@ -605,20 +605,61 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
 
         ($\Rightarrow$) Começamos provando que para que um digrafo $G$ possua solução para o problema do carteiro chinês é necessário que o mesmo seja fortemente conexo.
-        
-        Pela definição, para que $G$ possua uma solução do PCC é necessária a existência de um passeio fechado passando por todos arcos de $G$. 
 
-        Por sua vez, a existência de um passeio fechado implica também na existência de um caminho entre qualquer par de vértices de $G$, isto é, $G$ deve ser fortemente conexo. Por isso, podemos afirmar que um digrafo deve ser fortemente conexo para possuir uma solução do problema do carteiro chinês. 
+        Vamos assumir, por absurdo, que $G$ possui uma solução para o PCC mas não é fortemente conexo.
+
+        Como $G$ possui uma solução para o PCC, então existe um passeio fechado $T$ que passa por todos arcos de $G$.
+
+         Além disso, como $T$ é um passeio fechado podemos afirmar que todo par de vértices percorridos por $T$ tem um passeio entre si.
+
+        A partir de um passeio entre dois vértices sempre é possível derivar um caminho entre os mesmos seguindo o seguinte método:
+
+        \begin{tcolorbox}
+            \textbf{Método para derivar um caminho a partir de um passeio qualquer}
+            
+            Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
+
+            Como $P$ é um passeio, possívelmente ele percorre um mesmo arco mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+
+            Enquanto houver um arco, que chamaremos de $wv$, percorrido mais que uma vez por $P$ executa-se o seguinte passo:
+    
+
+            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do par $u, w$, incluindo a primeira aparição de tal par: 
 
 
-        ($\Leftarrow$) Além disso, podemos argumentar que todo digrafo, $G$, fortemente conexo possui solução para o problema do carteiro chinês.
+            Portanto um passeio $P$ qualquer com repetição do arco $w,v$, como o seguinte:
+            \[
+                P = \{ u_1, \dots u_i, w, v, \dots w, v, u_j, \dots u_n\}
+            \]
+
+            Passa a ser:
+
+
+            \[
+                P = \{ u_1, \dots u_i, w, v, u_j, \dots u_n\}
+            \]
+
+            Repete-se tal passo até que $P$ não percorra um mesmo arco duas vezes, se tornando assim um caminho.
+
+        \end{tcolorbox}
+         
+        Sendo assim, afirmamos que todo par de vértices presentes em $T$ possui um caminho entre si.
+
+        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve possuir ao menos um arco ligado a si. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
+        Por consequência vale que todo par de vértices de $G$ possui um caminho entre si, o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
+
+        Sendo assim, se prova que um digrafo que possua solução para o PCC é necessariamente fortemente conexo.
+
+        ($\Leftarrow$) 
 
         Seja $v$ um vértice qualquer de $G$. Podemos construir uma solução $P$ para o problema do carteiro chinês do seguinte modo:
 
-        Para todo arco $uw$ de $G$ adicionamos a $P$ um circuito que percorre tal aresta, que pode ser formado pela junção do caminho de $v$ a $u$, da aresta $uw$ e do camiho de $w$ a $v$. 
-        A existência de tais caminhos é garantida já que $G$ é fortemente conexo.
 
-        Deste modo é possível construir um passeio fechado $P$ que percorre todos arcos de $G$, sendo assim uma solução para o PCC.
+        Tome qualquer arco $uw$ de $G$. Para que a solução $P$ que estamos construindo percorra o arco $uw$,  basta adicionar a $P$ um caminho de $v$ a $u$, a aresta $uw$ e um caminho de $w$ a $v$.
+
+        A existência dos caminhos de $v$ a $u$ e $w$ a $v$ é garantida já que $G$ é fortemente conexo, e, portanto, sempre existe um caminho entre qualquer par de vértices.
+
+        Repetindo esse passo para todos arcos de um digrafo fortemente conexo $G$ conseguimos um passeio $P$ que soluciona o Problema do Carteiro Chinês.
 
         Provando assim, a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
 
