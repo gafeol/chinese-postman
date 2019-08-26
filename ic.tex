@@ -11,6 +11,7 @@
 \usepackage{tcolorbox}
 \usepackage {tikz}
 \usepackage{hyperref}
+\usepackage{float}
 \usetikzlibrary {positioning}
 \usetikzlibrary{arrows}
 %\usepackage {xcolor}
@@ -611,7 +612,8 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Como $G$ possui uma solução para o PCC, então existe um passeio fechado $T$ que passa por todos arcos de $G$.
 
-         Além disso, como $T$ é um passeio fechado podemos afirmar que todo par de vértices percorridos por $T$ tem um passeio entre si.
+         Além disso, como $T$ é um passeio fechado, para cada par de vértices $u, v$ de $G$, sabemos que $T$ passa por $u$ e $v$.
+         Assim, $T = \{ v_0, v_1, \dots, v_i = u, \dots, v_j = v, \dots \}$.
 
         A partir de um passeio entre dois vértices sempre é possível derivar um caminho entre os mesmos seguindo o seguinte método:
 
@@ -620,36 +622,36 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             
             Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
 
-            Como $P$ é um passeio, possívelmente ele percorre um mesmo arco mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+            Como $P$ é um passeio, possívelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
 
-            Enquanto houver um arco, que chamaremos de $wv$, percorrido mais que uma vez por $P$ executa-se o seguinte passo:
+            Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ executa-se o seguinte passo:
     
 
-            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do par $u, w$, incluindo a primeira aparição de tal par: 
+            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do vértice $v$, mantendo apenas tal vértice: 
 
 
-            Portanto um passeio $P$ qualquer com repetição do arco $w,v$, como o seguinte:
+            Portanto um passeio $P$ qualquer com repetição do vértice $v$, como o seguinte:
             \[
-                P = \{ u_1, \dots u_i, w, v, \dots w, v, u_j, \dots u_n\}
+                P = \{ u_1, \dots u_i, v, \dots, v, u_j, \dots u_n\}
             \]
 
             Passa a ser:
 
 
             \[
-                P = \{ u_1, \dots u_i, w, v, u_j, \dots u_n\}
+                P = \{ u_1, \dots u_i, v, u_j, \dots u_n\}
             \]
 
-            Repete-se tal passo até que $P$ não percorra um mesmo arco duas vezes, se tornando assim um caminho.
+            Repete-se tal passo até que $P$ não percorra um mesmo vértice duas vezes, se tornando assim, por definição, um caminho.
 
         \end{tcolorbox}
          
         Sendo assim, afirmamos que todo par de vértices presentes em $T$ possui um caminho entre si.
 
-        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve possuir ao menos um arco ligado a si. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
-        Por consequência vale que todo par de vértices de $G$ possui um caminho entre si, o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
+        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve ser incidente ao menos a um arco. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
+        Por consequência para todo par de vértices de $G$ existe um caminho entre eles o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
 
-        Sendo assim, se prova que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. \\
+        Provando assim que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. \\
 
         ($\Leftarrow$)  Provaremos agora que todo grafo fortemente conexo $G$ possui uma solução para o PCC.
 
@@ -695,6 +697,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
 
     \begin{enumerate}
+        % TODO: ARRUAMR TODAS AS DEFINICOES DE F S
         \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada e $S$ o conjunto dos vértices que possuam grau de entrada maior que o grau de saída.
 
     Computamos então o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
@@ -729,7 +732,86 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \end{figure}
 
 
-    %TODO: Fazer um exemplo pra esse passo a passo, realmente solucionar um caso na mão .
+    \begin{itemize}
+        \item[\textbf{1º}] 
+            Definimos então os conjuntos $F$ e $S$:
+
+            \[
+                F  = \{b, d, g\}
+            \]
+            \[
+                S =  \{a, e\}
+            \]
+
+            Computamos também a distância mínima entre os pares de vértices dos dois conjuntos:
+
+            \begin{center}
+                \begin{tabular}{ |p{1cm}||p{1cm}|p{1cm}|  }
+                    \hline
+                     & a & e \\
+                    \hline
+                    b & 4 & 17 \\
+                    \hline
+                    d & 14 & 3 \\
+                    \hline
+                    g & 20 & 9\\
+                    \hline
+                \end{tabular}
+            \end{center}
+
+        \item[\textbf{2º}]
+
+            Modelamos então o problema de transporte, os vértices $b, d, g$ escoando uma unidade de fluxo cada e os vértices $a, b$ com demandas de .
+
+            
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                    \node[main node] (1) {a};
+                    \node (v1) at(-0.75, 0) {2};
+                    \node[main node] at (0, -3) (2) {e};
+                    \node (v2) at(-0.75, -3) {1};
+                    \node[main node] at(2, 1.5) (3) {b};
+                    \node (v3) at(2.75, 1.5) {1};
+                    \node[main node] at(2, -1.5) (5) {d};
+                    \node (v5) at(2.75, -1.5) {1};
+                    \node[main node] (4) [below of=5] {g};
+                    \node (v4) at(2.75, -4.5) {1};
+                    \path[->] (1) edge  node[pos=0.25,above] {4} (3);
+                    \path[->] (1) edge node[pos=0.10,left] {9} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {16} (5);
+                    \path[->] (2) edge node[pos=0.10,above left] {6} (3);
+                    \path[->] (2) edge node[pos=0.20,below] {5} (4);
+                    \path[->] (2) edge node[pos=0.25,below] {11} (5);
+                \end{tikzpicture}
+            \end{figure}
+
+            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual a distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
+
+            A solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 5$ e $9$, escoando assim toda a demanda dos vértices $a$ e $e$.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                    \node[main node] (1) {a};
+                    \node (v1) at(-0.75, 0) {2};
+                    \node[main node] at (0, -3) (2) {e};
+                    \node (v2) at(-0.75, -3) {1};
+                    \node[main node] at(2, 1.5) (3) {b};
+                    \node (v3) at(2.75, 1.5) {1};
+                    \node[main node] at(2, -1.5) (5) {d};
+                    \node (v5) at(2.75, -1.5) {1};
+                    \node[main node] (4) [below of=5] {g};
+                    \node (v4) at(2.75, -4.5) {1};
+                    \path[->] (1) edge[red]  node[pos=0.25,above] {4} (3);
+                    \path[->] (1) edge[red] node[pos=0.10,left] {9} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {16} (5);
+                    \path[->] (2) edge node[pos=0.10,above left] {6} (3);
+                    \path[->] (2) edge node[pos=0.20,below] {5} (4);
+                    \path[->] (2) edge[red] node[pos=0.25,below] {11} (5);
+                \end{tikzpicture}
+            \end{figure}
+    \end{itemize}
 
 
     \section{Problemas resolvidos}
