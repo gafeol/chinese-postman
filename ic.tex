@@ -20,7 +20,7 @@
 
 \graphicspath{
     {.} % document root dir
-    {img/}
+    {./img/}
 }
 
 \renewcommand\refname{Referências}
@@ -750,6 +750,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
                     \hline
                      & a & e \\
                     \hline
+					\hline
                     b & 4 & 17 \\
                     \hline
                     d & 14 & 3 \\
@@ -761,56 +762,91 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         \item[\textbf{2º}]
 
-            Modelamos então o problema de transporte, os vértices $b, d, g$ escoando uma unidade de fluxo cada e os vértices $a, b$ com demandas de .
+            Modelamos então o problema de transporte, os vértices $b, d, g$ escoando uma unidade de fluxo cada e os vértices $a, b$ com demandas 2 e 1, respectivamente.
 
-            
             \begin{figure}[H]
                 \centering
                 \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-                    \node[main node] (1) {a};
-                    \node (v1) at(-0.75, 0) {2};
-                    \node[main node] at (0, -3) (2) {e};
-                    \node (v2) at(-0.75, -3) {1};
-                    \node[main node] at(2, 1.5) (3) {b};
-                    \node (v3) at(2.75, 1.5) {1};
-                    \node[main node] at(2, -1.5) (5) {d};
-                    \node (v5) at(2.75, -1.5) {1};
-                    \node[main node] (4) [below of=5] {g};
-                    \node (v4) at(2.75, -4.5) {1};
-                    \path[->] (1) edge  node[pos=0.25,above] {4} (3);
-                    \path[->] (1) edge node[pos=0.10,left] {9} (4);
-                    \path[->] (1) edge node[pos=0.25,above] {16} (5);
-                    \path[->] (2) edge node[pos=0.10,above left] {6} (3);
-                    \path[->] (2) edge node[pos=0.20,below] {5} (4);
-                    \path[->] (2) edge node[pos=0.25,below] {11} (5);
+
+					\node[main node] (1) {b};
+					\node (v1) at(-0.75, 0) {1};
+					\node[main node] at (0, -2) (2) {d};
+					\node (v2) at(-0.75, -2) {1};
+					\node[main node] at (0, -4) (3) {g};
+					\node (v3) at(-0.75, -4) {1};
+
+					\node[main node] at(3, -1) (4) {a};
+					\node (v4) at(3.75, -1) {2};
+					\node[main node] at(3, -3) (5) {e};
+					\node (v5) at(3.75, -3) {1};
+
+                    \path[->] (1) edge node[pos=0.25,above] {4} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {17} (5);
+                    \path[->] (2) edge node[pos=0.20,above] {14} (4);
+                    \path[->] (2) edge node[pos=0.25,above left] {3} (5);
+                    \path[->] (3) edge node[pos=0.20,above] {20} (4);
+                    \path[->] (3) edge node[pos=0.25,above] {9} (5);
                 \end{tikzpicture}
             \end{figure}
 
             Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual a distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
 
-            A solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 5$ e $9$, escoando assim toda a demanda dos vértices $a$ e $e$.
+            Uma solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 14$ e $9$, escoando assim toda a demanda dos vértices $b, d$ e $g$.
 
             \begin{figure}[H]
                 \centering
                 \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-                    \node[main node] (1) {a};
-                    \node (v1) at(-0.75, 0) {2};
-                    \node[main node] at (0, -3) (2) {e};
-                    \node (v2) at(-0.75, -3) {1};
-                    \node[main node] at(2, 1.5) (3) {b};
-                    \node (v3) at(2.75, 1.5) {1};
-                    \node[main node] at(2, -1.5) (5) {d};
-                    \node (v5) at(2.75, -1.5) {1};
-                    \node[main node] (4) [below of=5] {g};
-                    \node (v4) at(2.75, -4.5) {1};
-                    \path[->] (1) edge[red]  node[pos=0.25,above] {4} (3);
-                    \path[->] (1) edge[red] node[pos=0.10,left] {9} (4);
-                    \path[->] (1) edge node[pos=0.25,above] {16} (5);
-                    \path[->] (2) edge node[pos=0.10,above left] {6} (3);
-                    \path[->] (2) edge node[pos=0.20,below] {5} (4);
-                    \path[->] (2) edge[red] node[pos=0.25,below] {11} (5);
+
+					\node[main node] (1) {b};
+					\node (v1) at(-0.75, 0) {1};
+					\node[main node] at (0, -2) (2) {d};
+					\node (v2) at(-0.75, -2) {1};
+					\node[main node] at (0, -4) (3) {g};
+					\node (v3) at(-0.75, -4) {1};
+
+					\node[main node] at(3, -1) (4) {a};
+					\node (v4) at(3.75, -1) {2};
+					\node[main node] at(3, -3) (5) {e};
+					\node (v5) at(3.75, -3) {1};
+
+                    \path[->] (1) edge[red] node[pos=0.25,above] {4} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {17} (5);
+                    \path[->] (2) edge[red] node[pos=0.20,above] {14} (4);
+                    \path[->] (2) edge node[pos=0.25,above left] {3} (5);
+                    \path[->] (3) edge node[pos=0.20,above] {20} (4);
+                    \path[->] (3) edge[red] node[pos=0.25,above] {9} (5);
                 \end{tikzpicture}
             \end{figure}
+
+        \item[\textbf{3º}] Agora devemos realizar a duplicação dos caminhos representados pelas arestas $ba, da$ e $ge$.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (d) {d};
+					\node[main node] at (-4, 1) (g) {g};
+					\node[main node] at (-2, 3) (f) {f};
+					\node[main node] at (2, 3) (c) {c};
+					\node[main node] at (5, 0) (a) {a};
+					\node[main node] at (-2, -3) (e) {e};
+					\node[main node] at (2, -3) (b) {b};
+
+					\path[->] (a) edge[bend right, below] node {4} (b);
+					\path[->] (a) edge[below] node {9} (d);
+					\path[->] (a) edge[below] node {4} (c);
+					\path[->] (b) edge[bend right, below] node {5} (a);
+					\path[->] (c) edge[bend right, above] node {6} (d);
+					\path[->] (c) edge[above] node {8} (f);
+					\path[->] (d) edge[below] node {3} (e);
+					\path[->] (d) edge[bend right, below] node {6} (c);
+					\path[->] (e) edge[below] node {6} (b);
+					\path[->] (e) edge[below] node {5} (g);
+					\path[->] (f) edge[below] node {4} (g);
+                    \path[->] (g) edge[above] node {6} (d);
+                \end{tikzpicture}
+            \end{figure}
+
     \end{itemize}
 
 

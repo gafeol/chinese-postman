@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.19)  12 AUG 2019 20:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.26)  26 AUG 2019 19:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -912,6 +912,14 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip49
 )
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count143
+\float@exts=\toks44
+\float@box=\box50
+\@float@everytoks=\toks45
+\@floatcapt=\box51
+)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
@@ -925,40 +933,43 @@ tex
 File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
 \arrowsize=\dimen171
 ))
-\c@theorem=\count143
-\c@corollary=\count144
-\c@lemma=\count145
- (./ic.aux)
+\c@theorem=\count144
+\c@corollary=\count145
+\c@lemma=\count146
+ (./ic.aux
+
+LaTeX Warning: Label `konigsberg-graph' multiply defined.
+
+)
 \openout1 = `ic.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count146
+\scratchcounter=\count147
 \scratchdimen=\dimen172
-\scratchbox=\box50
-\nofMPsegments=\count147
-\nofMParguments=\count148
-\everyMPshowfont=\toks44
-\MPscratchCnt=\count149
+\scratchbox=\box52
+\nofMPsegments=\count148
+\nofMParguments=\count149
+\everyMPshowfont=\toks46
+\MPscratchCnt=\count150
 \MPscratchDim=\dimen173
-\MPnumerator=\count150
-\makeMPintoPDFobject=\count151
-\everyMPtoPDFconversion=\toks45
+\MPnumerator=\count151
+\makeMPintoPDFobject=\count152
+\everyMPtoPDFconversion=\toks47
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -976,11 +987,11 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count152
+\c@lstlisting=\count153
 
 ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box51
-Package hyperref Info: Link coloring OFF on input line 34.
+\AtBeginShipoutBox=\box53
+Package hyperref Info: Link coloring OFF on input line 35.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -988,63 +999,75 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count153
+\c@section@level=\count154
 )
-LaTeX Info: Redefining \ref on input line 34.
-LaTeX Info: Redefining \pageref on input line 34.
-LaTeX Info: Redefining \nameref on input line 34.
+LaTeX Info: Redefining \ref on input line 35.
+LaTeX Info: Redefining \pageref on input line 35.
+LaTeX Info: Redefining \nameref on input line 35.
 
 (./ic.out) (./ic.out)
 \@outlinefile=\write6
 \openout6 = `ic.out'.
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 38.
-<img/konigsberg.png, id=51, 1027.84pt x 715.67375pt>
-File: img/konigsberg.png Graphic file (type png)
-<use img/konigsberg.png>
-Package pdftex.def Info: img/konigsberg.png  used on input line 42.
+(babel)             in language  on input line 39.
+<./img/konigsberg.png, id=51, 1027.84pt x 715.67375pt>
+File: ./img/konigsberg.png Graphic file (type png)
+<use ./img/konigsberg.png>
+Package pdftex.def Info: ./img/konigsberg.png  used on input line 43.
 (pdftex.def)             Requested size: 195.0pt x 135.77193pt.
 
-Underfull \hbox (badness 2057) in paragraph at lines 46--47
+Underfull \hbox (badness 2057) in paragraph at lines 47--48
 []\OT1/cmr/m/n/12 O pro-blema das sete pon-tes de
  []
 
-<img/konigsberg-euler.png, id=53, 673.51625pt x 328.22626pt>
-File: img/konigsberg-euler.png Graphic file (type png)
-<use img/konigsberg-euler.png>
-Package pdftex.def Info: img/konigsberg-euler.png  used on input line 55.
+<./img/konigsberg-euler.png, id=53, 673.51625pt x 328.22626pt>
+File: ./img/konigsberg-euler.png Graphic file (type png)
+<use ./img/konigsberg-euler.png>
+Package pdftex.def Info: ./img/konigsberg-euler.png  used on input line 56.
 (pdftex.def)             Requested size: 195.0pt x 95.02791pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 66.
+(babel)             in language  on input line 67.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 66.
+(babel)             in language  on input line 67.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/konigsberg.png> <./i
-mg/konigsberg-euler.png>]
-Overfull \hbox (3.68619pt too wide) in paragraph at lines 67--69
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}pdfTeX warning (ext4): desti
+nation with the same identifier (name{figure.1}) has been already used, duplica
+te ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.67 
+     pdfTeX warning (ext4): destination with the same identifier (name{figure.2
+}) has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.67 
+      <./img/konigsberg.png> <./img/konigsberg-euler.png>]
+Overfull \hbox (3.68619pt too wide) in paragraph at lines 68--70
 []\OT1/cmr/m/n/12 Chegamos as-sim a um ab-surdo, pois ini-ci-al-mente pro-va-mo
 s que a sequ^encia
  []
 
-<img/konigsberg-graph.png, id=66, 180.675pt x 144.54pt>
-File: img/konigsberg-graph.png Graphic file (type png)
-<use img/konigsberg-graph.png>
-Package pdftex.def Info: img/konigsberg-graph.png  used on input line 95.
+<./img/konigsberg-graph.png, id=66, 180.675pt x 144.54pt>
+File: ./img/konigsberg-graph.png Graphic file (type png)
+<use ./img/konigsberg-graph.png>
+Package pdftex.def Info: ./img/konigsberg-graph.png  used on input line 96.
 (pdftex.def)             Requested size: 97.5pt x 77.9997pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--96
+Underfull \hbox (badness 10000) in paragraph at lines 97--97
 []\OT1/cmr/m/n/12 Figura 3:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--96
+Underfull \hbox (badness 10000) in paragraph at lines 97--97
 []\OT1/cmr/m/n/12 Modelagem de
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--96
+Underfull \hbox (badness 10000) in paragraph at lines 97--97
 \OT1/cmr/m/n/12 K^^?onigs-berg como
  []
 
@@ -1052,77 +1075,334 @@ Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 111.
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 111.
-[2 <./img/konigsberg-graph.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 146--147
+[2pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
+has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.111 S
+       eja $\delta(G)$ o grau mínimo de um vértice pertencente a $G$. <./img/
+konigsberg-graph.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
 
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 153.
+(babel)             in language  on input line 150.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 153.
+(babel)             in language  on input line 150.
 [3]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 205.
+(babel)             in language  on input line 206.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 205.
+(babel)             in language  on input line 206.
  [4]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 232.
+(babel)             in language  on input line 233.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 232.
+(babel)             in language  on input line 233.
  [5]
-Overfull \hbox (13.67662pt too wide) in paragraph at lines 247--248
+Overfull \hbox (13.67662pt too wide) in paragraph at lines 248--249
 []\OT1/cmr/m/n/12 Tal pro-ce-di-mento re-tira do cir-cuito $\OML/cmm/m/it/12 C$
  \OT1/cmr/m/n/12 a aresta ar-ti-fi-cial $\OML/cmm/m/it/12 uv$\OT1/cmr/m/n/12 , 
 transformando-
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 270.
+(babel)             in language  on input line 271.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 270.
+(babel)             in language  on input line 271.
 [6]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 319.
+(babel)             in language  on input line 320.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 319.
+(babel)             in language  on input line 320.
  [7]
-Underfull \hbox (badness 2269) in paragraph at lines 333--334
+Underfull \hbox (badness 2269) in paragraph at lines 334--335
 []\OT1/cmr/m/n/12 Seja $\OML/cmm/m/it/12 G$ \OT1/cmr/m/n/12 ent~ao a uni~ao de 
 $\OML/cmm/m/it/12 k$ \OT1/cmr/m/n/12 com-po-nen-tes for-te-men-tes co-ne-xas
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 369.
+(babel)             in language  on input line 370.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 369.
+(babel)             in language  on input line 370.
 [8]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 384.
+(babel)             in language  on input line 385.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 393.
+(babel)             in language  on input line 394.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 393.
+(babel)             in language  on input line 394.
  [9]
-<img/graph.png, id=131, 357.335pt x 282.05376pt>
-File: img/graph.png Graphic file (type png)
-<use img/graph.png>
-Package pdftex.def Info: img/graph.png  used on input line 397.
+<./img/graph.png, id=132, 357.335pt x 282.05376pt>
+File: ./img/graph.png Graphic file (type png)
+<use ./img/graph.png>
+Package pdftex.def Info: ./img/graph.png  used on input line 398.
 (pdftex.def)             Requested size: 117.00119pt x 92.35068pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 411.
+(babel)             in language  on input line 412.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 425.
+(babel)             in language  on input line 426.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 425.
- [10 <./img/graph.png>]
+(babel)             in language  on input line 426.
+ [10pdfTeX warning (ext4): destination with the same identifier (name{figure.4}
+) has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.426 S
+       endo assim, podemos separar a solução do PCC em duas partes: Encont...
+ <./img/graph.png>]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 469.
+(babel)             in language  on input line 470.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 469.
+(babel)             in language  on input line 470.
  [11]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 533.
+(babel)             in language  on input line 534.
 Package babel Info: Redefining portuges shorthand "|
-(babel)     
+(babel)             in language  on input line 534.
+ [12]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 569.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 569.
+ [13pdfTeX warning (ext4): destination with the same identifier (name{figure.5}
+) has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.569     P
+           orém, fazia parte da hipótese que a solução original era óti...
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) ha
+s been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.569     P
+           orém, fazia parte da hipótese que a solução original era óti...
+]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 598.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 611.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 611.
+ [14]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 654.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 654.
+ [15]
+Underfull \hbox (badness 10000) in paragraph at lines 654--655
+
+ []
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 694.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 694.
+[16pdfTeX warning (ext4): destination with the same identifier (name{figure.7})
+ has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.694 
+      ]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 722.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 722.
+ [17]
+<./img/pcc-mit.png, id=189, 642.4pt x 308.15125pt>
+File: ./img/pcc-mit.png Graphic file (type png)
+<use ./img/pcc-mit.png>
+Package pdftex.def Info: ./img/pcc-mit.png  used on input line 729.
+(pdftex.def)             Requested size: 390.0pt x 187.0833pt.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 791.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 791.
+ [18pdfTeX warning (ext4): destination with the same identifier (name{figure.8}
+) has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.791 
+       <./img/pcc-mit.png>]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 849.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 849.
+ [19]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 855.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 859.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 859.
+
+
+Overfull \hbox (1.92828pt too wide) in paragraph at lines 863--864
+[]\OT1/cmr/m/n/12 No enun-ci-ado do pro-blema define-se uma sequ^encia $\OML/cm
+m/m/it/12 s$ \OT1/cmr/m/n/12 como \OT1/cmr/bx/n/12 bo-nita \OT1/cmr/m/n/12 quan
+do
+ []
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 877.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 877.
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 907--908
+
+ []
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 908.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 908.
+[21]
+Overfull \hbox (7.60281pt too wide) in paragraph at lines 944--945
+[]\OT1/cmr/m/n/12 Sendo as-sim, para uti-li-zar $5$ va-lo-res dis-tin-tos, ^^Se
+ ne-cess^^Sario ter uma sequ^encia
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 997.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 997.
+[22pdfTeX warning (ext4): destination with the same identifier (name{figure.9})
+ has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.997         \end{figure}
+                          ]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1020.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1020.
+ [23pdfTeX warning (ext4): destination with the same identifier (name{figure.10
+}) has been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.1020         A
+                 partir dessa fórmula fechada, é possível descobrir com u...
+pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) h
+as been already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.1020         A
+                 partir dessa fórmula fechada, é possível descobrir com u...
+]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1032.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 1032.
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1053.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1053.
+[24]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1059.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1104.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1110.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1110.
+ [25]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1110.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1117.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 1120
+.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1120.
+
+
+Overfull \hbox (22.35544pt too wide) in paragraph at lines 1141--1143
+[]\OT1/cmr/m/n/12 github.com/gafeol/competitive-programming/blob/master/ojs/cf/
+367/C.cpp[] 
+ []
+
+
+Overfull \hbox (18.35631pt too wide) in paragraph at lines 1145--1147
+[]\OT1/cmr/m/n/12 onlinejudge.org/index.php?option=com[]onlinejudge&Itemid=8&pa
+ge=show 
+ []
+
+
+Overfull \hbox (27.56927pt too wide) in paragraph at lines 1149--1151
+[]\OT1/cmr/m/n/12 github.com/gafeol/competitive-programming/blob/master/ojs/UVa
+/1237.cpp[] 
+ []
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1155.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1155.
+[26]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1157.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 1157.
+ [27]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1157.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1157.
+ (./ic.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1157.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1157.
+
+Package rerunfilecheck Info: File `ic.out' has not changed.
+(rerunfilecheck)             Checksum: 472BBE7A71EB3A46D894E13C7D501768;716.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 20639 strings out of 494903
+ 388633 string characters out of 6179961
+ 459028 words of memory out of 5000000
+ 23545 multiletter control sequences out of 15000+600000
+ 11734 words of font info for 42 fonts, out of 8000000 for 9000
+ 16 hyphenation exceptions out of 8191
+ 54i,13n,73p,823b,929s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+s17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on ic.pdf (27 pages, 1162111 bytes).
+PDF statistics:
+ 323 PDF objects out of 1000 (max. 8388607)
+ 268 compressed objects within 3 object streams
+ 78 named destinations out of 1000 (max. 500000)
+ 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+
