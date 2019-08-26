@@ -724,9 +724,31 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
-    \begin{figure}[h]
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=\textwidth]{pcc-mit.png}
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {4} (b);
+            \path[->] (a) edge[below] node {9} (d);
+            \path[->] (a) edge[below] node {4} (c);
+            \path[->] (b) edge[bend right, below] node {5} (a);
+            \path[->] (c) edge[bend right, above] node {6} (d);
+            \path[->] (c) edge[above] node {8} (f);
+            \path[->] (d) edge[below] node {3} (e);
+            \path[->] (d) edge[bend right, below] node {6} (c);
+            \path[->] (e) edge[below] node {6} (b);
+            \path[->] (e) edge[below] node {5} (g);
+            \path[->] (f) edge[below] node {4} (g);
+            \path[->] (g) edge[above] node {6} (d);
+        \end{tikzpicture}
         \caption{Digrafo retirado de exercício do site do MIT\cite{mit}}
         \label{konigsberg-graph}
     \end{figure}
@@ -820,6 +842,8 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         \item[\textbf{3º}] Agora devemos realizar a duplicação dos caminhos representados pelas arestas $ba, da$ e $ge$.
 
+            Representamos o estado inicial do digrafo $G$, sem os pesos nos arcos:
+
             \begin{figure}[H]
                 \centering
                 \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
@@ -832,20 +856,24 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 					\node[main node] at (-2, -3) (e) {e};
 					\node[main node] at (2, -3) (b) {b};
 
-					\path[->] (a) edge[bend right, below] node {4} (b);
-					\path[->] (a) edge[below] node {9} (d);
-					\path[->] (a) edge[below] node {4} (c);
-					\path[->] (b) edge[bend right, below] node {5} (a);
-					\path[->] (c) edge[bend right, above] node {6} (d);
-					\path[->] (c) edge[above] node {8} (f);
-					\path[->] (d) edge[below] node {3} (e);
-					\path[->] (d) edge[bend right, below] node {6} (c);
-					\path[->] (e) edge[below] node {6} (b);
-					\path[->] (e) edge[below] node {5} (g);
-					\path[->] (f) edge[below] node {4} (g);
-                    \path[->] (g) edge[above] node {6} (d);
+					\path[->] (a) edge[bend right, below] node {} (b);
+					\path[->] (a) edge[below] node {} (d);
+					\path[->] (a) edge[below] node {} (c);
+					\path[->] (b) edge[bend right, below] node {} (a);
+					\path[->] (c) edge[bend right, above] node {} (d);
+					\path[->] (c) edge[above] node {} (f);
+					\path[->] (d) edge[below] node {} (e);
+					\path[->] (d) edge[bend right, below] node {} (c);
+					\path[->] (e) edge[below] node {} (b);
+					\path[->] (e) edge[below] node {} (g);
+					\path[->] (f) edge[below] node {} (g);
+                    \path[->] (g) edge[above] node {} (d);
                 \end{tikzpicture}
             \end{figure}
+
+            Faremos tal duplicação passo a passo, começando a duplicar os arcos 
+
+
 
     \end{itemize}
 
