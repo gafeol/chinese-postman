@@ -739,7 +739,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             \path[->] (a) edge[bend right, below] node {4} (b);
             \path[->] (a) edge[below] node {9} (d);
             \path[->] (a) edge[below] node {4} (c);
-            \path[->] (b) edge[bend right, below] node {5} (a);
+            \path[->] (b) edge[below] node {5} (a);
             \path[->] (c) edge[bend right, above] node {6} (d);
             \path[->] (c) edge[above] node {8} (f);
             \path[->] (d) edge[below] node {3} (e);
@@ -859,7 +859,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 					\path[->] (a) edge[bend right, below] node {} (b);
 					\path[->] (a) edge[below] node {} (d);
 					\path[->] (a) edge[below] node {} (c);
-					\path[->] (b) edge[bend right, below] node {} (a);
+					\path[->] (b) edge[below] node {} (a);
 					\path[->] (c) edge[bend right, above] node {} (d);
 					\path[->] (c) edge[above] node {} (f);
 					\path[->] (d) edge[below] node {} (e);
@@ -871,9 +871,157 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
                 \end{tikzpicture}
             \end{figure}
 
-            Faremos tal duplicação passo a passo, começando a duplicar os arcos 
+            Faremos tal duplicação passo a passo, começando a duplicar os arcos do caminho mínimo de $b$ a $a$. Representamos as arestas adicionadas em vermelho.
 
 
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (d) {d};
+					\node[main node] at (-4, 1) (g) {g};
+					\node[main node] at (-2, 3) (f) {f};
+					\node[main node] at (2, 3) (c) {c};
+					\node[main node] at (5, 0) (a) {a};
+					\node[main node] at (-2, -3) (e) {e};
+					\node[main node] at (2, -3) (b) {b};
+
+					\path[->] (a) edge[bend right, below] node {} (b);
+					\path[->] (a) edge[below] node {} (d);
+					\path[->] (a) edge[below] node {} (c);
+					\path[->] (b) edge[below] node {} (a);
+					\path[->] (b) edge[red, bend right, below] node {} (a);
+					\path[->] (c) edge[bend right, above] node {} (d);
+					\path[->] (c) edge[above] node {} (f);
+					\path[->] (d) edge[below] node {} (e);
+					\path[->] (d) edge[bend right, below] node {} (c);
+					\path[->] (e) edge[below] node {} (b);
+					\path[->] (e) edge[below] node {} (g);
+					\path[->] (f) edge[below] node {} (g);
+                    \path[->] (g) edge[above] node {} (d);
+                \end{tikzpicture}
+            \end{figure}
+
+    Agora duplicaremos os arcos do caminho mínimo de $d$ a $a$:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {} (b);
+            \path[->] (a) edge[below] node {} (d);
+            \path[->] (a) edge[below] node {} (c);
+            \path[->] (b) edge[below] node {} (a);
+            \path[->] (b) edge[bend right, below] node {} (a);
+            \path[->] (b) edge[red, bend right=60, below] node {} (a);
+            \path[->] (c) edge[bend right, above] node {} (d);
+            \path[->] (c) edge[above] node {} (f);
+            \path[->] (d) edge[below] node {} (e);
+            \path[->] (d) edge[red, bend right, below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (c);
+            \path[->] (e) edge[below] node {} (b);
+            \path[->] (e) edge[red, bend right, below] node {} (b);
+            \path[->] (e) edge[below] node {} (g);
+            \path[->] (f) edge[below] node {} (g);
+            \path[->] (g) edge[above] node {} (d);
+        \end{tikzpicture}
+    \end{figure}
+
+    Finalmente, duplicamos os arcos do caminho mínimo de $g$ a $e$:
+
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {} (b);
+            \path[->] (a) edge[below] node {} (d);
+            \path[->] (a) edge[below] node {} (c);
+            \path[->] (b) edge[below] node {} (a);
+            \path[->] (b) edge[bend right, below] node {} (a);
+            \path[->] (b) edge[bend right=60, below] node {} (a);
+            \path[->] (c) edge[bend right, above] node {} (d);
+            \path[->] (c) edge[above] node {} (f);
+            \path[->] (d) edge[below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (e);
+            \path[->] (d) edge[red, bend left, below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (c);
+            \path[->] (e) edge[below] node {} (b);
+            \path[->] (e) edge[bend right, below] node {} (b);
+            \path[->] (e) edge[below] node {} (g);
+            \path[->] (f) edge[below] node {} (g);
+            \path[->] (g) edge[above] node {} (d);
+            \path[->] (g) edge[red, bend left, above] node {} (d);
+        \end{tikzpicture}
+    \end{figure}
+
+    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos vértices do mesmo possuam grau de saída e entrada iguais, pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano do digrafo construído.
+
+
+\item[\textbf{4º}]  Um possível circuito eulerian $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
+
+    \[ 
+        \mathcal{C} = \{ a, c, f, g, d, c, d, e, g, d, e, b, a, d, e, b, a, b, a \}
+    \]
+
+    Representamos tal circuito no grafo abaixo, indicando em cada arco a ordem em que o mesmo é percorrido:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node at(6, 1) (st) {início};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (st) edge[] node {} (a);
+
+            \path[->] (a) edge[bend right, below] node {17} (b);
+            \path[->] (a) edge[above] node {13} (d);
+            \path[->] (a) edge[below] node {1} (c);
+            \path[->] (b) edge[below] node {18} (a);
+            \path[->] (b) edge[red, bend right, below] node {16} (a);
+            \path[->] (b) edge[red, bend right=60, below] node {12} (a);
+            \path[->] (c) edge[bend right, above] node {6} (d);
+            \path[->] (c) edge[above] node {2} (f);
+            \path[->] (d) edge[below] node {10} (e);
+            \path[->] (d) edge[red, bend right, above] node {7} (e);
+            \path[->] (d) edge[red, bend left, below] node {14} (e);
+            \path[->] (d) edge[bend right, below] node {5} (c);
+            \path[->] (e) edge[below] node {15} (b);
+            \path[->] (e) edge[red, bend right, below] node {11} (b);
+            \path[->] (e) edge[below] node {8} (g);
+            \path[->] (f) edge[below] node {3} (g);
+            \path[->] (g) edge[above] node {9} (d);
+            \path[->] (g) edge[red, bend left, above] node {4} (d);
+        \end{tikzpicture}
+        \caption{Representa-se em preto os arcos presentes no grafo $G$ original, e em vermelho os arcos resultantes das duplicações realizadas no terceiro passo da solução.}
+    \end{figure}
+
+    O circuito $\mathcal{C}$ percorrido no grafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
+
+    Analisando o peso dos arcos de $G$ concluimos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer alguns arcos mais que uma vez.
 
     \end{itemize}
 
@@ -962,6 +1110,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Para $x=5$, o grafo induzido é o $K_5$, como representado na figura \ref{k5}.
         Como todos os vértices do $K_5$ possuem grau par, a solução ótima do Problema do Carteiro Chinês para este exemplo é também um circuito euleriano, como o seguinte:
+
 
         \[ P = \{1, 2, 3, 4, 5, 1, 3, 5, 2, 4, 1\} \]
 
