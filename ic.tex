@@ -1,4 +1,4 @@
-%LLPStartPreview para rodar o pdf com mudancas automaticas
+    %LLPStartPreview para rodar o pdf com mudancas automaticas
 
 \documentclass[12pt, a4paper]{article}
 \usepackage{graphicx}
@@ -622,7 +622,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             
             Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
 
-            Como $P$ é um passeio, possívelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+            Como $P$ é um passeio, possivelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
 
             Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ executa-se o seguinte passo:
     
@@ -658,13 +658,13 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Seja $v$ um vértice qualquer de $G$. Podemos construir uma solução $P$ para o problema do carteiro chinês do seguinte modo:
 
 
-        Tome qualquer arco $uw$ de $G$. Para que a solução $P$ que estamos construindo percorra o arco $uw$,  basta adicionar a $P$ um caminho de $v$ a $u$, a aresta $uw$ e um caminho de $w$ a $v$.
+        Para qualquer arco $uw$ de $G$ definimos um circuito $C_{uw}$ que passa por $uw$ e pelo vértice $v$ como a concatenação do caminho de $v$ a $u$, do arco $uw$ e do caminho de $w$ a $v$.
+        
+        A existência de um caminho entre quaisquer dois vértices é garantida, já que $G$ é fortemente conexo, garantindo assim a existência de $C_{uw}$.
+        
+        Para construir a solução $P$, finalmente, basta realizar a concatenação dos circuitos $C_{e}$ para todo arco $e$ presente em $G$.
 
-        A existência dos caminhos de $v$ a $u$ e $w$ a $v$ é garantida já que $G$ é fortemente conexo, e, portanto, sempre existe um caminho entre qualquer par de vértices.
-
-        Repetindo esse passo para todos arcos de um digrafo fortemente conexo $G$ conseguimos um passeio $P$ que soluciona o Problema do Carteiro Chinês.
-
-        Provando assim, a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
+        Deste modo garantimos que toda aresta de $G$ é percorrida, provando assim a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
 
     \end{proof}
 
@@ -692,6 +692,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     O lema \ref{lemma-pcc} é utilizado para justificar a utilização de um algoritmo de emparelhamento perfeito para definir quais arestas duplicar na solução do PCC.
     Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando um algoritmo de fluxo máximo de custo mínimo, como veremos a seguir, no detalhamento do algoritmo que soluciona o PCC.
 
+    \begin{tcolorbox}
 	\textbf{Solução:}
 
     A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
@@ -722,6 +723,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     \end{enumerate}
 
+    \end{tcolorbox}
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
     \begin{figure}[H]
@@ -811,7 +813,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
                 \end{tikzpicture}
             \end{figure}
 
-            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual a distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
+            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual à distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
 
             Uma solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 14$ e $9$, escoando assim toda a demanda dos vértices $b, d$ e $g$.
 
@@ -971,7 +973,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \end{tikzpicture}
     \end{figure}
 
-    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos vértices do mesmo possuam grau de saída e entrada iguais, pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano do digrafo construído.
+    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos os vértices possuam grau de saída e entrada iguais. Pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano para o digrafo construído.
 
 
 \item[\textbf{4º}]  Um possível circuito eulerian $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
@@ -1025,6 +1027,62 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     \end{itemize}
 
+    \subsection{Grafos mistos}
+
+    Já analisamos o Problema do Carteiro Chinês aplicado a grafos e digrafos, agora discutiremos o mesmo problema aplicado a grafos mistos, ou seja, grafos que tenham tanto arestas quanto arcos.
+
+    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o PCC para grafos mistos ao caso de grafos direcionados simplesmente transformando as arestas não direcionadas em dois arcos de sentidos opostos.
+
+    Um contra-exemplo para este pensamento é o seguinte:
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[bend right] node {} (1);
+            \path[-] (2) edge[bend left] node {} (1);
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[bend right] node {} (1);
+            \path[->] (2) edge[bend left] node {} (1);
+            \path[->] (1) edge[bend right=60] node {} (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Na esquerda temos um grafo não direcionado qualquer, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
+
+    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
+    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[left, bend right] node {2} (1);
+            \path[-] (2) edge[left, bend left] node {1} (1);
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[right, bend right] node {2} (1);
+            \path[->] (2) edge[right, bend left] node {4} (1);
+            \path[->] (1) edge[left, bend right=60] node {1, 3} (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
+
+    Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
+
+
+
+    % TODO: Adicionar a discussao de que nao da pra transformar esse em um caso direcionado
+
+	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
 
     \section{Problemas resolvidos}
 
@@ -1231,50 +1289,6 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Como foi utilizado na solução\cite{jogging-sol} adicionada à referência.
 
 
-    \section{Mixed CPP}
-
-
-    %TODO: adaptar o texto para mixed
-    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o problema do carteiro chinês de grafos não direcionados ao caso direcionado do mesmo problema simplesmente transformando as aresta não direcionadas em dois arcos de sentidos opostos.
-
-    Um contra-exemplo para este pensamento é o seguinte:
-
-    \begin{center}
-        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] (1) {1};
-            \node[main node] (2) [below right of=1] {2};
-            \node[main node] (3) [below left of=1]  {3};
-
-            \path[every node/.style={font=\sffamily\small}]
-                (1) edge (2)
-                (1) edge (3)
-                (2) edge (3)
-                ;
-        \end{tikzpicture}
-        \hspace{3cm}% NO SPACE!
-        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] (1) {1};
-            \node[main node] (2) [below right of=1] {2};
-                \node[main node] (3) [below left of=1]  {3};
-            \draw[edge] (1) to[bend left=10] (2);
-            \draw[edge] (2) to[bend left=10] (1);
-            \draw[edge] (2) to[bend left=10] (3);
-            \draw[edge] (3) to[bend left=10] (2);
-            \draw[edge] (1) to[bend left=10] (3);
-            \draw[edge] (3) to[bend left=10] (1);
-        \end{tikzpicture}
-    \end{center}
-
-    Na esquerda temos um grafo não direcionado qualquer, e na direita temos o mesmo grafo com as arestas substituidas por arcos em sentidos opostos. 
-
-    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
-    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 3, 1\}$, enquanto uma solução possível para o segundo grafo é $\{1, 2, 3, 1, 3, 2, 1\}$.
-
-    Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
-
-    Justifica-se assim a necessidade de tratarmos os grafos direcionados separadamente quando falamos do problema em questão.
-    % TODO: Adicionar a discussao de que nao da pra transformar esse em um caso direcionado
-	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
 
 	\section{Windy Postman Problem}
 
