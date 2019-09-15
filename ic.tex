@@ -1078,11 +1078,31 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
+    \subsection{Problema do carteiro chinês rural}
+        Nesta variação, é necessário encontrar um passeio fechado que percorra um conjunto determinado de arestas ao menos uma vez.
+
+        A grande diferença nesta variação é que podem existir arestas que não precisam ser percorridas.
 
 
-    % TODO: Adicionar a discussao de que nao da pra transformar esse em um caso direcionado
+    \subsection{Problema do carteiro chinês com vento}
+        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
 
-	NP-hard, mesmo se $G$ for planar e se todos $c_{ij}$ forem iguais.
+        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
+
+        Esta variação do problema do carteiro chinês também é NP-hard.
+        
+
+        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+
+        ADICIONAR PROVA
+
+    \subsection{Problema do Carteiro Hierárquico}
+
+    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
+    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
+
+    Esta variação também é NP-hard.
+
 
     \section{Problemas resolvidos}
 
@@ -1290,24 +1310,15 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
 
 
-	\section{Windy Postman Problem}
 
-	NP-hard
+    \iffalse
+        \section{Anotações}
 
-	Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+        \begin{itemize}
+            \item Todo mixed CPP pode ser transformado em um WPP.
+        \end{itemize}
 
-	\section{Hierarchical Postman Problem}
-
-	NP-hard 
-
-	Seja $P = \{A_1, A_2, \dots, A_k\}$ uma partição do conjunto de arestas $A$. Determinar um caminho em $G$ de custo mínimo que sai de um vértice $s$ e atinge um vértice $t$, respeitando uma hierarquia das arestas. O caminho só poderá possuir uma aresta pertencente a $A_j$ se o caminho passar anteriormente por todas arestas pertencentes a $A_i$, se $i < j$.
-
-
-	\section{Anotações}
-
-	\begin{itemize}
-		\item Todo mixed CPP pode ser transformado em um WPP.
-	\end{itemize}
+    \fi
 
 	\medskip
 
