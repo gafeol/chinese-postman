@@ -1,4 +1,4 @@
-    %:python3 import sys; print(sys.version)L:python3 import sys; print(sys.version)L:python3 import sys; print(sys.version)PStartPreview para rodar o pdf com mudancas automaticas
+    %:LLPStartPreview para rodar o pdf com mudancas automaticas
 
 \documentclass[12pt, a4paper]{article}
 \usepackage{graphicx}
@@ -1110,15 +1110,64 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         \subsection{Tanya and Password}
 
-        Este problema fornece um conjunto $n$ strings de tamanho 3 e pede para que construa-se uma string $S$ de tamanho $n+2$. 
+        Este problema fornece um conjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que construa-se uma string $S$ de tamanho $n+2$, a única restrição é que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
 
-        A única restrição é que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder ao conjunto das $n$ strings
+        Um exemplo desse problema é o seguinte:
 
-        Uma subcadeia ("substring") de uma cadeia de caracteres ("string") $S$ é um conjunto contínuo de caracteres de $S$.
+        \[\mathcal{C} = \{aca, aba, aba, cab, bac\}\]
 
-        Por exemplo $foo$, $ob$ e $obar$ são exemplos de subcadeias de $foobar$, porém $fob$ e $br$ não podem ser consideradas subcadeias.
+        Uma string $S$ que resolve o problema para o conjunto $\mathcal{C}$ do exemplo é $abacaba$, já que toda substring de tamanho 3 de $S$ possui uma correspondência em $\mathcal{C}$.
 
-        Neste problema recebem-se $n$ cadeias de três caracteres e pede-se, se possível, para construir uma cadeia de caracteres de tamanho $n+2$ que 
+        A solução apresentada para este problema envolve a teoria de caminhos eulerianos apresentada:
+
+        Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
+        
+        Representaremos cada string $w \in \mathcal{C}$ por dois vértices ligados por um arco. Um dos vértices, que chamaremos de $u$, representa os dois primeiros caracteres de $w$, enquanto que o segundo vértice, $v$, representa os dois últimos caracteres de $w$, cria-se ainda um arco de $u$ a $v$.
+
+        Para exemplificar tal procedimento tome $w = aca$. Criam-se primeiramente dois vértices, um representando a string $ac$ e outro representando $ca$, e liga-se ambos com um arco, como representado em \ref{fig:tanya}.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] (ac) {ac};
+                \node[main node] at (2, 0) (ca) {ca};
+
+                \path[->] (ac) edge[] node {} (ca);
+            \end{tikzpicture}
+
+            \caption{Exemplo da modelagem usada na solução}
+            \label{fig:tanya}
+        \end{figure}
+
+        Segue agora a modelagem do exemplo completa:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] (ac) {ac};
+                \node[main node] at (2, 0) (ca) {ca};
+                \node[main node] at(0, -2) (ab) {ab};
+                \node[main node] at(2, -2) (ba) {ba};
+
+
+                \path[->] (ac) edge[] node {} (ca);
+                \path[->] (ab) edge[bend left] node {} (ba);
+                \path[->] (ab) edge[bend right] node {} (ba);
+                \path[->] (ca) edge[] node {} (ab);
+                \path[->] (ba) edge[] node {} (ac);
+            \end{tikzpicture}
+        \end{figure}
+
+
+        Cada arco criado na modelagem corresponde a uma string de $\mathcal{C}$, o arco entre $ac$ e $ca$, por exemplo, representa a string $aca$.
+
+        De modo semelhante, podemos derivar uma string a partir de um passeio no grafo modelado, realizando uma junção das strings representadas pelos vértices do passeio:
+        A partir do caminho $\{ba, ac, ca, ab\}$ pode-se derivar a string $bacab$, que possui as substrings $\{bac, aca, cab\}$.
+
+
+        TRAVEI, NÃO SEI COMO EXPLICAR BEM A SOLUÇÃO
 
         \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
