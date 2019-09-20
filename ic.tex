@@ -1,4 +1,4 @@
-    %LLPStartPreview para rodar o pdf com mudancas automaticas
+    %:python3 import sys; print(sys.version)L:python3 import sys; print(sys.version)L:python3 import sys; print(sys.version)PStartPreview para rodar o pdf com mudancas automaticas
 
 \documentclass[12pt, a4paper]{article}
 \usepackage{graphicx}
@@ -18,7 +18,7 @@
 
 \tikzset{edge/.style = {->,> = latex'}}
 
-\graphicspath{
+    \graphicspath{
     {.} % document root dir
     {./img/}
 }
@@ -1107,6 +1107,18 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \section{Problemas resolvidos}
 
         Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
+
+        \subsection{Tanya and Password}
+
+        Este problema fornece um conjunto $n$ strings de tamanho 3 e pede para que construa-se uma string $S$ de tamanho $n+2$. 
+
+        A única restrição é que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder ao conjunto das $n$ strings
+
+        Uma subcadeia ("substring") de uma cadeia de caracteres ("string") $S$ é um conjunto contínuo de caracteres de $S$.
+
+        Por exemplo $foo$, $ob$ e $obar$ são exemplos de subcadeias de $foobar$, porém $fob$ e $br$ não podem ser consideradas subcadeias.
+
+        Neste problema recebem-se $n$ cadeias de três caracteres e pede-se, se possível, para construir uma cadeia de caracteres de tamanho $n+2$ que 
 
         \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
