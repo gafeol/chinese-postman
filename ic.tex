@@ -382,7 +382,9 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
 \begin{proof} 
 
-    ($\Rightarrow$) Se um digrafo $G$ possui uma trilha euleriana $T$, é garantido que o mesmo é fracamente conexo, já que podemos derivar um caminho entre qualquer par de vértices $u, v$ a partir de $T$, como mostra-se a seguir: 
+    ($\Rightarrow$) Começaremos provando que $G$ deverá ser fracamente conexo.
+
+    Se um digrafo $G$ possui uma trilha euleriana $T$, é garantido que o mesmo é fracamente conexo, já que podemos derivar um caminho entre qualquer par de vértices $u, v$ a partir de $T$, como mostra-se a seguir: 
     
     Como $T$ é euleriana, ela deve conter os vértices $u$ e $v$, portanto podemos representar $T$ de um dos seguintes modos:
     \[ T = \{w_1, \dots, w_i = u, w_{i+1} \dots, w_{j-1}, w_j = v, \dots \}\]
@@ -427,7 +429,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
     Provaremos agora que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
 
-    Dividiremos essa prova em dois casos em relação a $T$:
+    Analisaremos dois casos em relação à trilha $T$:
 
     \begin{itemize}
         \item Se $T$ é um circuito:
@@ -464,10 +466,46 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
     \end{itemize}
 
-    ($\Leftarrow$) Seja $G$ um digrafo fracamente conexo, com vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$ , um vértice $u$ tal que  e todos outros vértices $w$ de $G$ possuem 
+    ($\Leftarrow$) Seja $G$ um digrafo fracamente conexo, com vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$, provaremos que deverá existir uma trilha euleriana em $G$.
 
-    
-        
+    Seja $G'$ uma cópia do grafo $G$ em que adiciona-se um arco de $u$ a $v$.
+    A adição de tal arco aumenta o grau de saída de $u$ e o grau de entrada de $v$ em uma unidade, fazendo com que $\delta^+(u) = \delta^-(u)$ e $\delta^+(v) = \delta^-(v)$.
+
+    Deste modo, todos vértices de $G'$ possuem o mesmo grau de entrada e saída, e $G'$ continua sendo fracamente conexo.
+    % Duas possibilidades: ou provo que G' eh fortemente conexo, ou faz na mao a prova com fracamente conexo mesmo
+
+    Provaremos inicialmente que $G'$ deverá ser fortemente conexo.
+    Sejam $w_i, w_j$ dois vértices quaisquer de $G'$, como este grafo é fracamente conexo, podemos assumir, sem perda de generalidade, que existe ao menos um caminho de $w_i$ a $w_j$.
+
+    Seja $T$ uma trilha de tamanho maximal que percorre um dos caminhos de $w_i$ a $w_j$:
+
+    \[ T = \{w_1, w_2, \dots, w_i, \dots, w_j, \dots w_n\} \]
+
+    Como $T$ é maximal, podemos afirmar que todos os arcos que saem do vértice $w_n$ são percorridos por $T$, já que do contrário $T$ não seria maximal.
+
+    Além disso, como todos os vértices possuem grau de saída e entrada iguais em $G'$, deve valer que $w_1 = w_n$, já que do contrário $\delta^-(w_1) - \delta^+(w_1) = 1$ e $\delta^-(w_n) - \delta^+(w_n)$, e portanto que $T$ é um circuito.
+    Deste modo, garante-se a existência de uma trilha $T'$ de $w_j$ a $w_i$:
+
+    \[T' = \{w_j, w_{j+1}, \dots, w_n = w_1, w_2, \dots, w_i\} \]
+
+    A partir da trilha $T'$ é possível derivar um caminho de $w_j$ a $w_i$.
+
+    Prova-se assim que todo par de vértices $w_i, w_j$ possui um caminho em $G'$ de $w_i$ a $w_j$ e de $w_j$ a $w_i$. 
+    $G'$, pela definição, é um grafo fortemente conexo.
+
+    Sendo assim, pelo teorema \ref{euler-digraph}, $G'$ é euleriano, e possui um circuito euleriano $C$.
+
+    \[ C = \{w_1, w_2, \dots, w_i = u, w_{i+1} = v, \dots, w_n, w_1 \} \]
+
+    Podemos reescrever $C$ do seguinte modo, tornando o arco de $u$ a $v$ o último arco percorrido em $C$:
+
+    \[ C = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u, w_{i+1} = v\} \]
+
+    A partir de $C$ podemos derivar uma trilha $T$, removendo apenas o arco artificial de $C$:
+
+    \[T = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u\} \]
+
+    Ao remover de $C$ o único arco que não pertencia ao grafo original $G$, criamos uma trilha euleriana $T$ em relação a $G$, provando assim a volta do corolário.
 
 \end{proof}
 %Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
