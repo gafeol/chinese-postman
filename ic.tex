@@ -271,7 +271,7 @@ Numa analogia com trânsito, uma aresta é como uma estrada de mão dupla, pode-
 Quanto tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
 Por isso, denominamos \textbf{grau de saída} de um vértice $v$, $\delta^-(v)$, como o número de arcos que saem de $v$, e \textbf{grau de entrada}, $\delta^+(v)$, como o número de arcos que entram em $v$. 
 
-Definimos como \textbf{fortemente conexo} um digrafo que possui um caminho entre todo par de vértices.
+Definimos como \textbf{fortemente conexo} um digrafo que possui um caminho entre todo par de vértices, e como \textbf{fracamente conexo} um digrafo que possui para todo par de vértices $u$ e $v$ um caminho de $u$ a $v$ ou de $v$ a $u$.
 
 Dadas as devidas definições, apresentamos agora o teorema de Euler para o caso de digrafos:
 
@@ -371,12 +371,33 @@ $G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de e
 
 Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que todo circuito $C_i$ possui pelo menos um vértice em $C$. Além disso, todo circuito $C_i$ deverá ter sido adicionado a $\mathcal{C}$ uma única vez, já que logo após adicionar um circuito a $\mathcal{C}$ já o removiamos de $\mathcal{T}$, impedindo que ele fosse adicionado outra vez no circuito euleriano final.
 
-
 Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$ provamos que qualquer digrafo fortemente conexo com vértices possuindo valores iguais de grau de entrada e saída é euleriano.
 
     \end{enumerate}
 \end{proof}
 
+\begin{corollary} 
+    Um digrafo $G$ possui uma trilha euleriana se, e somente se, é fracamente conexo, possui no máximo um vértice $v$ tal que $\delta^-(v) - \delta^+(v) = 1$, um vértice $u$ tal que $\delta^+(u) - \delta^-(u) = 1$ e todos outros vértices $w$ de $G$ possuem $\delta^+(w) = \delta^-(w)$.
+\end{corollary}
+
+\begin{proof} 
+
+    \\($\Rightarrow$) Se um digrafo $G$ possui uma trilha euleriana $T$, é garantido que o mesmo é fracamente conexo, já que qualquer par de vértices $u, v$ que possui grau positivo estará presente em $T$. 
+    Podemos escrever $T$, portanto de um dos seguintes modos:
+    \[ T = \{w_1, \dots, w_i = u, w_{i+1} \dots, w_{j-1}, w_j = v, \dots \}\]
+
+    \[ T = \{w_1, \dots, w_i = v, w_{i+1} \dots, w_{j-1}, w_j = u, \dots \}\]
+
+    De qualquer modo, a partir da subtrilha entre $u$ e $v$ em $T$ pode-se derivar um caminho, provando assim que $G$ será fracamente conexo.
+
+
+    TODO Continuar Prova
+
+
+
+    $\Leftarrow$
+
+\end{proof}
 %Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
 
 %\lstinputlisting[language=c++]{euler_cycle.cpp}
@@ -1108,19 +1129,20 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
 
-        \subsection{Tanya and Password}
+        \subsection{Tanya and Password\cite{tanya}}
 
-        Este problema fornece um conjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que construa-se uma string $S$ de tamanho $n+2$, a única restrição é que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
+        Este problema fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
 
-        Um exemplo desse problema é o seguinte:
+        Uma instância desse problema é a seguinte, para $n=5$:
 
         \[\mathcal{C} = \{aca, aba, aba, cab, bac\}\]
 
-        Uma string $S$ que resolve o problema para o conjunto $\mathcal{C}$ do exemplo é $abacaba$, já que toda substring de tamanho 3 de $S$ possui uma correspondência em $\mathcal{C}$.
+        Uma string $S$ que resolve este exemplo é $abacaba$, já que existe uma bijeção entre toda substring de tamanho 3 de $S$ e $\mathcal{C}$.
+        A string $abacab$, no entanto, não satisfaz a restrição do problema já que a mesma não possui duas substrings $aba$, como ocorre em $\mathcal{C}$.
 
-        A solução apresentada para este problema envolve a teoria de caminhos eulerianos apresentada:
+        A solução que será apresentada para este problema envolve a teoria de caminhos eulerianos apresentada.
 
-        Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
+        Iniciaremos por explicar a modelagem realizada. Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
         
         Representaremos cada string $w \in \mathcal{C}$ por dois vértices ligados por um arco. Um dos vértices, que chamaremos de $u$, representa os dois primeiros caracteres de $w$, enquanto que o segundo vértice, $v$, representa os dois últimos caracteres de $w$, cria-se ainda um arco de $u$ a $v$.
 
@@ -1140,7 +1162,8 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             \label{fig:tanya}
         \end{figure}
 
-        Segue agora a modelagem do exemplo completa:
+        \sloppy Deve repetir-se tal procedimento para toda string $w \in \mathcal{C}$. Segue a modelagem completa, que chamaremos de $G$, do exemplo inicial ($\mathcal{C} = \{aca, aba, aba, cab, bac\}$):
+       
 
         \begin{figure}[H]
             \centering
@@ -1162,12 +1185,28 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
 
         Cada arco criado na modelagem corresponde a uma string de $\mathcal{C}$, o arco entre $ac$ e $ca$, por exemplo, representa a string $aca$.
+        A partir dessa correspondência podemos representar também um passeio, $P$, em $G$ como uma sequência de strings, $seq$, subconjunto de $\mathcal{C}$:
 
-        De modo semelhante, podemos derivar uma string a partir de um passeio no grafo modelado, realizando uma junção das strings representadas pelos vértices do passeio:
-        A partir do caminho $\{ba, ac, ca, ab\}$ pode-se derivar a string $bacab$, que possui as substrings $\{bac, aca, cab\}$.
+        O passeio $P = \{ba, ac, ca, ab\}$, por exemplo, percorre os arcos que correspondem à sequência $seq = \{bac, aca, cab\}$.
 
+        Por sua vez, a partir de $seq$ é possível montar uma string $S$ que possua todas strings de $seq$ como substrings:
 
-        TRAVEI, NÃO SEI COMO EXPLICAR BEM A SOLUÇÃO
+        \[seq = \{bac, aca, cab\} \rightarrow S = ``bacab'' \]
+
+        Tal procedimento permite que, a partir de um passeio $P$ em $G$ construa-se uma string $S$ tal que:
+        
+        \begin{itemize}
+            \item O tamanho de $S$ é igual ao número de arcos percorridos em $P$ mais 2;
+            \item Se um arco $e$ é percorrido em $P$, então a string de $\mathcal{C}$ que $e$ representa será uma substring de $S$.
+        \end{itemize}
+
+        Como o problema pede que encontremos uma string de tamanho $n+2$ que possua todas strings de $\mathcal{C}$ como substrings, basta encontrar, se existir, uma trilha que percorra todo arco de $G$ uma única vez, isto é, uma trilha ou um circuito euleriano.
+
+        Deste modo a solução do problema consiste em checar as propriedades necessárias para a existência de uma trilha euleriana [ADICONAR referencia ao corolario].
+
+        Se uma trilha ou circuito euleriano existir em $G$, podemos usar o algoritmo de Hierholzer para encontrar tal passeio.
+
+        Esta solução foi implementada em C++ e adicionada à referência\cite{tanya-sol}.
 
         \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
@@ -1394,8 +1433,16 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
 	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
 
+    \bibitem{tanya}
+    Problema D do round \#288 (Div. 2) retirado do Codeforces\\
+    \href{https://codeforces.com/contest/508/problem/D}{codeforces.com/contest/508/problem/D}
+
+    \bibitem{tanya-sol}
+    Solução para o problema Tanya and Password, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D\\.cpp}
+
     \bibitem{sereja}
-    Problema retirado do Codeforces, problema C do Round \#215 (Div1)\\
+    Problema C do round \#215 (Div. 1) retirado do Codeforces\\
     \href{https://codeforces.com/problemset/problem/367/C}{codeforces.com/problemset/problem/367/C}
 
     \bibitem{sereja-sol}
@@ -1403,7 +1450,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}
 
     \bibitem{jogging}
-    Problema retirado do UVa, problema 10296\\
+    Problema 10296 retirado do UVa\\
     \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=com\_onlinejudge\&Itemid=8\&page=show\\\_problem\&problem=1237}
 
     \bibitem{jogging-sol}
