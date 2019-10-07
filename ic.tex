@@ -384,14 +384,15 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
     ($\Rightarrow$) Começaremos provando que $G$ deverá ser fracamente conexo.
 
-    Se um digrafo $G$ possui uma trilha euleriana $T$, é garantido que o mesmo é fracamente conexo, já que podemos derivar um caminho entre qualquer par de vértices $u, v$ a partir de $T$, como mostra-se a seguir: 
+    Se um digrafo $G$ possui uma trilha euleriana $T$, podemos derivar um caminho entre qualquer par de vértices $u, v$ a partir de $T$, como mostra-se a seguir: 
     
     Como $T$ é euleriana, ela deve conter os vértices $u$ e $v$, portanto podemos representar $T$ de um dos seguintes modos:
     \[ T = \{w_1, \dots, w_i = u, w_{i+1} \dots, w_{j-1}, w_j = v, \dots \}\]
 
     \[ T = \{w_1, \dots, w_i = v, w_{i+1} \dots, w_{j-1}, w_j = u, \dots \}\]
 
-    Para ambos casos, a subtrilha de $w_i \dots w_j$ representa uma trilha entre os vértices $u$ e $v$, a partir de uma trilha entre quaisquer dois vértices, podemos derivar um caminho, seguindo o seguinte método:
+    Para ambos casos, a subtrilha de $w_i \dots w_j$ representa uma trilha entre os vértices $u$ e $v$. 
+    A partir de uma trilha entre quaisquer dois vértices, podemos derivar um caminho, seguindo o seguinte método:
 
 
         \begin{tcolorbox}
@@ -425,11 +426,11 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
         \end{tcolorbox}
     
-    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices de $T$, mas como $T$ é euleriano e possui todos vértices de $G$, prova-se assim que $G$ é fracamente conexo.
+    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices de $T$, mas como $T$ é euleriano, possuindo todos vértices de $G$, prova-se assim que $G$ é fracamente conexo. \\
 
-    Provaremos agora que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
+     Basta, portanto, provar que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
 
-    Analisaremos dois casos em relação à trilha $T$:
+    Analisaremos dois casos em relação à trilha euleriana $T$ de $G$:
 
     \begin{itemize}
         \item Se $T$ é um circuito:
@@ -440,7 +441,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
             O vértice $v$ é o vértice inicial e final de $T$, mas também pode estar presente internamente em $T$. 
             Considere os vértices $w_i$ como vértices diferentes de $v$, internos a $T$.
 
-            Todo vértice $w_i$ possui, em cada uma de suas aparições em $T$, um vértice que o precede e um vértice que o sucede, isso implica que em cada aparição de $w_i$ em $T$, dois arcos ligados a $w_i$ podem ser contabilizados, um entrando em $w_i$ e outro saindo do mesmo. 
+            Todo vértice $w_i$ possui, em cada uma de suas aparições em $T$, um vértice que o precede e um vértice que o sucede, consequentemente em cada aparição de $w_i$ em $T$, dois arcos ligados a $w_i$ podem ser contabilizados: um entrando em $w_i$ e outro saindo do mesmo. 
             Isso implica que os arcos que entram e saem de um vértice interno a $T$ são sempre contabilizados em pares, mantendo assim a igualdade $\delta^+(w_i) = \delta^-(w_i)$.
 
             Analisaremos o vértice $v$ a parte:
@@ -449,11 +450,11 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
             As aparições de $v$ como vértice interno de $T$ contibuem igualmente para o grau de entrada e saída do mesmo, similarmente ao que ocorre com os vértices $w_i$.
 
-            No fim de $T$, há a última aparição de $v$, que contabiliza uma única aresta entrando em $v$, adicionando uma unidade ao grau de entrada do vértice $\delta^+(v)$.
+            No fim de $T$, há outra aparição de $v$, que contabiliza uma única aresta entrando em $v$, adicionando uma unidade ao grau de entrada do vértice $\delta^+(v)$.
 
-            Finalmente, nota-se que apesar de $v$ ser um vértice extremo, seus graus de saída e entrada também se igualam.
+            Finalmente, nota-se que apesar de $v$ ser um vértice extremo, seus graus de saída e entrada também se igualam, já que $v$ é tanto o vértice inicial quanto o vértice final de $T$.
 
-            Provando-se assim que todos vértices possuem grau de saída e entrada iguais, satisfazendo a implicação do corolário. 
+            Provando assim que todos vértices de $G$ possuem grau de saída e entrada iguais, satisfazendo a implicação do corolário. 
 
             
         \item Devemos analisar agora o caso em que $T$ não é um circuito.
@@ -464,6 +465,8 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
             O vértice $u$, do início de $T$, possuirá exatamente uma unidade a mais de grau de saída em relação ao seu grau de entrada $\delta^-(u) - \delta^+(u) = 1$, enquanto que $v$, o vértice final de $T$, possuirá uma unidade a mais de grau de entrada em relação ao grau de saída, $\delta^+(v) - \delta^-(v) = 1$.
             Todos vértices $w_i$ diferentes de $u$ e $v$ possuirão um valor igual de grau de entrada e saída, já que são apenas vértices internos de $T$.
 
+            Este caso também é valido, condizendo com a implicação do corolário.
+
     \end{itemize}
 
     ($\Leftarrow$) Seja $G$ um digrafo fracamente conexo, com vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$, provaremos que deverá existir uma trilha euleriana em $G$.
@@ -471,11 +474,11 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
     Seja $G'$ uma cópia do grafo $G$ em que adiciona-se um arco de $u$ a $v$.
     A adição de tal arco aumenta o grau de saída de $u$ e o grau de entrada de $v$ em uma unidade, fazendo com que $\delta^+(u) = \delta^-(u)$ e $\delta^+(v) = \delta^-(v)$.
 
-    Deste modo, todos vértices de $G'$ possuem o mesmo grau de entrada e saída, e $G'$ continua sendo fracamente conexo.
-    % Duas possibilidades: ou provo que G' eh fortemente conexo, ou faz na mao a prova com fracamente conexo mesmo
+    Deste modo, todos vértices de $G'$ possuem o mesmo grau de entrada e saída e $G'$ continua sendo fracamente conexo.
 
     Provaremos inicialmente que $G'$ deverá ser fortemente conexo.
-    Sejam $w_i, w_j$ dois vértices quaisquer de $G'$, como este grafo é fracamente conexo, podemos assumir, sem perda de generalidade, que existe ao menos um caminho de $w_i$ a $w_j$.
+    Sejam $w_i, w_j$ dois vértices quaisquer de $G'$, como este grafo é fracamente conexo podemos assumir, sem perda de generalidade, que existe ao menos um caminho de $w_i$ a $w_j$. 
+    Provaremos que também deverá existir um caminho no sentido inverso, de $w_j$ a $w_i$.
 
     Seja $T$ uma trilha de tamanho maximal que percorre um dos caminhos de $w_i$ a $w_j$:
 
@@ -483,21 +486,21 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
     Como $T$ é maximal, podemos afirmar que todos os arcos que saem do vértice $w_n$ são percorridos por $T$, já que do contrário $T$ não seria maximal.
 
-    Além disso, como todos os vértices possuem grau de saída e entrada iguais em $G'$, deve valer que $w_1 = w_n$, já que do contrário $\delta^-(w_1) - \delta^+(w_1) = 1$ e $\delta^-(w_n) - \delta^+(w_n)$, e portanto que $T$ é um circuito.
-    Deste modo, garante-se a existência de uma trilha $T'$ de $w_j$ a $w_i$:
+    Além disso, como todos os vértices possuem grau de saída e entrada iguais em $G'$, deve valer que $w_1 = w_n$, já que do contrário $\delta^-(w_1) - \delta^+(w_1) = 1$ e $\delta^+(w_n) - \delta^-(w_n) = 1$.
+    Consequentemente podemos reescrever a trilha $T$ de outro modo, que chamaremos de $T'$, evidenciando a existência de uma trilha de $w_j$ a $w_i$:
 
     \[T' = \{w_j, w_{j+1}, \dots, w_n = w_1, w_2, \dots, w_i\} \]
 
-    A partir da trilha $T'$ é possível derivar um caminho de $w_j$ a $w_i$.
+    A partir da trilha $T'$ é possível derivar um caminho de $w_j$ a $w_i$, como realizado anteriormente na demonstração deste corolário.
 
     Prova-se assim que todo par de vértices $w_i, w_j$ possui um caminho em $G'$ de $w_i$ a $w_j$ e de $w_j$ a $w_i$. 
     $G'$, pela definição, é um grafo fortemente conexo.
 
-    Sendo assim, pelo teorema \ref{euler-digraph}, $G'$ é euleriano, e possui um circuito euleriano $C$.
+    Além disso, pelo teorema \ref{euler-digraph}, $G'$ é euleriano, possuindo assim um circuito euleriano $C$:
 
     \[ C = \{w_1, w_2, \dots, w_i = u, w_{i+1} = v, \dots, w_n, w_1 \} \]
 
-    Podemos reescrever $C$ do seguinte modo, tornando o arco de $u$ a $v$ o último arco percorrido em $C$:
+    Podemos reescrever $C$ do seguinte modo, tornando o arco artificial, de $u$ a $v$, o último arco percorrido em $C$:
 
     \[ C = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u, w_{i+1} = v\} \]
 
