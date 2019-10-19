@@ -378,6 +378,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
 \begin{corollary} 
     Um digrafo $G$ possui uma trilha euleriana se, e somente se, é fracamente conexo, possui no máximo um par de vértices $u, v$ tal que $\delta^-(v) - \delta^+(v) = 1$, $\delta^+(u) - \delta^-(u) = 1$ e todos outros vértices $w$ de $V(G) \setminus \{u, v\}$ possuem $\delta^+(w) = \delta^-(w)$.
+    \label{corollary-euler-digraph}
 \end{corollary}
 
 \begin{proof} 
@@ -448,7 +449,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
             No início de $T$, há uma aparição de $v$ em que contabilizamos uma única aresta saindo de $v$, o que adiciona uma unidade ao grau de saída do mesmo $\delta^-(v)$.
 
-            As aparições de $v$ como vértice interno de $T$ contibuem igualmente para o grau de entrada e saída do mesmo, similarmente ao que ocorre com os vértices $w_i$.
+            As aparições de $v$ como vértice interno de $T$ contribuem igualmente para o grau de entrada e saída do mesmo, similarmente ao que ocorre com os vértices $w_i$.
 
             No fim de $T$, há outra aparição de $v$, que contabiliza uma única aresta entrando em $v$, adicionando uma unidade ao grau de entrada do vértice $\delta^+(v)$.
 
@@ -480,7 +481,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
     Sejam $w_i, w_j$ dois vértices quaisquer de $G'$, como este grafo é fracamente conexo podemos assumir, sem perda de generalidade, que existe ao menos um caminho de $w_i$ a $w_j$. 
     Provaremos que também deverá existir um caminho no sentido inverso, de $w_j$ a $w_i$.
 
-    Seja $T$ uma trilha de tamanho maximal que percorre um dos caminhos de $w_i$ a $w_j$:
+    Seja $T$ uma trilha maximal que percorre um dos caminhos de $w_i$ a $w_j$:
 
     \[ T = \{w_1, w_2, \dots, w_i, \dots, w_j, \dots w_n\} \]
 
@@ -498,15 +499,15 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
     Além disso, pelo teorema \ref{euler-digraph}, $G'$ é euleriano, possuindo assim um circuito euleriano $C$:
 
-    \[ C = \{w_1, w_2, \dots, w_i = u, w_{i+1} = v, \dots, w_n, w_1 \} \]
+    \[ C = \{w_1, w_2, \dots, w_k = u, w_{k+1} = v, \dots, w_n, w_1 \} \]
 
     Podemos reescrever $C$ do seguinte modo, tornando o arco artificial, de $u$ a $v$, o último arco percorrido em $C$:
 
-    \[ C = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u, w_{i+1} = v\} \]
+    \[ C = \{w_{k+1} = v, \dots, w_n, w_1, w_2, \dots, w_{k-1}, w_k = u, w_{k+1} = v\} \]
 
     A partir de $C$ podemos derivar uma trilha $T$, removendo apenas o arco artificial de $C$:
 
-    \[T = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u\} \]
+    \[T = \{w_{k+1} = v, \dots, w_n, w_1, w_2, \dots, w_{k-1}, w_k = u\} \]
 
     Ao remover de $C$ o único arco que não pertencia ao grafo original $G$, criamos uma trilha euleriana $T$ em relação a $G$, provando assim a volta do corolário.
 
@@ -1315,11 +1316,11 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Como o problema pede que encontremos uma string de tamanho $n+2$ que possua todas strings de $\mathcal{C}$ como substrings, basta encontrar, se existir, uma trilha que percorra todo arco de $G$ uma única vez, isto é, uma trilha ou um circuito euleriano.
 
-        Deste modo a solução do problema consiste em checar as propriedades necessárias para a existência de uma trilha euleriana [ADICONAR referencia ao corolario].
+        Deste modo a solução do problema consiste em checar as propriedades necessárias para a existência de uma trilha euleriana, que são estabelecidas neste trabalho pelo corolário \ref{corollary-euler-digraph}.
 
         Se uma trilha ou circuito euleriano existir em $G$, podemos usar o algoritmo de Hierholzer para encontrar tal passeio.
 
-        Esta solução foi implementada em C++ e adicionada à referência\cite{tanya-sol}.
+        Esta solução foi implementada em C++ e está disponível no github\cite{tanya-sol}.
 
         \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
 
