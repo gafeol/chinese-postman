@@ -1214,10 +1214,21 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
     \subsection{Problema do carteiro chinês rural}
-        Nesta variação, é necessário encontrar um passeio fechado que percorra um conjunto determinado de arestas ao menos uma vez.
+    
+    Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c(e), e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
 
-        A grande diferença nesta variação é que podem existir arestas que não precisam ser percorridas.
+    Nesta versão mais geral do PCC devemos realizar o planejamento de uma rota de custo mínimo que se inicia e termina no mesmo vértice e passa ao menos uma vez por toda aresta pertencente a $R$. 
+    Isto é, não há necessidade de se incluir no trajeto resultante as arestas de $A \setminus R$.
 
+    Denomina-se esta variação de Problema do Carteiro Chinês Rural (PCCR).
+
+    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não por todas ruas de um bairro.
+
+    Assim como a variação do PCC para grafos mistos, o PCCR é um problema NP-hard.
+
+    De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
+
+    Algoritmos que 
 
     \subsection{Problema do carteiro chinês com vento}
         A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.

@@ -1,0 +1,314 @@
+
+    %:LLPStartPreview para rodar o pdf com mudancas automaticas
+
+\documentclass[12pt, a4paper]{article}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel} % Separacao de silabas em portugues
+\usepackage{amsthm} % has proof
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage {tikz}
+\usepackage{hyperref}
+\usepackage{float}
+\usetikzlibrary {positioning}
+\usetikzlibrary{arrows}
+%\usepackage {xcolor}
+
+\tikzset{edge/.style = {->,> = latex'}}
+
+    \graphicspath{
+    {.} % document root dir
+    {./img/}
+}
+
+\renewcommand\refname{Referências}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corolário}
+\newtheorem{lemma}{Lema}
+
+\title{O problema do carteiro chinês}
+\author{Carlos Eduardo Ferreira\\Gabriel Fernandes de Oliveira}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{corollary} 
+    Um digrafo $G$ possui uma trilha euleriana se, e somente se, é fracamente conexo, possui no máximo um par de vértices $u, v$ tal que $\delta^-(v) - \delta^+(v) = 1$, $\delta^+(u) - \delta^-(u) = 1$ e todos outros vértices $w$ de $V(G) \setminus \{u, v\}$ possuem $\delta^+(w) = \delta^-(w)$.
+    \label{corollary-euler-digraph}
+\end{corollary}
+
+\begin{proof} 
+
+    ($\Rightarrow$) Começaremos provando que $G$ deverá ser fracamente conexo.
+
+    Se um digrafo $G$ possui uma trilha euleriana $T$, podemos derivar um caminho entre qualquer par de vértices $u, v$ a partir de $T$, como mostra-se a seguir: 
+    
+    Como $T$ é euleriana, ela deve conter os vértices $u$ e $v$, portanto podemos representar $T$ de um dos seguintes modos:
+    \[ T = \{w_1, \dots, w_i = u, w_{i+1} \dots, w_{j-1}, w_j = v, \dots \}\]
+
+    \[ T = \{w_1, \dots, w_i = v, w_{i+1} \dots, w_{j-1}, w_j = u, \dots \}\]
+
+    Para ambos casos, a subtrilha de $w_i \dots w_j$ representa uma trilha entre os vértices $u$ e $v$. 
+    A partir de uma trilha entre quaisquer dois vértices, podemos derivar um caminho, seguindo o seguinte método:
+
+
+        \begin{tcolorbox}
+            \textbf{Método para derivar um caminho de um passeio qualquer}
+            
+            Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
+
+            Como $P$ é um passeio, possivelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+
+            Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ executa-se o seguinte passo:
+    
+
+            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do vértice $v$, mantendo apenas tal vértice: 
+
+
+            Portanto um passeio $P$ qualquer com repetição do vértice $v$, como o seguinte:
+            \[
+                P = \{ u_1, \dots u_i, v, \dots, v, u_j, \dots u_n\}
+            \]
+
+            Passa a ser:
+
+
+            \[
+                P = \{ u_1, \dots u_i, v, u_j, \dots u_n\}
+            \]
+
+            $P$ continua sendo um passeio, já que é garantido que $u_i$ liga-se a $v$ e $v$ liga-se a $u_j$, porém agora $P$ possui apenas uma aparição do vértice $v$.
+
+            Repete-se tal passo até que $P$ não percorra um mesmo vértice duas vezes, se tornando assim, por definição, um caminho.
+
+        \end{tcolorbox}
+    
+    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices de $T$, mas como $T$ é euleriano, possuindo todos vértices de $G$, prova-se assim que $G$ é fracamente conexo. \\
+
+     Basta, portanto, provar que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
+
+    Analisaremos dois casos em relação à trilha euleriana $T$ de $G$:
+
+    \begin{itemize}
+        \item Se $T$ é um circuito:
+            \[
+                T  = \{v, w_1, w_2, \dots, w_n, v\}
+            \]
+
+            O vértice $v$ é o vértice inicial e final de $T$, mas também pode estar presente internamente em $T$. 
+            Considere os vértices $w_i$ como vértices diferentes de $v$, internos a $T$.
+
+            Todo vértice $w_i$ possui, em cada uma de suas aparições em $T$, um vértice que o precede e um vértice que o sucede, consequentemente em cada aparição de $w_i$ em $T$, dois arcos ligados a $w_i$ podem ser contabilizados: um entrando em $w_i$ e outro saindo do mesmo. 
+            Isso implica que os arcos que entram e saem de um vértice interno a $T$ são sempre contabilizados em pares, mantendo assim a igualdade $\delta^+(w_i) = \delta^-(w_i)$.
+
+            Analisaremos o vértice $v$ a parte:
+
+            No início de $T$, há uma aparição de $v$ em que contabilizamos uma única aresta saindo de $v$, o que adiciona uma unidade ao grau de saída do mesmo $\delta^-(v)$.
+
+            As aparições de $v$ como vértice interno de $T$ contibuem igualmente para o grau de entrada e saída do mesmo, similarmente ao que ocorre com os vértices $w_i$.
+
+            No fim de $T$, há outra aparição de $v$, que contabiliza uma única aresta entrando em $v$, adicionando uma unidade ao grau de entrada do vértice $\delta^+(v)$.
+
+            Finalmente, nota-se que apesar de $v$ ser um vértice extremo, seus graus de saída e entrada também se igualam, já que $v$ é tanto o vértice inicial quanto o vértice final de $T$.
+
+            Provando assim que todos vértices de $G$ possuem grau de saída e entrada iguais, satisfazendo a implicação do corolário. 
+
+            
+        \item Devemos analisar agora o caso em que $T$ não é um circuito.
+
+            \[T = \{u, w_1, w_2, \dots, w_n, v\} \]
+
+            A diferença neste caso é que os vértices extremos são diferentes.
+            O vértice $u$, do início de $T$, possuirá exatamente uma unidade a mais de grau de saída em relação ao seu grau de entrada $\delta^-(u) - \delta^+(u) = 1$, enquanto que $v$, o vértice final de $T$, possuirá uma unidade a mais de grau de entrada em relação ao grau de saída, $\delta^+(v) - \delta^-(v) = 1$.
+            Todos vértices $w_i$ diferentes de $u$ e $v$ possuirão um valor igual de grau de entrada e saída, já que são apenas vértices internos de $T$.
+
+            Este caso também é valido, condizendo com a implicação do corolário.
+
+    \end{itemize}
+
+    ($\Leftarrow$) Seja $G$ um digrafo fracamente conexo, com vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$, provaremos que deverá existir uma trilha euleriana em $G$.
+
+    Seja $G'$ uma cópia do grafo $G$ em que adiciona-se um arco de $u$ a $v$.
+    A adição de tal arco aumenta o grau de saída de $u$ e o grau de entrada de $v$ em uma unidade, fazendo com que $\delta^+(u) = \delta^-(u)$ e $\delta^+(v) = \delta^-(v)$.
+
+    Deste modo, todos vértices de $G'$ possuem o mesmo grau de entrada e saída e $G'$ continua sendo fracamente conexo.
+
+    Provaremos inicialmente que $G'$ deverá ser fortemente conexo.
+    Sejam $w_i, w_j$ dois vértices quaisquer de $G'$, como este grafo é fracamente conexo podemos assumir, sem perda de generalidade, que existe ao menos um caminho de $w_i$ a $w_j$. 
+    Provaremos que também deverá existir um caminho no sentido inverso, de $w_j$ a $w_i$.
+
+    Seja $T$ uma trilha de tamanho maximal que percorre um dos caminhos de $w_i$ a $w_j$:
+
+    \[ T = \{w_1, w_2, \dots, w_i, \dots, w_j, \dots w_n\} \]
+
+    Como $T$ é maximal, podemos afirmar que todos os arcos que saem do vértice $w_n$ são percorridos por $T$, já que do contrário $T$ não seria maximal.
+
+    Além disso, como todos os vértices possuem grau de saída e entrada iguais em $G'$, deve valer que $w_1 = w_n$, já que do contrário $\delta^-(w_1) - \delta^+(w_1) = 1$ e $\delta^+(w_n) - \delta^-(w_n) = 1$.
+    Consequentemente podemos reescrever a trilha $T$ de outro modo, que chamaremos de $T'$, evidenciando a existência de uma trilha de $w_j$ a $w_i$:
+
+    \[T' = \{w_j, w_{j+1}, \dots, w_n = w_1, w_2, \dots, w_i\} \]
+
+    A partir da trilha $T'$ é possível derivar um caminho de $w_j$ a $w_i$, como realizado anteriormente na demonstração deste corolário.
+
+    Prova-se assim que todo par de vértices $w_i, w_j$ possui um caminho em $G'$ de $w_i$ a $w_j$ e de $w_j$ a $w_i$. 
+    $G'$, pela definição, é um grafo fortemente conexo.
+
+    Além disso, pelo teorema \ref{euler-digraph}, $G'$ é euleriano, possuindo assim um circuito euleriano $C$:
+
+    \[ C = \{w_1, w_2, \dots, w_i = u, w_{i+1} = v, \dots, w_n, w_1 \} \]
+
+    Podemos reescrever $C$ do seguinte modo, tornando o arco artificial, de $u$ a $v$, o último arco percorrido em $C$:
+
+    \[ C = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u, w_{i+1} = v\} \]
+
+    A partir de $C$ podemos derivar uma trilha $T$, removendo apenas o arco artificial de $C$:
+
+    \[T = \{w_{i+1} = v, \dots, w_n, w_1, w_2, \dots, w_{i-1}, w_i = u\} \]
+
+    Ao remover de $C$ o único arco que não pertencia ao grafo original $G$, criamos uma trilha euleriana $T$ em relação a $G$, provando assim a volta do corolário.
+
+\end{proof}
+%Segue agora uma implementação de um algoritmo que encontra o circuito euleriano de um grafo dado que o mesmo possui um circuito euleriano:
+
+%\lstinputlisting[language=c++]{euler_cycle.cpp}
+
+
+    \section{Problemas resolvidos}
+
+        Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
+
+        \subsection{Tanya and Password\cite{tanya}}
+
+        Este problema fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
+
+        Uma instância desse problema é a seguinte, para $n=5$:
+
+        \[\mathcal{C} = \{aca, aba, aba, cab, bac\}\]
+
+        Uma string $S$ que resolve este exemplo é $abacaba$, já que existe uma bijeção entre toda substring de tamanho 3 de $S$ e $\mathcal{C}$.
+        A string $abacab$, no entanto, não satisfaz a restrição do problema já que a mesma não possui duas substrings $aba$, como ocorre em $\mathcal{C}$.
+
+        A solução que será apresentada para este problema envolve a teoria de caminhos eulerianos apresentada.
+
+        Iniciaremos por explicar a modelagem realizada. Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
+        
+        Representaremos cada string $w \in \mathcal{C}$ por dois vértices ligados por um arco. Um dos vértices, que chamaremos de $u$, representa os dois primeiros caracteres de $w$, enquanto que o segundo vértice, $v$, representa os dois últimos caracteres de $w$, cria-se ainda um arco de $u$ a $v$.
+
+        Para exemplificar tal procedimento tome $w = aca$. Criam-se primeiramente dois vértices, um representando a string $ac$ e outro representando $ca$, e liga-se ambos com um arco, como representado em \ref{fig:tanya}.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] (ac) {ac};
+                \node[main node] at (2, 0) (ca) {ca};
+
+                \path[->] (ac) edge[] node {} (ca);
+            \end{tikzpicture}
+
+            \caption{Exemplo da modelagem usada na solução}
+            \label{fig:tanya}
+        \end{figure}
+
+        \sloppy Deve repetir-se tal procedimento para toda string $w \in \mathcal{C}$. Segue a modelagem completa, que chamaremos de $G$, do exemplo inicial ($\mathcal{C} = \{aca, aba, aba, cab, bac\}$):
+       
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] (ac) {ac};
+                \node[main node] at (2, 0) (ca) {ca};
+                \node[main node] at(0, -2) (ab) {ab};
+                \node[main node] at(2, -2) (ba) {ba};
+
+
+                \path[->] (ac) edge[] node {} (ca);
+                \path[->] (ab) edge[bend left] node {} (ba);
+                \path[->] (ab) edge[bend right] node {} (ba);
+                \path[->] (ca) edge[] node {} (ab);
+                \path[->] (ba) edge[] node {} (ac);
+            \end{tikzpicture}
+        \end{figure}
+
+
+        Cada arco criado na modelagem corresponde a uma string de $\mathcal{C}$, o arco entre $ac$ e $ca$, por exemplo, representa a string $aca$.
+        A partir dessa correspondência podemos representar também um passeio, $P$, em $G$ como uma sequência de strings, $seq$, subconjunto de $\mathcal{C}$:
+
+        O passeio $P = \{ba, ac, ca, ab\}$, por exemplo, percorre os arcos que correspondem à sequência $seq = \{bac, aca, cab\}$.
+
+        Por sua vez, a partir de $seq$ é possível montar uma string $S$ que possua todas strings de $seq$ como substrings:
+
+        \[seq = \{bac, aca, cab\} \rightarrow S = ``bacab'' \]
+
+        Tal procedimento permite que, a partir de um passeio $P$ em $G$ construa-se uma string $S$ tal que:
+        
+        \begin{itemize}
+            \item O tamanho de $S$ é igual ao número de arcos percorridos em $P$ mais 2;
+            \item Se um arco $e$ é percorrido em $P$, então a string de $\mathcal{C}$ que $e$ representa será uma substring de $S$.
+        \end{itemize}
+
+        Como o problema pede que encontremos uma string de tamanho $n+2$ que possua todas strings de $\mathcal{C}$ como substrings, basta encontrar, se existir, uma trilha que percorra todo arco de $G$ uma única vez, isto é, uma trilha ou um circuito euleriano.
+
+        Deste modo a solução do problema consiste em checar as propriedades necessárias para a existência de uma trilha euleriana, que são estabelecidas neste trabalho pelo corolário \ref{corollary-euler-digraph}.
+
+        Se uma trilha ou circuito euleriano existir em $G$, podemos usar o algoritmo de Hierholzer para encontrar tal passeio.
+
+        Esta solução foi implementada em C++ e adicionada à referência\cite{tanya-sol}.
+
+    \iffalse
+        \section{Anotações}
+        \begin{itemize}
+            \item Todo mixed CPP pode ser transformado em um WPP.
+        \end{itemize}
+    \fi
+
+	\medskip
+
+	\begin{thebibliography}{9}
+	\bibitem{konigsberg} 
+	Euler, Leonhard
+	\textit{Solution problematis ad geometriam situs pertinentis}. 
+	Comment. Acad. Sci. U. Petrop 8, 128–40, 1736.
+
+	\bibitem{hierholzer}
+	Hierholzer, Carl
+	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
+	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
+
+    \bibitem{tanya}
+    Problema D do round \#288 (Div. 2) retirado do Codeforces\\
+    \href{https://codeforces.com/contest/508/problem/D}{codeforces.com/contest/508/problem/D}
+
+    \bibitem{tanya-sol}
+    Solução para o problema Tanya and Password, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D\\.cpp}
+
+    \bibitem{sereja}
+    Problema C do round \#215 (Div. 1) retirado do Codeforces\\
+    \href{https://codeforces.com/problemset/problem/367/C}{codeforces.com/problemset/problem/367/C}
+
+    \bibitem{sereja-sol}
+    Solução para o problema Sereja and the Arrangement of Numbers, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}
+
+    \bibitem{jogging}
+    Problema 10296 retirado do UVa\\
+    \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=com\_onlinejudge\&Itemid=8\&page=show\\\_problem\&problem=1237}
+
+    \bibitem{jogging-sol}
+    Solução para o problema Jogging Trails, desenvolvida em C++\\
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp} 
+
+    \bibitem{mit}
+    Exemplo retirado do site do MIT, exercício 6.6.c\\
+    \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{web.mit.edu/urban\_or\_book/www/book/chapter6/problems6/6.6.html} 
+	\end{thebibliography}
+ 
+\end{document}
