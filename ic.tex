@@ -1215,7 +1215,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     \subsection{Problema do carteiro chinês rural}
     
-    Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c(e), e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
+    Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c_e$, para algum $e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
 
     Nesta versão mais geral do PCC devemos realizar o planejamento de uma rota de custo mínimo que se inicia e termina no mesmo vértice e passa ao menos uma vez por toda aresta pertencente a $R$. 
     Isto é, não há necessidade de se percorrer as arestas de $A \setminus R$.
@@ -1228,7 +1228,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
-    Para resolver a primeira parte do problema, criar uma estensão de $G$ que seja euleriana, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
+    Para realizar a primeira parte da solução do problema, criar uma estensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
 
         \subsubsection{PCR em grafos não direcionados}
 
@@ -1236,30 +1236,253 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provada \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
 
-        Uma adaptação de tal algoritmo foi desenvolvida e pode ser aplicada ao PCR.
-
-
+        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR.
         Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
 
-        \subsubsection{PCR em grafos não direcionados}
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
+
         $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u_i, u_j) \in A \setminus R$ tal que $c_{ij} = c_{ik} + c_{kj}$ para algum $k$.
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
-        %TODO: COLOCAR TIKZ
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (0, 0) (d) {d};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (b) edge node [above] {1} (d)
+                    (b) edge node [above] {3} (f)
+                    (c) edge node [above] {1} (d)
+                    (c) edge node [below] {5} (e)
+                    (d) edge node [above] {2} (f)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Exemplo de grafo $G$, destacam-se no mesmo as arestas pertencentes a $R$}
+            \label{grafo-original}
+        \end{figure}
+
+        Define-se o conjunto de vértices de $G'$: $V' = \{a, b, c, e, f\}$.
+        Exclui-se de tal conjunto apenas o vértice $d$, que não possui qualquer ligação com aresta em $R$.
+
+    O conjunto $A'$ é definido em duas etapas: primeiramente criam-se novas arestas entre os vértices de $V'$ com custo igual ao custo da menor distância entre os mesmos vértices em $G$, tais arestas são representadas em azul na imagem \ref{grafo-intermediario}.
 
 
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (a) edge[blue, bend left] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (b) edge[blue, bend left] node [right] {2} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (a) edge[blue, bend right=40] node [below] {4} (c)
+                    (b) edge node [above] {3} (f)
+                    (b) edge[blue, bend left=20] node [above] {3} (f)
+                    (c) edge node [below] {5} (e)
+                    (c) edge[blue, bend right=20] node [below] {5} (e)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (e) edge[blue, bend right=40] node [right] {2} (f)
+                    (c) edge[blue] node [above, pos=0.2] {3} (f)
+                    (e) edge[blue] node[above, pos=0.2] {5} (b)
+                    (f) edge[blue, bend right=100] node[above] {5} (a)
+                    (e) edge[blue, bend left=50] node[below] {7} (a)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo intermediário na transformação de $G$ em $G'$}
+            \label{grafo-intermediario}
+        \end{figure}
+
+
+        Após a criação das novas arestas são deletadas do grafo todas arestas $uv \notin R$ tal que existe $k$ para que $c_{uv} = c_{uk} + c_{kv}$, assim como as arestas paralelas não pertencentes a $R$ de mesmo custo.
+        % CONFERIR PQ TA DIFERENTE DO PAPER
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (b) edge[blue, bend left] node [right] {2} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (b) edge node [above] {3} (f)
+                    (c) edge node [below] {5} (e)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (c) edge[blue] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo transformado $G'$}
+            \label{grafo-transformado}
+        \end{figure}
         
         O conjunto de arestas $R$ induz uma separação no grafo $G'$ de $n$ componentes conexas $G_1, G_2, \dots, G_n$. 
         Ou seja, os conjuntos $G_i$ são compostos por subgrafos conexos maximais que possuem apenas arestas pertencentes a $R$.
 
+        No grafo $G'$ representado na figura \ref{grafo-transformado} existem duas componentes conexas $G_1$ e $G_2$, compostas pelos conjuntos de vértices $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
+
         \begin{enumerate}
-            \item[Passo 1.]
-                Construir uma árvore geradora mínima em $G'$ que conecte os subgrafos $G_i$,
-            \item[Passo 2.]
-            \item[Passo 3.]
+        \item[\textbf{Passo 1.}]
+                Construir uma árvore geradora mínima $T$ em $G'$ que conecte os subgrafos $G_i$.
+
+                No exemplo, uma árvore de custo mínimo que liga os subgrafos $G_1$ e $G_2$ é composta pelos vértices $c$, $f$ e a aresta entre os mesmos, como é possível visualizar na figura \ref{mst}.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node, red] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node, red] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (b) edge[bend left] node [right] {2} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (b) edge node [above] {3} (f)
+                    (c) edge node [below] {5} (e)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (c) edge[red] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Árvore geradora mínima que conecta os subgrafos $G1$ e $G2$}
+            \label{mst}
+        \end{figure}
+
+        \item[\textbf{Passo 2.}]
+            Encontrar um emparelhamento perfeito $M$ de custo mínimo entre os vértices de grau ímpar do grafo induzido por $R \cup T$.
+
+            No exemplo, os únicos vértices de grau ímpar em $R \cup T$ são os vértices $c$ e $e$.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (e) edge[blue, line width=2] node [right] {2} (f)
+                    (c) edge[blue] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo induzido por $R \cup T$ evidenciando o emparelhamento dos vértices $c$ e $e$ de custo mínimo}
+            \label{mst}
+        \end{figure}
+
+
+        \item[\textbf{Passo 3.}]
+            Encontrar um circuito euleriano no grafo induzido por $R \cup T \cup M$. 
+            A partir de tal circuito é possível derivar-se um circuito de mesmo custo no grafo $G$ original que resolve o PCR.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (e) edge[blue, bend right=40] node [right] {2} (f)
+                    (c) edge[] node [above] {3} (f)
+                    (c) edge[blue, bend right] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo induzido por $R \cup T \cup M$}
+            \label{grafo-rtm}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+                \node at(-7, 0) (st) {início};
+                \path[->] (st) edge[] node {} (a);
+                \path[->] (a) edge node {1} (b);
+                \path[->] (b) edge node {2} (c);
+                \path[->] (c) edge node {3} (f);
+                \path[->] (f) edge node {4} (e);
+                \path[->] (e) edge[bend right=40] node [right] {5} (f);
+                \path[->] (f) edge[bend left] node[below] {6} (c);
+                \path[->] (c) edge node {7} (a);
+
+            \end{tikzpicture}
+            \caption{Circuito euleriano em $R\cup T \cup M$}
+            \label{circuito-euleriano}
+        \end{figure}
+
+        Segue agora o caminho que resolve o PCR no grafo original baseado no circuito euleriano da figura \ref{circuito-euleriano}:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (0, 0) (d) {d};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+                \node at(-7, 0) (st) {início};
+                \path[->] (st) edge[] node {} (a);
+                \path[->] (a) edge[line width=2] node {1} (b);
+                \path[->] (b) edge[line width=2] node {2} (c);
+                \path[->] (c) edge[bend left=20] node {3} (d);
+                \path[->] (d) edge node {4} (f);
+                \path[->] (f) edge[line width=2] node {5} (e);
+                \path[->] (e) edge[bend right=40] node [right] {6} (f);
+                \path[->] (f) edge[bend left=20] node {7} (d);
+                \path[->] (d) edge[] node {8} (c);
+                \path[->] (c) edge[line width=2] node {9} (a);
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (b) edge node [above] {} (d)
+                    (b) edge node [above] {} (f)
+                    (c) edge node [below] {} (e)
+                    ;
+            \end{tikzpicture}
+            \caption{Solução do PCR encontrada pela heurística de Christofides}
+            \label{sol-pcr}
+        \end{figure}
+
 
         \end{enumerate}
 
