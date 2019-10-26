@@ -1218,17 +1218,52 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c(e), e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
 
     Nesta versão mais geral do PCC devemos realizar o planejamento de uma rota de custo mínimo que se inicia e termina no mesmo vértice e passa ao menos uma vez por toda aresta pertencente a $R$. 
-    Isto é, não há necessidade de se incluir no trajeto resultante as arestas de $A \setminus R$.
+    Isto é, não há necessidade de se percorrer as arestas de $A \setminus R$.
 
-    Denomina-se esta variação de Problema do Carteiro Chinês Rural (PCCR).
+    Denomina-se esta variação de Problema do Carteiro Rural (PCR).
 
-    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não por todas ruas de um bairro.
+    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
 
-    Assim como a variação do PCC para grafos mistos, o PCCR é um problema NP-hard.
+    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-hard.
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
-    Algoritmos que 
+    Para resolver a primeira parte do problema, criar uma estensão de $G$ que seja euleriana, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
+
+        \subsubsection{PCR em grafos não direcionados}
+
+        \textbf{Heurística da árvore geradora mínima}
+
+        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provada \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
+
+        Uma adaptação de tal algoritmo foi desenvolvida e pode ser aplicada ao PCR.
+
+
+        Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
+
+        \subsubsection{PCR em grafos não direcionados}
+
+        Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
+        $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u_i, u_j) \in A \setminus R$ tal que $c_{ij} = c_{ik} + c_{kj}$ para algum $k$.
+
+        Pode-se visualizar um exemplo de tal separação a seguir:
+
+        %TODO: COLOCAR TIKZ
+
+
+        
+        O conjunto de arestas $R$ induz uma separação no grafo $G'$ de $n$ componentes conexas $G_1, G_2, \dots, G_n$. 
+        Ou seja, os conjuntos $G_i$ são compostos por subgrafos conexos maximais que possuem apenas arestas pertencentes a $R$.
+
+        \begin{enumerate}
+            \item[Passo 1.]
+                Construir uma árvore geradora mínima em $G'$ que conecte os subgrafos $G_i$,
+            \item[Passo 2.]
+            \item[Passo 3.]
+
+        \end{enumerate}
+
+        \subsubsection{PCR em grafos direcionados}
 
     \subsection{Problema do carteiro chinês com vento}
         A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
@@ -1585,6 +1620,11 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \bibitem{mit}
     Exemplo retirado do site do MIT, exercício 6.6.c\\
     \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{web.mit.edu/urban\_or\_book/www/book/chapter6/problems6/6.6.html} 
+
+    \bibitem{wiki-christofides}
+    Página da wikipedia sobre o algoritmo de Christofides\\
+    \href{https://en.wikipedia.org/wiki/Christofides_algorithm}{wikipedia.org/wiki/Christofides\_algorithm}
+
 	\end{thebibliography}
  
 \end{document}
