@@ -1232,6 +1232,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         \subsubsection{PCR em grafos não direcionados}
 
+
         \textbf{Heurística da árvore geradora mínima}
 
         Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provada \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
@@ -1487,6 +1488,23 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \end{enumerate}
 
         \subsubsection{PCR em grafos direcionados}
+
+        Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
+
+        Assim como no caso não direcionado, a solução do PCR se baseia em estender o digrafo $G$ em um digrafo $G'$ euleriano, derivando, após isso, do circuito euleriano de $G'$ uma solução para o PCR de $G$.
+
+        A estensão de $G$ em $G' = (V', A')$ se dá de modo similar àquela do caso anterior:
+
+        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R para algum v \in V\}$, com a diferença que agora o par $(u, v)$ é ordenado. 
+        De mesmo modo, $A'$ será inicialmente acrescida dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
+        Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{ij}$ é igual a $c_{ik} + c_{kj}$ para algum $k$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
+
+        Será apresentada agora uma heurística que resolve esse problema.
+
+
+        TODO: continuar vendo sobre shortest spanning arborescence 
+
+        
 
     \subsection{Problema do carteiro chinês com vento}
         A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
