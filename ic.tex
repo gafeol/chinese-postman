@@ -1213,7 +1213,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
-    \subsection{Problema do carteiro chinês rural}
+    \subsection{Problema do carteiro rural}
     
     Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c_e$, para algum $e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
 
@@ -1224,22 +1224,21 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
 
-    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-hard.
+    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-difícil.
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
-    Para realizar a primeira parte da solução do problema, criar uma estensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
+    Para realizar a primeira parte da solução do problema, ou seja, criar uma estensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
 
         \subsubsection{PCR em grafos não direcionados}
 
 
         \textbf{Heurística da árvore geradora mínima}
 
-        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provada \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
+        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
 
         Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR.
         Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
-
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
 
