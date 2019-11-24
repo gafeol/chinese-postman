@@ -29,14 +29,22 @@
 \newtheorem{lemma}{Lema}
 
 \title{O problema do carteiro chinês}
-\author{Carlos Eduardo Ferreira\\Gabriel Fernandes de Oliveira}
+\author{Orientador: Carlos Eduardo Ferreira\\Gabriel Fernandes de Oliveira}
 \date{}
 
 \begin{document}
 
 \maketitle
 
-\section{As sete pontes de Königsberg}
+
+\newpage
+\tableofcontents
+\newpage
+
+
+\section{Grafos eulerianos}
+
+\subsection{As sete pontes de Königsberg}
 
 \begin{wrapfigure}{r}{0.5\textwidth} 
     \centering
@@ -69,9 +77,11 @@ Chegamos assim a um absurdo, pois inicialmente provamos que a sequência de letr
 Provando assim, por absurdo, que não existe um trajeto como o pedido no enunciado do problema.
 
 
-Essa obserevação que, aos olhos de hoje, parece muito simples, teve um impacto profundo nas áreas da Matemática e Computação.
+Essa observação que, aos olhos de hoje, parece muito simples, teve um impacto profundo nas áreas da Matemática e Computação.
 A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absoluatmente inovadora e é o embrião da área da teoria dos grafos.
 
+
+\subsection{Grafos não direcionados}
 
 Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, v_1, \dots, v_k\}$, cujos termos são vértices $v_i$ tal que, para todo $i$, $0 \leq i < k$, os vértices $v_{i}$ e $v_{i+1}$ são ligados por uma aresta. 
 Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
@@ -86,17 +96,16 @@ Uma trilha fechada é um \textbf{circuito}.
 
 Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriana fechada.
 
-Euler modelou essa área da cidade como um grafo, representado na figura \ref{konigsberg-graph}, tratando as pontes como arestas e as massas de terra como vértices.
-
-A partir de tal modelagem e das definições feitas, o problema de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
-
-
-\begin{wrapfigure}{l}{0.25\textwidth}
+\begin{wrapfigure}{l}{0.4\textwidth}
     \centering
     \includegraphics[width=0.25\textwidth]{konigsberg-graph.png}
     \caption{Modelagem de Königsberg como um grafo}
     \label{konigsberg-graph}
 \end{wrapfigure}
+
+Euler modelou essa área da cidade como um grafo, representado na figura \ref{konigsberg-graph}, tratando as pontes como arestas e as massas de terra como vértices.
+
+A partir de tal modelagem e das definições feitas, o problema de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
 
 Apesar de ter recebido grande parte do crédito histórico pelas suas implicações, Euler não provou que qualquer grafo conexo com vértices de grau par era euleriano, essa prova só foi publicada mais de cem anos depois, em 1873, por Carl Hierholzer \cite{hierholzer}, no que se tornou o conhecido Teorema de Euler.
 
@@ -261,6 +270,7 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
 \end{proof}
 
 % Grafos direcionados
+\subsection{Grafos direcionados}
 
 Até então tratamos apenas de grafos não direcionados, mas podemos expandir esses mesmos conceitos para grafos direcionados, os \textbf{digrafos}.
 
@@ -1553,11 +1563,11 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
 
-        Assim como no caso não direcionado, a solução do PCR se baseia em estender o digrafo $G$ em um digrafo $G'$ euleriano, derivando, após isso, do circuito euleriano de $G'$ uma solução para o PCR de $G$.
+        Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
         A estensão de $G$ em $G' = (V', A')$ se dá de modo similar àquela do caso anterior:
 
-        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$, com a diferença que agora o par $(u, v)$ é ordenado. 
+        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$. 
         De mesmo modo, $A'$ será inicialmente acrescida dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
         Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
@@ -1577,16 +1587,18 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 			Seja $R \cup T$ o subgrafo de $G'$ induzido pelos arcos de $R$ e da arborescência $T$.
 
         \item[\textbf{Passo 2.}]
-			Encontrar um multiconjunto de arcos $M$ de menor custo tal que, se adicionado ao subgrafo $R \cup T$ iguala os graus de entrada e saída de todos vértices do subgrafo.
+            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o subgrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
 
-			Este pode ser modelado como um problema de transporte no grafo $G'$. 
-			Se um vértice $v \in V(G')$	possui um grau de entrada maior que seu grau de saída (em relação ao subgrafo $R \cup T$) então o mesmo possuirá uma oferta igual ao valor da diferença de ambos, enquanto que se $v$ possui um grau de saída maior que seu grau de entrada, então ele possuirá uma demanda igual a diferença dos graus.
+			Pode-se determinar $M$ a partir da resolução de um problema de transporte, segue a modelagem de tal problema: 
+            O problema de transporte será definido tendo como base o grafo $G'$, porém as funções de oferta e demanda são definidas a partir dos graus dos vértices no grafo induzido por $R \cup T$.
+            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao subgrafo $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença dos graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
 
-			A resolução deste problema induz um conjunto $M$ de menor custo possível.
+			A resolução deste problema gera um conjunto de caminhos, representando a distribuição ótima da oferta. O multiconjunto dos arcos pertencentes aos caminhos que solucionam o problema é o multiconjunto $M$ desejado.
+
         \item[\textbf{Passo 3.}]
-			O digrafo $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
+			O digrafo induzido pelo multiconjunto de arcos $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
 			
-			Portanto, pode-se derivar um circuito euleriano de tal grafo, a partir de tal circuito euleriano é possível derivar uma solução do PCR para o grafo original $G$.
+			Portanto, pode-se derivar um circuito euleriano de tal grafo, a partir deste circuito euleriano, por sua vez, é possível derivar uma solução do PCR para o grafo original $G$.
 	\end{enumerate}
 
     \subsection{Problema do carteiro chinês com vento}
