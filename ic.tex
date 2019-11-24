@@ -530,7 +530,23 @@ O nome do problema está relacionado a um problema que carteiros encontram no pl
 
 \begin{wrapfigure}{l}{0.3\textwidth} 
     \centering
-    \includegraphics[width=0.3\textwidth]{graph.png}
+	\resizebox{0.3\textwidth}{!}{ % using ! automatically rescales the vertical size of the box
+		\begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+			\node[main node] at (0, 0) (a) {A};
+			\node[main node] at (0, 2) (b) {B};
+			\node[main node] at (-2, -1) (c) {C};
+			\node[main node] at (2, -1) (d) {D};
+
+			\path[every node/.style={font=\sffamily\small}]
+				(a) edge[] node [right] {1} (b)
+				(a) edge node [above] {2} (c)
+				(a) edge node [above] {2} (d)
+				(b) edge node [right] {2} (d)
+				(b) edge node [above] {2} (c)
+				(c) edge node [above] {1} (d)
+				;
+		\end{tikzpicture}
+	}
 	\caption{Exemplo de grafo}
 	\label{graph}
 \end{wrapfigure}
@@ -1163,6 +1179,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     \end{itemize}
 
     \subsection{Grafos mistos}
+    % Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
     Já analisamos o Problema do Carteiro Chinês aplicado a grafos e digrafos, agora discutiremos o mesmo problema aplicado a grafos mistos, ou seja, grafos que tenham tanto arestas quanto arcos.
 
@@ -1214,6 +1231,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
     \subsection{Problema do carteiro rural}
+    % Ref https://core.ac.uk/download/pdf/37350985.pdf
     
     Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c_e$, para algum $e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
 
@@ -1224,7 +1242,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
 
-    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-difícil.
+    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-difícil  (Lenstra and Rinnooy Kan, 1976).
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
@@ -1237,12 +1255,12 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
 
-        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR.
+        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson (1979).
         Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
 
-        $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u_i, u_j) \in A \setminus R$ tal que $c_{ij} = c_{ik} + c_{kj}$ para algum $k$.
+        $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u, v) \in A \setminus R$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w$.
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
@@ -1312,8 +1330,13 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \end{figure}
 
 
-        Após a criação das novas arestas são deletadas do grafo todas arestas $uv \notin R$ tal que existe $k$ para que $c_{uv} = c_{uk} + c_{kv}$, assim como as arestas paralelas não pertencentes a $R$ de mesmo custo.
+        Após a criação das novas arestas são deletadas do grafo todas arestas $uv \notin R$ tal que existe $w \in V'$ para que $c_{uv} = c_{uw} + c_{wv}$, assim como as arestas paralelas não pertencentes a $R$ de mesmo custo.
         % CONFERIR PQ TA DIFERENTE DO PAPER
+
+        No exemplo são retiradas de $A'$ uma cópia das arestas $ab, ac, bf, ce, ef$ pois já existem arestas paralelas a estas de mesmo custo.
+        Retiram-se também as arestas: $af$ já que $c_{af} = c_{ab} + c_{bf}$, $be$ já que $c_{be} = c_{bf} + c_{fe}$, $ae$ já que $c_{ae} = c_{af} + c_{fe}$.
+
+
         \begin{figure}[H]
             \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
@@ -1338,40 +1361,80 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             \label{grafo-transformado}
         \end{figure}
         
-        O conjunto de arestas $R$ induz uma separação no grafo $G'$ de $n$ componentes conexas $G_1, G_2, \dots, G_n$. 
-        Ou seja, os conjuntos $G_i$ são compostos por subgrafos conexos maximais que possuem apenas arestas pertencentes a $R$.
+        Considere o subgrafo de $G'$ induzido pelas arestas de $R$. Este grafo possui $k$ componentes conexas, que são denominadas $G_1, G_2, \dots, G_k$. 
 
-        No grafo $G'$ representado na figura \ref{grafo-transformado} existem duas componentes conexas $G_1$ e $G_2$, compostas pelos conjuntos de vértices $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
-
-        \begin{enumerate}
-        \item[\textbf{Passo 1.}]
-                Construir uma árvore geradora mínima $T$ em $G'$ que conecte os subgrafos $G_i$.
-
-                No exemplo, uma árvore de custo mínimo que liga os subgrafos $G_1$ e $G_2$ é composta pelos vértices $c$, $f$ e a aresta entre os mesmos, como é possível visualizar na figura \ref{mst}.
+        No exemplo tal separação gera dois subgrafos $G_1$ e $G_2$, que são representadas na figura \ref{r-separacao}, compostas pelos conjuntos de vértices $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
 
         \begin{figure}[H]
             \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
                 \node[main node] at (-5, -1) (a) {a};
                 \node[main node] at (-4, 1) (b) {b};
-                \node[main node, red] at (-3, -1) (c) {c};
+                \node[main node] at (-3, -1) (c) {c};
                 \node[main node] at (3, -1) (e) {e};
-                \node[main node, red] at (3, 1) (f) {f};
+                \node[main node] at (3, 1) (f) {f};
+                \node[] at (-2.5, 0) (g1) {$G_1$};
+                \node[] at (4, 0) (g2) {$G_2$};
 
                 \path[every node/.style={font=\sffamily\small}]
                     (a) edge[line width=2] node [left] {2} (b)
                     (b) edge[line width=2] node [right] {3} (c)
-                    (b) edge[bend left] node [right] {2} (c)
                     (a) edge[line width=2] node [below] {4} (c)
-                    (b) edge node [above] {3} (f)
-                    (c) edge node [below] {5} (e)
                     (e) edge[line width=2] node [right] {2} (f)
-                    (c) edge[red] node [above] {3} (f)
                     ;
             \end{tikzpicture}
-            \caption{Árvore geradora mínima que conecta os subgrafos $G1$ e $G2$}
+            \caption{Separação induzida pelas arestas de $R$ em $G'$}
+            \label{r-separacao}
+        \end{figure}
+
+        Segue agora uma descrição da heurística de Frederickson (1979) como apresentado por Michel Gendreau e Gilbert Laporte\cite{michel}.
+
+        \begin{enumerate}
+        \item[\textbf{Passo 1.}]
+                Construir uma árvore geradora mínima $T$ em $G'$ que conecte os $k$ subgrafos $G_i$ induzidos por $R$.
+
+                No exemplo, uma árvore de custo mínimo que liga os subgrafos $G_1$ e $G_2$ tem custo $3$, como se vê nas figuras \ref{mst} e \ref{mst-2}, sendo composta pelos vértices $c$, $f$ e a aresta entre os mesmos.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node, dashed] at (-2, 0) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+
+                \node[main node, dashed] at (2, 0) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+
+                \path[every node/.style={font=\sffamily\small}]
+					(g1) edge[red] node [above] {3} (g2)
+					(g1) edge[bend left] node [above] {3} (g2)
+					(g1) edge[bend right] node [above] {5} (g2)
+                    ;
+            \end{tikzpicture}
+            \caption{Árvore geradora mínima $T$ representada em vermelho no grafo $G'$ condensado}
             \label{mst}
         \end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+				\node[main node] at (-5, -1) (a) {a};
+				\node[main node] at (-4, 1) (b) {b};
+				\node[main node, red] at (-3, -1) (c) {c};
+				\node[main node] at (3, -1) (e) {e};
+				\node[main node, red] at (3, 1) (f) {f};
+
+				\path[every node/.style={font=\sffamily\small}]
+					(a) edge[line width=2] node [left] {2} (b)
+					(b) edge[line width=2] node [right] {3} (c)
+					(b) edge[bend left] node [right] {2} (c)
+					(a) edge[line width=2] node [below] {4} (c)
+					(b) edge node [above] {3} (f)
+					(c) edge node [below] {5} (e)
+					(e) edge[line width=2] node [right] {2} (f)
+					(c) edge[red] node [above] {3} (f)
+					;
+			\end{tikzpicture}
+			\caption{Representação de $T$ em $G'$}
+			\label{mst-2}
+		\end{figure}
 
         \item[\textbf{Passo 2.}]
             Encontrar um emparelhamento perfeito $M$ de custo mínimo entre os vértices de grau ímpar do grafo induzido por $R \cup T$.
@@ -1494,16 +1557,37 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         A estensão de $G$ em $G' = (V', A')$ se dá de modo similar àquela do caso anterior:
 
-        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R para algum v \in V\}$, com a diferença que agora o par $(u, v)$ é ordenado. 
+        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$, com a diferença que agora o par $(u, v)$ é ordenado. 
         De mesmo modo, $A'$ será inicialmente acrescida dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
-        Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{ij}$ é igual a $c_{ik} + c_{kj}$ para algum $k$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
+        Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
-        Será apresentada agora uma heurística que resolve esse problema.
+		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
+		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexos.
 
+        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
 
-        TODO: continuar vendo sobre shortest spanning arborescence 
+	\textbf{Heurística da arborescência geradora mínima}
 
-        
+	\begin{enumerate}
+        \item[\textbf{Passo 1.}] 
+			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
+
+            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
+
+			Seja $R \cup T$ o subgrafo de $G'$ induzido pelos arcos de $R$ e da arborescência $T$.
+
+        \item[\textbf{Passo 2.}]
+			Encontrar um multiconjunto de arcos $M$ de menor custo tal que, se adicionado ao subgrafo $R \cup T$ iguala os graus de entrada e saída de todos vértices do subgrafo.
+
+			Este pode ser modelado como um problema de transporte no grafo $G'$. 
+			Se um vértice $v \in V(G')$	possui um grau de entrada maior que seu grau de saída (em relação ao subgrafo $R \cup T$) então o mesmo possuirá uma oferta igual ao valor da diferença de ambos, enquanto que se $v$ possui um grau de saída maior que seu grau de entrada, então ele possuirá uma demanda igual a diferença dos graus.
+
+			A resolução deste problema induz um conjunto $M$ de menor custo possível.
+        \item[\textbf{Passo 3.}]
+			O digrafo $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
+			
+			Portanto, pode-se derivar um circuito euleriano de tal grafo, a partir de tal circuito euleriano é possível derivar uma solução do PCR para o grafo original $G$.
+	\end{enumerate}
 
     \subsection{Problema do carteiro chinês com vento}
         A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
@@ -1865,6 +1949,18 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
     Página da wikipedia sobre o algoritmo de Christofides\\
     \href{https://en.wikipedia.org/wiki/Christofides_algorithm}{wikipedia.org/wiki/Christofides\_algorithm}
 
+    \bibitem{michel}
+    Artigo ``Arc Routing Problems Part II: The Rural Postman Problem'' publicado por Michel Gendreau e Gilbert Laporte.
+    \href{https://pubsonline.informs.org/doi/10.1287/opre.43.3.399}{pubsonline.informs.org/doi/10.1287/opre.43.3.399}
+
+
+    \bibitem{christofides-86}
+    Christofides, Nicos, et al. "An algorithm for the rural postman problem on a directed graph." Netflow at pisa. Springer, Berlin, Heidelberg, 1986. 155-166.\\
+    \href{https://link.springer.com/chapter/10.1007/BFb0121091}{link.springer.com/chapter/10.1007/BFb0121091}
+
+
+    \bibitem{edmonds-ssa}
+    \href{https://nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233_A1b.pdf<Paste>}{nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233\_A1b.pdf}    
 	\end{thebibliography}
  
 \end{document}
