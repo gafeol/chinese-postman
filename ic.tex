@@ -1574,7 +1574,41 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
 		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexos.
 
+
         Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+
+        Para guiar a explicação da heurística toma-se, como exemplo, o grafo $G$, a seguir:
+   
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+            \path[->] (a) edge[below] node {9} (d);
+            \path[->] (a) edge[below] node {4} (c);
+            \path[->] (b) edge[line width=2, below] node {5} (a);
+            \path[->] (c) edge[bend right, above] node {6} (d);
+            \path[->] (c) edge[line width=2, above] node {8} (f);
+            \path[->] (d) edge[below] node {3} (e);
+            \path[->] (d) edge[bend right, below] node {6} (c);
+            \path[->] (e) edge[line width=2, below] node {6} (b);
+            \path[->] (e) edge[below] node {5} (g);
+            \path[->] (f) edge[below] node {4} (g);
+            \path[->] (g) edge[line width=2, above] node {6} (d);
+        \end{tikzpicture}
+        \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
+        \label{konigsberg-graph}
+    \end{figure}
+
+    O digrafo $G$ é composto pelas componentes $G_1$ induzida pelos vértices $c, f$, $G_2$, induzida por $d, g$ e $G_3$ induzida por $a, b, e$.
 
 	\textbf{Heurística da arborescência geradora mínima}
 
@@ -1583,6 +1617,29 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
 
             Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
+
+            Condensando o digrafo $G$ em suas components $G_1, G_2, G_3$ temos a seguinte situação:
+
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node, dashed] at (2, 2) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+                    \node[main node, dashed] at (-2, 0) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (2, -2) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+                    \path[->] (g3) edge[below] node {9} (g2);
+                    \path[->] (g3) edge[below] node {4} (g1);
+                    \path[->] (g1) edge[bend right, above] node {6} (g2);
+                    \path[->] (g2) edge[bend right, below] node {3} (g3);
+                    \path[->] (g2) edge[bend right, above] node {6} (g1);
+                    \path[->] (g3) edge[bend right, below] node {5} (g2);
+                    \path[->] (g1) edge[above] node {4} (g2);
+                \end{tikzpicture}
+                \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
+                \label{konigsberg-graph}
+            \end{figure}
 
 			Seja $R \cup T$ o subgrafo de $G'$ induzido pelos arcos de $R$ e da arborescência $T$.
 
