@@ -1565,91 +1565,49 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
-        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.\\
-
-        \textbf{Heurística da arborescência geradora mínima}
-
-        Para guiar a explicação da heurística toma-se, como exemplo, o digrafo $G$, a seguir:
-   
-
-        \begin{figure}[H]
-            \centering
-            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-
-                \node[main node] at (-5, 0) (f) {f};
-                \node[main node] at (-2, 3) (e) {e};
-                \node[main node] at (2, 3) (c) {c};
-                \node[main node] at (5, 0) (a) {a};
-                \node[main node] at (-2, -3) (d) {d};
-                \node[main node] at (2, -3) (b) {b};
-
-                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
-                \path[->] (a) edge[left] node {4} (c);
-                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
-                \path[->] (c) edge[line width=2, above] node {8} (e);
-                \path[->] (c) edge[above, left] node {2} (b);
-                \path[->] (d) edge[below] node {6} (b);
-                \path[->] (d) edge[line width=2, left] node {5} (f);
-                \path[->] (e) edge[below] node {4} (f);
-                \path[->] (e) edge[pos=0.4, left] node {8} (d);
-                \path[->] (f) edge[above] node {1} (b);
-            \end{tikzpicture}
-            \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
-            \label{pcr-digraph}
-        \end{figure}
-
-        A extensão de $G$ em um digrafo euleriano $G' = (V', A')$ se dá de modo similar àquela do caso com grafos não direcionados:
+        A extensão de $G$ em $G' = (V', A')$ se dá de modo similar àquela do caso anterior:
 
         O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$. 
-
-        Como no grafo da figura \ref{pcr-digraph} todos vértices possuem ao menos um arco pertencente à $R$, podemos dizer que $V' = V$.
-
-        De modo semelhante, o conjunto de arcos $A'$ será inicialmente acrescido dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
+        De mesmo modo, $A'$ será inicialmente acrescida dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
         Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
-        Realizando tal extensão no exemplo sugerido, teremos o seguinte digrafo $G'$:
-
-        \begin{figure}[H]
-            \centering
-            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-
-                \node[main node] at (-5, 0) (f) {f};
-                \node[main node] at (-2, 3) (e) {e};
-                \node[main node] at (2, 3) (c) {c};
-                \node[main node] at (5, 0) (a) {a};
-                \node[main node] at (-2, -3) (d) {d};
-                \node[main node] at (2, -3) (b) {b};
-
-                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
-                \path[->] (a) edge[left] node {4} (c);
-                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
-                \path[->] (c) edge[line width=2, above] node {8} (e);
-                \path[->] (c) edge[above, left, pos=0.4] node {2} (b);
-                \path[->] (d) edge[below] node {6} (b);
-                \path[->] (d) edge[line width=2, left] node {5} (f);
-                \path[->] (e) edge[below] node {4} (f);
-                \path[->] (e) edge[pos=0.4, left] node {8} (d);
-                \path[->] (f) edge[above] node {1} (b);
-
-                \path[->] (a) edge[red, below, bend left=100] node {20} (d);
-                \path[->] (a) edge[red, above, pos=0.6] node {16} (f);
-                \path[->] (b) edge[bend left, red, below] node {25} (d);
-                \path[->] (b) edge[red, right, pos=0.7] node {17} (e);
-                \path[->] (b) edge[red, above, bend right=15] node {21} (f);
-                \path[->] (e) edge[red, bend left, above] node {14} (c);
-                \path[->] (f) edge[red, above, bend left=100] node {10} (c);
-                \path[->] (f) edge[red, below, bend right] node {26} (d);
-                \path[->] (f) edge[red, above, bend left] node {18} (e);
-
-
-            \end{tikzpicture}
-            \caption{Digrafo $G'$, extensão de $G$, as arestas criadas na extensão são mostradas em vermelho.}
-        \end{figure}
 		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
 		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexos.
 
-        No exemplo apresentado, $G$ possui três componentes, $G_1$ composta pelos vértices $a, b$, $G_2$ composta por $c, e$ e $G_3$ composta por $d, f$.
 
+        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+
+        Para guiar a explicação da heurística toma-se, como exemplo, o grafo $G$, a seguir:
+   
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (4, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+            \path[->] (a) edge[left] node {4} (c);
+            \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+            \path[->] (c) edge[line width=2, above] node {8} (f);
+            \path[->] (e) edge[below] node {6} (b);
+            \path[->] (e) edge[line width=2, left] node {5} (g);
+            \path[->] (f) edge[below] node {4} (g);
+            \path[->] (f) edge[pos=0.4, left] node {8} (e);
+            \path[->] (g) edge[above] node {1} (b);
+        \end{tikzpicture}
+        \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
+        \label{konigsberg-graph}
+    \end{figure}
+
+    O digrafo $G$ é composto pelas componentes $G_1$ induzida pelos vértices $c, f$, pela componente $G_2$, induzida por $d, g$ e por $G_3$ induzida por $a, b, e$.\\
+
+
+	\textbf{Heurística da arborescência geradora mínima}
 
 	\begin{enumerate}
         \item[\textbf{Passo 1.}] 
@@ -1657,38 +1615,28 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
             Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
 
-            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o seguinte grafo:
+            Condensando o digrafo $G$ em suas components $G_1, G_2, G_3$ temos a seguinte situação:
 
 
             \begin{figure}[H]
                 \centering
                 \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
-                    \node[main node, dashed] at (4, -4) (g1) {\parbox{1.5cm}{\centering $G_1$}};
-                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
-                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+                    \node[main node, dashed] at (2, 2) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+                    \node[main node, dashed] at (-2, 0) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (2, -2) (g3) {\parbox{1.5cm}{\centering $G_3$}};
 
-
-                    \path[->] (g3) edge[below] node {6} (g1);
-                    \path[->] (g3) edge[line width=2, below, bend left=15] node {1} (g1);
-                    \path[->] (g1) edge[below, bend left=15, red] node {25} (g3);
-                    \path[->] (g1) edge[below, bend left, red] node {20} (g3);
-                    \path[->] (g1) edge[below, bend left=45, red] node {16} (g3);
-                    \path[->] (g1) edge[below, bend left=60, red] node {21} (g3);
-                    \path[->] (g3) edge[left, bend left=15, red] node {18} (g2);
-                    \path[->] (g3) edge[left, bend left, red] node {10} (g2);
-                    \path[->] (g2) edge[line width=2, left] node {4} (g3);
-                    \path[->] (g2) edge[bend left=15, left] node {8} (g3);
-                    \path[->] (g2) edge[right] node {2} (g1);
-                    \path[->] (g1) edge[right, red, bend left=15] node {17} (g2);
-                    \path[->] (g1) edge[right, bend right=15] node {4} (g2);
-
+                    \path[->] (g3) edge[below] node {9} (g2);
+                    \path[->] (g3) edge[right] node {4} (g1);
+                    \path[->] (g1) edge[bend right, above] node {6} (g2);
+                    \path[->] (g2) edge[bend right, below] node {3} (g3);
+                    \path[->] (g2) edge[bend right, above] node {6} (g1);
+                    \path[->] (g3) edge[bend right, below] node {5} (g2);
+                    \path[->] (g1) edge[above] node {4} (g2);
                 \end{tikzpicture}
-                \caption{Digrafo $G'$ condensado em suas componentes induzidas por $R$}
-                \label{condensated-dig}
+                \caption{Digrafo $G$ condensado em suas componentes induzidas por $R$}
+                \label{konigsberg-graph}
             \end{figure}
-
-            Uma possível arborescência de custo mínimo com raiz em $G_2$ foi apresentada em negrito na imagem \ref{condensated-dig}, sendo composta pelos arcos de $G_2$ a $G_3$ de custo 4 e de $G_3$ a $G_1$ de custo 1.
 
 			Seja $R \cup T$ o subgrafo de $G'$ induzido pelos arcos de $R$ e da arborescência $T$.
 
