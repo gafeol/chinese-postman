@@ -35,26 +35,89 @@
 
 \begin{document}
 
+        \textbf{Heurística da arborescência geradora mínima}
 
+        Para guiar a explicação da heurística toma-se, como exemplo, o digrafo $G$, a seguir:
+   
 
-        \section{PCR em grafos direcionados}
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
-        Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
 
-        Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (c) edge[above, left] node {2} (b);
+                \path[->] (d) edge[below] node {6} (b);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[below] node {4} (f);
+                \path[->] (e) edge[pos=0.4, left] node {8} (d);
+                \path[->] (f) edge[above] node {1} (b);
+            \end{tikzpicture}
+            \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
+            \label{pcr-digraph}
+        \end{figure}
 
-        A estensão de $G$ em $G' = (V', A')$ se dá de modo similar àquela do caso anterior:
+        A extensão de $G$ em um digrafo euleriano $G' = (V', A')$ se dá de modo similar àquela do caso com grafos não direcionados:
 
         O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$. 
-        De mesmo modo, $A'$ será inicialmente acrescida dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
+
+        Como no grafo da figura \ref{pcr-digraph} todos vértices possuem ao menos um arco pertencente à $R$, define-se $V' = V$.
+
+        De modo semelhante, o conjunto de arcos $A'$ será inicialmente acrescido dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
         Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
+        Realizando tal extensão no exemplo sugerido, teremos o seguinte digrafo $G'$:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (c) edge[above, left, pos=0.4] node {2} (b);
+                \path[->] (d) edge[below] node {6} (b);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[below] node {4} (f);
+                \path[->] (e) edge[pos=0.4, left] node {8} (d);
+                \path[->] (f) edge[above] node {1} (b);
+
+                \path[->] (a) edge[red, below, bend left=100] node {20} (d);
+                \path[->] (a) edge[red, above, pos=0.6] node {16} (f);
+                \path[->] (b) edge[bend left, red, below] node {25} (d);
+                \path[->] (b) edge[red, right, pos=0.7] node {17} (e);
+                \path[->] (b) edge[red, above, bend right=15] node {21} (f);
+                \path[->] (e) edge[red, bend left, above] node {14} (c);
+                \path[->] (f) edge[red, above, bend left=100] node {10} (c);
+                \path[->] (f) edge[red, below, bend right] node {26} (d);
+                \path[->] (f) edge[red, above, bend left] node {18} (e);
+
+
+            \end{tikzpicture}
+            \caption{Digrafo $G'$, extensão de $G$, as arestas criadas na extensão são mostradas em vermelho.}
+        \end{figure}
 		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
-		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexos.
+		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexo.
 
-        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+        No exemplo apresentado, $G$ possui três componentes, $G_1$ composta pelos vértices $a, b$, $G_2$ composta por $c, e$ e $G_3$ composta por $d, f$.
 
-	\textbf{Heurística da arborescência geradora mínima}
 
 	\begin{enumerate}
         \item[\textbf{Passo 1.}] 
@@ -62,22 +125,236 @@
 
             Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
 
-			Seja $R \cup T$ o subgrafo de $G'$ induzido pelos arcos de $R$ e da arborescência $T$.
+            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o seguinte grafo:
+
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node, dashed] at (4, -4) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                    \path[->] (g3) edge[below] node {6} (g1);
+                    \path[->] (g3) edge[below, bend left=15] node {1} (g1);
+                    \path[->] (g1) edge[below, bend left=15, red] node {25} (g3);
+                    \path[->] (g1) edge[below, bend left, red] node {20} (g3);
+                    \path[->] (g1) edge[below, bend left=45, red] node {16} (g3);
+                    \path[->] (g1) edge[below, bend left=60, red] node {21} (g3);
+                    \path[->] (g3) edge[left, bend left=15, red] node {18} (g2);
+                    \path[->] (g3) edge[left, bend left, red] node {10} (g2);
+                    \path[->] (g2) edge[left] node {4} (g3);
+                    \path[->] (g2) edge[bend left=15, left] node {8} (g3);
+                    \path[->] (g2) edge[right] node {2} (g1);
+                    \path[->] (g1) edge[right, red, bend left=15] node {17} (g2);
+                    \path[->] (g1) edge[right, bend right=15] node {4} (g2);
+
+                \end{tikzpicture}
+                \caption{Digrafo $G'$ condensado em suas componentes induzidas por $R$}
+                \label{condensated-dig}
+            \end{figure}
+
+                O primeiro passo do algoritmo de Chu-Liu/Edmonds consiste em definir um vértice raiz $r$ para a arborescência.
+                Como a heurística de Christofides não requer que um vértice específico seja tal raiz, podemos escolher o vértice condensado $G_1$ para cumprir tal função ($r = G_1$). 
+
+                Definida a raiz $r$, deve-se retirar do digrafo analisado todos arcos que tem como destino $r$.
+                Além disso, pode-se também substituir qualquer conjunto de arcos paralelos por um único arco com custo igual ao menor custo dos arcos paralelos removidos. 
+                Pode-se visualizar o efeito de tais modificações em $G'$ na figura \ref{chu-liu}.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                    \path[->] (g1) edge[below, red] node {16} (g3);
+                    \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                    \path[->] (g2) edge[left, bend left=10] node {4} (g3);
+                    \path[->] (g1) edge[right] node {4} (g2);
+
+                \end{tikzpicture}
+                \caption{Digrafo $G'$ após a remoção de arcos sugeridas pelo algoritmo de Chu-Liu/Edmonds}
+                \label{chu-liu}
+            \end{figure}
+
+            Para todo vértice $v$ do grafo condensado diferente da raiz ($v \neq r$) encontra-se o arco de menor custo que chega em $v$.
+            Define-se como $\pi(v)$ o vértice origem de tal arco.
+
+            Se o conjunto de arcos $T = \{(\pi(v), v) | v \neq r\}$ não contem circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
+            Do contrário, realiza-se uma contração dos circuitos existentes em $T$, atualizam-se os custos dos arcos e repete-se recursivamente o mesmo procedimento de criação de $T$.
+
+            No exemplo analisado, o conjunto $T$ consiste nos arcos de $G_1$ a $G_2$ e $G_2$ a $G_3$, ambos de custo 4.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                    \path[->] (g1) edge[below, red] node {16} (g3);
+                    \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                    \path[->] (g2) edge[blue, left, bend left=10] node {4} (g3);
+                    \path[->] (g1) edge[blue, right] node {4} (g2);
+
+                \end{tikzpicture}
+                \caption{Conjunto de arcos $T$ definidos pelo algoritmo de Chu-Liu/Edmonds em azul.}
+                \label{chu-liu-p}
+            \end{figure}
+
+
+            Como $T$ não possui circuitos, não é necessário realizar uma nova iteração do algoritmo.
+            $T$ é o conjunto de arcos que induz a arborescência de custo mínimo enraizada em $G_1$.
+
+            Define-se como $R \cup T$ o digrafo induzido pelos arcos de $R$ e da arborescência $T$.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[blue, left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[blue, below] node {4} (f);
+            \end{tikzpicture}
+            \caption{Digrafo $R\cup T$, os arcos de $T$ são representados em azul}
+            \label{graphRUT}
+        \end{figure}
+
+
 
         \item[\textbf{Passo 2.}]
-            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o subgrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
+            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o digrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
 
-			Pode-se determinar $M$ a partir da resolução de um problema de transporte, segue a modelagem de tal problema: 
+			Pode-se determinar $M$ a partir da resolução de um problema de transporte: 
             O problema de transporte será definido tendo como base o grafo $G'$, porém as funções de oferta e demanda são definidas a partir dos graus dos vértices no grafo induzido por $R \cup T$.
-            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao subgrafo $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença dos graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
 
-			A resolução deste problema gera um conjunto de caminhos, representando a distribuição ótima da oferta. O multiconjunto dos arcos pertencentes aos caminhos que solucionam o problema é o multiconjunto $M$ desejado.
+            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao subgrafo $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença de seus graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
+
+            No exemplo abordado, figura \ref{graphRUT}, o vértice $f$ possui uma oferta de valor $2$, os vértices $a$ e $d$ possuem uma demanda de valor $1$ e os vértices restantes já se encontram em igualdade de grau de entrada e saída.
+
+			A resolução do problema de transporte modelado gera um conjunto de caminhos, representando a distribuição ótima da oferta. 
+            O multiconjunto dos arcos pertencentes a união dos caminhos que solucionam o problema é o multiconjunto $M$ desejado.
+
+            Sendo assim, como apenas uma origem existe no problema apresentado como exemplo, a solução do mesmo consiste na utilização dos caminhos de menor custo de $f$ a $a$ e de $f$ a $d$. 
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[below] node {4} (f);
+
+                \path[->] (f) edge[red, below] node {1} (b);
+                \path[->] (b) edge[red, below, bend right=60] node {5} (a);
+                \path[->] (f) edge[red, bend right, below] node {26} (d);
+            \end{tikzpicture}
+            \caption{Digrafo eurleriano $R\cup T \cup M$ com arcos de $M$ representados em vermelho.}
+            \label{graphRUTUM}
+        \end{figure}
+
+        Na figura \ref{graphRUTUM} pode-se visualizar o digrafo induzido pelos arcos $R\cup T \cup M$. 
+        Note que o arco de $b$ a $a$ de custo 5 é representado duas vezes, isso pois ele pertence tanto a $R$ quanto a $M$.
 
         \item[\textbf{Passo 3.}]
 			O digrafo induzido pelo multiconjunto de arcos $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
 			
-			Portanto, pode-se derivar um circuito euleriano de tal grafo, a partir deste circuito euleriano, por sua vez, é possível derivar uma solução do PCR para o grafo original $G$.
+			Portanto, pode-se derivar um circuito euleriano de tal grafo. Por sua vez, a partir deste circuito, é possível derivar uma solução do PCR para o grafo original $G$.
+
+            Um possível circuito euleriano para o exemplo apresentado é representado na figura \ref{circ-eulerianoRUTUM} a seguir.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node at (6, 0) (ini) {início};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {1} (b);
+                \path[->] (b) edge[line width=2, below, bend right] node {2} (a);
+                \path[->] (a) edge[left] node {3} (c);
+                \path[->] (c) edge[line width=2, above] node {4} (e);
+                \path[->] (e) edge[below] node {5} (f);
+                \path[->] (f) edge[bend right, below] node {6} (d);
+                \path[->] (d) edge[line width=2, left] node {7} (f);
+                \path[->] (f) edge[below] node {8} (b);
+                \path[->] (b) edge[below, bend right=60] node {9} (a);
+            \end{tikzpicture}
+            \caption{Circuito euleriano de $R\cup T \cup M$.}
+            \label{circ-eulerianoRUTUM}
+        \end{figure}
+
+        A partir de tal circuito pode-se encontrar uma solução para o PCR do digrafo original $G$ expandindo os arcos contraídos na construção de $G'$ e removendo as duplicatas de arcos criados no procedimento da heurística.
+        Por exemplo, o arco do nó $f$ ao $d$ de custo $26$ pertencente a $M$ consiste na condensação do caminho mínimo de $f$ a $d$: $\{f, b, a, c, e, d\}$.
+
+        Realizando a remoção dos arcos artificiais adicionados a $G$ chegamos no seguinte circuito, baseado no circuito euleriano mostrado na figura \ref{circ-eulerianoRUTUM}:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node at (6, 0) (ini) {início};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {1} (b);
+                \path[->] (b) edge[line width=2, below, bend right, sloped] node {2, 7, 13} (a);
+                \path[->] (a) edge[left] node {3, 8} (c);
+                \path[->] (c) edge[line width=2, above] node {4, 9} (e);
+                \path[->] (e) edge[below] node {5} (f);
+
+                \path[->] (e) edge[right] node {10} (d);
+
+                \path[->] (d) edge[line width=2, left] node {11} (f);
+                \path[->] (f) edge[pos=0.6, below, sloped] node {6, 12} (b);
+                \path[->] (c) edge[dashed, above, left] node {} (b);
+                \path[->] (d) edge[dashed, below] node {} (b);
+
+            \end{tikzpicture}
+            \caption{Construção de um circuito que resolve o PCR do grafo $G$. Representam-se em pontilhado os arcos de $G$ não percorridos na solução desenvolvida.}
+            \label{solucaoPCR}
+        \end{figure}
 	\end{enumerate}
+
+    Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
 
 	\begin{thebibliography}{9}
 	\bibitem{konigsberg} 
