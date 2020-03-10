@@ -573,11 +573,241 @@ Enquanto que, grafos que possuem apenas uma trilha euleriana, tal vértice será
 
 Em ambos casos, após encontrar tal vértice sem arestas, o algoritmo deve continuar percorrendo o grafo em uma busca em profundidade, ou seja voltando por todos os vértices percorridos anteriormente, procurando algum que ainda possua arestas não apagadas, para que ela possa encontrar um novo circuito $C_i$ e juntar o mesmo ao circuito, ou trilha, inicial, unindo ambas estruturas. 
 
-% Colocar o Exemplo aqui ilustrando a DFS e montando a trilha
-
-
 Apesar da união dos circuitos ser um procedimento complexo e possivelmente custoso, não é necessário manter o resultado de todas uniões a serem realizados durante o algoritmo, já que apenas estamos interessados no resultado final, a trilha euleriana.
 Para manter tal trilha, basta adicionar a uma pilha todo vértice encontrado na busca quando o mesmo não possui mais arestas a serem percorridas.
+
+% Colocar o Exemplo aqui ilustrando a DFS e montando a trilha
+Pode-se observar tal procedimento em prática com o seguinte exemplo:
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[] node {} (b)
+            (a) edge node {} (c)
+            (b) edge node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge node {} (c)
+            (e) edge node {} (f)
+            (f) edge node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Grafo $G$, foco do exemplo do algoritmo de Hierholzer}
+\end{figure}
+
+O grafo apresentado possui uma grande quantidade de circuitos, por isso encontrar uma partição do mesmo em circuitos $C_1, C_2, \dots, C_k$ não é uma tarefa simples.
+Uma possibilidade para este grafo é tomar $C_1 = \{A, B, C, A\}, C_2 = \{B, D, E, B\}, C_3 = \{C, E, F, C\}$, outra possibilidade é separar $G$ em dois circuitos apenas $C_1 = \{A, B, D, E, F, C, A\}, C_2 = \{B, E, C, B\}$.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 1) (a) {A};
+        \node[main node] at (-1, -.5) (b) {B};
+        \node[main node] at (1, -.5) (c) {C};
+        \node[main node] at (-2, -2) (d) {D};
+        \node[main node] at (0, -2) (e) {E};
+        \node[main node] at (2, -2) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[red] node {} (b)
+            (a) edge[red] node {} (c)
+            (b) edge[red] node {} (c)
+            (d) edge[blue] node {} (b)
+            (d) edge[blue] node {} (e)
+            (e) edge[blue] node {} (b)
+            (e) edge[green] node {} (c)
+            (e) edge[green] node {} (f)
+            (f) edge[green] node {} (c)
+            ;
+    \end{tikzpicture}
+  \label{exCirc1}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 1) (a) {A};
+        \node[main node] at (-1, -.5) (b) {B};
+        \node[main node] at (1, -.5) (c) {C};
+        \node[main node] at (-2, -2) (d) {D};
+        \node[main node] at (0, -2) (e) {E};
+        \node[main node] at (2, -2) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[red] node {} (b)
+            (a) edge[red] node {} (c)
+            (b) edge[blue] node {} (c)
+            (d) edge[red] node {} (b)
+            (d) edge[red] node {} (e)
+            (e) edge[blue] node {} (b)
+            (e) edge[blue] node {} (c)
+            (e) edge[red] node {} (f)
+            (f) edge[red] node {} (c)
+            ;
+    \end{tikzpicture}
+  \label{exCirc2}
+\end{minipage}
+    \caption{Dois exemplos de partição de $G$ em circuitos. Em vermelho representou-se $C_1$, em azul $C_2$ e em verde $C_3$.}
+\end{figure}
+
+Felizmente, não é necessário particionar o grafo nos circuitos para se determinar o circuito euleriano de $G$.
+
+Simularemos nos próximos passos a busca em profundidade que o algoritmo realiza em $G$, tomando o vértice $A$ como o vértice inicial:
+
+Neste exemplo, digamos que o trajeto inicial percorrido na busca é $\{A, B, C, A\}$.
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node, line width=3] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[line width=3, dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge node {} (c)
+            (e) edge node {} (f)
+            (f) edge node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+\end{figure}
+
+Após percorrido o caminho $\{A, B, C, A\}$ as arestas $AB, BC, BA$ são apagadas e a busca não consegue progredir para novas arestas a partir do vértice $A$.
+
+Seja $T$ uma trilha inicialmente vazia.
+Como $A$ não possui mais caminhos a se percorrer, adiciona-se o mesmo ao início da trilha $T$, e a busca continua recursivamente com o vértice $C$.
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node, line width=3] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge node {} (c)
+            (e) edge node {} (f)
+            (f) edge node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+\end{figure}
+Seja $\{C, E, F, C\}$ o caminho percorrido na continuação da busca:
+
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node, line width=3] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[line width=3, dashed] node {} (f)
+            (f) edge[line width=3, dashed] node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+\end{figure}
+
+De modo similar ao primeiro passo, adicionamos o vértice $C$ ao início de $T$ e voltamos, recursivamente ao vértice $F$. 
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node, line width=3] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[line width=3, dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+\end{figure}
+
+Como $F$ também não possui arestas, ele é adicionado ao início de $T$, e a busca volta ao vértice $E$.
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node, line width=3] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge node {} (b)
+            (d) edge node {} (e)
+            (e) edge node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+    \end{tikzpicture}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+\end{figure}
+
+A partir de $E$ a busca continua no caminho, por exemplo, $\{E, D, B, E\}.
+
+
+// TODO: Continuar exemplo
+
+
 
 Segue agora a implementação deste algoritmo em C++:
 
