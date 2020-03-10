@@ -546,12 +546,12 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 \subsubsection{Algoritmo de Hierholzer}
 
 O algoritmo de Hierholzer foca em encontrar e unir um conjunto de circuitos $C_1, C_2, \dots, C_k$, tal que não existe aresta pertencente a dois circuitos diferentes, e que toda aresta pertence ao menos a um circuito.
-Tal união gera um circuito euleriano.
+Tal união gera um grafo conexo euleriano.
 
 O algoritmo desenvolvido se baseia em percorrer o grafo euleriano com uma busca em profundidade, apagando todas as arestas percorridas nesta busca.
 Quando o vértice atual da busca não possui mais arestas para se percorrer, o mesmo é adicionado ao começo da trilha euleriana que está sendo construída.
 
-Segue o pseudo código do algoritmo de hierholzer para encontrar uma trilha euleriana dado um grafo euleriano.
+Segue o pseudo código do algoritmo de Hierholzer para encontrar uma trilha euleriana dado um grafo euleriano.
 
 \begin{algorithm}
 \caption{Solução de Hierholzer}\label{eulerian-hierholzer}
@@ -571,7 +571,10 @@ Digamos que a função apresentada seja chamada com um vértice inicial $v$, per
 Em grafos que possuem um circuito euleriano, tal vértice será o próprio vértice inicial $v$, e podemos chamar o circuito formado de $C_1$.
 Enquanto que, grafos que possuem apenas uma trilha euleriana, tal vértice será aquele cujo grau de entrada é maior que o grau de saída.
 
-Em ambos casos, após encontrar tal vértice sem arestas, a função retorna por todos os vértices percorridos, procurando algum que ainda possua arestas não percorridas, para que ela possa encontrar um novo circuito $C_i$ e juntar o mesmo ao circuito, ou trilha, inicial, unindo ambas estruturas. 
+Em ambos casos, após encontrar tal vértice sem arestas, o algoritmo deve continuar percorrendo o grafo em uma busca em profundidade, ou seja voltando por todos os vértices percorridos anteriormente, procurando algum que ainda possua arestas não apagadas, para que ela possa encontrar um novo circuito $C_i$ e juntar o mesmo ao circuito, ou trilha, inicial, unindo ambas estruturas. 
+
+% Colocar o Exemplo aqui ilustrando a DFS e montando a trilha
+
 
 Apesar da união dos circuitos ser um procedimento complexo e possivelmente custoso, não é necessário manter o resultado de todas uniões a serem realizados durante o algoritmo, já que apenas estamos interessados no resultado final, a trilha euleriana.
 Para manter tal trilha, basta adicionar a uma pilha todo vértice encontrado na busca quando o mesmo não possui mais arestas a serem percorridas.

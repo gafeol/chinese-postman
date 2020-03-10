@@ -1,4 +1,0 @@
-\babel@toc {brazil}{}
-\contentsline {section}{\numberline {1}Grafos eulerianos}{3}{section.1}
-\contentsline {subsection}{\numberline {1.1}Solu\IeC {\c c}\IeC {\~o}es}{3}{subsection.1.1}
-\contentsline {subsubsection}{\numberline {1.1.1}Algoritmo de Hierholzer}{3}{subsubsection.1.1.1}
