@@ -194,7 +194,7 @@ Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas
 Portanto, pela hipótese da indução, cada uma dessas componentes deverá possuir um circuito euleriano próprio. 
 Chamaremos de $C_i$ o circuito euleriano da componente $G'_i$.
 
-Ao longo do algoritmo, os circuitos $C_i$ serão adicionados, um a um, ao circuito resultante $\mathcal{C}$. 
+\sloppy Ao longo do algoritmo, os circuitos $C_i$ serão adicionados, um a um, ao circuito resultante $\mathcal{C}$. 
 Definimos $\mathcal{T}$, como o conjunto dos circuitos eulerianos $C_i$ que ainda não fazem parte de $\mathcal{C}$. 
 Inicialmente, $\mathcal{T}$ é igual ao conjunto $\{C_1, C_2, \dots, C_k\}$.
 
@@ -688,7 +688,7 @@ Neste exemplo, digamos que o trajeto inicial percorrido na busca é $\{A, B, C, 
             (f) edge node {} (c)
             ;
     \end{tikzpicture}
-    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+    \caption{Representam-se pontilhadas as arestas percorridas na busca e em negrito o vértice atual da busca.}
 \end{figure}
 
 Após percorrido o caminho $\{A, B, C, A\}$ as arestas $AB, BC, BA$ são apagadas e a busca não consegue progredir para novas arestas a partir do vértice $A$.
@@ -718,8 +718,9 @@ Como $A$ não possui mais caminhos a se percorrer, adiciona-se o mesmo ao iníci
             (f) edge node {} (c)
             ;
     \end{tikzpicture}
-    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
+    \caption{Representam-se em negrito os arcos que ainda fazem parte da pilha de recursão da busca.}
 \end{figure}
+
 Seja $\{C, E, F, C\}$ o caminho percorrido na continuação da busca:
 
 
@@ -745,7 +746,6 @@ Seja $\{C, E, F, C\}$ o caminho percorrido na continuação da busca:
             (f) edge[line width=3, dashed] node {} (c)
             ;
     \end{tikzpicture}
-    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
 \end{figure}
 
 De modo similar ao primeiro passo, adicionamos o vértice $C$ ao início de $T$ e voltamos, recursivamente ao vértice $F$. 
@@ -772,10 +772,10 @@ De modo similar ao primeiro passo, adicionamos o vértice $C$ ao início de $T$ 
             (f) edge[dashed] node {} (c)
             ;
     \end{tikzpicture}
-    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
 \end{figure}
 
 Como $F$ também não possui arestas, ele é adicionado ao início de $T$, e a busca volta ao vértice $E$.
+Até o momento, $T = \{F, C, A\}$
 
 \begin{figure}[H]
     \center
@@ -799,25 +799,228 @@ Como $F$ também não possui arestas, ele é adicionado ao início de $T$, e a b
             (f) edge[dashed] node {} (c)
             ;
     \end{tikzpicture}
-    \caption{Representam-se pontilhadas as arestas percorridas na busca.}
 \end{figure}
 
-A partir de $E$ a busca continua no caminho, por exemplo, $\{E, D, B, E\}.
+A partir de $E$ a busca continua no caminho, por exemplo, $\{E, D, B, E\}$.
+
+\begin{figure}[H]
+    \center
+    \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node, line width=3] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge[line width=3, dashed] node {} (b)
+            (d) edge[line width=3, dashed] node {} (e)
+            (e) edge[line width=3, dashed] node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+    \end{tikzpicture}
+\end{figure}
+
+Como todas as arestas de $G$ foram percorridas, a busca realiza, nos próximos passos, uma série de retornos, sempre adicionando à $T$ o vértice atual da busca.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node, line width=3] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge[line width=3, dashed] node {} (b)
+            (d) edge[line width=3, dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node, line width=3] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge[dashed] node {} (b)
+            (d) edge[line width=3, dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node, line width=3] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge[dashed] node {} (b)
+            (d) edge[dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[line width=3, dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node, line width=3] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[line width=3, dashed] node {} (c)
+            (d) edge[dashed] node {} (b)
+            (d) edge[dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node] at (0, 2) (a) {A};
+        \node[main node, line width=3] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[line width=3, dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[dashed] node {} (c)
+            (d) edge[dashed] node {} (b)
+            (d) edge[dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+    \scalebox{.7}{
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+        \node[main node, line width=3] at (0, 2) (a) {A};
+        \node[main node] at (-2, -1) (b) {B};
+        \node[main node] at (2, -1) (c) {C};
+        \node[main node] at (-4, -4) (d) {D};
+        \node[main node] at (0, -4) (e) {E};
+        \node[main node] at (4, -4) (f) {F};
+
+        \path[every node/.style={font=\sffamily\small}]
+            (a) edge[dashed] node {} (b)
+            (a) edge[dashed] node {} (c)
+            (b) edge[dashed] node {} (c)
+            (d) edge[dashed] node {} (b)
+            (d) edge[dashed] node {} (e)
+            (e) edge[dashed] node {} (b)
+            (e) edge[dashed] node {} (c)
+            (e) edge[dashed] node {} (f)
+            (f) edge[dashed] node {} (c)
+            ;
+        \end{tikzpicture}
+    }
+\end{minipage}%
+\end{figure}
+
+Nesta série de retornos são adicionados ao início de $T$ os vértices $E, B, D, E, C, B, A$, um a um.
+
+Finalizando-se a simulação do algoritmo temos a seguinte trilha $T$:
+
+\[
+    T = \{A, B, C, E, D, B, E, F, C, A\}
+\]
+
+Como pode-se conferir, a trilha $T$ construída é um circuito euleriano de $G$.
 
 
-// TODO: Continuar exemplo
-
-
-
-Segue agora a implementação deste algoritmo em C++:
+Segue agora a implementação do algoritmo de Hierholzer em C++ para digrafos:
 
 \lstinputlisting[language=c++]{euler_hierholzer.cpp}
 
-Optou-se nesta implementação o uso de uma pilha para o armazenamento da lista de adjacências $adj$, pois assim é possível apagar facilmente as arestas já percorridas na busca.
+Optou-se nesta implementação pelo uso de uma pilha para o armazenamento da lista de adjacências $adj$, pois assim é possível apagar facilmente os arcos já percorridas na busca.
 
-Para que tal função retorne corretamente uma trilha euleriana é necessário que a primeira chamada de $euler\_hierholzer$ tenha como parâmetro um vértice de grau ímpar, no caso dos grafos não direcionados, ou o vértice cujo grau de saída é maior que seu grau de entrada, no caso dos digrafos sem circuito euleriano.
 
-Como em cada iteração deste algoritmo uma aresta é deletada, o número máximo de iterações que ele pode realizar é limitado pelo número de arestas de um grafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$.
+Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $euler\_hierholzer$ tenha como parâmetro o vértice cujo grau de saída é maior que seu grau de entrada.
+
+Como em cada iteração deste algoritmo um arco é deletada, o número máximo de iterações que ele pode realizar é limitado pelo número de arcos de um digrafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$.
+
+Pode-se adaptar este algoritmo para grafos não direcionados mudando o modo como arestas são apagadas.
+O algoritmo mostrado não funciona para grafos não direcionados pois o mesmo trata cada sentido de uma aresta $uv$ como dois arcos separados, $u \rightarrow v$ e $v \rightarrow u$. 
+Sendo assim, quando uma aresta é deletada, digamos $u \rightarrow v$, seu arco reverso $v \rightarrow u$, não é deletado automaticamente.
+
+Para corrigir isto, pode-se criar um identificador único para cada aresta (igual para os dois sentidos de uma mesma aresta) que pode ser utilizado para marcar as arestas já percorridas na busca em profundidade. 
+
+Uma implementação deste algoritmo para grafos não direcionados pode ser encontrada na referência\cite{hierholzer-und}.
+
 
 \section{O problema do Carteiro Chinês (PCC)}
 
@@ -2063,7 +2266,6 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \end{figure}
 
 
-
         \item[\textbf{Passo 2.}]
             Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o digrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
 
@@ -2553,6 +2755,10 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     \bibitem{edmonds-ssa}
     \href{https://nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233_A1b.pdf<Paste>}{nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233\_A1b.pdf}    
+
+    \bibitem{hierholzer-und}
+    Implementação do algoritmo de Hierholzer para grafos não direcionados.\\
+    \href{https://github.com/gafeol/chinese-postman/blob/master/euler_hierholzer_undirected.cpp}{github.com/gafeol/chinese-postman/blob/master/euler\_hierholzer\_undirected.cpp}
 	\end{thebibliography}
  
 \end{document}
