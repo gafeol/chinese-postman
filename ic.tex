@@ -1,4 +1,10 @@
     %:LLPStartPreview para rodar o pdf com mudancas automaticas
+    % vim-tex cheatsheet (https://github.com/lervag/vimtex):
+    % \ll - start compiling document
+    % \lv - open pdf viewer
+    % \ll or \lk stop running compilation
+    % \le parse log files for errors and warnings
+    % \lc remove auxiliary files
 
 \documentclass[12pt, a4paper]{article}
 \usepackage{graphicx}
@@ -66,12 +72,13 @@
     \caption{Representação das sete pontes de Königsberg}
 \end{wrapfigure}
 
-O problema das sete pontes de Königsberg foi descrito e solucionado pelo matemático Leonhard Euler em 1736, o problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pontes uma única vez, sem repetições.
+O problema das sete pontes de Königsberg foi descrito e solucionado pelo matemático Leonhard Euler em 1736. 
+O problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pontes uma única vez, sem repetições.
 
 Euler resolveu esse problema do seguinte modo: 
 Primeiramente, ele identificou cada uma das massas de terra do mapa com as letras A, B, C e D.
 
-Em seguida, ele definiu que um trajeto nesse mapa seria descrito por uma sequência dessas letras: por exemplo, "ACD" indicaria o trajeto que se inicia na massa de terra A, move-se para a massa de terra C, usando uma das pontes, e termina na massa D.
+Em seguida, ele definiu que um trajeto nesse mapa seria descrito por uma sequência dessas letras: por exemplo, ``ACD'' indicaria o trajeto que se inicia na massa de terra A, move-se para a massa de terra C, usando uma das pontes, e termina na massa D.
 
 \begin{wrapfigure}{l}{0.5\textwidth} 
     \centering
@@ -87,28 +94,27 @@ Como o trajeto final deverá passar por todas as 7 pontes exatamente uma vez, is
 Além disso, como a massa de terra A possui 5 pontes, necessariamente a letra A aparecerá exatamente 3 vezes na sequência.
 A massa B, C e D, no entanto possuem 3 pontes, portanto, suas letras correspondentes deverão aparecer apenas 2 vezes na sequência. 
 
-Chegamos assim a um absurdo, pois inicialmente provamos que a sequência de letras que representa uma solução deveria ter tamanho 8 e depois chegamos que a mesma deveria ter tamanho 9.
+Chegamos assim a um absurdo, pois inicialmente provamos que a sequência de letras que representa uma solução deveria ter tamanho 8 e depois que a mesma deveria ter tamanho 9.
 Provando assim, por absurdo, que não existe um trajeto como o pedido no enunciado do problema.
 
-
 Essa observação que, aos olhos de hoje, parece muito simples, teve um impacto profundo nas áreas da Matemática e Computação.
-A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absoluatmente inovadora e é o embrião da área da teoria dos grafos.
-
+A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absolutamente inovadora e é o embrião da área da teoria dos grafos.
 
 \subsection{Grafos não direcionados}
 
-Vamos definir como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, v_1, \dots, v_k\}$, cujos termos são vértices $v_i$ tal que, para todo $i$, $0 \leq i < k$, os vértices $v_{i}$ e $v_{i+1}$ são ligados por uma aresta. 
+Antes de voltar ao problema de Euler, realizaremos algumas definições de teoria dos grafos.
+
+Define-se como \textbf{passeio} em um grafo uma sequência finita não vazia $P = \{ v_0, v_1, \dots, v_k\}$, cujos termos são vértices $v_i$ tais que, para todo $i$, $0 \leq i < k$, os vértices $v_{i}$ e $v_{i+1}$ são ligados por uma aresta. 
 Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
 
-Uma \textbf{trilha} é um passeio sem arestas repetidas. 
-Um \textbf{caminho} é um passeio sem vértices repetidos.
+Uma \textbf{trilha} é um passeio sem arestas repetidas enquanto que um \textbf{caminho} é um passeio sem vértices repetidos.
 Definimos o comprimento de um passeio, denotado por $||P||$, como o número de arestas de $P$.
 
 Um passeio é considerado \textbf{fechado} se sua origem e término são iguais.
 
 Uma trilha fechada é um \textbf{circuito}.
 
-Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriana fechada.
+Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriano fechado.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
     \centering
@@ -119,9 +125,9 @@ Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilh
 
 Euler modelou essa área da cidade como um grafo, representado na figura \ref{konigsberg-graph}, tratando as pontes como arestas e as massas de terra como vértices.
 
-A partir de tal modelagem e das definições feitas, o problema de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
+A partir de tal modelagem e das definições feitas, o problema das pontes de Königsberg consiste, em definir se o grafo que representa a cidade possui ou não uma trilha euleriana. 
 
-Apesar de ter recebido grande parte do crédito histórico pelas suas implicações, Euler não provou que qualquer grafo conexo com vértices de grau par era euleriano, essa prova só foi publicada mais de cem anos depois, em 1873, por Carl Hierholzer \cite{hierholzer}, no que se tornou o conhecido Teorema de Euler.
+Apesar de ter recebido grande parte do crédito histórico pelas suas implicações, Euler não provou que qualquer grafo conexo com vértices de grau par é euleriano, essa prova só foi publicada mais de cem anos depois, em 1873, por Carl Hierholzer \cite{hierholzer}, no que se tornou o conhecido Teorema de Euler.
 
 
 \begin{theorem}[Teorema de Euler ou de Euler-Hierholzer]
@@ -129,13 +135,13 @@ Apesar de ter recebido grande parte do crédito histórico pelas suas implicaç�
     \label{euler}
 \end{theorem}
 
-Antes de mostrar a prova de tal teorema, primeiramente apresentaremos o seguinte lema:
+Para suportar a prova de tal teorema, primeiramente apresentaremos o seguinte lema:
 
-Seja $\delta(G)$ o grau mínimo de um vértice pertencente a $G$.
+Seja $\delta(G)$ o \textbf{grau mínimo} de um vértice pertencente a $G$.
 
 \begin{lemma}
-	\label{lema}
 	Se $G$ é um grafo tal que $\delta(G) \geq 2$, então $G$ possui um circuito.
+	\label{lema}
 \end{lemma}
 
 \begin{proof}
@@ -162,12 +168,12 @@ Seja $G = \{V, E\}$ o grafo em questão.
 
 Seja $T$ um circuito euleriano, cuja existência é garantida já que $G$ é euleriano. Analisaremos o grau de um vértice qualquer $v$ de $G$.
 
-Se $v$ não for um vértice extremo de $T$, então sempre que o mesmo aparecer em $T$ ele deverá ser precedido e sucedido de arestas. Indicando assim que $v$ deverá possuir um grau par.
+Se $v$ não for um vértice extremo de $T$, então sempre que o mesmo aparecer em $T$ ele deverá ser precedido e sucedido de arestas, indicando assim que $v$ deverá possuir um grau par.
 
 Do contrário, se $v$ for o vértice extremo de $T$ ele necessariamente possui duas arestas, uma ligando-o ao segundo vértice do circuito, e outra o ligando ao penúltimo vértice de $T$. 
 Além disso, cada aparição de $v$ como vértice interno de $T$ contabiliza mais duas arestas ao vértice em questão, de modo que $v$ possuirá um grau par ao final.
 
-Sendo assim, se $G$ é euleriano, então todos seus vértices (extremos ou não) possuem grau par, como queriamos demonstrar.\newline
+Sendo assim, se $G$ é euleriano, então todos seus vértices (extremos ou não) possuem grau par, como queriamos demonstrar.
 
 ($\Leftarrow$) Agora, provaremos por indução no número de arestas de $G$ que se o grafo for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
@@ -176,7 +182,7 @@ O único grafo conexo que respeita tal condição é o grafo que possui apenas u
 Neste exemplo, $\{v\}$ é o circuito euleriano do grafo.
 
 A hipótese de indução é que todo grafo simples, conexo, que possui até $k-1$ arestas e cujos vértices têm grau par é euleriano. 
-Seja $G$ um grafo conexo, de vértices de grau par e que possua $k$ arestas, provaremos que ele também deverá ser euleriano.
+Seja $G$ um grafo conexo, de vértices de grau par e que possua $k > 1$ arestas, provaremos que ele também deverá ser euleriano.
 
 Como $G$ é conexo, vale que $\delta(G) \geq 1$ e como todos nós de $G$ têm grau par, podemos afirmar que $\delta(G) \geq 2$. 
 Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um circuito $C$.
@@ -188,7 +194,7 @@ Do contrário, aplicamos o seguinte procedimento para constuir um circuito euler
 Retira-se de $G$ as arestas pertencentes a $C$, resultando assim em um grafo $G'$. 
 Possivelmente $G'$ será desconexo, por isso definimos que $G'$ será a união de $k$ componenetes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
 
-O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que, ao retirar todas as arestas de um circuito do grafo $G$, diminuimos o grau de um vértice qualquer $v$ em duas vezes o número de aparições do mesmo no circuito. mantendo assim a paridade dos graus. 
+O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que, ao retirar todas as arestas de um circuito do grafo $G$, diminuímos o grau de um vértice qualquer $v$ em duas vezes o número de aparições do mesmo no circuito. mantendo assim a paridade dos graus. 
 
 Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$.
 Portanto, pela hipótese da indução, cada uma dessas componentes deverá possuir um circuito euleriano próprio. 
@@ -327,7 +333,7 @@ $G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de e
 
     A hipótese de indução é que todo digrafo fortemente conexo, que possui vértices com grau de entrada e saída iguais e que possui até $k-1$ arcos é euleriano.
 
-    Seja $G$, portanto, um digrafo fortemente conexo, em que todos vértices têm igual grau de entrada e saída mas que possui $k > 0$ arcos.
+    Seja $G$, portanto, um digrafo fortemente conexo, em que todos vértices têm grau de entrada igual ao de saída mas que possui $k > 0$ arcos.
 
     Inicialmente provaremos que $G$ deve possuir um caminho fechado $C$:
 
@@ -451,7 +457,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
         \end{tcolorbox}
     
-    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices de $T$, mas como $T$ é euleriano, possuindo todos vértices de $G$, prova-se assim que $G$ é fracamente conexo. \\
+    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices de $T$, mas como $T$ é euleriano, possuindo todos vértices de $G$, prova-se assim que $G$ é fracamente conexo. 
 
      Basta, portanto, provar que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
 
@@ -537,13 +543,13 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
 \end{proof}
 
-\subsection{Soluções}
+%\subsection{Soluções}
 
 % Referencia pra explicacao e https://cp-algorithms.com/graph/euler_path.html
 
-\subsubsection{Algoritmo de Fleury}
+%\subsubsection{Algoritmo de Fleury}
 
-\subsubsection{Algoritmo de Hierholzer}
+\subsection{Algoritmo de Hierholzer}
 
 O algoritmo de Hierholzer foca em encontrar e unir um conjunto de circuitos $C_1, C_2, \dots, C_k$, tal que não existe aresta pertencente a dois circuitos diferentes, e que toda aresta pertence ao menos a um circuito.
 Tal união gera um grafo conexo euleriano.
@@ -604,7 +610,7 @@ Pode-se observar tal procedimento em prática com o seguinte exemplo:
     \caption{Grafo $G$, foco do exemplo do algoritmo de Hierholzer}
 \end{figure}
 
-O grafo apresentado possui uma grande quantidade de circuitos, por isso encontrar uma partição do mesmo em circuitos $C_1, C_2, \dots, C_k$ não é uma tarefa simples.
+\sloppy O grafo apresentado possui uma grande quantidade de circuitos, por isso encontrar uma partição do mesmo em circuitos $C_1, C_2, \dots, C_k$ não é uma tarefa simples.
 Uma possibilidade para este grafo é tomar $C_1 = \{A, B, C, A\}, C_2 = \{B, D, E, B\}, C_3 = \{C, E, F, C\}$, outra possibilidade é separar $G$ em dois circuitos apenas $C_1 = \{A, B, D, E, F, C, A\}, C_2 = \{B, E, C, B\}$.
 
 \begin{figure}[H]
@@ -991,7 +997,7 @@ Como todas as arestas de $G$ foram percorridas, a busca realiza, nos próximos p
 \end{minipage}%
 \end{figure}
 
-Nesta série de retornos são adicionados ao início de $T$ os vértices $E, B, D, E, C, B, A$, um a um.
+\sloppy Nesta série de retornos são adicionados ao início de $T$ os vértices $E, B, D, E, C, B, A$, um a um.
 
 Finalizando-se a simulação do algoritmo temos a seguinte trilha $T$:
 
@@ -1011,7 +1017,7 @@ Optou-se nesta implementação pelo uso de uma pilha para o armazenamento da lis
 
 Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $euler\_hierholzer$ tenha como parâmetro o vértice cujo grau de saída é maior que seu grau de entrada.
 
-Como em cada iteração deste algoritmo um arco é deletada, o número máximo de iterações que ele pode realizar é limitado pelo número de arcos de um digrafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$.
+Como em cada iteração deste algoritmo um arco é deletado, o número máximo de iterações que ele pode realizar é limitado pelo número de arcos de um digrafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$.
 
 Pode-se adaptar este algoritmo para grafos não direcionados mudando o modo como arestas são apagadas.
 O algoritmo mostrado não funciona para grafos não direcionados pois o mesmo trata cada sentido de uma aresta $uv$ como dois arcos separados, $u \rightarrow v$ e $v \rightarrow u$. 
@@ -1030,8 +1036,6 @@ Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de
 Esse problema foi denominado Problema da Inspeção de Rotas, ou, como também é conhecido hoje: Problema do carteiro chinês.
 A ideia desse problema é encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez. 
 A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas mais de uma vez no trajeto final.
-
-O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a poder entregar cartas em todas as ruas da cidade e voltar ao posto de carteiros no fim de sua rota.
 
 \begin{wrapfigure}{l}{0.3\textwidth} 
     \centering
@@ -1056,7 +1060,14 @@ O nome do problema está relacionado a um problema que carteiros encontram no pl
 	\label{graph}
 \end{wrapfigure}
 
-Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: \[ \{A, B, D, C, A, D, C, B, A\} \], sendo este um caminho fechado de custo 12.
+O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a poder entregar cartas em todas as ruas da cidade e voltar ao posto de carteiros no fim de sua rota.
+
+
+Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: 
+
+\[ \{A, B, D, C, A, D, C, B, A\} \] 
+
+Sendo este um caminho fechado de custo 12.
 Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) fossem percorridas duas vezes no passeio, porém nem sempre é necessária esta repetição.
 
 No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
@@ -1307,7 +1318,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve ser incidente ao menos a um arco. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
         Por consequência para todo par de vértices de $G$ existe um caminho entre eles o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
 
-        Provando assim que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. \\
+        Provando assim que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. 
 
         ($\Leftarrow$)  Provaremos agora que todo grafo fortemente conexo $G$ possui uma solução para o PCC.
 
@@ -1408,7 +1419,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
             \path[->] (g) edge[above] node {6} (d);
         \end{tikzpicture}
         \caption{Digrafo retirado de exercício do site do MIT\cite{mit}}
-        \label{konigsberg-graph}
+        \label{mit-ex}
     \end{figure}
 
 
@@ -1709,7 +1720,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \end{tikzpicture}
     \end{center}
 
-    Na esquerda temos um grafo não direcionado qualquer, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
+    Na esquerda temos um grafo misto, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
 
     Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
     \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
@@ -1733,7 +1744,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
 
-    Diferentemente dos grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
+    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
@@ -1964,7 +1975,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
                     ;
             \end{tikzpicture}
             \caption{Grafo induzido por $R \cup T$ evidenciando o emparelhamento dos vértices $c$ e $e$ de custo mínimo}
-            \label{mst}
+            \label{mst-3}
         \end{figure}
 
 
@@ -2060,7 +2071,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
-        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.\\
+        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
 
         \textbf{Heurística da arborescência geradora mínima}
 
@@ -2104,9 +2115,10 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Realizando tal extensão no exemplo sugerido, teremos o seguinte digrafo $G'$:
 
+        % TODO: Resolver o grande espaco entre o texto e a figura
         \begin{figure}[H]
             \centering
-            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \begin{tikzpicture}[every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
                 \node[main node] at (-5, 0) (f) {f};
                 \node[main node] at (-2, 3) (e) {e};
@@ -2135,8 +2147,6 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
                 \path[->] (f) edge[red, above, bend left=100] node {10} (c);
                 \path[->] (f) edge[red, below, bend right] node {26} (d);
                 \path[->] (f) edge[red, above, bend left] node {18} (e);
-
-
             \end{tikzpicture}
             \caption{Digrafo $G'$, extensão de $G$, as arestas criadas na extensão são mostradas em vermelho.}
         \end{figure}
@@ -2382,34 +2392,34 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
 
-    %Adicionar valor da solucao otima
-    \subsection{Problema do carteiro chinês com vento}
-        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
-
-        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
-
-        Esta variação do problema do carteiro chinês também é NP-hard.
-        
-
-        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
-
-        ADICIONAR PROVA
-
-    \subsection{Problema do Carteiro Hierárquico}
-
-    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
-    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
-
-    Esta variação também é NP-hard.
-
+    %TODO: Adicionar valor da solucao otima
+%    \subsection{Problema do carteiro chinês com vento}
+%        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
+%
+%        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
+%
+%        Esta variação do problema do carteiro chinês também é NP-hard.
+%        
+%
+%        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+%
+%        ADICIONAR PROVA
+%
+%    \subsection{Problema do Carteiro Hierárquico}
+%
+%    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
+%    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
+%
+%    Esta variação também é NP-hard.
+%
 
     \section{Problemas resolvidos}
 
         Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
 
-        \subsection{Tanya and Password\cite{tanya}}
+        \subsection{Tanya and Password}
 
-        Este problema fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
+        Este problema\cite{tanya} fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
 
         Uma instância desse problema é a seguinte, para $n=5$:
 
@@ -2486,16 +2496,16 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Esta solução foi implementada em C++ e está disponível no github\cite{tanya-sol}.
 
-        \subsection{Sereja and the Arrangement of Numbers\cite{sereja}}
+        \subsection{Sereja and the Arrangement of Numbers}
 
         \textbf{Definição do problema}
 
-        No enunciado do problema define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
+        No enunciado do problema\cite{sereja} define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
 
         Em outras palavras, se uma sequência é bonita todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
 
         Define-se também um sistema de recompensas:
-        Para cada valor há uma recompensa positiva associada.
+        para cada valor há uma recompensa positiva associada.
         A recompensa total de uma sequência é igual à soma das recompensas de seus valores distintos, ou seja, a recompensa não depende do número de vezes que cada valor aparece na sequência.
 
         O problema consiste então desenvolver um algoritmo que calcule a maior recompensa atingível para uma sequência bonita de tamanho $n$ que seja constituída apenas por valores definidos pela entrada. 
@@ -2534,11 +2544,11 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
         Concluimos então que um passeio derivado de uma sequência que seja bonita, deverá percorrer todas arestas do grafo $K_x$, sendo assim uma solução do problema do carteiro chinês para o mesmo.
 
-        Voltamos assim à pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita. \\
+        Voltamos assim à pergunta inicial, a menor sequência bonita que utiliza $x$ valores distintos, será aquela que representa uma solução ótima do problema do carteiro chinês para o grafo $K_x$, já que a solução que miniza o custo do PCC também minimizará o número de arestas percorridas, e portantom, o tamanho da sequência bonita.
  
         Vejamos agora alguns exemplos:
 
-        \begin{figure}[h]
+        \begin{figure}[H]
             \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
                 \node[main node] (1) {1};
@@ -2577,7 +2587,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Analisaremos agora outro exemplo, em que $x=4$, do qual se deriva o grafo $K_4$ representado na figura \ref{k4}.
 
 
-        \begin{figure}[h]
+        \begin{figure}[H]
             \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
                 \node[main node] (1) {1};
@@ -2604,7 +2614,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         Como estamos tratando de um grafo completo, com arestas de custo unitário, não é necessário criar uma condensação do grafo $K_x$, e achar um emparelhamento perfeito de custo mínimo.
         Basta apenas criar uma duplicação de aresta entre todo par de vértices de índices $i$ e $i+1$ para todo índice $i$ ímpar, como representado na figura \ref{k4+} para o exemplo em questão.
 
-        \begin{figure}[h]
+        \begin{figure}[H]
             \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
                 \node[main node] (1) {1};
@@ -2660,9 +2670,9 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
     Uma solução para este problema foi adicionada a referência \cite{sereja-sol}. 
 
-        \subsection{Jogging Trails\cite{jogging}}
+        \subsection{Jogging Trails}
         
-        Neste problema devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
+        Neste problema\cite{jogging} devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
 
         Este problema é uma aplicação direta do problema descrito nesse trabalho. 
         Entretanto, em virtude do limite do número de vértices das instâncias, é possível resolver o problema de maneira mais simples.
@@ -2684,7 +2694,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         \]
 
         Para representar os subconjuntos de vértices pode-se utilizar uma bitmask.
-        Como foi utilizado na solução\cite{jogging-sol} adicionada à referência.
+        Como foi utilizado na solução\cite{jogging-sol}, adicionada à referência.
 
 
 
@@ -2712,53 +2722,50 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
 
     \bibitem{tanya}
-    Problema D do round \#288 (Div. 2) retirado do Codeforces\\
-    \href{https://codeforces.com/contest/508/problem/D}{codeforces.com/contest/508/problem/D}
+    \href{https://codeforces.com/contest/508/problem/D}{Problema D do round \#288 (Div. 2)}
+     retirado do Codeforces
+
 
     \bibitem{tanya-sol}
-    Solução para o problema Tanya and Password, desenvolvida em C++\\
-    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D\\.cpp}
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{Solução} para o problema Tanya and Password, desenvolvida em C++.
+
 
     \bibitem{sereja}
-    Problema C do round \#215 (Div. 1) retirado do Codeforces\\
-    \href{https://codeforces.com/problemset/problem/367/C}{codeforces.com/problemset/problem/367/C}
+    \href{https://codeforces.com/problemset/problem/367/C}{Problema C do round \#215 (Div. 1)} retirado do Codeforces
 
     \bibitem{sereja-sol}
-    Solução para o problema Sereja and the Arrangement of Numbers, desenvolvida em C++\\
-    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}
+     \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{Solução}
+     para o problema Sereja and the Arrangement of Numbers, desenvolvida em C++
+
 
     \bibitem{jogging}
-    Problema 10296 retirado do UVa\\
-    \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=com\_onlinejudge\&Itemid=8\&page=show\\\_problem\&problem=1237}
+    \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{Problema 10296 retirado do UVa}
 
     \bibitem{jogging-sol}
-    Solução para o problema Jogging Trails, desenvolvida em C++\\
-    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp} 
+    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{Solução} para o problema Jogging Trails, desenvolvida em C++
 
     \bibitem{mit}
-    Exemplo retirado do site do MIT, exercício 6.6.c\\
-    \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{web.mit.edu/urban\_or\_book/www/book/chapter6/problems6/6.6.html} 
+    \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{Exemplo retirado do site do MIT, exercício 6.6.c} 
 
     \bibitem{wiki-christofides}
-    Página da wikipedia sobre o algoritmo de Christofides\\
-    \href{https://en.wikipedia.org/wiki/Christofides_algorithm}{wikipedia.org/wiki/Christofides\_algorithm}
+    \href{https://en.wikipedia.org/wiki/Christofides_algorithm}{Página da wikipedia sobre o algoritmo de Christofides}
 
     \bibitem{michel}
-    Artigo ``Arc Routing Problems Part II: The Rural Postman Problem'' publicado por Michel Gendreau e Gilbert Laporte.
-    \href{https://pubsonline.informs.org/doi/10.1287/opre.43.3.399}{pubsonline.informs.org/doi/10.1287/opre.43.3.399}
-
+    Artigo \href{https://pubsonline.informs.org/doi/10.1287/opre.43.3.399}{``Arc Routing Problems Part II: The Rural Postman Problem''} publicado por Michel Gendreau e Gilbert Laporte.
 
     \bibitem{christofides-86}
-    Christofides, Nicos, et al. "An algorithm for the rural postman problem on a directed graph." Netflow at pisa. Springer, Berlin, Heidelberg, 1986. 155-166.\\
-    \href{https://link.springer.com/chapter/10.1007/BFb0121091}{link.springer.com/chapter/10.1007/BFb0121091}
+    Christofides, Nicos, et al.  
+    \href{https://link.springer.com/chapter/10.1007/BFb0121091}{``An algorithm for the rural postman problem on a directed graph.''}
+    Netflow at pisa. Springer, Berlin, Heidelberg, 1986. 155-166.
+
 
 
     \bibitem{edmonds-ssa}
-    \href{https://nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233_A1b.pdf<Paste>}{nvlpubs.nist.gov/nistpubs/jres/71B/jresv71Bn4p233\_A1b.pdf}    
+    \href{https://en.wikipedia.org/wiki/Edmonds\%27\_algorithm}{Algoritmo de Chu-Liu/Edmonds}
 
     \bibitem{hierholzer-und}
-    Implementação do algoritmo de Hierholzer para grafos não direcionados.\\
-    \href{https://github.com/gafeol/chinese-postman/blob/master/euler_hierholzer_undirected.cpp}{github.com/gafeol/chinese-postman/blob/master/euler\_hierholzer\_undirected.cpp}
+    \href{https://github.com/gafeol/chinese-postman/blob/master/euler_hierholzer_undirected.cpp}{Implementação} do algoritmo de Hierholzer para grafos não direcionados.
+
 	\end{thebibliography}
  
 \end{document}
