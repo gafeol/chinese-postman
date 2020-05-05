@@ -1,5 +1,5 @@
     %:LLPStartPreview para rodar o pdf com mudancas automaticas
-    % vim-tex cheatsheet (https://github.com/lervag/vimtex):
+% vim-tex cheatsheet (https://github.com/lervag/vimtex):
     % \ll - start compiling document
     % \lv - open pdf viewer
     % \ll or \lk stop running compilation
@@ -72,17 +72,17 @@
     \caption{Representação das sete pontes de Königsberg}
 \end{wrapfigure}
 
-O problema das sete pontes de Königsberg foi descrito e solucionado pelo matemático Leonhard Euler em 1736. 
-O problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pontes uma única vez, sem repetições.
+O pro\-blema das sete pontes de Kö\-nigsberg foi des\-crito e solucio\-nado pelo matemático Leonhard Eu\-ler em 1736. 
+O problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pon\-tes uma única vez, sem repetições.
 
 Euler resolveu esse problema do seguinte modo: 
 Primeiramente, ele identificou cada uma das massas de terra do mapa com as letras A, B, C e D.
 
 Em seguida, ele definiu que um trajeto nesse mapa seria descrito por uma sequência dessas letras: por exemplo, ``ACD'' indicaria o trajeto que se inicia na massa de terra A, move-se para a massa de terra C, usando uma das pontes, e termina na massa D.
 
-\begin{wrapfigure}{l}{0.5\textwidth} 
+\begin{wrapfigure}{l}{0.4\textwidth} 
     \centering
-    \includegraphics[width=0.5\textwidth]{konigsberg-euler.png}
+    \includegraphics[width=0.4\textwidth]{konigsberg-euler.png}
     \caption{Representação de Euler}
 	\label{konigsberg-euler}
 \end{wrapfigure}
@@ -94,8 +94,8 @@ Como o trajeto final deverá passar por todas as 7 pontes exatamente uma vez, is
 Além disso, como a massa de terra A possui 5 pontes, necessariamente a letra A aparecerá exatamente 3 vezes na sequência.
 A massa B, C e D, no entanto possuem 3 pontes, portanto, suas letras correspondentes deverão aparecer apenas 2 vezes na sequência. 
 
-Chegamos assim a um absurdo, pois inicialmente provamos que a sequência de letras que representa uma solução deveria ter tamanho 8 e depois que a mesma deveria ter tamanho 9.
-Provando assim, por absurdo, que não existe um trajeto como o pedido no enunciado do problema.
+Chegamos assim a um absurdo, pois provamos que a sequência de letras que representa uma solução deveria ter tamanho 8 e 9.
+Provando assim que não existe um trajeto como o pedido no enunciado do problema.
 
 Essa observação que, aos olhos de hoje, parece muito simples, teve um impacto profundo nas áreas da Matemática e Computação.
 A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absolutamente inovadora e é o embrião da área da teoria dos grafos.
@@ -118,8 +118,8 @@ Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilh
 
 \begin{wrapfigure}{l}{0.4\textwidth}
     \centering
-    \includegraphics[width=0.25\textwidth]{konigsberg-graph.png}
-    \caption{Modelagem de Königsberg como um grafo}
+    \includegraphics[width=0.3\textwidth]{konigsberg-graph.png}
+    \caption{Grafo de Königsberg}
     \label{konigsberg-graph}
 \end{wrapfigure}
 
@@ -274,7 +274,7 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
                 T = \{v, w_1, w_2, \dots, w_k, u\}
 			\]
 
-            Tal procedimento retira do circuito $C$ a aresta artificial $uv$, transformando-o em uma trilha $T$, que percorre todas arestas de $G`$ exceto $uv$, sendo portanto uma trilha euleriana do grafo $G$.
+            Tal procedimento retira do circuito $C$ a aresta artificial $uv$, transfor\-mando-o em uma trilha $T$, que percorre todas arestas de $G`$ exceto $uv$, sendo portanto uma trilha euleriana do grafo $G$.
 
         \item $G$ possui três ou mais vértices de grau ímpar. 
 
@@ -361,7 +361,7 @@ $G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de e
 
             Porém, não é garantido que $G'$ é fortemente conexo. 
 
-            \sloppy Seja $G$ então a união de $k$ componentes fortementes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
+            Seja $G$ a união de $k$ componentes fortementes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
 
             Sabemos que cada componente $G'_i$ possuirá uma quantidade de arcos menor que $k$. 
             Portanto, pela hipótese de indução definida. cada componente de $G'$ é euleriana.
@@ -2113,42 +2113,43 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
         De modo semelhante, o conjunto de arcos $A'$ será inicialmente acrescido dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
         Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
-        Realizando tal extensão no exemplo sugerido, teremos o seguinte digrafo $G'$:
+        Realizando tal extensão no exemplo sugerido, teremos o digrafo $G'$ representado na figura \ref{extensionG}.
 
-        % TODO: Resolver o grande espaco entre o texto e a figura
         \begin{figure}[H]
             \centering
-            \begin{tikzpicture}[every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \scalebox{.8}{
+                \begin{tikzpicture}[every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
-                \node[main node] at (-5, 0) (f) {f};
-                \node[main node] at (-2, 3) (e) {e};
-                \node[main node] at (2, 3) (c) {c};
-                \node[main node] at (5, 0) (a) {a};
-                \node[main node] at (-2, -3) (d) {d};
-                \node[main node] at (2, -3) (b) {b};
+                    \node[main node] at (-5, 0) (f) {f};
+                    \node[main node] at (-2, 3) (e) {e};
+                    \node[main node] at (2, 3) (c) {c};
+                    \node[main node] at (5, 0) (a) {a};
+                    \node[main node] at (-2, -3) (d) {d};
+                    \node[main node] at (2, -3) (b) {b};
 
-                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
-                \path[->] (a) edge[left] node {4} (c);
-                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
-                \path[->] (c) edge[line width=2, above] node {8} (e);
-                \path[->] (c) edge[above, left, pos=0.4] node {2} (b);
-                \path[->] (d) edge[below] node {6} (b);
-                \path[->] (d) edge[line width=2, left] node {5} (f);
-                \path[->] (e) edge[below] node {4} (f);
-                \path[->] (e) edge[pos=0.4, left] node {8} (d);
-                \path[->] (f) edge[above] node {1} (b);
-
-                \path[->] (a) edge[red, below, bend left=100] node {20} (d);
-                \path[->] (a) edge[red, above, pos=0.6] node {16} (f);
-                \path[->] (b) edge[bend left, red, below] node {25} (d);
-                \path[->] (b) edge[red, right, pos=0.7] node {17} (e);
-                \path[->] (b) edge[red, above, bend right=15] node {21} (f);
-                \path[->] (e) edge[red, bend left, above] node {14} (c);
-                \path[->] (f) edge[red, above, bend left=100] node {10} (c);
-                \path[->] (f) edge[red, below, bend right] node {26} (d);
-                \path[->] (f) edge[red, above, bend left] node {18} (e);
-            \end{tikzpicture}
-            \caption{Digrafo $G'$, extensão de $G$, as arestas criadas na extensão são mostradas em vermelho.}
+                    \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                    \path[->] (a) edge[left] node {4} (c);
+                    \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                    \path[->] (c) edge[line width=2, above] node {8} (e);
+                    \path[->] (c) edge[above, left, pos=0.4] node {2} (b);
+                    \path[->] (d) edge[below] node {6} (b);
+                    \path[->] (d) edge[line width=2, left] node {5} (f);
+                    \path[->] (e) edge[below] node {4} (f);
+                    \path[->] (e) edge[pos=0.4, left] node {8} (d);
+                    \path[->] (f) edge[above] node {1} (b);
+                    \path[->] (a) edge[red, below, bend left=100] node {20} (d);
+                    \path[->] (a) edge[red, above, pos=0.6] node {16} (f);
+                    \path[->] (b) edge[bend left, red, below] node {25} (d);
+                    \path[->] (b) edge[red, right, pos=0.7] node {17} (e);
+                    \path[->] (b) edge[red, above, bend right=15] node {21} (f);
+                    \path[->] (e) edge[red, bend left, above] node {14} (c);
+                    \path[->] (f) edge[red, above, bend left=100] node {10} (c);
+                    \path[->] (f) edge[red, below, bend right] node {26} (d);
+                    \path[->] (f) edge[red, above, bend left] node {18} (e);
+                \end{tikzpicture}
+            }
+            \caption{São vermelhas as arestas criadas na extensão $G'$}
+            \label{extensionG}
         \end{figure}
 		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
 		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexo.
@@ -2162,7 +2163,7 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
             Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
 
-            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o seguinte grafo:
+            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
 
 
             \begin{figure}[H]
@@ -2202,19 +2203,21 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
             \begin{figure}[H]
                 \centering
-                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \scalebox{.7}{
+                    \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
-                    \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
-                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
-                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+                        \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                        \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                        \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
 
 
-                    \path[->] (g1) edge[below, red] node {16} (g3);
-                    \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
-                    \path[->] (g2) edge[left, bend left=10] node {4} (g3);
-                    \path[->] (g1) edge[right] node {4} (g2);
+                        \path[->] (g1) edge[below, red] node {16} (g3);
+                        \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                        \path[->] (g2) edge[left, bend left=10] node {4} (g3);
+                        \path[->] (g1) edge[right] node {4} (g2);
 
-                \end{tikzpicture}
+                    \end{tikzpicture}
+                }
                 \caption{Digrafo $G'$ após a remoção de arcos sugeridas pelo algoritmo de Chu-Liu/Edmonds}
                 \label{chu-liu}
             \end{figure}
@@ -2229,21 +2232,23 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 
             \begin{figure}[H]
                 \centering
-                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \scalebox{.7}{
+                    \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
-                    \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
-                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
-                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+                        \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                        \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                        \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
 
 
-                    \path[->] (g1) edge[below, red] node {16} (g3);
-                    \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
-                    \path[->] (g2) edge[blue, left, bend left=10] node {4} (g3);
-                    \path[->] (g1) edge[blue, right] node {4} (g2);
+                        \path[->] (g1) edge[below, red] node {16} (g3);
+                        \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                        \path[->] (g2) edge[blue, left, bend left=10] node {4} (g3);
+                        \path[->] (g1) edge[blue, right] node {4} (g2);
 
-                \end{tikzpicture}
-                \caption{Conjunto de arcos $T$ definidos pelo algoritmo de Chu-Liu/Edmonds em azul.}
-                \label{chu-liu-p}
+                    \end{tikzpicture}
+                }
+            \caption{Em azul representa-se o conjunto de arcos $T$ definidos pelo algoritmo de Chu-Liu/Edmonds.}
+            \label{chu-liu-p}
             \end{figure}
 
 

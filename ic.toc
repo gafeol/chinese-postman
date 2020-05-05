@@ -1,0 +1,17 @@
+\babel@toc {brazil}{}
+\contentsline {section}{\numberline {1}Grafos eulerianos}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}As sete pontes de K\IeC {\"o}nigsberg}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Grafos n\IeC {\~a}o direcionados}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Grafos direcionados}{8}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Algoritmo de Hierholzer}{15}{subsection.1.4}
+\contentsline {section}{\numberline {2}O problema do Carteiro Chin\IeC {\^e}s (PCC)}{22}{section.2}
+\contentsline {subsection}{\numberline {2.1}Grafos n\IeC {\~a}o direcionados}{23}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Grafos direcionados}{27}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Grafos mistos}{35}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Problema do carteiro rural}{36}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}PCR em grafos n\IeC {\~a}o direcionados}{37}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.2}PCR em grafos direcionados}{41}{subsubsection.2.4.2}
+\contentsline {section}{\numberline {3}Problemas resolvidos}{48}{section.3}
+\contentsline {subsection}{\numberline {3.1}Tanya and Password}{48}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Sereja and the Arrangement of Numbers}{50}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Jogging Trails}{54}{subsection.3.3}
