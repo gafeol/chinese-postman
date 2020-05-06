@@ -1078,17 +1078,16 @@ Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, 
 
 \subsection{Grafos não direcionados}
 
-Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e com arestas não direcionadas.
+Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e não direcionado.
 
-Um circuito Euleriano é um circuito que percorre todas arestas de $G$ exatamente uma vez. 
-Já uma solução qualquer que resolva o problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
-Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em uma soluação $T$ do problema do carteiro chinês (PCC).
+Uma solução qualquer $T$ do problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
+Se $G$ é euleriano, então uma solução para o PCC é o próprio circuito euleriano do grafo.
+Do contrário, será necessário que $T$ percorra pelo menos uma aresta multiplas vezes.
 
-Se $G$ é euleriano, então a solução para o PCC é o próprio circuito euleriano do grafo.
-
-Do contrário, definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
-Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes.
-Deste modo, o grafo $G'$ será euleriano, e portanto a trilha euleriana de $G'$ corresponderá à solução do PCC para o grafo $G$.
+Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em $T$.
+Definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
+Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes e a trilha fechada $T$ (solução do PCC em $G$) percorre cada uma dessas arestas uma única vez.
+Por definição $G'$ será euleriano, e a trilha euleriana de $G'$ corresponderá à $T$, solução do PCC para o grafo $G$.
 
 Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
 
