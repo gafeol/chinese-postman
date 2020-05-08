@@ -7,11 +7,11 @@
 \contentsline {section}{\numberline {2}O problema do Carteiro Chin\IeC {\^e}s (PCC)}{22}{section.2}
 \contentsline {subsection}{\numberline {2.1}Grafos n\IeC {\~a}o direcionados}{23}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Grafos direcionados}{27}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Grafos mistos}{35}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Problema do carteiro rural}{36}{subsection.2.4}
-\contentsline {subsubsection}{\numberline {2.4.1}PCR em grafos n\IeC {\~a}o direcionados}{37}{subsubsection.2.4.1}
-\contentsline {subsubsection}{\numberline {2.4.2}PCR em grafos direcionados}{41}{subsubsection.2.4.2}
-\contentsline {section}{\numberline {3}Problemas resolvidos}{48}{section.3}
-\contentsline {subsection}{\numberline {3.1}Tanya and Password}{48}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Sereja and the Arrangement of Numbers}{50}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Jogging Trails}{54}{subsection.3.3}
+\contentsline {subsection}{\numberline {2.3}Grafos mistos}{36}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Problema do carteiro rural}{37}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}PCR em grafos n\IeC {\~a}o direcionados}{38}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.2}PCR em grafos direcionados}{42}{subsubsection.2.4.2}
+\contentsline {section}{\numberline {3}Problemas resolvidos}{49}{section.3}
+\contentsline {subsection}{\numberline {3.1}Tanya and Password}{49}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Sereja and the Arrangement of Numbers}{51}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Jogging Trails}{55}{subsection.3.3}

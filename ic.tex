@@ -1261,6 +1261,59 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
 		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
+
+\begin{algorithm}
+\caption{Solução para o PCC}
+\label{pcc-pseudocode}
+\begin{algorithmic}[1]
+\Function{pcc}{G}
+% V' conj dos vertices de grau impar
+\State $(V, E, dist) \gets G$
+\State $V' \gets \{v \in V : grau[v] $ é impar$\}$
+\State $dist' \gets $ FLOYD\_WARSHALL$(V', E, dist)$
+\State $E' \gets V' \times V'$
+\State $G' \gets (V', E', dist')$
+\State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+\State $E^* \gets E$
+\For{$uv \in M$}
+    \State $C \gets$ EXPAND$(uv, E, dist, dist')$
+    \State $E^* \gets E^* \cup C$
+\EndFor
+\State $G^* \gets (V, E^*)$
+
+\Return TRILHA\_EULERIANA$(G^*)$
+\EndFunction 
+
+\Function{expand}{uv, E, dist, dist'}
+\If{$u = v$}
+\Return $\emptyset$
+\EndIf
+\For{$w : uw \in E$}
+    \If{dist'[u][v] = dist[u][w] + dist'[w][v]}
+
+        \Return $uw$  $\cup$ EXPAND$(wv, E, dist, dist')$
+    \EndIf
+\EndFor
+\EndFunction
+
+%\Function{floyd\_warshall}{V, E, dist}
+%\State $minDist \gets \infty$
+%\For{uv: E}
+%    \State $minDist[u][v] \gets dist(u, v)$
+%    \State $minDist[v][u] \gets dist(u, v)$
+%\EndFor
+%\For{k : V}
+%    \For{u : V}
+%        \For{v : V}
+%            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
+%        \EndFor
+%    \EndFor
+%\EndFor
+%\Return $minDist$
+%\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
     \subsection{Grafos direcionados}
 
     Analisaremos agora o problema do carteiro chinês aplicado a digrafos.

@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1588767097 "ic.tex" "ic.pdf" "ic" 1588767101
+["pdflatex"] 1588961298 "ic.tex" "ic.pdf" "ic" 1588961300
   "/etc/texmf/web2c/texmf.cnf" 1583809056 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
@@ -166,16 +166,16 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1583809561 164837 f472f40ab643c6b1fa7fff8b04d446df ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1583809565 819771 f93d02b9f37c20eb4628d85b5611cb1c ""
   "euler_hierholzer.cpp" 1583473089 190 a73e4048e598658f5e71f4379f39b483 ""
-  "ic.aux" 1588767100 12695 aa04a80d82fbd0814cca7a14e9b30bb4 ""
-  "ic.out" 1588767100 1157 e28f143ad78631b88a712750efba1729 ""
-  "ic.tex" 1588767096 149653 1f7131212af00ac3856ee9a58cf6e4e8 ""
-  "ic.toc" 1588767100 1480 7695f2d27cc33107107df033dd9c40cb ""
+  "ic.aux" 1588961300 12902 2d9e8b113146ab4f2800d97cfbc35eae ""
+  "ic.out" 1588961300 1157 e28f143ad78631b88a712750efba1729 ""
+  "ic.tex" 1588961295 150940 574260e28c89ca264c7cd6d830112ee2 ""
+  "ic.toc" 1588961300 1480 4a9d8b96b3f057b56e2fe873ac5d32eb ""
   "img/konigsberg-euler.png" 1583473089 90629 00f237988b8a3b4365ad6c7cda41204e ""
   "img/konigsberg-graph.png" 1583473089 6238 de80ae0ad34440085e16a0d4ee823fbb ""
   "img/konigsberg.png" 1583473089 777566 01ceca6d071c0587b998af2d102b848b ""
   (generated)
-  "ic.toc"
   "ic.log"
-  "ic.aux"
+  "ic.toc"
   "ic.pdf"
+  "ic.aux"
   "ic.out"
