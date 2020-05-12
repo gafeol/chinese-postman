@@ -6,7 +6,7 @@
 \contentsline {subsection}{\numberline {1.4}Algoritmo de Hierholzer}{15}{subsection.1.4}
 \contentsline {section}{\numberline {2}O problema do Carteiro Chin\IeC {\^e}s (PCC)}{22}{section.2}
 \contentsline {subsection}{\numberline {2.1}Grafos n\IeC {\~a}o direcionados}{23}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Grafos direcionados}{27}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.2}Grafos direcionados}{28}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Grafos mistos}{36}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Problema do carteiro rural}{37}{subsection.2.4}
 \contentsline {subsubsection}{\numberline {2.4.1}PCR em grafos n\IeC {\~a}o direcionados}{38}{subsubsection.2.4.1}

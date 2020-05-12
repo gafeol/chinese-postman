@@ -1121,7 +1121,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 \end{proof}
 
 \begin{lemma}
-    Para todo grafo $G$ simples e conexo, haverá uma solução ótima do PCC cujo conjunto de arestas duplicadas consistirá na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas consiste na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
 \end{lemma}
 
 \begin{proof}
@@ -1238,21 +1238,25 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
 \end{proof}
 
-Um algoritmo que soluciona o problema se baseia em criar um novo grafo $G'(V', E')$. 
-$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$, já $E'$ é definido como o conjunto de arestas entre todo par de vértices de $V'$, sendo que uma aresta entre dois vértices $u$ e $v$ quaisquer terá o custo igual ao custo de um caminho de menor custo entre os vértices $u$ e $v$ no grafo original $G$.
+Um algoritmo que soluciona o problema se baseia em criar um novo grafo completo $G'(V', E')$. 
+$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
+O custo de uma aresta de $E'$ entre dois vértices $u$ e $v$ quaisquer será o custo de um caminho mínimo entre $u$ e $v$ no grafo original $G$.
 
 
-Pelo lema \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como uma união de caminhos de custo mínimo entre vértices de grau ímpar. 
-Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original à um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
+Pelo lema \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como a união de caminhos de custo mínimo entre vértices de grau ímpar. 
+Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original a um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
 
 Dado um emparelhamento perfeito $M$ em $G'$ de custo mínimo, é possível derivar uma solução ótima do PCC. Esta solução será dada por um circuito euleriano no grafo $G^*$ que construímos abaixo:
 
-Considere $G^* = (V, E(G))$. Agora, para cada aresta $e = uv \in M$ (emparelhamento de $G'$), tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e faça $G^* \leftarrow G^* \cup C$, ou seja, duplique as arestas de $C$ em $G^*$.
+Considere $G^* = (V, E)$. Agora, para cada aresta $e = uv \in M$ (emparelhamento de $G'$), tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e faça $G^* \leftarrow G^* \cup C$, ou seja, duplique as arestas de $C$ em $G^*$.
 
-A duplicação das arestas de um caminho modifica apenas a paridade dos vértices extremos.
-Como, no procedimento acima, estamos duplicando as arestas de todos caminhos derivados do emparelhamento perfeito $M$, isso implica que moficamos a paridade de todos os vértices de $G^*$, ou seja, modificamos a paridade dos vértices de grau ímpar de $G$.
+A duplicação das arestas de um caminho modifica apenas a paridade de grau dos vértices extremos.
+Como, no procedimento acima, estamos duplicando as arestas de todos caminhos derivados do emparelhamento perfeito $M$, isso implica que modificamos as paridades dos graus de todos os vértices de $G^*$, ou seja, modificamos apenas as paridades dos graus dos vértices de grau ímpar de $G$.
 
 Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
+
+
+Segue agora uma versão em pseudo-código do algoritmo que soluciona o PCC em grafos não direcionados.
 
 
 
@@ -1262,57 +1266,58 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
 
-\begin{algorithm}
-\caption{Solução para o PCC}
-\label{pcc-pseudocode}
-\begin{algorithmic}[1]
-\Function{pcc}{G}
-% V' conj dos vertices de grau impar
-\State $(V, E, dist) \gets G$
-\State $V' \gets \{v \in V : grau[v] $ é impar$\}$
-\State $dist' \gets $ FLOYD\_WARSHALL$(V', E, dist)$
-\State $E' \gets V' \times V'$
-\State $G' \gets (V', E', dist')$
-\State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
-\State $E^* \gets E$
-\For{$uv \in M$}
-    \State $C \gets$ EXPAND$(uv, E, dist, dist')$
-    \State $E^* \gets E^* \cup C$
-\EndFor
-\State $G^* \gets (V, E^*)$
+    \begin{algorithm}
+    \caption{Solução do PCC em grafos não direcionados}
+    \label{pcc-pseudocode}
+    \begin{algorithmic}[1]
+    \Function{pcc}{G}
+    % V' conj dos vertices de grau impar
+    \State $(V, E, dist) \gets G$
+    \State $V' \gets \{v \in V : grau[v] $ é impar$\}$
+    \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+    \State $E' \gets V' \times V'$
+    \State $G' \gets (V', E', dist')$
+    \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+    \State $E^* \gets E$
+    \For{$uv \in M$}
+        \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+        \State $E^* \gets E^* \cup C$
+    \EndFor
+    \State $G^* \gets (V, E^*)$
+    \State \Return CIRCUITO\_EULERIANO$(G^*)$
+    \EndFunction 
 
-\Return TRILHA\_EULERIANA$(G^*)$
-\EndFunction 
-
-\Function{expand}{uv, E, dist, dist'}
-\If{$u = v$}
-\Return $\emptyset$
-\EndIf
-\For{$w : uw \in E$}
-    \If{dist'[u][v] = dist[u][w] + dist'[w][v]}
-
-        \Return $uw$  $\cup$ EXPAND$(wv, E, dist, dist')$
+    \Function{expande}{uv, E, dist, dist'}
+    \If{$u = v$}
+    \Return $\emptyset$
     \EndIf
-\EndFor
-\EndFunction
+    \For{$w : uw \in E$}
+        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} \Comment $uw$ pertence a um caminho mínimo de $u$ a $v$
+        \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \EndIf
+    \EndFor
+    \EndFunction
 
-%\Function{floyd\_warshall}{V, E, dist}
-%\State $minDist \gets \infty$
-%\For{uv: E}
-%    \State $minDist[u][v] \gets dist(u, v)$
-%    \State $minDist[v][u] \gets dist(u, v)$
-%\EndFor
-%\For{k : V}
-%    \For{u : V}
-%        \For{v : V}
-%            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
-%        \EndFor
-%    \EndFor
-%\EndFor
-%\Return $minDist$
-%\EndFunction
-\end{algorithmic}
-\end{algorithm}
+    %\Function{floyd\_warshall}{V, E, dist}
+    %\State $minDist \gets \infty$
+    %\For{uv: E}
+    %    \State $minDist[u][v] \gets dist(u, v)$
+    %    \State $minDist[v][u] \gets dist(u, v)$
+    %\EndFor
+    %\For{k : V}
+    %    \For{u : V}
+    %        \For{v : V}
+    %            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
+    %        \EndFor
+    %    \EndFor
+    %\EndFor
+    %\Return $minDist$
+    %\EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+
+Escolheu-se o algoritmo de Floyd-Warshall para encontrar as distâncias mínimas entre todo par de vértices de $G$.
+Uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkstra $|V'|$ vezes, calculando a distância mínima de cada vértice de grau ímpar a todos outros vértices do grafo. 
 
     \subsection{Grafos direcionados}
 
@@ -2826,3 +2831,4 @@ Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do 
 	\end{thebibliography}
  
 \end{document}
+
