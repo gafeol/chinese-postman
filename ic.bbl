@@ -19,6 +19,131 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{tanya}{online}{}
+      \name{author}{1}{}{%
+        {{hash=d63b36f29a42e57abd37ba8ea2d19484}{%
+           family={508D},
+           familyi={5\bibinitperiod},
+           given={Codeforces},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \strng{fullhash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \strng{bibnamehash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \strng{authorbibnamehash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \strng{authornamehash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \strng{authorfullhash}{d63b36f29a42e57abd37ba8ea2d19484}
+      \field{labelalpha}{508}
+      \field{sortinit}{5}
+      \field{sortinithash}{3c19c3776b658b3558e9e2e4840c01e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Tanya and Password}
+      \verb{urlraw}
+      \verb https://codeforces.com/contest/508/problem/D
+      \endverb
+      \verb{url}
+      \verb https://codeforces.com/contest/508/problem/D
+      \endverb
+    \endentry
+    \entry{christofides-86}{article}{}
+      \name{author}{4}{}{%
+        {{hash=287df3143652a77cd40555812a09052b}{%
+           family={Christofides},
+           familyi={C\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=ca2b14e2a3f15cb4ed4075b04e82f2e7}{%
+           family={Campos},
+           familyi={C\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=e6a2b215c17bcb8dea1ed97159a520d7}{%
+           family={Corberán},
+           familyi={C\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=f1fc3317ba6b4133e462c7ce92dd26a3}{%
+           family={Mota},
+           familyi={M\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{edec55f6e85e3c703ed42ffa47f5edff}
+      \strng{fullhash}{4390942b1dd20b1d0993679c9a8268a1}
+      \strng{bibnamehash}{4390942b1dd20b1d0993679c9a8268a1}
+      \strng{authorbibnamehash}{4390942b1dd20b1d0993679c9a8268a1}
+      \strng{authornamehash}{edec55f6e85e3c703ed42ffa47f5edff}
+      \strng{authorfullhash}{4390942b1dd20b1d0993679c9a8268a1}
+      \field{labelalpha}{Chr+86}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{An algorithm for the rural postman problem on a directed graph}
+      \field{year}{1986}
+      \field{pages}{155\bibrangedash 166}
+      \range{pages}{12}
+    \endentry
+    \entry{wiki-christofides}{online}{}
+      \name{author}{1}{}{%
+        {{hash=b9677598d203ef2d59db8effb9d58ced}{%
+           family={Christofides},
+           familyi={C\bibinitperiod},
+           given={Nicos},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{b9677598d203ef2d59db8effb9d58ced}
+      \strng{fullhash}{b9677598d203ef2d59db8effb9d58ced}
+      \strng{bibnamehash}{b9677598d203ef2d59db8effb9d58ced}
+      \strng{authorbibnamehash}{b9677598d203ef2d59db8effb9d58ced}
+      \strng{authornamehash}{b9677598d203ef2d59db8effb9d58ced}
+      \strng{authorfullhash}{b9677598d203ef2d59db8effb9d58ced}
+      \field{labelalpha}{Chr76}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Algoritmo de Christofides}
+      \field{year}{1976}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Christofides_algorithm
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Christofides_algorithm
+      \endverb
+    \endentry
+    \entry{blossom}{online}{}
+      \name{author}{1}{}{%
+        {{hash=4512d981a2fac684e867257fcb2c5419}{%
+           family={Edmonds},
+           familyi={E\bibinitperiod},
+           given={Jack},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{fullhash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{bibnamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authorbibnamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authornamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authorfullhash}{4512d981a2fac684e867257fcb2c5419}
+      \field{labelalpha}{Edm61}
+      \field{sortinit}{E}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Algoritmo Blossom}
+      \field{year}{1961}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Blossom_algorithm
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Blossom_algorithm
+      \endverb
+    \endentry
     \entry{hierholzer}{article}{}
       \name{author}{1}{}{%
         {{hash=9910c19e6a0c153658e6f31385d2a337}{%
@@ -38,24 +163,55 @@
       \field{sortinithash}{5f15a7bc777ad49ff15aa4d2831b1681}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren}. ({German})}
+      \field{title}{Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren}
       \field{year}{1873}
     \endentry
+    \entry{kolmogorov}{online}{}
+      \name{author}{1}{}{%
+        {{hash=c2f15cfb437774c22b5947d50bf3de13}{%
+           family={Kolmogorov},
+           familyi={K\bibinitperiod},
+           given={Vladimir},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{c2f15cfb437774c22b5947d50bf3de13}
+      \strng{fullhash}{c2f15cfb437774c22b5947d50bf3de13}
+      \strng{bibnamehash}{c2f15cfb437774c22b5947d50bf3de13}
+      \strng{authorbibnamehash}{c2f15cfb437774c22b5947d50bf3de13}
+      \strng{authornamehash}{c2f15cfb437774c22b5947d50bf3de13}
+      \strng{authorfullhash}{c2f15cfb437774c22b5947d50bf3de13}
+      \field{labelalpha}{Kol09}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Blossom V: A new implementation of a minimum cost perfect matching algorithm}
+      \field{year}{2009}
+    \endentry
+    \entry{tanya-sol}{online}{}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{labeltitlesource}{title}
+      \field{title}{Solução do problema Tanya and Password}
+      \verb{urlraw}
+      \verb https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp
+      \endverb
+      \verb{url}
+      \verb https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp
+      \endverb
+    \endentry
   \enddatalist
-  \missing{blossom}
-  \missing{christofides-86}
   \missing{edmonds-ssa}
   \missing{hierholzer-und}
   \missing{jogging}
   \missing{jogging-sol}
-  \missing{kolmogorov}
   \missing{michel}
   \missing{mit}
   \missing{sereja}
   \missing{sereja-sol}
-  \missing{tanya}
-  \missing{tanya-sol}
-  \missing{wiki-christofides}
 \endrefsection
 \endinput
 
