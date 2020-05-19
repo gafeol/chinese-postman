@@ -48,6 +48,24 @@
 \newtheorem{corollary}{Corolário}
 \newtheorem{lemma}{Lema}
 
+%% BIBTEX
+\usepackage{csquotes}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=nty,
+maxbibnames=10
+]{biblatex}
+\addbibresource{ref.bib}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+%%%
+
 \title{O problema do carteiro chinês}
 \author{Orientador: Carlos Eduardo Ferreira\\Gabriel Fernandes de Oliveira}
 \date{}
@@ -2779,16 +2797,19 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
 	\medskip
 
+    \newpage
+    \printbibliography
+
 	\begin{thebibliography}{9}
 	\bibitem{konigsberg} 
 	Euler, Leonhard
 	\textit{Solution problematis ad geometriam situs pertinentis}. 
 	Comment. Acad. Sci. U. Petrop 8, 128–40, 1736.
 
-	\bibitem{hierholzer}
-	Hierholzer, Carl
-	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
-	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
+%	\bibitem{hierholzer}
+%	Hierholzer, Carl
+%	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
+%	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
 
     \bibitem{tanya}
     \href{https://codeforces.com/contest/508/problem/D}{Problema D do round \#288 (Div. 2)}
