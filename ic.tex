@@ -560,6 +560,7 @@ Quando o vértice atual da busca não possui mais arestas para se percorrer, o m
 Segue o pseudo código do algoritmo de Hierholzer para encontrar uma trilha euleriana dado um grafo euleriano.
 
 \begin{algorithm}
+\floatname{algorithm}{Algoritmo}
 \caption{Solução de Hierholzer}\label{eulerian-hierholzer}
 \begin{algorithmic}[1]
 \Function{euler\_hierholzer}{u}
@@ -1099,7 +1100,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
 \begin{lemma} 
     \label{lemma-pcc}
-    Para todo grafo simples e conexo, existirá uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá apenas 0 ou 1. 
+    Para todo grafo simples e conexo, existe uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ vale 0 ou 1. 
 \end{lemma}
 
 \begin{proof}
@@ -1221,7 +1222,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
 \begin{lemma}
     \label{lema-final}
-    Para todo grafo $G$ simples e conexo, haverá uma solução ótima do PCC cujo conjunto de arestas duplicadas consistirá na união de caminhos de custo mínimo entre vértices de grau ímpar.
+    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas é a união de caminhos de custo mínimo entre vértices de grau ímpar.
 \end{lemma}
 
 \begin{proof}
@@ -1256,7 +1257,7 @@ Como, no procedimento acima, estamos duplicando as arestas de todos caminhos der
 Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
 
 
-Segue agora uma versão em pseudo-código do algoritmo que soluciona o PCC em grafos não direcionados.
+Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algoritmo descrito.
 
 
 
@@ -1267,6 +1268,7 @@ Segue agora uma versão em pseudo-código do algoritmo que soluciona o PCC em gr
 
 
     \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
     \caption{Solução do PCC em grafos não direcionados}
     \label{pcc-pseudocode}
     \begin{algorithmic}[1]
@@ -1292,7 +1294,7 @@ Segue agora uma versão em pseudo-código do algoritmo que soluciona o PCC em gr
     \Return $\emptyset$
     \EndIf
     \For{$w : uw \in E$}
-        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} \Comment $uw$ pertence a um caminho mínimo de $u$ a $v$
+        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
         \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
         \EndIf
     \EndFor
@@ -1317,7 +1319,12 @@ Segue agora uma versão em pseudo-código do algoritmo que soluciona o PCC em gr
     \end{algorithm}
 
 Escolheu-se o algoritmo de Floyd-Warshall para encontrar as distâncias mínimas entre todo par de vértices de $G$.
-Uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkstra $|V'|$ vezes, calculando a distância mínima de cada vértice de grau ímpar a todos outros vértices do grafo. 
+Apesar de tal algoritmo possuir complexidade $\mathcal{O}(|V|^3)$, ele possui uma simples implementação.
+
+Se $G$ não possuir arestas de custo negativo, uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkstra $|V'|$ vezes, calculando a distância mínima de cada vértice de grau ímpar a todos outros vértices do grafo, possuindo assim uma complexidade $\mathcal{O}(|V'||E|\log|V|)$. 
+
+Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds\cite{blossom}. 
+Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009\cite{kolmogorov}.
 
     \subsection{Grafos direcionados}
 
@@ -2805,6 +2812,12 @@ Uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkst
 
     \bibitem{jogging-sol}
     \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{Solução} para o problema Jogging Trails, desenvolvida em C++
+
+    \bibitem{blossom}
+    \href{https://en.wikipedia.org/wiki/Blossom_algorithm}{Algoritmo Blossom de Edmonds}
+
+    \bibitem{kolmogorov}
+    \href{http://pub.ist.ac.at/~vnk/papers/blossom5.pdf}{Paper de Vladimir Kolmogorov sobre o algoritmo ``Blossom V''}
 
     \bibitem{mit}
     \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{Exemplo retirado do site do MIT, exercício 6.6.c} 
