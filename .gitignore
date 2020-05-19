@@ -2,3 +2,6 @@
 *.aux
 *.out
 *.dvi
+*.synctex.gz
+*.toc
+*.fdb_latexmk
