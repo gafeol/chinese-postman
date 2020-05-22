@@ -1,4 +1,4 @@
-filename=ic
+filename=tcc
 
 pdf:
 	pdflatex ${filename}
