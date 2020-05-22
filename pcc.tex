@@ -1,0 +1,1452 @@
+\section{O problema do Carteiro Chinês (PCC)}
+
+Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
+
+Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de Konigsberg, o matemático chinês Meigu Guan publicou um estudo que generalizava ainda mais o problema dos grafos eulerianos. 
+Esse problema foi denominado Problema da Inspeção de Rotas, ou, como também é conhecido hoje: Problema do carteiro chinês.
+A ideia desse problema é encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez. 
+A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas mais de uma vez no trajeto final.
+
+\begin{wrapfigure}{l}{0.3\textwidth} 
+    \centering
+	\resizebox{0.3\textwidth}{!}{ % using ! automatically rescales the vertical size of the box
+		\begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+			\node[main node] at (0, 0) (a) {A};
+			\node[main node] at (0, 2) (b) {B};
+			\node[main node] at (-2, -1) (c) {C};
+			\node[main node] at (2, -1) (d) {D};
+
+			\path[every node/.style={font=\sffamily\small}]
+				(a) edge[] node [right] {1} (b)
+				(a) edge node [above] {2} (c)
+				(a) edge node [above] {2} (d)
+				(b) edge node [right] {2} (d)
+				(b) edge node [above] {2} (c)
+				(c) edge node [above] {1} (d)
+				;
+		\end{tikzpicture}
+	}
+	\caption{Exemplo de grafo}
+	\label{graph}
+\end{wrapfigure}
+
+O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a poder entregar cartas em todas as ruas da cidade e voltar ao posto de carteiros no fim de sua rota.
+
+
+Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: 
+
+\[ \{A, B, D, C, A, D, C, B, A\} \] 
+
+Sendo este um caminho fechado de custo 12.
+Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) fossem percorridas duas vezes no passeio, porém nem sempre é necessária esta repetição.
+
+No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
+Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será similar a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano, ou seja, adicionar duplicatas de arestas até que todos os vértices possuam grau par.
+
+Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
+Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
+
+\subsection{Grafos não direcionados}
+
+Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e não direcionado.
+
+Uma solução qualquer $T$ do problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
+Se $G$ é euleriano, então uma solução para o PCC é o próprio circuito euleriano do grafo.
+Do contrário, será necessário que $T$ percorra pelo menos uma aresta multiplas vezes.
+
+Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em $T$.
+Definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
+Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes e a trilha fechada $T$ (solução do PCC em $G$) percorre cada uma dessas arestas uma única vez.
+Por definição $G'$ será euleriano, e a trilha euleriana de $G'$ corresponderá à $T$, solução do PCC para o grafo $G$.
+
+Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
+
+Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
+
+%Seja $E(v)$ o conjunto de arestas ligadas ao vértice $v \in V$, e seja $c_e$ o custo de se percorrer uma aresta $e \in E$, que deverá ser não-negativo.
+
+%Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
+
+\begin{lemma} 
+    \label{lemma-pcc}
+    Para todo grafo simples e conexo, existe uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ vale 0 ou 1. 
+\end{lemma}
+
+\begin{proof}
+    Seja $T$ uma solução ótima do PCC para um grafo $G$ e $x$ um vetor indicando a quantidade de cópias necessárias de cada aresta de $G$ para a solução $T$. 
+    Sabemos que $x$ deverá possuir valores inteiros não negativos, além disso, sabemos que o grafo $G'$, induzido por $x$, deverá ser euleriano e que o valor de $\sum_e c_ex_e$ será mínimo.
+
+    Seja $x^*$ um vetor definido do seguinte modo:
+
+    \[  x^*_e = x_e \bmod 2    \]
+
+    Como o grafo $G'$ induzido por $x$ era euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos vértices em ambos grafos é a mesma, e também pois tanto $G'$ quanto $G^*$ possuem $G$, que é conexo, como um subgrafo, e portanto também são conexos.
+    
+    Pela definição, $G^*$ usa um número menor ou igual de arestas duplicadas que $G'$, fazendo com que o seguinte se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
+
+    No entanto, como $x$ foi derivado da solução ótima $T$, sabemos que $\sum_e c_ex_e$ deverá ser mínimo, e portanto, $\sum_e c_ex^*_e = \sum_e c_ex_e$. 
+
+    Sendo assim, os valores de $x^*$ serão apenas 0 ou 1, por definição, e $T^*$ consistirá em uma solução ótima, assim como $T$, provando o lema.
+
+\end{proof}
+
+\begin{lemma}
+    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas consiste na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+\end{lemma}
+
+\begin{proof}
+
+    Inicialmente trataremos o caso em que $G$ não possui nenhum vértice de grau ímpar:
+    Se todos vértices de $G$ tem grau par, então o mesmo deve possuir um circuito euleriano. 
+    Por isso, o vetor $x' = \{0, 0, \dots, 0\}$ induz uma solução válida para o PCC, e possui custo zero, sendo assim esta uma solução ótima.
+    Como o conjunto de arestas duplicadas nesta solução é vazio, vale o lema para este grafo.
+
+    Provado este caso, seguiremos a demonstração assumindo que $G$ possui ao menos um vértice de grau ímpar.
+
+    Seja $T$ uma solução ótima do PCC para um grafo $G(V, E)$  em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá 0 ou 1. 
+    A existência de tal solução é garantida pelo lema \ref{lemma-pcc}.
+    Realizaremos uma prova por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
+
+    O caso base dessa indução é quando $\sum_e x_e = 0$. 
+    Neste caso, o conjunto de arestas duplicadas será vazio, valendo então a propriedade do lema.
+
+    A hipótese de indução será que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
+
+    Analisaremos agora a situação em que $\sum_e x_e = k$, com $k > 0$.
+
+    Seja $v$ um vértice de $G$ de grau ímpar,  $C$ um caminho de tamanho maximal que começa no vértice $v$ e percorre apenas arestas duplicadas e seja $G'$ o grafo, possivelmente desconexo, $G$ decrescido das arestas pertencentes a $C$.
+
+
+    Todos os vértices em $G$ e $G'$ terão a mesma paridade de grau, exceto pelos vértices extremos de $C$. 
+    Como estes eram vértices de grau ímpar em $G$ e apenas uma aresta foi retirada dos mesmos, ambos terão grau par em $G'$.
+
+    Sendo assim, podemos definir um vetor $x'$ que induz uma solução ótima para $G'$ do seguinte modo:
+
+    \[ 
+        x'_e = 
+        \begin{cases} 
+            0 & e \in C \\
+            x_e & e \notin C 
+        \end{cases}
+    \]
+
+
+    Vale também o seguinte:
+
+    \begin{align*}
+        \sum_e x'_e &= \sum_e x_e - |\mathcal{C}| \\ 
+        \sum_e x'_e &< \sum_e x_e \\
+        \sum_e x'_e &< k
+    \end{align*}
+
+    Sendo assim, vale a hipótese de indução para o grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto por arestas duplicadas (ou seja, para as quais $x'_e = 1$).
+
+    Como o grafo $G'$ não possui as arestas do caminho $C$, temos que todo caminho de $\mathcal{C}$ deverá ser aresta-disjunto com $C$.
+    Deste modo, o conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar $\mathcal{C} \cup C$, que induz o grafo $T$, consistirá de uma solução ótima para o PCC em $G$.
+    Provando assim o passo da indução.
+
+    Finalizando então a prova por indução do lema.
+
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (5) {5};
+            \node[main node] (1) [below left of=5]{1};
+            \node[main node] (2) [below of=1] {2};
+            \node[main node] (4) [below right of=5] {4};
+            \node[main node] (3) [below of=4] {3};
+
+          \path[every node/.style={font=\sffamily\small}]
+            (5) edge node [above] {0} (1)
+            (5) edge node [above] {0} (4)
+            (1) edge node [above] {0} (4)
+            (2) edge node [right] {1} (1)
+            (3) edge node [above] {1} (2)
+            (4) edge node [left] {1} (3)
+            ;
+        \end{tikzpicture}
+        \caption{Possível estrutura em grafo com vértices de grau ímpar}
+        \label{pcc-case1}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \node[main node] (4) [right of=1] {4};
+            \node[main node] (3) [below of=4] {3};
+
+          \path[every node/.style={font=\sffamily\small}]
+            (1) edge node [above] {1} (4)
+            (2) edge node [right] {1} (1)
+            (3) edge node [above] {1} (2)
+            (4) edge node [left] {1} (3)
+            ;
+        \end{tikzpicture}
+        \caption{Caso em que o grafo tratado não possui vértices de grau ímpar}
+        \label{pcc-case2}
+    \end{figure}
+
+\end{proof}
+
+\begin{lemma}
+    \label{lema-final}
+    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas é a união de caminhos de custo mínimo entre vértices de grau ímpar.
+\end{lemma}
+
+\begin{proof}
+    Seja $S$ o conjunto de arestas duplicadas em uma solução ótima do PCC para o grafo $G$, que consiste de uma união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+
+    Imagine que um caminho $C$ pertencente a $S$, que liga os vértices quaisquer $u$ e $v$, não é o caminho mínimo entre os vértices que liga. 
+    Isto é, existe um caminho $C'$ de custo menor que $C$ que liga $u$ e $v$.
+
+    Neste caso, poderiamos retirar de $S$ as arestas do caminho $C$ e adicionar ao conjunto as arestas de $C'$. Deste modo, o conjunto $S$ possuiria um custo menor que o original, nos permitindo derivar de $S$ uma solução para o PCC de custo menor que a solução original.
+
+    Porém, fazia parte da hipótese que a solução original era ótima, nos levando assim a uma contradição.
+
+    Provamos assim o lema, garantindo a existência de uma solução para o PCC que consiste de uma união de caminhos mínimos entre vértices de grau ímpar.
+
+\end{proof}
+
+Um algoritmo que soluciona o problema se baseia em criar um novo grafo completo $G'(V', E')$. 
+$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
+O custo de uma aresta de $E'$ entre dois vértices $u$ e $v$ quaisquer será o custo de um caminho mínimo entre $u$ e $v$ no grafo original $G$.
+
+
+Pelo lema \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como a união de caminhos de custo mínimo entre vértices de grau ímpar. 
+Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original a um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
+
+Dado um emparelhamento perfeito $M$ em $G'$ de custo mínimo, é possível derivar uma solução ótima do PCC. Esta solução será dada por um circuito euleriano no grafo $G^*$ que construímos abaixo:
+
+Considere $G^* = (V, E)$. Agora, para cada aresta $e = uv \in M$ (emparelhamento de $G'$), tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e faça $G^* \leftarrow G^* \cup C$, ou seja, duplique as arestas de $C$ em $G^*$.
+
+A duplicação das arestas de um caminho modifica apenas a paridade de grau dos vértices extremos.
+Como, no procedimento acima, estamos duplicando as arestas de todos caminhos derivados do emparelhamento perfeito $M$, isso implica que modificamos as paridades dos graus de todos os vértices de $G^*$, ou seja, modificamos apenas as paridades dos graus dos vértices de grau ímpar de $G$.
+
+Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
+
+
+Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algoritmo descrito.
+
+
+
+    % TODO: Expandir nesses assuntos:
+        % Complexidade de um algoritmo
+		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
+		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
+
+
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Solução do PCC em grafos não direcionados}
+    \label{pcc-pseudocode}
+    \begin{algorithmic}[1]
+    \Function{pcc}{G}
+    % V' conj dos vertices de grau impar
+    \State $(V, E, dist) \gets G$
+    \State $V' \gets \{v \in V : grau[v] $ é impar$\}$
+    \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+    \State $E' \gets V' \times V'$
+    \State $G' \gets (V', E', dist')$
+    \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+    \State $E^* \gets E$
+    \For{$uv \in M$}
+        \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+        \State $E^* \gets E^* \cup C$
+    \EndFor
+    \State $G^* \gets (V, E^*)$
+    \State \Return CIRCUITO\_EULERIANO$(G^*)$
+    \EndFunction 
+
+    \Function{expande}{uv, E, dist, dist'}
+    \If{$u = v$}
+    \Return $\emptyset$
+    \EndIf
+    \For{$w : uw \in E$}
+        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
+        \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \EndIf
+    \EndFor
+    \EndFunction
+
+    %\Function{floyd\_warshall}{V, E, dist}
+    %\State $minDist \gets \infty$
+    %\For{uv: E}
+    %    \State $minDist[u][v] \gets dist(u, v)$
+    %    \State $minDist[v][u] \gets dist(u, v)$
+    %\EndFor
+    %\For{k : V}
+    %    \For{u : V}
+    %        \For{v : V}
+    %            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
+    %        \EndFor
+    %    \EndFor
+    %\EndFor
+    %\Return $minDist$
+    %\EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+
+Escolheu-se o algoritmo de Floyd-Warshall para encontrar as distâncias mínimas entre todo par de vértices de $G$.
+Apesar de tal algoritmo possuir complexidade $\mathcal{O}(|V|^3)$, ele possui uma simples implementação.
+
+Se $G$ não possuir arestas de custo negativo, uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkstra $|V'|$ vezes, calculando a distância mínima de cada vértice de grau ímpar a todos outros vértices do grafo, possuindo assim uma complexidade $\mathcal{O}(|V'||E|\log|V|)$. 
+
+Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds\cite{blossom}. 
+Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009\cite{kolmogorov}.
+
+    \subsection{Grafos direcionados}
+
+    Analisaremos agora o problema do carteiro chinês aplicado a digrafos.
+
+    \begin{lemma}
+        Um digrafo $G$ possui solução para o problema do carteiro chinês se, e somente se, é fortemente conexo.
+    \end{lemma}
+
+    \begin{proof}
+
+
+        ($\Rightarrow$) Começamos provando que para que um digrafo $G$ possua solução para o problema do carteiro chinês é necessário que o mesmo seja fortemente conexo.
+
+        Vamos assumir, por absurdo, que $G$ possui uma solução para o PCC mas não é fortemente conexo.
+
+        Como $G$ possui uma solução para o PCC, então existe um passeio fechado $T$ que passa por todos arcos de $G$.
+
+         Além disso, como $T$ é um passeio fechado, para cada par de vértices $u, v$ de $G$, sabemos que $T$ passa por $u$ e $v$.
+         Assim, $T = \{ v_0, v_1, \dots, v_i = u, \dots, v_j = v, \dots \}$.
+
+        A partir de um passeio entre dois vértices sempre é possível derivar um caminho entre os mesmos seguindo o seguinte método:
+
+        \begin{tcolorbox}
+            \textbf{Método para derivar um caminho de um passeio qualquer}
+            
+            Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
+
+            Como $P$ é um passeio, possivelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+
+            Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ executa-se o seguinte passo:
+    
+
+            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do vértice $v$, mantendo apenas tal vértice: 
+
+
+            Portanto um passeio $P$ qualquer com repetição do vértice $v$, como o seguinte:
+            \[
+                P = \{ u_1, \dots u_i, v, \dots, v, u_j, \dots u_n\}
+            \]
+
+            Passa a ser:
+
+
+            \[
+                P = \{ u_1, \dots u_i, v, u_j, \dots u_n\}
+            \]
+
+            Repete-se tal passo até que $P$ não percorra um mesmo vértice duas vezes, se tornando assim, por definição, um caminho.
+
+        \end{tcolorbox}
+         
+        Sendo assim, afirmamos que todo par de vértices presentes em $T$ possui um caminho entre si.
+
+        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve ser incidente ao menos a um arco. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
+        Por consequência para todo par de vértices de $G$ existe um caminho entre eles o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
+
+        Provando assim que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. 
+
+        ($\Leftarrow$)  Provaremos agora que todo grafo fortemente conexo $G$ possui uma solução para o PCC.
+
+        Seja $v$ um vértice qualquer de $G$. Podemos construir uma solução $P$ para o problema do carteiro chinês do seguinte modo:
+
+
+        Para qualquer arco $uw$ de $G$ definimos um circuito $C_{uw}$ que passa por $uw$ e pelo vértice $v$ como a concatenação do caminho de $v$ a $u$, do arco $uw$ e do caminho de $w$ a $v$.
+        
+        A existência de um caminho entre quaisquer dois vértices é garantida, já que $G$ é fortemente conexo, garantindo assim a existência de $C_{uw}$.
+        
+        Para construir a solução $P$, finalmente, basta realizar a concatenação dos circuitos $C_{e}$ para todo arco $e$ presente em $G$.
+
+        Deste modo garantimos que toda aresta de $G$ é percorrida, provando assim a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
+
+    \end{proof}
+
+    Em linhas gerais, o algoritmo que soluciona o problema do carteiro chinês para digrafos envolve multiplicar arestas do grafo original até que o mesmo se torne euleriano. O circuito euleriano desse digrafo modificado será a solução do problema do carteiro chinês para o digrafo original, do modo similar à solução para o PCC em grafos não direcionados.
+    
+    Uma grande diferença na solução do problema do carteiro chinês é que, para digrafos, não vale o lema \ref{lemma-pcc}, que garante a existência de uma solução para todo PCC em que cada aresta do grafo é percorrida no máximo duas vezes.
+    Um contra-exemplo disso é o caso ilustrado na figura \ref{counter-lemma}. 
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [right of=1] {2};
+            \draw[edge] (1) to[bend left=50] (2);
+            \draw[edge] (1) to[bend right=50] (2);
+            \draw[edge] (1) to[] (2);
+            \draw[edge] (2) to[bend left=100] (1);
+        \end{tikzpicture}
+        \caption{Contra exemplo do lema \ref{lemma-pcc} para os digrafos}
+        \label{counter-lemma}
+    \end{figure}
+
+    Para que um passeio fechado percorra os três arcos de $1$ a $2$ da figura \ref{counter-lemma}, é necessário que esse mesmo passeio percorra três vezes o arco de $2$ a $1$.
+
+    O lema \ref{lemma-pcc} é utilizado para justificar a utilização de um algoritmo de emparelhamento perfeito para definir quais arestas duplicar na solução do PCC.
+    Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando um algoritmo de fluxo máximo de custo mínimo, como veremos a seguir, no detalhamento do algoritmo que soluciona o PCC.
+
+    \begin{tcolorbox}
+	\textbf{Solução:}
+
+    A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
+
+    \begin{enumerate}
+        % TODO: ARRUAMR TODAS AS DEFINICOES DE F S
+        \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada e $S$ o conjunto dos vértices que possuam grau de entrada maior que o grau de saída.
+
+    Computamos então o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
+
+
+        \item[\textbf{2º}] Modelamos então um problema de transporte: 
+        Os vértices de $F$ serão vértices de oferta, cada vértice $u \in F$ terá que escoar $\delta^-(u) - \delta^+(u)$ unidades de fluxo, já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $\delta^+(v) - \delta^-(v)$ unidades de fluxo.
+
+        Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco de capacidade infinita e custo igual ao custo de um menor caminho de $u$ a $v$, calculado no primeiro passo.
+
+        Deve-se então resolver tal problema de transporte minimizando o custo total.
+
+        \item[\textbf{3º}] A partir de uma solução ótima encontrada para o problema de transporte devemos derivar um digrafo euleriano baseado em $G$.
+
+            Cada arco $uv$ criado na modelagem do problema de transporte representa um caminho de mesmo custo no digrafo $G$ entre os vértices $u$ e $v$. Se um arco da modelagem é escolhido para a solução que estamos analisando, então todos arcos do caminho que tal arco condensado representa devem ser duplicados no digrafo $G$.
+
+            Após a duplicação dos arcos de um caminho entre dois vértices $u$ e $v$ a diferença absoluta dos graus de entrada e saída de $u$ e $v$ diminuirão em uma unidade, essa mesma diferença de graus se manterá constante para vértices internos ao caminho. 
+
+            Ao final das duplicações necessárias, todos vértices de $G$ possuirão um mesmo valor de grau de entrada e saída, sendo assim euleriano segundo o teorema \ref{euler-digraph}.
+
+        \item[\textbf{4º}] Encontrar o circuito euleriano do novo grafo $G$, que será também a solução do problema do carteiro chinês para o grafo original $G$.
+
+    \end{enumerate}
+
+    \end{tcolorbox}
+    Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {4} (b);
+            \path[->] (a) edge[below] node {9} (d);
+            \path[->] (a) edge[below] node {4} (c);
+            \path[->] (b) edge[below] node {5} (a);
+            \path[->] (c) edge[bend right, above] node {6} (d);
+            \path[->] (c) edge[above] node {8} (f);
+            \path[->] (d) edge[below] node {3} (e);
+            \path[->] (d) edge[bend right, below] node {6} (c);
+            \path[->] (e) edge[below] node {6} (b);
+            \path[->] (e) edge[below] node {5} (g);
+            \path[->] (f) edge[below] node {4} (g);
+            \path[->] (g) edge[above] node {6} (d);
+        \end{tikzpicture}
+        \caption{Digrafo retirado de exercício do site do MIT\cite{mit}}
+        \label{mit-ex}
+    \end{figure}
+
+
+    \begin{itemize}
+        \item[\textbf{1º}] 
+            Definimos então os conjuntos $F$ e $S$:
+
+            \[
+                F  = \{b, d, g\}
+            \]
+            \[
+                S =  \{a, e\}
+            \]
+
+            Computamos também a distância mínima entre os pares de vértices dos dois conjuntos:
+
+            \begin{center}
+                \begin{tabular}{ |p{1cm}||p{1cm}|p{1cm}|  }
+                    \hline
+                     & a & e \\
+                    \hline
+					\hline
+                    b & 4 & 17 \\
+                    \hline
+                    d & 14 & 3 \\
+                    \hline
+                    g & 20 & 9\\
+                    \hline
+                \end{tabular}
+            \end{center}
+
+        \item[\textbf{2º}]
+
+            Modelamos então o problema de transporte, os vértices $b, d, g$ escoando uma unidade de fluxo cada e os vértices $a, b$ com demandas 2 e 1, respectivamente.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (1) {b};
+					\node (v1) at(-0.75, 0) {1};
+					\node[main node] at (0, -2) (2) {d};
+					\node (v2) at(-0.75, -2) {1};
+					\node[main node] at (0, -4) (3) {g};
+					\node (v3) at(-0.75, -4) {1};
+
+					\node[main node] at(3, -1) (4) {a};
+					\node (v4) at(3.75, -1) {2};
+					\node[main node] at(3, -3) (5) {e};
+					\node (v5) at(3.75, -3) {1};
+
+                    \path[->] (1) edge node[pos=0.25,above] {4} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {17} (5);
+                    \path[->] (2) edge node[pos=0.20,above] {14} (4);
+                    \path[->] (2) edge node[pos=0.25,above left] {3} (5);
+                    \path[->] (3) edge node[pos=0.20,above] {20} (4);
+                    \path[->] (3) edge node[pos=0.25,above] {9} (5);
+                \end{tikzpicture}
+            \end{figure}
+
+            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual à distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
+
+            Uma solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 14$ e $9$, escoando assim toda a demanda dos vértices $b, d$ e $g$.
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (1) {b};
+					\node (v1) at(-0.75, 0) {1};
+					\node[main node] at (0, -2) (2) {d};
+					\node (v2) at(-0.75, -2) {1};
+					\node[main node] at (0, -4) (3) {g};
+					\node (v3) at(-0.75, -4) {1};
+
+					\node[main node] at(3, -1) (4) {a};
+					\node (v4) at(3.75, -1) {2};
+					\node[main node] at(3, -3) (5) {e};
+					\node (v5) at(3.75, -3) {1};
+
+                    \path[->] (1) edge[red] node[pos=0.25,above] {4} (4);
+                    \path[->] (1) edge node[pos=0.25,above] {17} (5);
+                    \path[->] (2) edge[red] node[pos=0.20,above] {14} (4);
+                    \path[->] (2) edge node[pos=0.25,above left] {3} (5);
+                    \path[->] (3) edge node[pos=0.20,above] {20} (4);
+                    \path[->] (3) edge[red] node[pos=0.25,above] {9} (5);
+                \end{tikzpicture}
+            \end{figure}
+
+        \item[\textbf{3º}] Agora devemos realizar a duplicação dos caminhos representados pelas arestas $ba, da$ e $ge$.
+
+            Representamos o estado inicial do digrafo $G$, sem os pesos nos arcos:
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (d) {d};
+					\node[main node] at (-4, 1) (g) {g};
+					\node[main node] at (-2, 3) (f) {f};
+					\node[main node] at (2, 3) (c) {c};
+					\node[main node] at (5, 0) (a) {a};
+					\node[main node] at (-2, -3) (e) {e};
+					\node[main node] at (2, -3) (b) {b};
+
+					\path[->] (a) edge[bend right, below] node {} (b);
+					\path[->] (a) edge[below] node {} (d);
+					\path[->] (a) edge[below] node {} (c);
+					\path[->] (b) edge[below] node {} (a);
+					\path[->] (c) edge[bend right, above] node {} (d);
+					\path[->] (c) edge[above] node {} (f);
+					\path[->] (d) edge[below] node {} (e);
+					\path[->] (d) edge[bend right, below] node {} (c);
+					\path[->] (e) edge[below] node {} (b);
+					\path[->] (e) edge[below] node {} (g);
+					\path[->] (f) edge[below] node {} (g);
+                    \path[->] (g) edge[above] node {} (d);
+                \end{tikzpicture}
+            \end{figure}
+
+            Faremos tal duplicação passo a passo, começando a duplicar os arcos do caminho mínimo de $b$ a $a$. Representamos as arestas adicionadas em vermelho.
+
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+					\node[main node] (d) {d};
+					\node[main node] at (-4, 1) (g) {g};
+					\node[main node] at (-2, 3) (f) {f};
+					\node[main node] at (2, 3) (c) {c};
+					\node[main node] at (5, 0) (a) {a};
+					\node[main node] at (-2, -3) (e) {e};
+					\node[main node] at (2, -3) (b) {b};
+
+					\path[->] (a) edge[bend right, below] node {} (b);
+					\path[->] (a) edge[below] node {} (d);
+					\path[->] (a) edge[below] node {} (c);
+					\path[->] (b) edge[below] node {} (a);
+					\path[->] (b) edge[red, bend right, below] node {} (a);
+					\path[->] (c) edge[bend right, above] node {} (d);
+					\path[->] (c) edge[above] node {} (f);
+					\path[->] (d) edge[below] node {} (e);
+					\path[->] (d) edge[bend right, below] node {} (c);
+					\path[->] (e) edge[below] node {} (b);
+					\path[->] (e) edge[below] node {} (g);
+					\path[->] (f) edge[below] node {} (g);
+                    \path[->] (g) edge[above] node {} (d);
+                \end{tikzpicture}
+            \end{figure}
+
+    Agora duplicaremos os arcos do caminho mínimo de $d$ a $a$:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {} (b);
+            \path[->] (a) edge[below] node {} (d);
+            \path[->] (a) edge[below] node {} (c);
+            \path[->] (b) edge[below] node {} (a);
+            \path[->] (b) edge[bend right, below] node {} (a);
+            \path[->] (b) edge[red, bend right=60, below] node {} (a);
+            \path[->] (c) edge[bend right, above] node {} (d);
+            \path[->] (c) edge[above] node {} (f);
+            \path[->] (d) edge[below] node {} (e);
+            \path[->] (d) edge[red, bend right, below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (c);
+            \path[->] (e) edge[below] node {} (b);
+            \path[->] (e) edge[red, bend right, below] node {} (b);
+            \path[->] (e) edge[below] node {} (g);
+            \path[->] (f) edge[below] node {} (g);
+            \path[->] (g) edge[above] node {} (d);
+        \end{tikzpicture}
+    \end{figure}
+
+    Finalmente, duplicamos os arcos do caminho mínimo de $g$ a $e$:
+
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (a) edge[bend right, below] node {} (b);
+            \path[->] (a) edge[below] node {} (d);
+            \path[->] (a) edge[below] node {} (c);
+            \path[->] (b) edge[below] node {} (a);
+            \path[->] (b) edge[bend right, below] node {} (a);
+            \path[->] (b) edge[bend right=60, below] node {} (a);
+            \path[->] (c) edge[bend right, above] node {} (d);
+            \path[->] (c) edge[above] node {} (f);
+            \path[->] (d) edge[below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (e);
+            \path[->] (d) edge[red, bend left, below] node {} (e);
+            \path[->] (d) edge[bend right, below] node {} (c);
+            \path[->] (e) edge[below] node {} (b);
+            \path[->] (e) edge[bend right, below] node {} (b);
+            \path[->] (e) edge[below] node {} (g);
+            \path[->] (f) edge[below] node {} (g);
+            \path[->] (g) edge[above] node {} (d);
+            \path[->] (g) edge[red, bend left, above] node {} (d);
+        \end{tikzpicture}
+    \end{figure}
+
+    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos os vértices possuam grau de saída e entrada iguais. Pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano para o digrafo construído.
+
+
+\item[\textbf{4º}]  Um possível circuito eulerian $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
+
+    \[ 
+        \mathcal{C} = \{ a, c, f, g, d, c, d, e, g, d, e, b, a, d, e, b, a, b, a \}
+    \]
+
+    Representamos tal circuito no grafo abaixo, indicando em cada arco a ordem em que o mesmo é percorrido:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+            \node[main node] (d) {d};
+            \node[main node] at (-4, 1) (g) {g};
+            \node[main node] at (-2, 3) (f) {f};
+            \node[main node] at (2, 3) (c) {c};
+            \node[main node] at (5, 0) (a) {a};
+            \node at(6, 1) (st) {início};
+            \node[main node] at (-2, -3) (e) {e};
+            \node[main node] at (2, -3) (b) {b};
+
+            \path[->] (st) edge[] node {} (a);
+
+            \path[->] (a) edge[bend right, below] node {17} (b);
+            \path[->] (a) edge[above] node {13} (d);
+            \path[->] (a) edge[below] node {1} (c);
+            \path[->] (b) edge[below] node {18} (a);
+            \path[->] (b) edge[red, bend right, below] node {16} (a);
+            \path[->] (b) edge[red, bend right=60, below] node {12} (a);
+            \path[->] (c) edge[bend right, above] node {6} (d);
+            \path[->] (c) edge[above] node {2} (f);
+            \path[->] (d) edge[below] node {10} (e);
+            \path[->] (d) edge[red, bend right, above] node {7} (e);
+            \path[->] (d) edge[red, bend left, below] node {14} (e);
+            \path[->] (d) edge[bend right, below] node {5} (c);
+            \path[->] (e) edge[below] node {15} (b);
+            \path[->] (e) edge[red, bend right, below] node {11} (b);
+            \path[->] (e) edge[below] node {8} (g);
+            \path[->] (f) edge[below] node {3} (g);
+            \path[->] (g) edge[above] node {9} (d);
+            \path[->] (g) edge[red, bend left, above] node {4} (d);
+        \end{tikzpicture}
+        \caption{Representa-se em preto os arcos presentes no grafo $G$ original, e em vermelho os arcos resultantes das duplicações realizadas no terceiro passo da solução.}
+    \end{figure}
+
+    O circuito $\mathcal{C}$ percorrido no grafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
+
+    Analisando o peso dos arcos de $G$ concluimos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer alguns arcos mais que uma vez.
+
+    \end{itemize}
+
+    \subsection{Grafos mistos}
+    % Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
+
+    Já analisamos o Problema do Carteiro Chinês aplicado a grafos e digrafos, agora discutiremos o mesmo problema aplicado a grafos mistos, ou seja, grafos que tenham tanto arestas quanto arcos.
+
+    Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o PCC para grafos mistos ao caso de grafos direcionados simplesmente transformando as arestas não direcionadas em dois arcos de sentidos opostos.
+
+    Um contra-exemplo para este pensamento é o seguinte:
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[bend right] node {} (1);
+            \path[-] (2) edge[bend left] node {} (1);
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[bend right] node {} (1);
+            \path[->] (2) edge[bend left] node {} (1);
+            \path[->] (1) edge[bend right=60] node {} (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Na esquerda temos um grafo misto, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
+
+    Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
+    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
+
+    \begin{center}
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[left, bend right] node {2} (1);
+            \path[-] (2) edge[left, bend left] node {1} (1);
+        \end{tikzpicture}
+        \hspace{3cm}% NO SPACE!
+        \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \path[->] (2) edge[right, bend right] node {2} (1);
+            \path[->] (2) edge[right, bend left] node {4} (1);
+            \path[->] (1) edge[left, bend right=60] node {1, 3} (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
+
+    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
+
+    \subsection{Problema do carteiro rural}
+    % Ref https://core.ac.uk/download/pdf/37350985.pdf
+    
+    Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c_e$, para algum $e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
+
+    Nesta versão mais geral do PCC devemos realizar o planejamento de uma rota de custo mínimo que se inicia e termina no mesmo vértice e passa ao menos uma vez por toda aresta pertencente a $R$. 
+    Isto é, não há necessidade de se percorrer as arestas de $A \setminus R$.
+
+    Denomina-se esta variação de Problema do Carteiro Rural (PCR).
+
+    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
+
+    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-difícil  (Lenstra and Rinnooy Kan, 1976).
+
+    De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
+
+    Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
+
+        \subsubsection{PCR em grafos não direcionados}
+
+
+        \textbf{Heurística da árvore geradora mínima}
+
+        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
+
+        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson (1979).
+        Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
+
+        Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
+
+        $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u, v) \in A \setminus R$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w$.
+
+        Pode-se visualizar um exemplo de tal separação a seguir:
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (0, 0) (d) {d};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (b) edge node [above] {1} (d)
+                    (b) edge node [above] {3} (f)
+                    (c) edge node [above] {1} (d)
+                    (c) edge node [below] {5} (e)
+                    (d) edge node [above] {2} (f)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Exemplo de grafo $G$, destacam-se no mesmo as arestas pertencentes a $R$}
+            \label{grafo-original}
+        \end{figure}
+
+        Define-se o conjunto de vértices de $G'$: $V' = \{a, b, c, e, f\}$.
+        Exclui-se de tal conjunto apenas o vértice $d$, que não possui qualquer ligação com aresta em $R$.
+
+    O conjunto $A'$ é definido em duas etapas: primeiramente criam-se novas arestas entre os vértices de $V'$ com custo igual ao custo da menor distância entre os mesmos vértices em $G$, tais arestas são representadas em azul na imagem \ref{grafo-intermediario}.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (a) edge[blue, bend left] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (b) edge[blue, bend left] node [right] {2} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (a) edge[blue, bend right=40] node [below] {4} (c)
+                    (b) edge node [above] {3} (f)
+                    (b) edge[blue, bend left=20] node [above] {3} (f)
+                    (c) edge node [below] {5} (e)
+                    (c) edge[blue, bend right=20] node [below] {5} (e)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (e) edge[blue, bend right=40] node [right] {2} (f)
+                    (c) edge[blue] node [above, pos=0.2] {3} (f)
+                    (e) edge[blue] node[above, pos=0.2] {5} (b)
+                    (f) edge[blue, bend right=100] node[above] {5} (a)
+                    (e) edge[blue, bend left=50] node[below] {7} (a)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo intermediário na transformação de $G$ em $G'$}
+            \label{grafo-intermediario}
+        \end{figure}
+
+
+        Após a criação das novas arestas são deletadas do grafo todas arestas $uv \notin R$ tal que existe $w \in V'$ para que $c_{uv} = c_{uw} + c_{wv}$, assim como as arestas paralelas não pertencentes a $R$ de mesmo custo.
+        % CONFERIR PQ TA DIFERENTE DO PAPER
+
+        No exemplo são retiradas de $A'$ uma cópia das arestas $ab, ac, bf, ce, ef$ pois já existem arestas paralelas a estas de mesmo custo.
+        Retiram-se também as arestas: $af$ já que $c_{af} = c_{ab} + c_{bf}$, $be$ já que $c_{be} = c_{bf} + c_{fe}$, $ae$ já que $c_{ae} = c_{af} + c_{fe}$.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (b) edge[blue, bend left] node [right] {2} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (b) edge node [above] {3} (f)
+                    (c) edge node [below] {5} (e)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (c) edge[blue] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo transformado $G'$}
+            \label{grafo-transformado}
+        \end{figure}
+        
+        Considere o subgrafo de $G'$ induzido pelas arestas de $R$. Este grafo possui $k$ componentes conexas, que são denominadas $G_1, G_2, \dots, G_k$. 
+
+        No exemplo tal separação gera dois subgrafos $G_1$ e $G_2$, que são representadas na figura \ref{r-separacao}, compostas pelos conjuntos de vértices $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+                \node[] at (-2.5, 0) (g1) {$G_1$};
+                \node[] at (4, 0) (g2) {$G_2$};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Separação induzida pelas arestas de $R$ em $G'$}
+            \label{r-separacao}
+        \end{figure}
+
+        Segue agora uma descrição da heurística de Frederickson (1979) como apresentado por Michel Gendreau e Gilbert Laporte\cite{michel}.
+
+        \begin{enumerate}
+        \item[\textbf{Passo 1.}]
+                Construir uma árvore geradora mínima $T$ em $G'$ que conecte os $k$ subgrafos $G_i$ induzidos por $R$.
+
+                No exemplo, uma árvore de custo mínimo que liga os subgrafos $G_1$ e $G_2$ tem custo $3$, como se vê nas figuras \ref{mst} e \ref{mst-2}, sendo composta pelos vértices $c$, $f$ e a aresta entre os mesmos.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node, dashed] at (-2, 0) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+
+                \node[main node, dashed] at (2, 0) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+
+                \path[every node/.style={font=\sffamily\small}]
+					(g1) edge[red] node [above] {3} (g2)
+					(g1) edge[bend left] node [above] {3} (g2)
+					(g1) edge[bend right] node [above] {5} (g2)
+                    ;
+            \end{tikzpicture}
+            \caption{Árvore geradora mínima $T$ representada em vermelho no grafo $G'$ condensado}
+            \label{mst}
+        \end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+				\node[main node] at (-5, -1) (a) {a};
+				\node[main node] at (-4, 1) (b) {b};
+				\node[main node, red] at (-3, -1) (c) {c};
+				\node[main node] at (3, -1) (e) {e};
+				\node[main node, red] at (3, 1) (f) {f};
+
+				\path[every node/.style={font=\sffamily\small}]
+					(a) edge[line width=2] node [left] {2} (b)
+					(b) edge[line width=2] node [right] {3} (c)
+					(b) edge[bend left] node [right] {2} (c)
+					(a) edge[line width=2] node [below] {4} (c)
+					(b) edge node [above] {3} (f)
+					(c) edge node [below] {5} (e)
+					(e) edge[line width=2] node [right] {2} (f)
+					(c) edge[red] node [above] {3} (f)
+					;
+			\end{tikzpicture}
+			\caption{Representação de $T$ em $G'$}
+			\label{mst-2}
+		\end{figure}
+
+        \item[\textbf{Passo 2.}]
+            Encontrar um emparelhamento perfeito $M$ de custo mínimo entre os vértices de grau ímpar do grafo induzido por $R \cup T$.
+
+            No exemplo, os únicos vértices de grau ímpar em $R \cup T$ são os vértices $c$ e $e$.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (e) edge[blue, line width=2] node [right] {2} (f)
+                    (c) edge[blue] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo induzido por $R \cup T$ evidenciando o emparelhamento dos vértices $c$ e $e$ de custo mínimo}
+            \label{mst-3}
+        \end{figure}
+
+
+        \item[\textbf{Passo 3.}]
+            Encontrar um circuito euleriano no grafo induzido por $R \cup T \cup M$. 
+            A partir de tal circuito é possível derivar-se um circuito de mesmo custo no grafo $G$ original que resolve o PCR.
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[line width=2] node [left] {2} (b)
+                    (b) edge[line width=2] node [right] {3} (c)
+                    (a) edge[line width=2] node [below] {4} (c)
+                    (e) edge[line width=2] node [right] {2} (f)
+                    (e) edge[blue, bend right=40] node [right] {2} (f)
+                    (c) edge[] node [above] {3} (f)
+                    (c) edge[blue, bend right] node [above] {3} (f)
+                    ;
+            \end{tikzpicture}
+            \caption{Grafo induzido por $R \cup T \cup M$}
+            \label{grafo-rtm}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+                \node at(-7, 0) (st) {início};
+                \path[->] (st) edge[] node {} (a);
+                \path[->] (a) edge node {1} (b);
+                \path[->] (b) edge node {2} (c);
+                \path[->] (c) edge node {3} (f);
+                \path[->] (f) edge node {4} (e);
+                \path[->] (e) edge[bend right=40] node [right] {5} (f);
+                \path[->] (f) edge[bend left] node[below] {6} (c);
+                \path[->] (c) edge node {7} (a);
+
+            \end{tikzpicture}
+            \caption{Circuito euleriano em $R\cup T \cup M$}
+            \label{circuito-euleriano}
+        \end{figure}
+
+        Segue agora o caminho que resolve o PCR no grafo original baseado no circuito euleriano da figura \ref{circuito-euleriano}:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, -1) (a) {a};
+                \node[main node] at (-4, 1) (b) {b};
+                \node[main node] at (-3, -1) (c) {c};
+                \node[main node] at (0, 0) (d) {d};
+                \node[main node] at (3, -1) (e) {e};
+                \node[main node] at (3, 1) (f) {f};
+                \node at(-7, 0) (st) {início};
+                \path[->] (st) edge[] node {} (a);
+                \path[->] (a) edge[line width=2] node {1} (b);
+                \path[->] (b) edge[line width=2] node {2} (c);
+                \path[->] (c) edge[bend left=20] node {3} (d);
+                \path[->] (d) edge node {4} (f);
+                \path[->] (f) edge[line width=2] node {5} (e);
+                \path[->] (e) edge[bend right=40] node [right] {6} (f);
+                \path[->] (f) edge[bend left=20] node {7} (d);
+                \path[->] (d) edge[] node {8} (c);
+                \path[->] (c) edge[line width=2] node {9} (a);
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (b) edge node [above] {} (d)
+                    (b) edge node [above] {} (f)
+                    (c) edge node [below] {} (e)
+                    ;
+            \end{tikzpicture}
+            \caption{Solução do PCR encontrada pela heurística de Christofides}
+            \label{sol-pcr}
+        \end{figure}
+
+
+        \end{enumerate}
+
+        \subsubsection{PCR em grafos direcionados}
+
+        Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
+
+        Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
+
+        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+
+        \textbf{Heurística da arborescência geradora mínima}
+
+        Para guiar a explicação da heurística toma-se, como exemplo, o digrafo $G$, a seguir:
+   
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (c) edge[above, left] node {2} (b);
+                \path[->] (d) edge[below] node {6} (b);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[below] node {4} (f);
+                \path[->] (e) edge[pos=0.4, left] node {8} (d);
+                \path[->] (f) edge[above] node {1} (b);
+            \end{tikzpicture}
+            \caption{Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}
+            \label{pcr-digraph}
+        \end{figure}
+
+        A extensão de $G$ em um digrafo euleriano $G' = (V', A')$ se dá de modo similar àquela do caso com grafos não direcionados:
+
+        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$. 
+
+        Como no grafo da figura \ref{pcr-digraph} todos vértices possuem ao menos um arco pertencente a $R$, define-se $V' = V$.
+
+        De modo semelhante, o conjunto de arcos $A'$ será inicialmente acrescido dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
+        Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
+
+        Realizando tal extensão no exemplo sugerido, teremos o digrafo $G'$ representado na figura \ref{extensionG}.
+
+        \begin{figure}[H]
+            \centering
+            \scalebox{.8}{
+                \begin{tikzpicture}[every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node] at (-5, 0) (f) {f};
+                    \node[main node] at (-2, 3) (e) {e};
+                    \node[main node] at (2, 3) (c) {c};
+                    \node[main node] at (5, 0) (a) {a};
+                    \node[main node] at (-2, -3) (d) {d};
+                    \node[main node] at (2, -3) (b) {b};
+
+                    \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                    \path[->] (a) edge[left] node {4} (c);
+                    \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                    \path[->] (c) edge[line width=2, above] node {8} (e);
+                    \path[->] (c) edge[above, left, pos=0.4] node {2} (b);
+                    \path[->] (d) edge[below] node {6} (b);
+                    \path[->] (d) edge[line width=2, left] node {5} (f);
+                    \path[->] (e) edge[below] node {4} (f);
+                    \path[->] (e) edge[pos=0.4, left] node {8} (d);
+                    \path[->] (f) edge[above] node {1} (b);
+                    \path[->] (a) edge[red, below, bend left=100] node {20} (d);
+                    \path[->] (a) edge[red, above, pos=0.6] node {16} (f);
+                    \path[->] (b) edge[bend left, red, below] node {25} (d);
+                    \path[->] (b) edge[red, right, pos=0.7] node {17} (e);
+                    \path[->] (b) edge[red, above, bend right=15] node {21} (f);
+                    \path[->] (e) edge[red, bend left, above] node {14} (c);
+                    \path[->] (f) edge[red, above, bend left=100] node {10} (c);
+                    \path[->] (f) edge[red, below, bend right] node {26} (d);
+                    \path[->] (f) edge[red, above, bend left] node {18} (e);
+                \end{tikzpicture}
+            }
+            \caption{São vermelhas as arestas criadas na extensão $G'$}
+            \label{extensionG}
+        \end{figure}
+		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
+		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexo.
+
+        No exemplo apresentado, $G$ possui três componentes, $G_1$ composta pelos vértices $a, b$, $G_2$ composta por $c, e$ e $G_3$ composta por $d, f$.
+
+
+	\begin{enumerate}
+        \item[\textbf{Passo 1.}] 
+			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
+
+            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
+
+            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
+
+
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                    \node[main node, dashed] at (4, -4) (g1) {\parbox{1.5cm}{\centering $G_1$}};
+                    \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                    \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                    \path[->] (g3) edge[below] node {6} (g1);
+                    \path[->] (g3) edge[below, bend left=15] node {1} (g1);
+                    \path[->] (g1) edge[below, bend left=15, red] node {25} (g3);
+                    \path[->] (g1) edge[below, bend left, red] node {20} (g3);
+                    \path[->] (g1) edge[below, bend left=45, red] node {16} (g3);
+                    \path[->] (g1) edge[below, bend left=60, red] node {21} (g3);
+                    \path[->] (g3) edge[left, bend left=15, red] node {18} (g2);
+                    \path[->] (g3) edge[left, bend left, red] node {10} (g2);
+                    \path[->] (g2) edge[left] node {4} (g3);
+                    \path[->] (g2) edge[bend left=15, left] node {8} (g3);
+                    \path[->] (g2) edge[right] node {2} (g1);
+                    \path[->] (g1) edge[right, red, bend left=15] node {17} (g2);
+                    \path[->] (g1) edge[right, bend right=15] node {4} (g2);
+
+                \end{tikzpicture}
+                \caption{Digrafo $G'$ condensado em suas componentes induzidas por $R$}
+                \label{condensated-dig}
+            \end{figure}
+
+                O primeiro passo do algoritmo de Chu-Liu/Edmonds consiste em definir um vértice raiz $r$ para a arborescência.
+                Como a heurística de Christofides não requer que um vértice específico seja tal raiz, podemos escolher o vértice condensado $G_1$ para cumprir tal função ($r = G_1$). 
+
+                Definida a raiz $r$, deve-se retirar do digrafo analisado todos arcos que tem como destino $r$.
+                Além disso, pode-se também substituir qualquer conjunto de arcos paralelos por um único arco com custo igual ao menor custo dos arcos paralelos removidos. 
+                Pode-se visualizar o efeito de tais modificações em $G'$ na figura \ref{chu-liu}.
+
+            \begin{figure}[H]
+                \centering
+                \scalebox{.7}{
+                    \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                        \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                        \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                        \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                        \path[->] (g1) edge[below, red] node {16} (g3);
+                        \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                        \path[->] (g2) edge[left, bend left=10] node {4} (g3);
+                        \path[->] (g1) edge[right] node {4} (g2);
+
+                    \end{tikzpicture}
+                }
+                \caption{Digrafo $G'$ após a remoção de arcos sugeridas pelo algoritmo de Chu-Liu/Edmonds}
+                \label{chu-liu}
+            \end{figure}
+
+            Para todo vértice $v$ do grafo condensado diferente da raiz ($v \neq r$) encontra-se o arco de menor custo que chega em $v$.
+            Define-se como $\pi(v)$ o vértice origem de tal arco.
+
+            Se o conjunto de arcos $T = \{(\pi(v), v) | v \neq r\}$ não contem circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
+            Do contrário, realiza-se uma contração dos circuitos existentes em $T$, atualizam-se os custos dos arcos e repete-se recursivamente o mesmo procedimento de criação de $T$.
+
+            No exemplo analisado, o conjunto $T$ consiste nos arcos de $G_1$ a $G_2$ e $G_2$ a $G_3$, ambos de custo 4.
+
+            \begin{figure}[H]
+                \centering
+                \scalebox{.7}{
+                    \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                        \node[main node, dashed] at (4, -4) (g1) {\parbox{2cm}{\centering $r = G_1$}};
+                        \node[main node, dashed, line width=2] at (0, 3) (g2) {\parbox{1.5cm}{\centering $G_2$}};
+                        \node[main node, dashed] at (-4, -4) (g3) {\parbox{1.5cm}{\centering $G_3$}};
+
+
+                        \path[->] (g1) edge[below, red] node {16} (g3);
+                        \path[->] (g3) edge[left, bend left=10, red] node {10} (g2);
+                        \path[->] (g2) edge[blue, left, bend left=10] node {4} (g3);
+                        \path[->] (g1) edge[blue, right] node {4} (g2);
+
+                    \end{tikzpicture}
+                }
+            \caption{Em azul representa-se o conjunto de arcos $T$ definidos pelo algoritmo de Chu-Liu/Edmonds.}
+            \label{chu-liu-p}
+            \end{figure}
+
+
+            Como $T$ não possui circuitos, não é necessário realizar uma nova iteração do algoritmo.
+            $T$ é o conjunto de arcos que induz a arborescência de custo mínimo enraizada em $G_1$.
+
+            Define-se como $R \cup T$ o digrafo induzido pelos arcos de $R$ e da arborescência $T$.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[blue, left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[blue, below] node {4} (f);
+            \end{tikzpicture}
+            \caption{Digrafo $R\cup T$, os arcos de $T$ são representados em azul}
+            \label{graphRUT}
+        \end{figure}
+
+
+        \item[\textbf{Passo 2.}]
+            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o digrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
+
+			Pode-se determinar $M$ a partir da resolução de um problema de transporte: 
+            O problema de transporte será definido tendo como base o grafo $G'$, porém as funções de oferta e demanda são definidas a partir dos graus dos vértices no grafo induzido por $R \cup T$.
+
+            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao subgrafo $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença de seus graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
+
+            No exemplo abordado, figura \ref{graphRUT}, o vértice $f$ possui uma oferta de valor $2$, os vértices $a$ e $d$ possuem uma demanda de valor $1$ e os vértices restantes já se encontram em igualdade de grau de entrada e saída.
+
+			A resolução do problema de transporte modelado gera um conjunto de caminhos, representando a distribuição ótima da oferta. 
+            O multiconjunto dos arcos pertencentes a união dos caminhos que solucionam o problema é o multiconjunto $M$ desejado.
+
+            Sendo assim, como apenas uma origem existe no problema apresentado como exemplo, a solução do mesmo consiste na utilização dos caminhos de menor custo de $f$ a $a$ e de $f$ a $d$. 
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {4} (b);
+                \path[->] (a) edge[left] node {4} (c);
+                \path[->] (b) edge[line width=2, below, bend right] node {5} (a);
+                \path[->] (c) edge[line width=2, above] node {8} (e);
+                \path[->] (d) edge[line width=2, left] node {5} (f);
+                \path[->] (e) edge[below] node {4} (f);
+
+                \path[->] (f) edge[red, below] node {1} (b);
+                \path[->] (b) edge[red, below, bend right=60] node {5} (a);
+                \path[->] (f) edge[red, bend right, below] node {26} (d);
+            \end{tikzpicture}
+            \caption{Digrafo euleriano $R\cup T \cup M$ com arcos de $M$ representados em vermelho.}
+            \label{graphRUTUM}
+        \end{figure}
+
+        Na figura \ref{graphRUTUM} pode-se visualizar o digrafo induzido pelos arcos $R\cup T \cup M$. 
+        Note que o arco de $b$ a $a$ de custo 5 é representado duas vezes, isso pois ele pertence tanto a $R$ quanto a $M$.
+
+        \item[\textbf{Passo 3.}]
+			O digrafo induzido pelo multiconjunto de arcos $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
+			
+			Portanto, pode-se derivar um circuito euleriano de tal grafo. Por sua vez, a partir deste circuito, é possível derivar uma solução do PCR para o grafo original $G$.
+
+            Um possível circuito euleriano para o exemplo apresentado é representado na figura \ref{circ-eulerianoRUTUM} a seguir.
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node at (6, 0) (ini) {início};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {1} (b);
+                \path[->] (b) edge[line width=2, below, bend right] node {2} (a);
+                \path[->] (a) edge[left] node {3} (c);
+                \path[->] (c) edge[line width=2, above] node {4} (e);
+                \path[->] (e) edge[below] node {5} (f);
+                \path[->] (f) edge[bend right, below] node {6} (d);
+                \path[->] (d) edge[line width=2, left] node {7} (f);
+                \path[->] (f) edge[below] node {8} (b);
+                \path[->] (b) edge[below, bend right=60] node {9} (a);
+            \end{tikzpicture}
+            \caption{Circuito euleriano de $R\cup T \cup M$.}
+            \label{circ-eulerianoRUTUM}
+        \end{figure}
+
+        A partir de tal circuito pode-se encontrar uma solução para o PCR do digrafo original $G$ expandindo os arcos contraídos na construção de $G'$ e removendo as duplicatas de arcos criados no procedimento da heurística.
+        Por exemplo, o arco do nó $f$ ao $d$ de custo $26$ pertencente a $M$ consiste na condensação do caminho mínimo de $f$ a $d$: $\{f, b, a, c, e, d\}$.
+
+        Realizando a remoção dos arcos artificiais adicionados a $G$ chegamos no seguinte circuito, baseado no circuito euleriano mostrado na figura \ref{circ-eulerianoRUTUM}:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node at (6, 0) (ini) {início};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {1} (b);
+                \path[->] (b) edge[line width=2, below, bend right, sloped] node {2, 7, 13} (a);
+                \path[->] (a) edge[left] node {3, 8} (c);
+                \path[->] (c) edge[line width=2, above] node {4, 9} (e);
+                \path[->] (e) edge[below] node {5} (f);
+
+                \path[->] (e) edge[right] node {10} (d);
+
+                \path[->] (d) edge[line width=2, left] node {11} (f);
+                \path[->] (f) edge[pos=0.6, below, sloped] node {6, 12} (b);
+                \path[->] (c) edge[dashed, above, left] node {} (b);
+                \path[->] (d) edge[dashed, below] node {} (b);
+
+            \end{tikzpicture}
+            \caption{Construção de um circuito que resolve o PCR do grafo $G$. Representam-se em pontilhado os arcos de $G$ não percorridos na solução desenvolvida.}
+            \label{solucaoPCR}
+        \end{figure}
+	\end{enumerate}
+
+    Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
+
+    %TODO: Adicionar valor da solucao otima
+%    \subsection{Problema do carteiro chinês com vento}
+%        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
+%
+%        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
+%
+%        Esta variação do problema do carteiro chinês também é NP-hard.
+%        
+%
+%        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+%
+%        ADICIONAR PROVA
+%
+%    \subsection{Problema do Carteiro Hierárquico}
+%
+%    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
+%    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
+%
+%    Esta variação também é NP-hard.
+%
