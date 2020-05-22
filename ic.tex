@@ -1042,9 +1042,9 @@ Pode-se adaptar este algoritmo para grafos não direcionados mudando o modo como
 O algoritmo mostrado não funciona para grafos não direcionados pois o mesmo trata cada sentido de uma aresta $uv$ como dois arcos separados, $u \rightarrow v$ e $v \rightarrow u$. 
 Sendo assim, quando uma aresta é deletada, digamos $u \rightarrow v$, seu arco reverso $v \rightarrow u$, não é deletado automaticamente.
 
-Para corrigir isto, pode-se criar um identificador único para cada aresta (igual para os dois sentidos de uma mesma aresta) que pode ser utilizado para marcar as arestas já percorridas na busca em profundidade. 
+Para corrigir isto, pode-se criar um identificador único para cada aresta (igual para os dois sentidos de uma mesma aresta) que pode ser utilizado para marcar as arestas já percorridas na busca em profundidade \footnote{Segue uma implementação do algoritmo para grafos não direcionados, que utiliza as modificações descritas \href{https://github.com/gafeol/chinese-postman/blob/master/euler_hierholzer_undirected.cpp}{https://github.com\-/gafeol\-/chinese-postman\-/blob/master\-/euler\_hierholzer\-\_undirected.cpp}}. 
 
-Uma implementação deste algoritmo para grafos não direcionados pode ser encontrada na referência\cite{hierholzer-und}.
+ 
 
 
 \section{O problema do Carteiro Chinês (PCC)}
@@ -2506,7 +2506,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \subsection{Tanya and Password}
 
-        Este problema\cite{tanya} fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
+        \hspace{0.55cm}URL do problema: \href{https://codeforces.com/contest/508/problem/D}{https://codeforces.com/contest/508/problem/D}
+
+        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{https://github.com/gafeol/competitive-programming\-/blob/master/ojs/cf/508/D.cpp}
+
+        Este problema fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
 
         Uma instância desse problema é a seguinte, para $n=5$:
 
@@ -2581,13 +2585,15 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Se uma trilha ou circuito euleriano existir em $G$, podemos usar o algoritmo de Hierholzer para encontrar tal passeio.
 
-        Esta solução foi implementada em C++ e está disponível no github\cite{tanya-sol}.
-
         \subsection{Sereja and the Arrangement of Numbers}
+
+        \hspace{0.55cm} URL do problema: \href{https://codeforces.com/problemset/problem/367/C}{https://codeforces.com/problemset/problem/367/C}
+
+        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{https://github.com/gafeol/competitive-program\-ming\-/blob/master/ojs/cf/367/C.cpp}
 
         \textbf{Definição do problema}
 
-        No enunciado do problema\cite{sereja} define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
+        No enunciado do problema define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
 
         Em outras palavras, se uma sequência é bonita todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
 
@@ -2755,11 +2761,13 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Do contrário, a solução consistirá em escolher os $k$ valores de maior recompensa disponíveis.
     Para encontrar tal valor, basta manter uma árvore de busca binária balanceada com as $k$ maiores recompensas dos valores disponíveis, o que custa tempo $\mathcal{O}(m\lg k) = \mathcal{O}(m\lg \sqrt{n})$.
 
-    Uma solução para este problema foi adicionada a referência \cite{sereja-sol}. 
-
         \subsection{Jogging Trails}
+
+        \hspace{.55cm} URL do problema: \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{https://onlinejudge.org/index.php?option=com\_onli\-ne\-judge\&Itemid\-=8\&page=show\_problem\&problem=1237}
+
+        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{https://github.com/gafeol/compe\-titive-programming\-/blob/master/ojs/UVa/1237.cpp}
         
-        Neste problema\cite{jogging} devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
+        Neste problema devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
 
         Este problema é uma aplicação direta do problema descrito nesse trabalho. 
         Entretanto, em virtude do limite do número de vértices das instâncias, é possível resolver o problema de maneira mais simples.
@@ -2781,10 +2789,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \]
 
         Para representar os subconjuntos de vértices pode-se utilizar uma bitmask.
-        Como foi utilizado na solução\cite{jogging-sol}, adicionada à referência.
-
-
-
+        Como foi utilizado na implementação referenciada.
 
     \iffalse
         \section{Anotações}
@@ -2799,70 +2804,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     \newpage
     \printbibliography
-
-    \newpage
-	\begin{thebibliography}{9}
-	\bibitem{konigsberg} 
-	Euler, Leonhard
-	\textit{Solution problematis ad geometriam situs pertinentis}. 
-	Comment. Acad. Sci. U. Petrop 8, 128–40, 1736.
-
-%	\bibitem{hierholzer}
-%	Hierholzer, Carl
-%	\textit{``Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren''}, 
-%	Mathematische Annalen, 6 (1): 30–32, doi:10.1007/BF01442866, 1873.
-
-    \bibitem{tanya}
-    \href{https://codeforces.com/contes<t/508/problem/D}{Problema D do round \#288 (Div. 2)}
-     retirado do Codeforces
-
-
-    \bibitem{tanya-sol}
-    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{Solução} para o problema Tanya and Password, desenvolvida em C++.
-
-
-    \bibitem{sereja}
-    \href{https://codeforces.com/problemset/problem/367/C}{Problema C do round \#215 (Div. 1)} retirado do Codeforces
-
-    \bibitem{sereja-sol}
-     \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{Solução}
-     para o problema Sereja and the Arrangement of Numbers, desenvolvida em C++
-
-
-    \bibitem{jogging}
-    \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{Problema 10296 retirado do UVa}
-
-    \bibitem{jogging-sol}
-    \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{Solução} para o problema Jogging Trails, desenvolvida em C++
-
-%    \bibitem{blossom}
-%    \href{https://en.wikipedia.org/wiki/Blossom_algorithm}{Algoritmo Blossom de Edmonds}
-%
-%    \bibitem{kolmogorov}
-%    \href{http://pub.ist.ac.at/~vnk/papers/blossom5.pdf}{Paper de Vladimir Kolmogorov sobre o algoritmo ``Blossom V''}
-
-    \bibitem{mit}
-    \href{http://web.mit.edu/urban_or_book/www/book/chapter6/problems6/6.6.html}{Exemplo retirado do site do MIT, exercício 6.6.c} 
-
-%    \bibitem{wiki-christofides}
-%    \href{https://en.wikipedia.org/wiki/Christofides_algorithm}{Página da wikipedia sobre o algoritmo de Christofides}
-
-    \bibitem{michel}
-    Artigo \href{https://pubsonline.informs.org/doi/10.1287/opre.43.3.399}{``Arc Routing Problems Part II: The Rural Postman Problem''} publicado por Michel Gendreau e Gilbert Laporte.
-
-%    \bibitem{christofides-86}
-%    Christofides, Nicos, et al.  
-%    \href{https://link.springer.com/chapter/10.1007/BFb0121091}{``An algorithm for the rural postman problem on a directed graph.''}
-%    Netflow at pisa. Springer, Berlin, Heidelberg, 1986. 155-166.
-%
-
-    \bibitem{edmonds-ssa}
-    \href{https://en.wikipedia.org/wiki/Edmonds\%27\_algorithm}{Algoritmo de Chu-Liu/Edmonds}
-
-    \bibitem{hierholzer-und}
-    \href{https://github.com/gafeol/chinese-postman/blob/master/euler_hierholzer_undirected.cpp}{Implementação} do algoritmo de Hierholzer para grafos não direcionados.
-
-	\end{thebibliography}
  
 \end{document}
 
