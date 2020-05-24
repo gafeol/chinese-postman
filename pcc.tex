@@ -244,7 +244,7 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
     \Function{pcc}{G}
     % V' conj dos vertices de grau impar
     \State $(V, E, dist) \gets G$
-    \State $V' \gets \{v \in V : grau[v] $ é impar$\}$
+    \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
     \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
     \State $E' \gets V' \times V'$
     \State $G' \gets (V', E', dist')$
@@ -399,17 +399,18 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     \begin{enumerate}
         % TODO: ARRUAMR TODAS AS DEFINICOES DE F S
-        \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada e $S$ o conjunto dos vértices que possuam grau de entrada maior que o grau de saída.
+        \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de entrada ($\delta^+$) maior que o grau de saída ($\delta^-$) e $S$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada.
 
     Computamos então o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
 
 
         \item[\textbf{2º}] Modelamos então um problema de transporte: 
-        Os vértices de $F$ serão vértices de oferta, cada vértice $u \in F$ terá que escoar $\delta^-(u) - \delta^+(u)$ unidades de fluxo, já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $\delta^+(v) - \delta^-(v)$ unidades de fluxo.
+        Seja $b$ uma função demanda definida para todo vértice como $b(v) = \delta^-(v) - \delta^+(v)$.
+        Os vértices de $F$ serão vértices de oferta (com função demanda $b$ negativa), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo, já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
 
         Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco de capacidade infinita e custo igual ao custo de um menor caminho de $u$ a $v$, calculado no primeiro passo.
 
-        Deve-se então resolver tal problema de transporte minimizando o custo total.
+        Deve-se então resolver tal problema de transporte minimizando o custo total e respeitando a função demanda de cada vértice.
 
         \item[\textbf{3º}] A partir de uma solução ótima encontrada para o problema de transporte devemos derivar um digrafo euleriano baseado em $G$.
 
@@ -424,6 +425,69 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{enumerate}
 
     \end{tcolorbox}
+
+    Segue um pseudo-código para tal solução.
+
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Solução do PCC em digrafos}
+    \label{di-pcc-pseudocode}
+    \begin{algorithmic}[1]
+    \Function{pcc}{G}
+    % V' conj dos vertices de grau impar
+    \State $(V, E, dist) \gets G$
+    \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+    \For{$v \in V$}
+        \State $b(v) \gets \delta^-(v) - \delta^+(v)$
+    \EndFor
+    \State $E' \gets F \times S$ 
+    \For{$uv \in E'$}
+        \State $cap(uv)$ % TODO: definir capacidades
+    \EndFor
+    \State $F \gets \{v \in V : b(v) < 0\}$
+    \State $S \gets \{v \in V : b(v) > 0\}$
+    \State $G' \gets (F, S, E', dist')$
+    \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+    \State $E^* \gets E$
+    \For{$uv \in M$}
+        \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+        \State $E^* \gets E^* \cup C$
+    \EndFor
+    \State $G^* \gets (V, E^*)$
+    \State \Return CIRCUITO\_EULERIANO$(G^*)$
+    \EndFunction 
+
+    \Function{expande}{uv, E, dist, dist'}
+    \If{$u = v$}
+    \Return $\emptyset$
+    \EndIf
+    \For{$w : uw \in E$}
+        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
+        \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \EndIf
+    \EndFor
+    \EndFunction
+
+    %\Function{floyd\_warshall}{V, E, dist}
+    %\State $minDist \gets \infty$
+    %\For{uv: E}
+    %    \State $minDist[u][v] \gets dist(u, v)$
+    %    \State $minDist[v][u] \gets dist(u, v)$
+    %\EndFor
+    %\For{k : V}
+    %    \For{u : V}
+    %        \For{v : V}
+    %            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
+    %        \EndFor
+    %    \EndFor
+    %\EndFor
+    %\Return $minDist$
+    %\EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+
+
+
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
     \begin{figure}[H]
@@ -723,7 +787,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     O circuito $\mathcal{C}$ percorrido no grafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
 
-    Analisando o peso dos arcos de $G$ concluimos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer alguns arcos mais que uma vez.
+    Analisando o peso dos arcos de $G$ concluimos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer os arcos em vermelho.
 
     \end{itemize}
 
