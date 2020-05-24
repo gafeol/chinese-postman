@@ -242,7 +242,6 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
     \label{pcc-pseudocode}
     \begin{algorithmic}[1]
     \Function{pcc}{G}
-    % V' conj dos vertices de grau impar
     \State $(V, E, dist) \gets G$
     \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
     \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
@@ -264,26 +263,11 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
     \EndIf
     \For{$w : uw \in E$}
         \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
-        \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
         \EndIf
     \EndFor
     \EndFunction
 
-    %\Function{floyd\_warshall}{V, E, dist}
-    %\State $minDist \gets \infty$
-    %\For{uv: E}
-    %    \State $minDist[u][v] \gets dist(u, v)$
-    %    \State $minDist[v][u] \gets dist(u, v)$
-    %\EndFor
-    %\For{k : V}
-    %    \For{u : V}
-    %        \For{v : V}
-    %            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
-    %        \EndFor
-    %    \EndFor
-    %\EndFor
-    %\Return $minDist$
-    %\EndFunction
     \end{algorithmic}
     \end{algorithm}
 
@@ -392,13 +376,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     O lema \ref{lemma-pcc} é utilizado para justificar a utilização de um algoritmo de emparelhamento perfeito para definir quais arestas duplicar na solução do PCC.
     Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando um algoritmo de fluxo máximo de custo mínimo, como veremos a seguir, no detalhamento do algoritmo que soluciona o PCC.
 
-    \begin{tcolorbox}
-	\textbf{Solução:}
-
     A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
 
     \begin{enumerate}
-        % TODO: ARRUAMR TODAS AS DEFINICOES DE F S
         \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de entrada ($\delta^+$) maior que o grau de saída ($\delta^-$) e $S$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada.
 
     Computamos então o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
@@ -412,19 +392,20 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Deve-se então resolver tal problema de transporte minimizando o custo total e respeitando a função demanda de cada vértice.
 
-        \item[\textbf{3º}] A partir de uma solução ótima encontrada para o problema de transporte devemos derivar um digrafo euleriano baseado em $G$.
+        \item[\textbf{3º}] A partir de uma solução de custo mínimo encontrada para o problema de transporte devemos derivar um digrafo euleriano baseado em $G$.
 
-            Cada arco $uv$ criado na modelagem do problema de transporte representa um caminho de mesmo custo no digrafo $G$ entre os vértices $u$ e $v$. Se um arco da modelagem é escolhido para a solução que estamos analisando, então todos arcos do caminho que tal arco condensado representa devem ser duplicados no digrafo $G$.
+            Uma solução do problema de transporte descrito será uma função $f: E' \rightarrow \mathbb{N}$ que determina qual será a quantidade de fluxo transportada por cada arco de $E'$.
+
+            Cada arco $uv$ criado na modelagem do problema de transporte representa um caminho de mesmo custo no digrafo $G$ entre os vértices $u$ e $v$. Se um arco $uv$ da modelagem é escolhido para transportar uma quantidade $f(uv)$ positiva de fluxo, deve-se criar $f(uv)$ cópias de todos arcos do menor caminho de $u$ a $v$ em $G$, chamaremos esse processo de expansão de $uv$.
 
             Após a duplicação dos arcos de um caminho entre dois vértices $u$ e $v$ a diferença absoluta dos graus de entrada e saída de $u$ e $v$ diminuirão em uma unidade, essa mesma diferença de graus se manterá constante para vértices internos ao caminho. 
 
-            Ao final das duplicações necessárias, todos vértices de $G$ possuirão um mesmo valor de grau de entrada e saída, sendo assim euleriano segundo o teorema \ref{euler-digraph}.
+            Ao final das expansões necessárias, todos vértices de $G$ possuirão um mesmo valor de grau de entrada e saída, tornando $G$ euleriano pelo teorema \ref{euler-digraph}.
 
         \item[\textbf{4º}] Encontrar o circuito euleriano do novo grafo $G$, que será também a solução do problema do carteiro chinês para o grafo original $G$.
 
     \end{enumerate}
 
-    \end{tcolorbox}
 
     Segue um pseudo-código para tal solução.
 
@@ -434,24 +415,20 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \label{di-pcc-pseudocode}
     \begin{algorithmic}[1]
     \Function{pcc}{G}
-    % V' conj dos vertices de grau impar
     \State $(V, E, dist) \gets G$
     \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
     \For{$v \in V$}
         \State $b(v) \gets \delta^-(v) - \delta^+(v)$
     \EndFor
-    \State $E' \gets F \times S$ 
-    \For{$uv \in E'$}
-        \State $cap(uv)$ % TODO: definir capacidades
-    \EndFor
     \State $F \gets \{v \in V : b(v) < 0\}$
     \State $S \gets \{v \in V : b(v) > 0\}$
-    \State $G' \gets (F, S, E', dist')$
-    \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
-    \State $E^* \gets E$
-    \For{$uv \in M$}
+    \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, dist, b, cap)$
+    \State $E^* \gets E$ \Comment{Cria uma cópia de $E$}
+    \For{$uv \in E$}
         \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+        \For{}
         \State $E^* \gets E^* \cup C$
+        \EndFor
     \EndFor
     \State $G^* \gets (V, E^*)$
     \State \Return CIRCUITO\_EULERIANO$(G^*)$
@@ -463,30 +440,31 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \EndIf
     \For{$w : uw \in E$}
         \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
-        \State \Return $uw$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
         \EndIf
     \EndFor
     \EndFunction
 
-    %\Function{floyd\_warshall}{V, E, dist}
-    %\State $minDist \gets \infty$
-    %\For{uv: E}
-    %    \State $minDist[u][v] \gets dist(u, v)$
-    %    \State $minDist[v][u] \gets dist(u, v)$
-    %\EndFor
-    %\For{k : V}
-    %    \For{u : V}
-    %        \For{v : V}
-    %            \State $minDist[u][v] \gets MIN(minDist[u][v], minDist[u][k] + minDist[k][v])$
-    %        \EndFor
-    %    \EndFor
-    %\EndFor
-    %\Return $minDist$
-    %\EndFunction
+    \Function{problema\_de\_transporte}{F, S, dist, b, cap}
+        \State Define dois vértices artificiais, uma fonte $s$ e um sorvedouro $t$
+        \State $E \gets F\times S$
+        \For{$uv \in E$}
+            \State $cap(uv) = \infty$
+        \EndFor
+        \For{$u \in F$}
+            \State $cap(su) = -b(u)$
+            \State $dist(su) = 0$
+            \State $E = E \cup \{su\}$
+        \EndFor
+        \For{$v \in S$}
+            \State $cap(vt) = b(v)$
+            \State $dist(vt) = 0$
+            \State $E = E \cup \{vt\}$
+        \EndFor
+        \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, dist, cap)$
+    \EndFunction
     \end{algorithmic}
     \end{algorithm}
-
-
 
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
