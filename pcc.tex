@@ -388,7 +388,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Seja $b$ uma função demanda definida para todo vértice como $b(v) = \delta^-(v) - \delta^+(v)$.
         Os vértices de $F$ serão vértices de oferta (com função demanda $b$ negativa), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo, já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
 
-        Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco de capacidade infinita e custo igual ao custo de um menor caminho de $u$ a $v$, calculado no primeiro passo.
+        Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco que pode transportar qualquer quantidade de fluxo, mas que tem custo igual ao custo de um menor caminho de $u$ a $v$ por unidade de fluxo transportada, calculado no primeiro passo.
 
         Deve-se então resolver tal problema de transporte minimizando o custo total e respeitando a função demanda de cada vértice.
 
@@ -407,7 +407,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{enumerate}
 
 
-    Segue um pseudo-código para tal solução.
+    O algoritmo \ref{di-pcc-pseudocode} é a implementação em pseudo-código da solução descrita acima.
+    Na função $PROBLEMA\_DE\_TRANSPORTE$ define-se uma redução do problema para o problema do fluxo máximo de custo mínimo. 
+    Para se resolver o problema de fluxo de custo mínimo, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede, ou ainda, uma variação do algoritmo de Edmonds \cite{min-cost}, de complexidade $\mathcal{O}(V^2E^2)$. 
+
+
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
@@ -418,7 +422,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \State $(V, E, dist) \gets G$
     \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
     \For{$v \in V$}
-        \State $b(v) \gets \delta^-(v) - \delta^+(v)$
+        \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
     \EndFor
     \State $F \gets \{v \in V : b(v) < 0\}$
     \State $S \gets \{v \in V : b(v) > 0\}$
@@ -426,8 +430,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \State $E^* \gets E$ \Comment{Cria uma cópia de $E$}
     \For{$uv \in E$}
         \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
-        \For{}
-        \State $E^* \gets E^* \cup C$
+        \For{$i$ de $1$ a $f(uv)$} 
+            \State $E^* \gets E^* \cup C$ \Comment Duplica $f(uv)$ vezes os arcos de $C$ 
         \EndFor
     \EndFor
     \State $G^* \gets (V, E^*)$
@@ -445,7 +449,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \EndFor
     \EndFunction
 
-    \Function{problema\_de\_transporte}{F, S, dist, b, cap}
+    \Function{problema\_de\_transporte}{F, S, custo, b, cap}
         \State Define dois vértices artificiais, uma fonte $s$ e um sorvedouro $t$
         \State $E \gets F\times S$
         \For{$uv \in E$}
@@ -453,15 +457,15 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \EndFor
         \For{$u \in F$}
             \State $cap(su) = -b(u)$
-            \State $dist(su) = 0$
+            \State $custo(su) = 0$
             \State $E = E \cup \{su\}$
         \EndFor
         \For{$v \in S$}
             \State $cap(vt) = b(v)$
-            \State $dist(vt) = 0$
+            \State $custo(vt) = 0$
             \State $E = E \cup \{vt\}$
         \EndFor
-        \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, dist, cap)$
+        \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, custo, cap)$
     \EndFunction
     \end{algorithmic}
     \end{algorithm}
@@ -557,7 +561,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
             Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual à distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
 
-            Uma solução ótima para o problema apresentado consiste em utilizar os arcos de custo $4, 14$ e $9$, escoando assim toda a demanda dos vértices $b, d$ e $g$.
+            Uma solução ótima para o problema apresentado consiste em transportar uma unidade de fluxo pelos arcos de custo $4, 14$ e $9$, escoando os vértices $b, d$ e $g$ e suprindo a demanda dos vértices $a$ e $e$.
 
             \begin{figure}[H]
                 \centering
@@ -584,7 +588,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \end{tikzpicture}
             \end{figure}
 
-        \item[\textbf{3º}] Agora devemos realizar a duplicação dos caminhos representados pelas arestas $ba, da$ e $ge$.
+        \item[\textbf{3º}] Agora devemos realizar a duplicação dos caminhos representados pelos arcos $ba, da$ e $ge$.
 
             Representamos o estado inicial do digrafo $G$, sem os pesos nos arcos:
 
@@ -615,7 +619,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \end{tikzpicture}
             \end{figure}
 
-            Faremos tal duplicação passo a passo, começando a duplicar os arcos do caminho mínimo de $b$ a $a$. Representamos as arestas adicionadas em vermelho.
+            Faremos tal duplicação passo a passo, começando a duplicar os arcos do caminho mínimo de $b$ a $a$. Representamos os arcos adicionados em vermelho.
 
 
             \begin{figure}[H]
