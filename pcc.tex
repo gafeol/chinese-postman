@@ -411,9 +411,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     O algoritmo \ref{di-pcc-pseudocode} é a implementação em pseudo-código da solução descrita acima.
 
     Na função $PROBLEMA\_DE\_TRANSPORTE$ define-se uma redução do problema para o problema do fluxo máximo de custo mínimo. 
-    Para se resolver esta redução, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede, ou ainda, uma variação do algoritmo de Edmonds-Karp \cite{min-cost}, de complexidade $\mathcal{O}(V^2E^2)$. 
-
-
+    Para se resolver esta redução, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede. 
+    Outra solução para a redução é usar uma variação do algoritmo de Edmonds-Karp \cite{edmonds-karp} para fluxo de custo mínimo de complexidade $\mathcal{O}(V^2E^2)$. 
+    A explicação e implementação dessa variação estão disponíveis online, no site E-maxx \cite{min-cost}. 
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
