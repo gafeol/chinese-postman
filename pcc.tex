@@ -379,37 +379,39 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
 
     \begin{enumerate}
-        \item[\textbf{1º}] Definimos como $F$ o conjunto dos vértices que possuam grau de entrada ($\delta^+$) maior que o grau de saída ($\delta^-$) e $S$ o conjunto dos vértices que possuam grau de saída maior que o grau de entrada.
+        \item[\textbf{1º}] Define-se $F$ como o conjunto dos vértices que possuam grau de entrada ($\delta^+$) maior que o grau de saída ($\delta^-$) e $S$ como o conjunto dos vértices que possuam grau de saída maior que o grau de entrada.
 
-    Computamos então o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
+        Calcula-se o custo do menor caminho entre todos os pares de vértices $u, v$ onde $u \in F$ e $v \in S$.
 
-
-        \item[\textbf{2º}] Modelamos então um problema de transporte: 
+        \item[\textbf{2º}] Modela-se um problema de transporte: 
         Seja $b$ uma função demanda definida para todo vértice como $b(v) = \delta^-(v) - \delta^+(v)$.
-        Os vértices de $F$ serão vértices de oferta (com função demanda $b$ negativa), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo, já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
+        Os vértices de $F$ serão vértices de oferta (com função demanda $b$ negativa), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo. 
+        Já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
 
         Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco que pode transportar qualquer quantidade de fluxo, mas que tem custo igual ao custo de um menor caminho de $u$ a $v$ por unidade de fluxo transportada, calculado no primeiro passo.
 
-        Deve-se então resolver tal problema de transporte minimizando o custo total e respeitando a função demanda de cada vértice.
+        Deve-se resolver tal problema de transporte no grafo $F,S$-bipartido minimizando o custo total e respeitando a função demanda definida.
 
-        \item[\textbf{3º}] A partir de uma solução de custo mínimo encontrada para o problema de transporte devemos derivar um digrafo euleriano baseado em $G$.
+        \item[\textbf{3º}] Usa-se a solução do problema de transporte para criar um digrafo euleriano $G^*$ a partir de $G$.
+            Inicialmente $G^* = G$.
 
-            Uma solução do problema de transporte descrito será uma função $f: E' \rightarrow \mathbb{N}$ que determina qual será a quantidade de fluxo transportada por cada arco de $E'$.
+            Uma solução do problema de transporte descrito será uma função $f: F\times S \rightarrow \mathbb{N}$ que determina a quantidade de fluxo transportada entre cada par de vértices de $F$ e $S$.
 
-            Cada arco $uv$ criado na modelagem do problema de transporte representa um caminho de mesmo custo no digrafo $G$ entre os vértices $u$ e $v$. Se um arco $uv$ da modelagem é escolhido para transportar uma quantidade $f(uv)$ positiva de fluxo, deve-se criar $f(uv)$ cópias de todos arcos do menor caminho de $u$ a $v$ em $G$, chamaremos esse processo de expansão de $uv$.
+            Se um arco $uv$ é escolhido para transportar uma quantidade $f(uv)$ positiva de fluxo, deve-se criar $f(uv)$ cópias de todos arcos do menor caminho de $u$ a $v$ em $G^*$, chamaremos esse processo de expansão de $uv$.
 
             Após a duplicação dos arcos de um caminho entre dois vértices $u$ e $v$ a diferença absoluta dos graus de entrada e saída de $u$ e $v$ diminuirão em uma unidade, essa mesma diferença de graus se manterá constante para vértices internos ao caminho. 
 
-            Ao final das expansões necessárias, todos vértices de $G$ possuirão um mesmo valor de grau de entrada e saída, tornando $G$ euleriano pelo teorema \ref{euler-digraph}.
+            Ao final da expansão de todos arcos que possuem $f$ positivo, todos vértices de $G^*$ possuirão um mesmo valor de grau de entrada e saída, tornando $G^*$ euleriano pelo teorema \ref{euler-digraph}.
 
-        \item[\textbf{4º}] Encontrar o circuito euleriano do novo grafo $G$, que será também a solução do problema do carteiro chinês para o grafo original $G$.
+        \item[\textbf{4º}] Encontrar o circuito euleriano de $G^*$, que será também a solução do problema do carteiro chinês para o grafo original $G$.
 
     \end{enumerate}
 
 
     O algoritmo \ref{di-pcc-pseudocode} é a implementação em pseudo-código da solução descrita acima.
+
     Na função $PROBLEMA\_DE\_TRANSPORTE$ define-se uma redução do problema para o problema do fluxo máximo de custo mínimo. 
-    Para se resolver o problema de fluxo de custo mínimo, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede, ou ainda, uma variação do algoritmo de Edmonds \cite{min-cost}, de complexidade $\mathcal{O}(V^2E^2)$. 
+    Para se resolver esta redução, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede, ou ainda, uma variação do algoritmo de Edmonds-Karp \cite{min-cost}, de complexidade $\mathcal{O}(V^2E^2)$. 
 
 
 
