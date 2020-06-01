@@ -3,9 +3,10 @@
 Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
 
 Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de Konigsberg, o matemático chinês Meigu Guan publicou um estudo que generalizava ainda mais o problema dos grafos eulerianos. 
-Esse problema foi denominado Problema da Inspeção de Rotas, ou, como também é conhecido hoje: Problema do carteiro chinês.
-A ideia desse problema é encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez. 
-A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas mais de uma vez no trajeto final.
+Esse problema foi denominado Problema da Inspeção de Rotas, ou, como também é conhecido hoje: Problema do carteiro chinês, nomeado assim em homenagem a Guan.
+
+O problema consiste em encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez e que possua menor custo. 
+A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas mais de uma vez no passeio final.
 
 \begin{wrapfigure}{l}{0.3\textwidth} 
     \centering
@@ -26,11 +27,11 @@ A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas 
 				;
 		\end{tikzpicture}
 	}
-	\caption{Exemplo de grafo}
+	\caption{Exemplo}
 	\label{graph}
 \end{wrapfigure}
 
-O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a poder entregar cartas em todas as ruas da cidade e voltar ao posto de carteiros no fim de sua rota.
+O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a passar por todas ruas da cidade entregando cartas e voltar ao posto de carteiros no fim de sua rota.
 
 
 Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: 
@@ -38,10 +39,17 @@ Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria
 \[ \{A, B, D, C, A, D, C, B, A\} \] 
 
 Sendo este um caminho fechado de custo 12.
-Neste exemplo foi necessário que as arestas $AB$ (ou $BA$) e $DC$ (ou $CD$) fossem percorridas duas vezes no passeio, porém nem sempre é necessária esta repetição.
+Neste exemplo foi necessário que as arestas $AB$ e $DC$ fossem percorridas duas vezes no passeio, porém nem sempre é necessária esta repetição.
 
 No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
-Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será similar a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano, ou seja, adicionar duplicatas de arestas até que todos os vértices possuam grau par.
+Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano.
+
+A solução do PCC para um grafo $G$ terá duas partes: Tornar $G$ euleriano criando cópias de arestas existentes e encontrar o ciclo euleriano do grafo $G$ modificado.
+
+Uma generalização do Problema do Carteiro Chinês é o \textbf{problema das T-junções}.
+Este problema consiste em, dado um grafo $(V, E)$ e um conjunto de vértices $T \subseteq V$, definir um conjunto de arestas $J$ de cardinalidade ou custo mínimo tal que todo vértice do conjunto $T$ possui grau ímpar no grafo $(V, J)$ e todo vértice em $V \setminus T$ possui grau par no mesmo grafo.
+
+Este problema é muito relacionado ao PCC. Se tomamos, por exemplo, $T$ como o conjunto de vértices de grau ímpar em um grafo não direcionado, um T-join $J$ de menor custo representa exatamente o conjunto de arestas que, se adicionadas ao grafo original torna-o euleriano.
 
 Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
 Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
