@@ -44,12 +44,14 @@ Neste exemplo foi necessário que as arestas $AB$ e $DC$ fossem percorridas duas
 No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
 Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano.
 
-A solução do PCC para um grafo $G$ terá duas partes: Tornar $G$ euleriano criando cópias de arestas existentes e encontrar o ciclo euleriano do grafo $G$ modificado.
+A solução do PCC para um grafo $G$ terá duas partes: Tornar $G$ euleriano com o menor custo possível, criando cópias de arestas existentes e encontrar o ciclo euleriano do grafo $G$ modificado.
 
 Uma generalização do Problema do Carteiro Chinês é o \textbf{problema das T-junções}.
-Este problema consiste em, dado um grafo $(V, E)$ e um conjunto de vértices $T \subseteq V$, definir um conjunto de arestas $J$ de cardinalidade ou custo mínimo tal que todo vértice do conjunto $T$ possui grau ímpar no grafo $(V, J)$ e todo vértice em $V \setminus T$ possui grau par no mesmo grafo.
+Este problema consiste em, dado um grafo $(V, E)$ e um conjunto de vértices $T \subseteq V$, definir um conjunto de arestas $J$ de custo mínimo tal que todo vértice do conjunto $T$ possui grau ímpar no grafo $(V, J)$ e todo vértice em $V \setminus T$ possui grau par no mesmo grafo.
 
-Este problema é muito relacionado ao PCC. Se tomamos, por exemplo, $T$ como o conjunto de vértices de grau ímpar em um grafo não direcionado, um T-join $J$ de menor custo representa exatamente o conjunto de arestas que, se adicionadas ao grafo original torna-o euleriano.
+Se tomamos, por exemplo, $T$ como o conjunto de vértices de grau ímpar em um grafo não direcionado, um T-join $J$ de menor custo representa exatamente o conjunto de arestas que, se adicionadas a um grafo qualquer torna-o euleriano.
+Sendo assim, o problema das T-junções resolve a primeira parte do PCC: tornar um grafo euleriano com o menor custo possível. 
+Por esse motivo podemos dizer que o problema das T-junções é uma generalização do problema do carteiro chinês.
 
 Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
 Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
@@ -834,6 +836,12 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
 
     Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
+
+    Uma solução para este caso proposta por Kappauf e Koehler\cite{mixed-pcc} que trataremos a seguir consiste em uma formulação do PCC como um problema linear inteiro.
+
+    % TODO: continuar com a explicacao de koehler e kappauf
+
+
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
