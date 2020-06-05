@@ -6,7 +6,7 @@
 *.fdb_latexmk
 *.log
 *.out
-*.synctex.gz
+*.synctex.gz*
 *.toc
 *.fls
 *.run.xml

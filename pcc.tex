@@ -786,7 +786,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{itemize}
 
     \subsection{Grafos mistos}
-    % Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
     Já analisamos o Problema do Carteiro Chinês aplicado a grafos e digrafos, agora discutiremos o mesmo problema aplicado a grafos mistos, ou seja, grafos que tenham tanto arestas quanto arcos.
 
@@ -837,10 +836,12 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
 
-    Uma solução para este caso proposta por Kappauf e Koehler\cite{mixed-pcc} que trataremos a seguir consiste em uma formulação do PCC como um problema linear inteiro.
 
-    % TODO: continuar com a explicacao de koehler e kappauf
+    %%%%%%%%%%%%%% REF: PROBLEMA LINEAR DO KOEHLER E KAPPAUF
+    %Uma solução para este caso proposta por Kappauf e Koehler\cite{mixed-pcc} que trataremos a seguir consiste em uma formulação do PCC como um problema linear inteiro.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    %%%%%%%%%%%%%% REF: Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
 
     \subsection{Problema do carteiro rural}
@@ -855,7 +856,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
 
-    Assim como a variação do PCC para grafos mistos, o PCR é um problema NP-difícil  (Lenstra and Rinnooy Kan, 1976).
+    O PCR é um problema NP-completo \cite{rural-np-complete}. %e np dificil
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
