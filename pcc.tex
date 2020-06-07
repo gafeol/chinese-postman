@@ -843,6 +843,52 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     %%%%%%%%%%%%%% REF: Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
+    Trataremos, portanto, de um algoritmo de aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por .
+
+    O algoritmo é composto por quatro passos principais:
+
+    \begin{enumerate}
+        \item Adicionar cópias de arestas ao grafo de modo a tornar o grau de todo vértice par, considereando arcos como arestas sem orientação
+        \item Igualar o grau de entrada e saída de todo vértice, adicionando cópias de arcos e orientando arestas existentes, mantendo par o grau de cada vértice
+        \item Definir uma orientação para as arestas do grafo
+        \item Encontrar um circuito euleriano no digrafo construido
+    \end{enumerate}
+    
+
+    Segue em Algoritmo \ref{mixed-1} um pseudo-código desse algoritmo como sugerido por Frederickson \cite{frederickson}.
+    Seja $E$ um conjunto de arestas não direcionadas e $A$ um conjunto de arcos do grafo $G$.
+    Tome $\delta(v)$ como a quantidade de arestas que incidem no vértice $v$, $\delta^+(v)$ como o grau de entrada de $v$, isto é, a quantidade de arcos que apontam a $v$ e $\delta^-(v)$ como o grau de saída de $v$, o número de arcos que saem de $v$.
+
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Misto 1}
+    \label{mixed-1}
+    \begin{algorithmic}[1]
+    \Function{mixed}{G, c} 
+            \Comment{$c$ é a função de custo das arestas e arcos de $G$}
+        \State $(V, E, A) \gets G$ 
+            \Comment{$E$ é o conjunto de arestas e $A$ o de arcos}
+        \State $G' \gets $GRAU\_PAR$(G, c)$
+    \EndFunction
+
+    \Function{grau\_par}{G,c}
+        \State $(V, E, A) \gets G$
+        \State $V' \gets \{v \in V : \delta(v) + \delta^+(v) + \delta^-(v)$ é impar$\}$
+        \State $distMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
+            \Comment{Trata os arcos de $A$ como arestas}
+        \State $E' \gets V' \times V'$
+        \State $G' \gets (V', E', dist')$
+        \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+        \State $E^* \gets E$
+        \For{$uv \in M$}
+            \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+            \State $E^* \gets E^* \cup C$
+        \EndFor
+        \State $G^* \gets (V, E^*)$
+        \State \Return CIRCUITO\_EULERIANO$(G^*)$
+    \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
