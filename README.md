@@ -28,3 +28,11 @@ O documento principal é o main.tex, que tem todas as importações de pacotes e
 - Em **prb.tex** você encontra exercícios e problemas resolvidos relacionados aos temas tratados no trabalho.
 - Finalmente em **ref.bib** estão as referências bibliográficas da monografia.
 
+
+## Problemas
+
+**Se durante a compilação automática do arquivo tex você receber o erro "compilation failed, file "bla.tex" not found:**
+
+Pare a compilação automática `\lk`, limpe os arquivos auxiliares de compilação `\lc`, reinicie a compilação automática `\ll`.
+
+Se isso não funcionar, feche tudo, e dê um `make` na pasta principal.

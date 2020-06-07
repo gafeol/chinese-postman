@@ -4,6 +4,7 @@ pdf:
 	pdflatex ${filename}
 	pdflatex ${filename}
 	make clean
+	biber ${filename}
 
 read:
 	evince ${filename}.pdf &

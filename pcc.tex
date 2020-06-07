@@ -869,24 +869,40 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State $(V, E, A) \gets G$ 
             \Comment{$E$ é o conjunto de arestas e $A$ o de arcos}
         \State $G' \gets $GRAU\_PAR$(G, c)$
+        \State $G'' \gets $GRAU\_DIR$(G', c)$
     \EndFunction
 
     \Function{grau\_par}{G,c}
         \State $(V, E, A) \gets G$
         \State $V' \gets \{v \in V : \delta(v) + \delta^+(v) + \delta^-(v)$ é impar$\}$
-        \State $distMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
+        \State $custMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
             \Comment{Trata os arcos de $A$ como arestas}
-        \State $E' \gets V' \times V'$
-        \State $G' \gets (V', E', dist')$
+        \State $G' \gets (V', V' \times V', custMin)$ 
+            \Comment{Grafo completo de $V'$}
         \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
-        \State $E^* \gets E$
-        \For{$uv \in M$}
-            \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
-            \State $E^* \gets E^* \cup C$
-        \EndFor
-        \State $G^* \gets (V, E^*)$
-        \State \Return CIRCUITO\_EULERIANO$(G^*)$
+        \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa
+        \State Seja $A'$ o multiconjunto dos arcos expandidos das arestas de $M$
+        \State Seja $E'$ o multiconjunto das arestas expandidas das arestas de $M$
+
+        \State \Return $(V, E + E', A + A')$ 
     \EndFunction
+
+    \Function{grau\_dir}{G, c}
+        \Comment Devolve dois multiconjuntos, $M$ contendo ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contendo apenas arestas não orientadas e não pertencentes a $M$.
+        \State $(V, E, A) \gets G$
+
+        \State Minimizar $z$
+
+        \begin{gather*}
+            z = \min \quad \sum_{a \in A}c_ax_a + \sum_{e \in E_1}c_ex_e \\
+        \begin{aligned}
+            \textup{sujeito a}\quad x_s &\geq 0 \textup{ para } s \in A \cup E_1 \\
+            x_e &= \{0, 1\} \textup{ para } e \in E_2\\
+            \delta^+(v) - \delta^-(v) =  % TODO: COLOCAR AQUI A SOMA DE GRAUS
+        \end{aligned}
+\end{gather*}
+    \EndFunction
+
     \end{algorithmic}
     \end{algorithm}
 
