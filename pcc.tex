@@ -438,7 +438,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \EndFor
     \State $F \gets \{v \in V : b(v) < 0\}$
     \State $S \gets \{v \in V : b(v) > 0\}$
-    \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, dist, b, cap)$
+    \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, dist, b)$
     \State $E^* \gets E$ \Comment{Cria uma cópia de $E$}
     \For{$uv \in E$}
         \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
@@ -461,7 +461,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \EndFor
     \EndFunction
 
-    \Function{problema\_de\_transporte}{F, S, custo, b, cap}
+    \Function{problema\_de\_transporte}{F, S, custo, b}
         \State Define dois vértices artificiais, uma fonte $s$ e um sorvedouro $t$
         \State $E \gets F\times S$
         \For{$uv \in E$}
@@ -869,7 +869,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State $(V, E, A) \gets G$ 
             \Comment{$E$ é o conjunto de arestas e $A$ o de arcos}
         \State $G' \gets $GRAU\_PAR$(G, c)$
-        \State $G'' \gets $GRAU\_DIR$(G', c)$
+        \State $M, U \gets $GRAU\_DIR$(G', c)$
     \EndFunction
 
     \Function{grau\_par}{G,c}
@@ -887,22 +887,33 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State \Return $(V, E + E', A + A')$ 
     \EndFunction
 
-    \Function{grau\_dir}{G, c}
-        \Comment Devolve dois multiconjuntos, $M$ contendo ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contendo apenas arestas não orientadas e não pertencentes a $M$.
+    \Function{grau\_dir}{G, c, custMin}
+        \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
         \State $(V, E, A) \gets G$
+        \For{$v \in V$}
+            \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
+        \EndFor
+        \State $F \gets \{v \in V : b(v) < 0\}$
+        \State $S \gets \{v \in V : b(v) > 0\}$
+        \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, custMin, b)$
+        \State Seja $f_a$ a quantidade de fluxo que passa por cada arco $a \in A$ 
+        \State Sejam $f_{uv}$ e $f_{vu}$ as quantidades de fluxo transportadas pelas duas orientações de uma aresta $uv \in E$
 
-        \State Minimizar $z$
+        \State $M, U \gets \emptyset$
 
-        \begin{gather*}
-            z = \min \quad \sum_{a \in A}c_ax_a + \sum_{e \in E_1}c_ex_e \\
-        \begin{aligned}
-            \textup{sujeito a}\quad x_s &\geq 0 \textup{ para } s \in A \cup E_1 \\
-            x_e &= \{0, 1\} \textup{ para } e \in E_2\\
-            \delta^+(v) - \delta^-(v) =  % TODO: COLOCAR AQUI A SOMA DE GRAUS
-        \end{aligned}
-\end{gather*}
+        \For{$a \in A$}
+            \State Insere $x_a + 1$ cópias do arco $a$ em $M$
+        \EndFor
+        \For{$uv \in E$}
+            \If{$f_{vu} = 0$ ou $f_{uv} = 0$}
+                \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
+            \Else
+                \State Insere $uv$ em $U$ 
+            \EndIf
+        \EndFor
+
+        \State \Return $M, U$
     \EndFunction
-
     \end{algorithmic}
     \end{algorithm}
 
@@ -1385,7 +1396,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             Para todo vértice $v$ do grafo condensado diferente da raiz ($v \neq r$) encontra-se o arco de menor custo que chega em $v$.
             Define-se como $\pi(v)$ o vértice origem de tal arco.
 
-            Se o conjunto de arcos $T = \{(\pi(v), v) | v \neq r\}$ não contem circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
+            Se o conjunto de arcos $T = \{(\pi(v), v) | v \neq r\}$ não contém circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
             Do contrário, realiza-se uma contração dos circuitos existentes em $T$, atualizam-se os custos dos arcos e repete-se recursivamente o mesmo procedimento de criação de $T$.
 
             No exemplo analisado, o conjunto $T$ consiste nos arcos de $G_1$ a $G_2$ e $G_2$ a $G_3$, ambos de custo 4.
