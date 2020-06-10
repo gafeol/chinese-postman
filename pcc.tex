@@ -861,7 +861,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
-    \caption{Misto 1}
+    \caption{Função principal do algoritmo sugerido por Frederickson}
     \label{mixed-1}
     \begin{algorithmic}[1]
     \Function{mixed}{G, c} 
@@ -871,7 +871,14 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State $G' \gets $GRAU\_PAR$(G, c)$
         \State $M, U \gets $GRAU\_DIR$(G', c)$
     \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
 
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Função auxiliar GRAU PAR}
+    \label{mixed-grau-par}
+    \begin{algorithmic}[1]
     \Function{grau\_par}{G,c}
         \State $(V, E, A) \gets G$
         \State $V' \gets \{v \in V : \delta(v) + \delta^+(v) + \delta^-(v)$ é impar$\}$
@@ -886,7 +893,14 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \State \Return $(V, E + E', A + A')$ 
     \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
 
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Função auxiliar GRAU DIR}
+    \label{mixed-grau-dir}
+    \begin{algorithmic}[1]
     \Function{grau\_dir}{G, c, custMin}
         \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
         \State $(V, E, A) \gets G$
@@ -902,20 +916,31 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State $M, U \gets \emptyset$
 
         \For{$a \in A$}
-            \State Insere $x_a + 1$ cópias do arco $a$ em $M$
+            \State Insere $f_a + 1$ cópias do arco $a$ em $M$
         \EndFor
         \For{$uv \in E$}
-            \If{$f_{vu} = 0$ ou $f_{uv} = 0$}
+            \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} % TODO: PROVAR
                 \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
-            \Else
+            \Else 
                 \State Insere $uv$ em $U$ 
             \EndIf
         \EndFor
-
         \State \Return $M, U$
     \EndFunction
     \end{algorithmic}
     \end{algorithm}
+
+    \begin{algorithm}
+    \floatname{algorithm}{Algoritmo}%
+    \caption{Função auxiliar AJUSTA PARIDADE}
+    \label{mixed-ajusta-paridade}
+    \begin{algorithmic}[1]
+    \Function{ajusta\_paridade}{G, M, U}
+            
+    \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
