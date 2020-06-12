@@ -870,7 +870,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \Comment{$E$ é o conjunto de arestas e $A$ o de arcos}
         \State $G' \gets $GRAU\_PAR$(G, c)$
         \State $M, U \gets $GRAU\_DIR$(G', c)$
-    \EndFunction
+        \State $M', U' \gets $AJUSTA\_PARIDADE$(G', M, U)$
+        \State $G_e = (V, U', M')$
+        \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
+    \EndFunction 
     \end{algorithmic}
     \end{algorithm}
 
@@ -935,9 +938,35 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \caption{Função auxiliar AJUSTA PARIDADE}
     \label{mixed-ajusta-paridade}
     \begin{algorithmic}[1]
-    \Function{ajusta\_paridade}{G, M, U}
-            
-    \EndFunction
+        \Function{ajusta\_paridade}{G, M, U}
+            \State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
+            \State $M' \gets M$
+            \State $U' \gets U$
+            \State O multiconjunto $M'' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
+            \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
+
+            \While{$V'$ não é vazio}
+                \State Seleciona um vértice qualquer $v_{ini}$ de $V'$ 
+                \State $v \gets v_{ini}$
+                \While{$v \in V'$}
+                    \State $V' \gets V' \setminus v$
+                    \Repeat 
+                        \State Seja $a$ um arco incidente a $v$, da forma $vw$ ou $wv$, pertencente a $M''$
+                        \If{$a$ é o arco $vw$}
+                            \State Insere uma cópia de $a$ em $M'$
+                        \Else
+                            \State Apague uma cópia de $a$ de $M'$
+                        \EndIf
+                        \State $v \gets w$
+                    \Until{$v \notin V'$}
+                    \Repeat
+                        \State Remove uma aresta $vw$ de $U'$
+                        \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$
+                        \State $v \gets w$
+                    \Until{$v \notin V'$ e $v \neq v_{ini}$}
+                \EndWhile
+            \EndWhile
+        \EndFunction
     \end{algorithmic}
     \end{algorithm}
 
