@@ -1,4 +1,4 @@
-filename=tcc
+filename=main
 
 pdf:
 	pdflatex ${filename}
