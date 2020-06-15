@@ -2,9 +2,8 @@ filename=main
 
 pdf:
 	pdflatex ${filename}
-	pdflatex ${filename}
-	make clean
 	biber ${filename}
+	pdflatex ${filename}
 
 read:
 	evince ${filename}.pdf &
