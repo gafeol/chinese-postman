@@ -855,9 +855,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{enumerate}
     
 
-    Segue em Algoritmo \ref{mixed-1} um pseudo-código desse algoritmo como sugerido por Frederickson \cite{frederickson}.
-    Seja $E$ um conjunto de arestas não direcionadas e $A$ um conjunto de arcos do grafo $G$.
+    Apresenta-se no algoritmo \ref{mixed-1} um pseudo-código adaptado de Frederickson \cite{frederickson} que segue esses passos.
+    Seja $E$ o conjunto de arestas não direcionadas, $A$ o conjunto de arcos e $c$ a função de custo das arestas e arcos de ambos conjuntos.
     Tome $\delta(v)$ como a quantidade de arestas que incidem no vértice $v$, $\delta^+(v)$ como o grau de entrada de $v$, isto é, a quantidade de arcos que apontam a $v$ e $\delta^-(v)$ como o grau de saída de $v$, o número de arcos que saem de $v$.
+
+    Trataremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas ($\delta(v)$), grau de entrada ($\delta^+(v)$) e grau de saída ($\delta^-(v)$).
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
@@ -865,47 +867,50 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \label{mixed-1}
     \begin{algorithmic}[1]
     \Function{mixed}{G, c} 
-            \Comment{$c$ é a função de custo das arestas e arcos de $G$}
         \State $(V, E, A) \gets G$ 
-            \Comment{$E$ é o conjunto de arestas e $A$ o de arcos}
-        \State $G' \gets $GRAU\_PAR$(G, c)$
-        \State $M, U \gets $GRAU\_DIR$(G', c)$
-        \State $M', U' \gets $AJUSTA\_PARIDADE$(G', M, U)$
+        \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
+        \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
+        \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{Torna $\delta$ par, mantendo $\delta^+ = \delta^-$}
         \State $G_e = (V, U', M')$
         \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
     \EndFunction 
     \end{algorithmic}
     \end{algorithm}
 
+    A função auxiliar ``GRAU\_TOTAL\_PAR'' apresentada no algoritmo \ref{mixed-grau-total-par} devolve um conjunto de arestas e arcos de custo mínimo que, se adicionado ao grafo $G$, faz com que todos vértices tenham grau total par.
+    
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar GRAU PAR}
-    \label{mixed-grau-par}
+    \caption{Função auxiliar GRAU TOTAL PAR}
+    \label{mixed-grau-total-par}
     \begin{algorithmic}[1]
-    \Function{grau\_par}{G,c}
+    \Function{grau\_total\_par}{G,c}
         \State $(V, E, A) \gets G$
-        \State $V' \gets \{v \in V : \delta(v) + \delta^+(v) + \delta^-(v)$ é impar$\}$
+        \State $V' \gets \{v \in V : \delta_t(v)$ é impar$\}$
         \State $custMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
-            \Comment{Trata os arcos de $A$ como arestas}
-        \State $G' \gets (V', V' \times V', custMin)$ 
+            \Comment{Ignora o sentido dos arcos de $A$}
+        \State $K \gets (V', V' \times V', custMin)$ 
             \Comment{Grafo completo de $V'$}
-        \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
-        \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa
-        \State Seja $A'$ o multiconjunto dos arcos expandidos das arestas de $M$
-        \State Seja $E'$ o multiconjunto das arestas expandidas das arestas de $M$
-
+        \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(K)$
+        \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa, adicionando ao multiconjunto $A'$ os arcos expandidos e ao multiconjunto $E'$ as arestas expandidas.
         \State \Return $(V, E + E', A + A')$ 
     \EndFunction
     \end{algorithmic}
     \end{algorithm}
 
+    % TODO EXPANDIR AQUI
+    Por sua vez, a função ``IGUALA\_GRAU\_DIR'' devolve dois multiconjuntos $M$ e $U$, de arcos e arestas, respectivamente, de menor custo tal que todo vértice do grafo $(V, U, M)$ possui grau de entrada e saída iguais.
+
+    O multiconjunto $M$ será formado por ao menos uma cópia de todos arcos de $A$ e cópias de arestas de $E$ direcionadas.
+    Já $U$ será composto pelas arestas de $E$ que não foram direcionadas e adicionadas a $M$.
+
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar GRAU DIR}
-    \label{mixed-grau-dir}
+    \caption{Função auxiliar IGUALA GRAU DIR}
+    \label{mixed-iguala-grau-dir}
     \begin{algorithmic}[1]
-    \Function{grau\_dir}{G, c, custMin}
-        \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
+    \Function{iguala\_grau\_dir}{G, c, custMin}
+    \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
         \State $(V, E, A) \gets G$
         \For{$v \in V$}
             \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
@@ -933,13 +938,16 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{algorithmic}
     \end{algorithm}
 
+    Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que grau total desses vértices continua par.
+    Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par para todo vértice mantendo a igualdade de $\delta^+$ e $\delta^-$.
+
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar AJUSTA PARIDADE}
-    \label{mixed-ajusta-paridade}
+    \caption{Função auxiliar GRAU PAR}
+    \label{mixed-grau-par}
     \begin{algorithmic}[1]
-        \Function{ajusta\_paridade}{G, M, U}
-            \State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
+        \Function{grau\_par}{G, M, U}
+            %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
             \State $M' \gets M$
             \State $U' \gets U$
             \State O multiconjunto $M'' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
@@ -953,7 +961,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                     \Repeat 
                         \State Seja $a$ um arco incidente a $v$, da forma $vw$ ou $wv$, pertencente a $M''$
                         \If{$a$ é o arco $vw$}
-                            \State Insere uma cópia de $a$ em $M'$
+                            \State Insere outra cópia de $a$ em $M'$
                         \Else
                             \State Apague uma cópia de $a$ de $M'$
                         \EndIf
@@ -969,6 +977,22 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \EndFunction
     \end{algorithmic}
     \end{algorithm}
+
+    Os multiconjuntos $M', U'$ são escolhidos de modo a tornar $\delta_t(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v \in V$.
+    Como $\delta(v) = \delta_t(v) - (\delta^+(v) + \delta^-(v))$, isso implica que $\delta(v)$ também deve ser par.
+
+    \begin{theorem}        
+        \label{mixed-eulerian}
+        Um grafo misto fortemente conexo que possui $\delta(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v$, possui um circuito euleriano.
+    \end{theorem}
+    \begin{proof}
+        Seja $G = (V, E, A)$, sendo $E$ um multiconjunto de arestas e $A$ um multiconjunto de arcos.
+        Definimos como $G_e$ o grafo induzido pelas arestas de $E$, e de $G_a$ o grafo induzido por $A$.
+        Apesar de não necessariamente conexos, ainda valerá que todo vértice de $G_e$ possui um $\delta$ par e que todo vértice de $G_a$ tem $\gre = \grs$.
+        
+        % TODO: CONTINUAR AQUI, FALAR DAS MINI COMPONENTES CONEXAS EULERIANAS, E NA UNIAO DOS CIRCUITOS EULERIANOS DELAS
+                
+    \end{proof}
 
 
     \subsection{Problema do carteiro rural}
