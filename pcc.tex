@@ -845,12 +845,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Trataremos, portanto, de um algoritmo de aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por .
 
-    O algoritmo é composto por quatro passos principais:
+    O algoritmo é composto por três passos principais:
 
     \begin{enumerate}
         \item Adicionar cópias de arestas ao grafo de modo a tornar o grau de todo vértice par, considereando arcos como arestas sem orientação
         \item Igualar o grau de entrada e saída de todo vértice, adicionando cópias de arcos e orientando arestas existentes, mantendo par o grau de cada vértice
-        \item Definir uma orientação para as arestas do grafo
         \item Encontrar um circuito euleriano no digrafo construido
     \end{enumerate}
     
@@ -898,7 +897,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{algorithmic}
     \end{algorithm}
 
-    % TODO EXPANDIR AQUI
     Por sua vez, a função ``IGUALA\_GRAU\_DIR'' devolve dois multiconjuntos $M$ e $U$, de arcos e arestas, respectivamente, de menor custo tal que todo vértice do grafo $(V, U, M)$ possui grau de entrada e saída iguais.
 
     O multiconjunto $M$ será formado por ao menos uma cópia de todos arcos de $A$ e cópias de arestas de $E$ direcionadas.
@@ -982,18 +980,44 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Como $\delta(v) = \delta_t(v) - (\delta^+(v) + \delta^-(v))$, isso implica que $\delta(v)$ também deve ser par.
 
     \begin{theorem}        
-        \label{mixed-eulerian}
         Um grafo misto fortemente conexo que possui $\delta(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v$, possui um circuito euleriano.
+        \label{mixed-eulerian}
     \end{theorem}
     \begin{proof}
         Seja $G = (V, E, A)$, sendo $E$ um multiconjunto de arestas e $A$ um multiconjunto de arcos.
         Definimos como $G_e$ o grafo induzido pelas arestas de $E$, e de $G_a$ o grafo induzido por $A$.
         Apesar de não necessariamente conexos, ainda valerá que todo vértice de $G_e$ possui um $\delta$ par e que todo vértice de $G_a$ tem $\gre = \grs$.
         
-        % TODO: CONTINUAR AQUI, FALAR DAS MINI COMPONENTES CONEXAS EULERIANAS, E NA UNIAO DOS CIRCUITOS EULERIANOS DELAS
-                
-    \end{proof}
+        $G_e$ será composto por diferentes componentes conexas com vértices de grau par, consequentemente cada componente será euleriana, pelo teorema \ref{euler}.
+        Sejam $C_1, C_2, \dots, C_k$  os circuitos eulerianos das $k$ componentes de $G_e$.
 
+        A mesma análise pode ser feita com o grafo $G_a$, cada uma de suas componentes fortemente conexas possuirá grau de entrada e saída iguais, sendo assim grafos eulerianos pelo teorema \ref{euler-digraph}. 
+        Sejam $C'_1, \dots, C'_l$ os circuitos eulerianos dessas componenetes.
+
+        Pode-se definir um procedimento de união de dois circuitos em um único circuito se ambos possuem ao menos um vértice em comum:
+        
+        Digamos que dois circuitos $\mathcal{C}_i$ e $\mathcal{C}_j$ possuem um vértice $v$ em comum.
+        Podemos descrever ambos circuitos por seus arcos ou arestas do seguinte modo:
+
+        \[
+            \mathcal{C}_i = \{ vw_1, w_1w_2, \dots, w_nv \}
+        \]
+        \[
+            \mathcal{C}_j = \{ vu_1, u_1u_2, \dots, u_mv \}
+        \]
+
+        Se representados desse modo, a união dos circuitos será equivalente à justaposição de ambos:
+
+        \[
+            \mathcal{C}_i \cup \mathcal{C}_j = \{ vw_1, w_1w_2, \dots w_nv, vu_1, u_1u_2, \dots, u_mv \}
+        \]
+        
+        A união de todos circuitos $C_1, \dots C_k$ e $C'_1, \dots, C'_l$ forma um circuito euleriano do grafo original $G$.
+
+        Como o grafo original é fortemente conexo, sempre é possível realizar a união de todos circuitos.
+    Do contrário, se não houver meio de realizar tal união deverá existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup \mathcal{C}_i = G$ não seria fortemente conexo, contradizendo a base do raciocínio.
+
+    \end{proof}
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
