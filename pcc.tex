@@ -69,7 +69,7 @@ Definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada 
 Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes e a trilha fechada $T$ (solução do PCC em $G$) percorre cada uma dessas arestas uma única vez.
 Por definição $G'$ será euleriano, e a trilha euleriana de $G'$ corresponderá à $T$, solução do PCC para o grafo $G$.
 
-Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
+Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construido.
 
 Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
@@ -948,7 +948,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
             \State $M' \gets M$
             \State $U' \gets U$
-            \State O multiconjunto $M'' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
+            \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
             \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
 
             \While{$V'$ não é vazio}
@@ -1016,6 +1016,41 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Como o grafo original é fortemente conexo, sempre é possível realizar a união de todos circuitos.
     Do contrário, se não houver meio de realizar tal união deverá existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup \mathcal{C}_i = G$ não seria fortemente conexo, contradizendo a base do raciocínio.
+
+    % TODO: provar que GRAU PAR retorna conjuntos de mesmo custo
+    \begin{lemma}
+        Os multiconjuntos $M, U$ e $M', U'$ retornados pelas funções \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par} possuem o mesmo custo.
+    \end{lemma}
+
+    \begin{proof}
+        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de um grafo. 
+
+        Portanto já podemos descartar a possibilidade de que $M', U'$ possui um custo menor que $M, U$. 
+        Assumimos, por absurdo, que $M', U'$ possui um custo maior que $M, U$.
+        A diferença de custos entre ambos será causada pela duplicação e deleção de alguns arcos de $M$.    
+        Definimos como $C_+$ o custo dos arcos escolhidos para serem duplicados e $C_-$ o custo dos arcos deletados em $M'$.
+        
+        Como assumimos que $M', U'$ tem custo maior que $M, U$, deve valer:
+        \begin{align*}
+            2C_+ - C_- &> C_+ + C_- \\
+            C_+ &> 2C_-
+        \end{align*}
+
+        Vamos tomar agora outros multiconjuntos $M'', U''$, em que $U'' = U'$ e que $M''$ será o inverso de $M'$, todo arco que foi deletado em $M'$ será duplicado em $M''$, todo arco duplicado em $M'$ será deletado em $M''$ e toda aresta orientada adicionada a $M'$ terá sua orientação invertida em $M''$.
+
+        Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então eles devem ter um custo maior ou igual que o mesmo de $M, U$.
+        Podemos escrever essa condição como:
+
+        \begin{align*}
+            2C_- - C_+ &\geq C_+ + C_- \\
+            C_- &\geq 2C_+
+        \end{align*}
+    \end{proof}
+
+    % TODO: provar o fator de aproximacao de 2
+
+    % TODO: adicionar exemplo
+    
 
     \end{proof}
 
