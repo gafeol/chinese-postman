@@ -1020,24 +1020,43 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     % TODO: provar que GRAU PAR retorna conjuntos de mesmo custo
     \begin{lemma}
         Os multiconjuntos $M, U$ e $M', U'$ retornados pelas funções \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par} possuem o mesmo custo.
+        Define-se $C(M,U)$ como o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõe $M$ e $U$.
     \end{lemma}
 
     \begin{proof}
-        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de um grafo. 
+        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G$. 
+        Portanto vale que $C(M, U) \leq C(A, E)$ para quaisquer multiconjuntos $A, E$ que igualem o grau de entrada e saída dos vértices de $G$.
+        Em particular, $C(M', U') \geq C(M, U)$. 
 
-        Portanto já podemos descartar a possibilidade de que $M', U'$ possui um custo menor que $M, U$. 
-        Assumimos, por absurdo, que $M', U'$ possui um custo maior que $M, U$.
-        A diferença de custos entre ambos será causada pela duplicação e deleção de alguns arcos de $M$.    
-        Definimos como $C_+$ o custo dos arcos escolhidos para serem duplicados e $C_-$ o custo dos arcos deletados em $M'$.
+        Queremos provar que $C(M', U') = C(M, U)$, assumimos então, por absurdo, que $C(M', U') > C(M, U)$.
+
+        Os multiconjuntos $M'$ e $U'$ são construidos pelo algoritmo \ref{mixed-grau-par} a partir de $M$ e $U$. 
+        Na construção de $M', U'$ podem ocorrer três tipos de eventos:
+
+        \begin{enumerate}
+            \item Um arco $a \in M$ é duplicado em $M'$
+            \item Um arco $a \in M$ é deletado em $M'$
+            \item Uma aresta $e \in U$ é orientada e adicionada a $M'$
+        \end{enumerate}
         
-        Como assumimos que $M', U'$ tem custo maior que $M, U$, deve valer:
+        Dos três tipos de eventos listados, apenas os dois primeiros podem realizar uma mudança no custo dos multiconjuntos $M', U'$ em relação a $M, U$.
+        Um evento do tipo 1 aumenta o custo de $M', U'$ pelo valor do custo de $a$, assim como um evento do tipo 2 diminui o custo de $M', U'$ pelo custo de $a$, em relação ao custo de $M, U$.
+
+        Sendo assim, podemos definir $C(M', U')$ pela soma de três valores: $C(M', U') = C(M, U) + C_+ - C_-$, sendo $C_+$ a soma do custo dos arcos duplicados (evento 1) e $C_-$ a soma do custo dos arcos deletados no algoritmo (evento 2).
+
+        Se $C(M', U') > C(M, U)$, como assumimos, vale que:
+
         \begin{align*}
-            2C_+ - C_- &> C_+ + C_- \\
-            C_+ &> 2C_-
+            C(M, U) + C_+ - C_- &= C(M', U') \\
+            C_+ - C_- &= C(M', U') - C(M, U) \\
+            C_+ - C_- &> 0 \\ 
+            C_- - C_+ &< 0
         \end{align*}
 
         Vamos tomar agora outros multiconjuntos $M'', U''$, em que $U'' = U'$ e que $M''$ será o inverso de $M'$, todo arco que foi deletado em $M'$ será duplicado em $M''$, todo arco duplicado em $M'$ será deletado em $M''$ e toda aresta orientada adicionada a $M'$ terá sua orientação invertida em $M''$.
 
+        
+        TODO: TA ERRADO. PENSA NO CASO <1, 2> (2, 1)
         Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então eles devem ter um custo maior ou igual que o mesmo de $M, U$.
         Podemos escrever essa condição como:
 
