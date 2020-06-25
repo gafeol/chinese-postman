@@ -1017,11 +1017,13 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Como o grafo original é fortemente conexo, sempre é possível realizar a união de todos circuitos.
     Do contrário, se não houver meio de realizar tal união deverá existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup \mathcal{C}_i = G$ não seria fortemente conexo, contradizendo a base do raciocínio.
+    \end{proof}
 
-    % TODO: provar que GRAU PAR retorna conjuntos de mesmo custo
     \begin{lemma}
-        Os multiconjuntos $M, U$ e $M', U'$ retornados pelas funções \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par} possuem o mesmo custo.
-        Define-se $C(M,U)$ como o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõe $M$ e $U$.
+        Seja $C(M,U)$ o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõe $M$ e $U$.
+
+        Vale que $C(M', U') = C(M, U)$. 
+        Isto é, os multiconjuntos $M', U'$ retornados pela função \ref{mixed-grau-par} possuem o mesmo custo que os multiconjuntos $M, U$, retornados por \ref{mixed-iguala-grau-dir}.
     \end{lemma}
 
     \begin{proof}
@@ -1051,28 +1053,48 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             C(M, U) + C_+ - C_- &= C(M', U') \\
             C_+ - C_- &= C(M', U') - C(M, U) \\
             C_+ - C_- &> 0 \\ 
-            C_- - C_+ &< 0
         \end{align*}
 
-        Vamos tomar agora outros multiconjuntos $M'', U''$, em que $U'' = U'$ e que $M''$ será o inverso de $M'$, todo arco que foi deletado em $M'$ será duplicado em $M''$, todo arco duplicado em $M'$ será deletado em $M''$ e toda aresta orientada adicionada a $M'$ terá sua orientação invertida em $M''$.
-
+        Vamos tomar agora outros multiconjuntos $M'', U''$, em que $U'' = U'$ e que $M''$ será definido a partir de $M$ com três eventos, de modo análogo a $M'$:
         
-        TODO: TA ERRADO. PENSA NO CASO <1, 2> (2, 1)
-        Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então eles devem ter um custo maior ou igual que o mesmo de $M, U$.
-        Podemos escrever essa condição como:
+        \begin{enumerate}
+            \item Se um arco $a \in M$ foi duplicado em $M'$, o mesmo será deletado de $M''$.
+            \item Se um arco $a \in M$ foi deletado em $M'$, o mesmo será duplicado em $M''$.
+            \item Se uma aresta $e \in U$ foi orientada da forma $\langle u, v \rangle$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta, $\langle v, u \rangle$.
+        \end{enumerate}
+
+        Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então vale que $C(M'', U'') \geq C(M, U)$.
+        Além disso, podemos definir tal custo como $C(M'', U'') = C(M, U) + C_- - C_+$.
+        
+        Sendo assim:
 
         \begin{align*}
-            2C_- - C_+ &\geq C_+ + C_- \\
-            C_- &\geq 2C_+
+            C(M, U) + C_- - C_+ &= C(M'', U'') \\
+            C_+ - C_- &= C(M, U) - C(M'', U'') \\
+            C_+ - C_- &\leq 0 
         \end{align*}
+
+        Como haviamos provado anteriormente que $C_+ - C_- > 0$, chegamos a uma contradição.
+        Provando por absurdo, que $C(M', U') = C(M, U)$.
     \end{proof}
 
     % TODO: provar o fator de aproximacao de 2
 
-    % TODO: adicionar exemplo
-    
+    \begin{theorem}
+        Seja $C$ o custo de uma solução ótima do problema do carteiro chinês em um grafo misto $G$, e $C'$ o custo da solução construída pelo algoritmo descrito, vale que:
+        \[
+            C'/C \leq 2
+        \]
+    \end{theorem}
+
+    \begin{proof}
+        Seja $G^*$ o grafo $G$ com todos arcos e arestas duplicadas e $C^*$ o custo da solução dada pelo algoritmo MIXED ao grafo $G^*$.
+
+        Como o grau total de todos vértices de $G^*$ é par, as únicas funções que modificarão o grafo $G^*$ do algoritmo serão \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par}.
 
     \end{proof}
+
+    % TODO: adicionar exemplo
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
