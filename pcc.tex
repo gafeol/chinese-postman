@@ -876,6 +876,35 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{algorithmic}
     \end{algorithm}
 
+    Para exemplificar o funcionamento do algoritmo, usaremos o seguinte grafo:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] at (-5, -1) (a) {a};
+            \node[main node] at (-4, 1) (b) {b};
+            \node[main node] at (-3, -1) (c) {c};
+            \node[main node] at (0, 0) (d) {d};
+            \node[main node] at (3, -1) (e) {e};
+            \node[main node] at (3, 1) (f) {f};
+
+            \path[every node/.style={font=\sffamily\small}]
+                (a) edge[line width=2] node [left] {2} (b)
+                (b) edge[line width=2] node [right] {3} (c)
+                (a) edge[line width=2] node [below] {4} (c)
+                (b) edge node [above] {1} (d)
+                (b) edge node [above] {3} (f)
+                (c) edge node [above] {1} (d)
+                (c) edge node [below] {5} (e)
+                (d) edge node [above] {2} (f)
+                (e) edge[line width=2] node [right] {2} (f)
+                ;
+        \end{tikzpicture}
+        \caption{Exemplo de grafo $G$, destacam-se no mesmo as arestas pertencentes a $R$}
+        \label{mixed-exemplo}
+    \end{figure}
+
+
     A função auxiliar ``GRAU\_TOTAL\_PAR'' apresentada no algoritmo \ref{mixed-grau-total-par} devolve um conjunto de arestas e arcos de custo mínimo que, se adicionado ao grafo $G$, faz com que todos vértices tenham grau total par.
     
     \begin{algorithm}
@@ -925,7 +954,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \State Insere $f_a + 1$ cópias do arco $a$ em $M$
         \EndFor
         \For{$uv \in E$}
-            \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} % TODO: PROVAR
+            \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} ao mesmo tempo % TODO: PROVAR
                 \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
             \Else 
                 \State Insere $uv$ em $U$ 
@@ -1020,18 +1049,18 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{proof}
 
     \begin{lemma}
-        Seja $C(M,U)$ o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõe $M$ e $U$.
+        \label{mixed-custo-igual}
+        Seja $C(M,U)$ o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõem $M$ e $U$.
 
         Vale que $C(M', U') = C(M, U)$. 
         Isto é, os multiconjuntos $M', U'$ retornados pela função \ref{mixed-grau-par} possuem o mesmo custo que os multiconjuntos $M, U$, retornados por \ref{mixed-iguala-grau-dir}.
     \end{lemma}
 
     \begin{proof}
-        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G$. 
-        Portanto vale que $C(M, U) \leq C(A, E)$ para quaisquer multiconjuntos $A, E$ que igualem o grau de entrada e saída dos vértices de $G$.
-        Em particular, $C(M', U') \geq C(M, U)$. 
+        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G(V, A, E)$. 
+        Em particular, vale que $C(M', U') \geq C(M, U)$. 
 
-        Queremos provar que $C(M', U') = C(M, U)$, assumimos então, por absurdo, que $C(M', U') > C(M, U)$.
+        Para mostrar que $C(M', U') = C(M, U)$ chegaremos a uma contradição assumindo que $C(M', U') > C(M, U)$:
 
         Os multiconjuntos $M'$ e $U'$ são construidos pelo algoritmo \ref{mixed-grau-par} a partir de $M$ e $U$. 
         Na construção de $M', U'$ podem ocorrer três tipos de eventos:
@@ -1042,7 +1071,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \item Uma aresta $e \in U$ é orientada e adicionada a $M'$
         \end{enumerate}
         
-        Dos três tipos de eventos listados, apenas os dois primeiros podem realizar uma mudança no custo dos multiconjuntos $M', U'$ em relação a $M, U$.
+        Dos três tipos de eventos listados, apenas os dois primeiros mudam o custo dos multiconjuntos $M', U'$ em relação a $M, U$.
         Um evento do tipo 1 aumenta o custo de $M', U'$ pelo valor do custo de $a$, assim como um evento do tipo 2 diminui o custo de $M', U'$ pelo custo de $a$, em relação ao custo de $M, U$.
 
         Sendo assim, podemos definir $C(M', U')$ pela soma de três valores: $C(M', U') = C(M, U) + C_+ - C_-$, sendo $C_+$ a soma do custo dos arcos duplicados (evento 1) e $C_-$ a soma do custo dos arcos deletados no algoritmo (evento 2).
@@ -1060,7 +1089,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \begin{enumerate}
             \item Se um arco $a \in M$ foi duplicado em $M'$, o mesmo será deletado de $M''$.
             \item Se um arco $a \in M$ foi deletado em $M'$, o mesmo será duplicado em $M''$.
-            \item Se uma aresta $e \in U$ foi orientada da forma $\langle u, v \rangle$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta, $\langle v, u \rangle$.
+            \item Se uma aresta $e \in U$ foi orientada da forma $\langle u, v \rangle$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta: $\langle v, u \rangle$.
         \end{enumerate}
 
         Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então vale que $C(M'', U'') \geq C(M, U)$.
@@ -1078,9 +1107,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Provando por absurdo, que $C(M', U') = C(M, U)$.
     \end{proof}
 
-    % TODO: provar o fator de aproximacao de 2
-
-    \begin{theorem}
+    \begin{theorem}{\cite{frederickson}}
         Seja $C$ o custo de uma solução ótima do problema do carteiro chinês em um grafo misto $G$, e $C'$ o custo da solução construída pelo algoritmo descrito, vale que:
         \[
             C'/C \leq 2
@@ -1088,13 +1115,29 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{theorem}
 
     \begin{proof}
+        Assume-se que todas arestas e arcos de $G$ tenham um custo positivo. 
+
         Seja $G^*$ o grafo $G$ com todos arcos e arestas duplicadas e $C^*$ o custo da solução dada pelo algoritmo MIXED ao grafo $G^*$.
 
         Como o grau total de todos vértices de $G^*$ é par, as únicas funções que modificarão o grafo $G^*$ do algoritmo serão \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par}.
+        Além disso, como a função \ref{mixed-iguala-grau-dir} encontra multiconjuntos de arcos e arestas que igualam os graus de entrada e saída de $G^*$ com o menor custo possível (solucionando o problema de transporte modelado) e como a função \ref{mixed-grau-par} modifica os multiconjuntos sem modificar o seu custo (lema \ref{mixed-custo-igual}), podemos dizer que $C^*$ é o custo ótimo para a solução do PCC para o grafo misto $G^*$. 
 
+        Sendo assim, como a solução ótima de $G$, de custo $C$, pode ser duplicada para encontrar uma solução de $G^*$ também deve valer que $C^* \leq 2C$.
+
+        Definimos agora $G'$ como o grafo retornado pela função \ref{mixed-grau-total-par} com parâmetro $G$.
+        A função \ref{mixed-grau-total-par} constrói $G'$ duplicando arcos e arestas de caminhos entre vértices de grau total ímpar de $G$, minimizando o custo de tal construção.
+
+        Pode-se afirmar que não existirá em $G'$ um arco ou aresta $uv$ que foi duplicado mais que uma vez na função \ref{mixed-grau-total-par}, pois se existisse poderia-se remover de $G'$ duas cópias de $uv$ que conseguiria-se outro grafo com mesma paridade total de vértices e custo menor.
+
+        Assim, como cada aresta e arco de $G$ é duplicado no máximo uma vez em $G'$, podemos afirmar que os multiconjuntos de arcos e arestas de $G'$ estarão contidos nos multiconjuntos de $G^*$ e por isso, o custo $C'$ da solução dada pelo algoritmo MIXED ao grafo $G$ deverá ser menor ou igual a $C^*$.
+        
+        \begin{align*}
+            C' \leq C^* &\leq 2C \\
+            C'/C &\leq 2
+        \end{align*}
+
+        Provando assim que o algoritmo MIXED é uma 0.5-aproximação para o problema do carteiro misto.
     \end{proof}
-
-    % TODO: adicionar exemplo
 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
