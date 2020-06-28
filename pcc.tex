@@ -881,26 +881,24 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] at (-5, -1) (a) {a};
-            \node[main node] at (-4, 1) (b) {b};
-            \node[main node] at (-3, -1) (c) {c};
-            \node[main node] at (0, 0) (d) {d};
-            \node[main node] at (3, -1) (e) {e};
-            \node[main node] at (3, 1) (f) {f};
+            \node[main node] at (-3, 2) (a) {a};
+            \node[main node] at (-3, -1) (b) {b};
+            \node[main node] at (1, 2) (c) {c};
+            \node[main node] at (1, -1) (d) {d};
+            \node[main node] at (2, 3) (e) {e};
+
+            \path[->] (a) edge[] node [above] {5} (c);
+            \path[->] (b) edge[] node [left] {3} (a);
+            \path[->] (d) edge[] node [above] {4} (b);
 
             \path[every node/.style={font=\sffamily\small}]
-                (a) edge[line width=2] node [left] {2} (b)
-                (b) edge[line width=2] node [right] {3} (c)
-                (a) edge[line width=2] node [below] {4} (c)
-                (b) edge node [above] {1} (d)
-                (b) edge node [above] {3} (f)
-                (c) edge node [above] {1} (d)
-                (c) edge node [below] {5} (e)
-                (d) edge node [above] {2} (f)
-                (e) edge[line width=2] node [right] {2} (f)
+                (a) edge[bend left] node [above] {5} (e)
+                (b) edge[] node [right] {1} (c)
+                (c) edge node [right] {3} (d)
+                (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{Exemplo de grafo $G$, destacam-se no mesmo as arestas pertencentes a $R$}
+        \caption{Exemplo de grafo misto $G$}
         \label{mixed-exemplo}
     \end{figure}
 
@@ -925,6 +923,32 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \EndFunction
     \end{algorithmic}
     \end{algorithm}
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] at (-3, 2) (a) {a};
+            \node[main node] at (-3, -1) (b) {b};
+            \node[main node] at (1, 2) (c) {c};
+            \node[main node] at (1, -1) (d) {d};
+            \node[main node] at (2, 3) (e) {e};
+
+            \path[->] (a) edge[bend right=15] node [above] {5} (c);
+            \path[->] (a) edge[line width=2,bend left=15] node [above] {5} (c);
+            \path[->] (b) edge[] node [left] {3} (a);
+            \path[->] (d) edge[bend right=15] node [below] {4} (b);
+            \path[->] (d) edge[line width=2,bend left=15] node [below] {4} (b);
+
+            \path[every node/.style={font=\sffamily\small}]
+                (a) edge[bend left] node [above] {5} (e)
+                (b) edge[] node [right] {1} (c)
+                (c) edge node [right] {3} (d)
+                (d) edge[bend right] node [right] {2} (e)
+                ;
+        \end{tikzpicture}
+        \caption{Em destaque os arcos adicionados pela função \ref{mixed-grau-total-par}}
+        \label{mixed-exemplo-grau-total}
+    \end{figure}
 
     Por sua vez, a função ``IGUALA\_GRAU\_DIR'' devolve dois multiconjuntos $M$ e $U$, de arcos e arestas, respectivamente, de menor custo tal que todo vértice do grafo $(V, U, M)$ possui grau de entrada e saída iguais.
 
@@ -965,7 +989,35 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{algorithmic}
     \end{algorithm}
 
-    Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que grau total desses vértices continua par.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] at (-3, 2) (a) {a};
+            \node[main node] at (-3, -1) (b) {b};
+            \node[main node] at (1, 2) (c) {c};
+            \node[main node] at (1, -1) (d) {d};
+            \node[main node] at (2, 3) (e) {e};
+
+            \path[->] (a) edge[bend right=15] node [above] {5} (c);
+            \path[->] (a) edge[bend left=15] node [above] {5} (c);
+            \path[->] (b) edge[blue, bend right=15] node [left] {3} (a);
+            \path[->] (b) edge[blue, bend left=15] node [left] {3} (a);
+            \path[->] (d) edge[bend right=15] node [below] {4} (b);
+            \path[->] (d) edge[bend left=15] node [below] {4} (b);
+            \path[->] (c) edge[blue, bend right=15] node [right] {3} (d);
+            \path[->] (c) edge[blue, bend left=15] node [right] {3} (d);
+
+            \path[every node/.style={font=\sffamily\small}]
+                (a) edge[bend left] node [above] {5} (e)
+                (b) edge[] node [right] {1} (c)
+                (d) edge[bend right] node [right] {2} (e)
+                ;
+        \end{tikzpicture}
+        \caption{O arco $ba$ foi duplicado e a aresta $cd$ foi orientada e duplicada pela função \ref{mixed-iguala-grau-dir}}
+        \label{mixed-exemplo-grau-dir}
+    \end{figure}
+
+    Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
     Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par para todo vértice mantendo a igualdade de $\delta^+$ e $\delta^-$.
 
     \begin{algorithm}
@@ -1007,6 +1059,66 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Os multiconjuntos $M', U'$ são escolhidos de modo a tornar $\delta_t(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v \in V$.
     Como $\delta(v) = \delta_t(v) - (\delta^+(v) + \delta^-(v))$, isso implica que $\delta(v)$ também deve ser par.
+    
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.5\textwidth}
+          \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-3, 2) (a) {a};
+                \node[main node] at (-3, -1) (b) {b};
+                \node[main node] at (1, 2) (c) {c};
+                \node[main node] at (1, -1) (d) {d};
+                \node[main node] at (2, 3) (e) {e};
+                \node[] at (-3, 3) (ini) {início};
+
+                \path[->] (ini) edge[] node {} (a);
+
+                \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                \path[->] (a) edge[bend left=15] node [above] {5} (c);
+                \path[->] (b) edge[dotted, blue, bend right=15] node [left] {3} (a);
+                \path[->] (b) edge[bend left=15] node [left] {3} (a);
+                \path[->] (d) edge[bend right=15] node [below] {4} (b);
+                \path[->] (d) edge[bend left=15] node [below] {4} (b);
+                \path[->] (c) edge[line width=2, blue, bend right=15] node [right] {3} (d);
+                \path[->] (c) edge[bend left=15] node [right] {3} (d);
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[red, bend left] node [above] {5} (e)
+                    (b) edge[red] node [right] {1} (c)
+                    (d) edge[red, bend right] node [right] {2} (e)
+                    ;
+            \end{tikzpicture}
+          \label{exmixed1}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+          \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-3, 2) (a) {a};
+                \node[main node] at (-3, -1) (b) {b};
+                \node[main node] at (1, 2) (c) {c};
+                \node[main node] at (1, -1) (d) {d};
+                \node[main node] at (2, 3) (e) {e};
+                \node[] at (-3, 3) (ini) {início};
+
+                \path[->] (ini) edge[] node {} (a);
+
+                \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                \path[->] (a) edge[bend left=15] node [above] {5} (c);
+                \path[->] (b) edge[] node [left] {3} (a);
+                \path[->] (d) edge[bend right=15] node [below] {4} (b);
+                \path[->] (d) edge[bend left=15] node [below] {4} (b);
+                \path[->] (c) edge[bend right] node [right] {3} (d);
+                \path[->] (c) edge[] node [right] {3} (d);
+                \path[->] (c) edge[bend left] node [right] {3} (d);
+                \path[->] (b) edge[] node [right] {1} (c);
+                \path[->] (d) edge[bend right] node [right] {2} (e);
+                \path[->] (e) edge[bend right] node [above] {5} (a);
+            \end{tikzpicture}
+          \label{exmixed2}
+        \end{minipage}%
+            \caption{TODO: CONTINUAR EXEMPLO AQUI}
+    \end{figure}
 
     \begin{theorem}        
         Um grafo misto fortemente conexo que possui $\delta(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v$, possui um circuito euleriano.
