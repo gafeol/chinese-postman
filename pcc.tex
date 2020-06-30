@@ -813,7 +813,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Na esquerda temos um grafo misto, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
 
     Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
-    \sloppy Uma solução do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
+    \sloppy Uma solução ótima do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução ótima possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
 
     \begin{center}
         \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
@@ -855,10 +855,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     
 
     Apresenta-se no algoritmo \ref{mixed-1} um pseudo-código adaptado de Frederickson \cite{frederickson} que segue esses passos.
-    Seja $E$ o conjunto de arestas não direcionadas, $A$ o conjunto de arcos e $c$ a função de custo das arestas e arcos de ambos conjuntos.
+    Seja $E$ o conjunto de arestas não direcionadas, $A$ o conjunto de arcos e $c$ a função de custo destas arestas e arcos.
     Tome $\delta(v)$ como a quantidade de arestas que incidem no vértice $v$, $\delta^+(v)$ como o grau de entrada de $v$, isto é, a quantidade de arcos que apontam a $v$ e $\delta^-(v)$ como o grau de saída de $v$, o número de arcos que saem de $v$.
 
-    Trataremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas ($\delta(v)$), grau de entrada ($\delta^+(v)$) e grau de saída ($\delta^-(v)$).
+    Definiremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas, grau de entrada e saída, ou seja $\grt(v) = \gr(v) + \gre(v) + \grs(v)$.
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
@@ -1013,7 +1013,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{O arco $ba$ foi duplicado e a aresta $cd$ foi orientada e duplicada pela função \ref{mixed-iguala-grau-dir}}
+        \caption{O arco $ba$ e a aresta orientada $cd$ foram duplicados pela função \ref{mixed-iguala-grau-dir}}
         \label{mixed-exemplo-grau-dir}
     \end{figure}
 
@@ -1027,7 +1027,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \begin{algorithmic}[1]
         \Function{grau\_par}{G, M, U}
             %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
-            \State $M' \gets M$
             \State $U' \gets U$
             \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
             \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
@@ -1038,17 +1037,17 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \While{$v \in V'$}
                     \State $V' \gets V' \setminus v$
                     \Repeat 
-                        \State Seja $a$ um arco incidente a $v$, da forma $vw$ ou $wv$, pertencente a $M''$
+                        \State Seja $a$ um arco incidente a $v$, da forma $vw$ ou $wv$, pertencente a $M'$
                         \If{$a$ é o arco $vw$}
-                            \State Insere outra cópia de $a$ em $M'$
+                            \State Insere outra cópia de $a$ em $M'$ \label{alg:duplica}
                         \Else
-                            \State Apague uma cópia de $a$ de $M'$
+                            \State Apague uma cópia de $a$ de $M'$ \label{alg:deleta}
                         \EndIf
                         \State $v \gets w$
                     \Until{$v \notin V'$}
                     \Repeat
                         \State Remove uma aresta $vw$ de $U'$
-                        \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$
+                        \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$ \label{alg:orienta}
                         \State $v \gets w$
                     \Until{$v \notin V'$ e $v \neq v_{ini}$}
                 \EndWhile
@@ -1099,9 +1098,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \node[main node] at (1, 2) (c) {c};
                 \node[main node] at (1, -1) (d) {d};
                 \node[main node] at (2, 3) (e) {e};
-                \node[] at (-3, 3) (ini) {início};
-
-                \path[->] (ini) edge[] node {} (a);
 
                 \path[->] (a) edge[bend right=15] node [above] {5} (c);
                 \path[->] (a) edge[bend left=15] node [above] {5} (c);
@@ -1117,10 +1113,19 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \end{tikzpicture}
           \label{exmixed2}
         \end{minipage}%
-            \caption{TODO: CONTINUAR EXEMPLO AQUI}
+        \caption{Criação de $M', U'$, a partir de $M, U$ pelo algoritmo \ref{mixed-grau-par}}
+        \label{ex-grau-par}
     \end{figure}
 
-    \begin{theorem}        
+    No exemplo \ref{ex-grau-par} o algoritmo \ref{mixed-grau-par} toma o circuito $\{a, b, c, d, e, a\}$ para realizar a construção de $M', U'$ e tornar par o grau dos vértices do grafo. 
+    Em azul destacam-se os arcos de $M$ e em vermelho as arestas de $U$ escolhidos.
+
+    Como o arco $ab$ é percorrido pelo circuito no sentido contrário, o mesmo é deletado do conjunto $M'$ (linha \ref{alg:deleta}), já o arco $cd$, percorrido no sentido correto, é duplicado (linha \ref{alg:duplica}).
+    As arestas do circuito são todas orientadas no sentido em que são percorridas $bc, de, ea$ (linha \ref{alg:orienta}).
+
+    Deste modo conseguem-se multiconjuntos $M', U'$ de mesmo custo que $M, U$ e que mantem $\gre = \grs$ e $\gr$ par para todo vértice de $G$.
+
+    \begin{theorem} 
         Um grafo misto fortemente conexo que possui $\delta(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v$, possui um circuito euleriano.
         \label{mixed-eulerian}
     \end{theorem}
@@ -1175,7 +1180,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Para mostrar que $C(M', U') = C(M, U)$ chegaremos a uma contradição assumindo que $C(M', U') > C(M, U)$:
 
         Os multiconjuntos $M'$ e $U'$ são construidos pelo algoritmo \ref{mixed-grau-par} a partir de $M$ e $U$. 
-        Na construção de $M', U'$ podem ocorrer três tipos de eventos:
+        Como exemplificado na figura \ref{ex-grau-par} na construção de $M', U'$ podem ocorrer três tipos de eventos:
 
         \begin{enumerate}
             \item Um arco $a \in M$ é duplicado em $M'$
@@ -1203,6 +1208,58 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \item Se um arco $a \in M$ foi deletado em $M'$, o mesmo será duplicado em $M''$.
             \item Se uma aresta $e \in U$ foi orientada da forma $\langle u, v \rangle$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta: $\langle v, u \rangle$.
         \end{enumerate}
+
+        Para exemplificar essa definição, na figura \ref{fig:mixed-ex-lema} mostram-se os conjuntos $M', U'$ e $M'', U''$ do exemplo tratado nesta seção.
+
+        \begin{figure}[H]
+            \centering
+            \begin{minipage}{.5\textwidth}
+              \centering
+                \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                    \node[main node] at (-3, 2) (a) {a};
+                    \node[main node] at (-3, -1) (b) {b};
+                    \node[main node] at (1, 2) (c) {c};
+                    \node[main node] at (1, -1) (d) {d};
+                    \node[main node] at (2, 3) (e) {e};
+
+                    \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                    \path[->] (a) edge[bend left=15] node [above] {5} (c);
+                    \path[->] (b) edge[line width=2] node [left] {3} (a);
+                    \path[->] (d) edge[bend right=15] node [below] {4} (b);
+                    \path[->] (d) edge[bend left=15] node [below] {4} (b);
+                    \path[->] (c) edge[line width=2, bend right] node [right] {3} (d);
+                    \path[->] (c) edge[line width=2] node [right] {3} (d);
+                    \path[->] (c) edge[line width=2, bend left] node [right] {3} (d);
+                    \path[->] (b) edge[line width=2] node [right] {1} (c);
+                    \path[->] (d) edge[line width=2, bend right] node [right] {2} (e);
+                    \path[->] (e) edge[line width=2, bend right] node [above] {5} (a);
+                \end{tikzpicture}
+            \end{minipage}%
+            \begin{minipage}{.5\textwidth}
+              \centering
+                \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                    \node[main node] at (-3, 2) (a) {a};
+                    \node[main node] at (-3, -1) (b) {b};
+                    \node[main node] at (1, 2) (c) {c};
+                    \node[main node] at (1, -1) (d) {d};
+                    \node[main node] at (2, 3) (e) {e};
+
+                    \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                    \path[->] (a) edge[bend left=15] node [above] {5} (c);
+                    \path[->] (b) edge[line width=2, bend right] node [left] {3} (a);
+                    \path[->] (b) edge[line width=2, bend left] node [left] {3} (a);
+                    \path[->] (b) edge[line width=2] node [left] {3} (a);
+                    \path[->] (d) edge[bend right=15] node [below] {4} (b);
+                    \path[->] (d) edge[bend left=15] node [below] {4} (b);
+                    \path[->] (c) edge[line width=2] node [right] {3} (d);
+                    \path[->] (c) edge[line width=2] node [right] {1} (b);
+                    \path[->] (e) edge[line width=2, bend left] node [right] {2} (d);
+                    \path[->] (a) edge[line width=2, bend left] node [above] {5} (e);
+                \end{tikzpicture}
+            \end{minipage}%
+            \caption{ Diferenças entre $M', U'$ e $M'', U''$, respectivamente}
+            \label{fig:mixed-ex-lema}
+        \end{figure}
 
         Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então vale que $C(M'', U'') \geq C(M, U)$.
         Além disso, podemos definir tal custo como $C(M'', U'') = C(M, U) + C_- - C_+$.
