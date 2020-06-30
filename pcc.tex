@@ -843,7 +843,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     %%%%%%%%%%%%%% REF: Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
-    Trataremos, portanto, de um algoritmo de aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por .
+    Trataremos, portanto, de um algoritmo de aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por Frederickson \cite{frederickson}. 
 
     O algoritmo é composto por três passos principais:
 
@@ -865,12 +865,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \caption{Função principal do algoritmo sugerido por Frederickson}
     \label{mixed-1}
     \begin{algorithmic}[1]
-    \Function{mixed}{G, c} 
-        \State $(V, E, A) \gets G$ 
+    \Function{Misto}{G, c} 
         \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
         \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
         \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{Torna $\delta$ par, mantendo $\delta^+ = \delta^-$}
-        \State $G_e = (V, U', M')$
+        \State $G_e = (V(G), U', M')$
         \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
     \EndFunction 
     \end{algorithmic}
@@ -887,7 +886,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \node[main node] at (1, -1) (d) {d};
             \node[main node] at (2, 3) (e) {e};
 
-            \path[->] (a) edge[] node [above] {5} (c);
+            \path[->] (a) edge[bend left=15] node [above] {5} (c);
+            \path[->] (a) edge[bend right=15] node [above] {5} (c);
             \path[->] (b) edge[] node [left] {3} (a);
             \path[->] (d) edge[] node [above] {4} (b);
 
@@ -902,8 +902,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \label{mixed-exemplo}
     \end{figure}
 
+    A função auxiliar ``GRAU\_TOTAL\_PAR'' apresentada no algoritmo \ref{mixed-grau-total-par} duplica arcos e arestas de $G$, criando um outro grafo $G'$ em que todos vértices possuem grau total par.
 
-    A função auxiliar ``GRAU\_TOTAL\_PAR'' apresentada no algoritmo \ref{mixed-grau-total-par} devolve um conjunto de arestas e arcos de custo mínimo que, se adicionado ao grafo $G$, faz com que todos vértices tenham grau total par.
+    Os arcos e arestas duplicados são escolhidos de modo a minimizar o custo total dos arcos e arestas de $G'$.
     
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
@@ -934,7 +935,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \node[main node] at (2, 3) (e) {e};
 
             \path[->] (a) edge[bend right=15] node [above] {5} (c);
-            \path[->] (a) edge[line width=2,bend left=15] node [above] {5} (c);
+            \path[->] (a) edge[bend left=15] node [above] {5} (c);
             \path[->] (b) edge[] node [left] {3} (a);
             \path[->] (d) edge[bend right=15] node [below] {4} (b);
             \path[->] (d) edge[line width=2,bend left=15] node [below] {4} (b);
@@ -946,7 +947,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{Em destaque os arcos adicionados pela função \ref{mixed-grau-total-par}}
+        \caption{Em destaque o arco duplicado pela função \ref{mixed-grau-total-par}}
         \label{mixed-exemplo-grau-total}
     \end{figure}
 
@@ -1013,12 +1014,12 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{O arco $ba$ e a aresta orientada $cd$ foram duplicados pela função \ref{mixed-iguala-grau-dir}}
+        \caption{O arco $ba$ e a aresta orientada $cd$ duplicados pela função \ref{mixed-iguala-grau-dir}}
         \label{mixed-exemplo-grau-dir}
     \end{figure}
 
     Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
-    Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par para todo vértice mantendo a igualdade de $\delta^+$ e $\delta^-$.
+    Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice.
 
     \begin{algorithm}
     \floatname{algorithm}{Algoritmo}%
@@ -1056,9 +1057,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{algorithmic}
     \end{algorithm}
 
-    Os multiconjuntos $M', U'$ são escolhidos de modo a tornar $\delta_t(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v \in V$.
-    Como $\delta(v) = \delta_t(v) - (\delta^+(v) + \delta^-(v))$, isso implica que $\delta(v)$ também deve ser par.
-    
     \begin{figure}[H]
         \centering
         \begin{minipage}{.5\textwidth}
@@ -1117,13 +1115,13 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \label{ex-grau-par}
     \end{figure}
 
-    No exemplo \ref{ex-grau-par} o algoritmo \ref{mixed-grau-par} toma o circuito $\{a, b, c, d, e, a\}$ para realizar a construção de $M', U'$ e tornar par o grau dos vértices do grafo. 
+    No exemplo \ref{ex-grau-par} o algoritmo \ref{mixed-grau-par} toma o circuito $\{a, b, c, d, e, a\}$ para realizar a construção de $M', U'$. 
     Em azul destacam-se os arcos de $M$ e em vermelho as arestas de $U$ escolhidos.
 
     Como o arco $ab$ é percorrido pelo circuito no sentido contrário, o mesmo é deletado do conjunto $M'$ (linha \ref{alg:deleta}), já o arco $cd$, percorrido no sentido correto, é duplicado (linha \ref{alg:duplica}).
-    As arestas do circuito são todas orientadas no sentido em que são percorridas $bc, de, ea$ (linha \ref{alg:orienta}).
+    As arestas do circuito são todas orientadas no sentido em que são percorridas: $bc, de, ea$ (linha \ref{alg:orienta}).
 
-    Deste modo conseguem-se multiconjuntos $M', U'$ de mesmo custo que $M, U$ e que mantem $\gre = \grs$ e $\gr$ par para todo vértice de $G$.
+    Deste modo conseguem-se multiconjuntos $M', U'$ de mesmo custo que $M, U$ e que mantêm $\gre = \grs$ e $\gr$ par para todo vértice de $G$.
 
     \begin{theorem} 
         Um grafo misto fortemente conexo que possui $\delta(v)$ par e $\delta^+(v) = \delta^-(v)$ para todo vértice $v$, possui um circuito euleriano.
@@ -1165,6 +1163,61 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Do contrário, se não houver meio de realizar tal união deverá existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup \mathcal{C}_i = G$ não seria fortemente conexo, contradizendo a base do raciocínio.
     \end{proof}
 
+    Como o exemplo apresentado é transformado em um digrafo euleriano após a execução de \ref{mixed-grau-par}, basta tomar o circuito euleriano do mesmo para derivar uma solução do grafo misto original, como mostrado na figura \ref{fig:mixed-ex-sol}.
+
+
+    \begin{figure}
+        \begin{minipage}{.5\textwidth}
+          \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-3, 2) (a) {a};
+                \node[main node] at (-3, -1) (b) {b};
+                \node[main node] at (1, 2) (c) {c};
+                \node[main node] at (1, -1) (d) {d};
+                \node[main node] at (2, 3) (e) {e};
+                \node[] at (-3, 3) (ini) {início};
+                \path[->] (ini) edge[] node [] {} (a);
+
+                \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                \path[->] (a) edge[bend left=15] node [above] {1} (c);
+                \path[->] (b) edge[] node [left] {4} (a);
+                \path[->] (d) edge[bend right=15] node [below] {7} (b);
+                \path[->] (d) edge[bend left=15] node [below] {3} (b);
+                \path[->] (c) edge[bend right] node [right] {9} (d);
+                \path[->] (c) edge[] node [right] {6} (d);
+                \path[->] (c) edge[bend left] node [right] {2} (d);
+                \path[->] (b) edge[] node [right] {8} (c);
+                \path[->] (d) edge[bend right] node [right] {10} (e);
+                \path[->] (e) edge[bend right] node [above] {11} (a);
+            \end{tikzpicture}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-3, 2) (a) {a};
+                \node[main node] at (-3, -1) (b) {b};
+                \node[main node] at (1, 2) (c) {c};
+                \node[main node] at (1, -1) (d) {d};
+                \node[main node] at (2, 3) (e) {e};
+                \node[] at (-3, 3) (ini) {início};
+                \path[->] (ini) edge[] node [] {} (a);
+
+                \path[->] (a) edge[bend left=15] node [above] {1} (c);
+                \path[->] (a) edge[bend right=15] node [above] {5} (c);
+                \path[->] (b) edge[] node [left] {4} (a);
+                \path[->] (d) edge[] node [above] {3,7} (b);
+
+                \path[every node/.style={font=\sffamily\small}]
+                    (a) edge[bend left] node [above] {11} (e)
+                    (b) edge[] node [right] {8} (c)
+                    (c) edge node [right] {2,6,9} (d)
+                    (d) edge[bend right] node [right] {10} (e)
+                    ;
+            \end{tikzpicture}
+        \end{minipage}
+        \caption{Circuito euleriano de $G_e$ e solução do PCC de $G$, respectivamente}
+        \label{fig:mixed-ex-sol}
+    \end{figure}
+
     \begin{lemma}
         \label{mixed-custo-igual}
         Seja $C(M,U)$ o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõem $M$ e $U$.
@@ -1191,7 +1244,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Dos três tipos de eventos listados, apenas os dois primeiros mudam o custo dos multiconjuntos $M', U'$ em relação a $M, U$.
         Um evento do tipo 1 aumenta o custo de $M', U'$ pelo valor do custo de $a$, assim como um evento do tipo 2 diminui o custo de $M', U'$ pelo custo de $a$, em relação ao custo de $M, U$.
 
-        Sendo assim, podemos definir $C(M', U')$ pela soma de três valores: $C(M', U') = C(M, U) + C_+ - C_-$, sendo $C_+$ a soma do custo dos arcos duplicados (evento 1) e $C_-$ a soma do custo dos arcos deletados no algoritmo (evento 2).
+        Sendo assim, podemos definir $C(M', U')$ como $C(M', U') = C(M, U) + C_+ - C_-$, sendo $C_+$ a soma do custo dos arcos duplicados (evento 1) e $C_-$ a soma do custo dos arcos deletados no algoritmo (evento 2).
 
         Se $C(M', U') > C(M, U)$, como assumimos, vale que:
 
@@ -1206,10 +1259,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \begin{enumerate}
             \item Se um arco $a \in M$ foi duplicado em $M'$, o mesmo será deletado de $M''$.
             \item Se um arco $a \in M$ foi deletado em $M'$, o mesmo será duplicado em $M''$.
-            \item Se uma aresta $e \in U$ foi orientada da forma $\langle u, v \rangle$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta: $\langle v, u \rangle$.
+            \item Se uma aresta $e \in U$ foi orientada da forma $uv$ e adicionada a $M'$, a mesma será adicionada a $M''$ com a orientação oposta: $vu$.
         \end{enumerate}
 
-        Para exemplificar essa definição, na figura \ref{fig:mixed-ex-lema} mostram-se os conjuntos $M', U'$ e $M'', U''$ do exemplo tratado nesta seção.
+        Para exemplificar essa definição, na figura \ref{fig:mixed-ex-lema} comparam-se os conjuntos $M', U'$ e $M'', U''$ do exemplo tratado nesta seção.
 
         \begin{figure}[H]
             \centering
@@ -1286,7 +1339,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \begin{proof}
         Assume-se que todas arestas e arcos de $G$ tenham um custo positivo. 
 
-        Seja $G^*$ o grafo $G$ com todos arcos e arestas duplicadas e $C^*$ o custo da solução dada pelo algoritmo MIXED ao grafo $G^*$.
+        Seja $G^*$ o grafo $G$ com todos arcos e arestas duplicadas e $C^*$ o custo da solução dada pelo algoritmo MISTO ao grafo $G^*$.
 
         Como o grau total de todos vértices de $G^*$ é par, as únicas funções que modificarão o grafo $G^*$ do algoritmo serão \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par}.
         Além disso, como a função \ref{mixed-iguala-grau-dir} encontra multiconjuntos de arcos e arestas que igualam os graus de entrada e saída de $G^*$ com o menor custo possível (solucionando o problema de transporte modelado) e como a função \ref{mixed-grau-par} modifica os multiconjuntos sem modificar o seu custo (lema \ref{mixed-custo-igual}), podemos dizer que $C^*$ é o custo ótimo para a solução do PCC para o grafo misto $G^*$. 
@@ -1298,14 +1351,14 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Pode-se afirmar que não existirá em $G'$ um arco ou aresta $uv$ que foi duplicado mais que uma vez na função \ref{mixed-grau-total-par}, pois se existisse poderia-se remover de $G'$ duas cópias de $uv$ que conseguiria-se outro grafo com mesma paridade total de vértices e custo menor.
 
-        Assim, como cada aresta e arco de $G$ é duplicado no máximo uma vez em $G'$, podemos afirmar que os multiconjuntos de arcos e arestas de $G'$ estarão contidos nos multiconjuntos de $G^*$ e por isso, o custo $C'$ da solução dada pelo algoritmo MIXED ao grafo $G$ deverá ser menor ou igual a $C^*$.
+        Assim, como cada aresta e arco de $G$ é duplicado no máximo uma vez em $G'$, podemos afirmar que os multiconjuntos de arcos e arestas de $G'$ estarão contidos nos multiconjuntos de $G^*$ e por isso, o custo $C'$ da solução dada pelo algoritmo MISTO ao grafo $G$ deverá ser menor ou igual a $C^*$.
         
         \begin{align*}
             C' \leq C^* &\leq 2C \\
             C'/C &\leq 2
         \end{align*}
 
-        Provando assim que o algoritmo MIXED é uma 0.5-aproximação para o problema do carteiro misto.
+        Provando assim que o algoritmo MISTO é uma 0.5-aproximação para o problema do carteiro misto.
     \end{proof}
 
     \subsection{Problema do carteiro rural}
