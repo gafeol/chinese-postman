@@ -1,0 +1,93 @@
+
+%:LLPStartPreview para rodar o pdf com mudancas automaticas
+% vim-tex cheatsheet (https://github.com/lervag/vimtex):
+    % \ll - start compiling document
+    % \lv - open pdf viewer
+    % \ll or \lk stop running compilation
+    % \le parse log files for errors and warnings
+% \lc remove auxiliary files
+
+\documentclass[12pt, a4paper]{article}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel} % Separacao de silabas em portugues
+\usepackage{amsthm} % has proof
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage {tikz}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{import}
+\usetikzlibrary {positioning}
+\usetikzlibrary{arrows}
+%\usepackage {xcolor}
+
+\algrenewcommand\algorithmicend{\textbf{fim}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algrenewcommand\algorithmicwhile{\textbf{enquanto}}
+\algrenewcommand\algorithmicfor{\textbf{para}}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicreturn{\textbf{devolve}}
+\algrenewcommand\algorithmicfunction{\textbf{função}}
+\algrenewcommand\algorithmicprocedure{\textbf{procedimento}}
+\algrenewcommand\algorithmicrepeat{\textbf{repita}}
+\algrenewcommand\algorithmicuntil{\textbf{enquanto}}
+
+
+
+
+\tikzset{edge/.style = {->,> = latex'}}
+
+    \graphicspath{
+    {.} % document root dir
+    {./img/}
+}
+
+\renewcommand\refname{Referências}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corolário}
+\newtheorem{lemma}{Lema}
+
+% Definicoes de graus 
+\DeclareMathOperator{\gr}{\delta}
+\DeclareMathOperator{\gre}{\delta^+}
+\DeclareMathOperator{\grs}{\delta^-}
+\DeclareMathOperator{\grt}{\delta_t}
+
+%% BIBTEX
+\usepackage{csquotes}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=nty,
+maxbibnames=10
+]{biblatex}
+\addbibresource{ref.bib}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+%%%
+
+\begin{document}
+
+\import{/}{euler-theorems.tex}
+
+[...]
+
+\import{/}{pcc-trecho.tex}
+
+\newpage
+\printbibliography
+
+\end{document}
