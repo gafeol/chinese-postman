@@ -834,7 +834,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
 
-    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-hard. 
+    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, sendo um problema NP-difícil. 
 
 
     %%%%%%%%%%%%%% REF: PROBLEMA LINEAR DO KOEHLER E KAPPAUF
@@ -1018,7 +1018,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \label{mixed-exemplo-grau-dir}
     \end{figure}
 
-    Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
+    Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que o grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
     Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice.
 
     \begin{algorithm}
@@ -1358,7 +1358,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             C'/C &\leq 2
         \end{align*}
 
-        Provando assim que o algoritmo MISTO é uma 0.5-aproximação para o problema do carteiro misto.
+        Provando assim que o algoritmo MISTO é uma 2-aproximação para o problema do carteiro misto.
     \end{proof}
 
     \subsection{Problema do carteiro rural}
@@ -2018,7 +2018,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 %
 %        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
 %
-%        Esta variação do problema do carteiro chinês também é NP-hard.
+%        Esta variação do problema do carteiro chinês também é NP-difícil.
 %        
 %
 %        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
@@ -2030,5 +2030,5 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 %    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
 %    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
 %
-%    Esta variação também é NP-hard.
+%    Esta variação também é NP-difícil.
 %
