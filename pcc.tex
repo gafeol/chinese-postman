@@ -2021,14 +2021,16 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
         A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro se ele anda no sentido contrário do vento.
 
+        Outra ilustração possível para esta variação é imaginar que uma estrada pode ser inclinada, sendo assim mais difícil subir tal estada do que descé-la.
+
         Esta variação do problema do carteiro chinês também é NP-difícil.
 
-        Porém, como apontado por Meigu Guan \cite{guan-windy}
-        
+        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial.
 
-        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+        Seja $c_{ij}$ o custo de se percorrer a aresta $ij$ de $i$ a $j$ e $c_{ji}$ o custo de percorrer a mesma aresta no sentido contrário.
 
-        ADICIONAR PROVA
+        A ideia de tal algoritmo se baseia em igualar os custos de toda aresta $ij$ como $c_{ij} = c_{ji} = \frac{c_{ij} + c_{ji}}{2}$. 
+        Essa transformação reduz o problema a um PCC não direcionado, que tem solução polinomial.
 
 %    \subsection{Problema do Carteiro Hierárquico}
 %
