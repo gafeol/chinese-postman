@@ -31,8 +31,9 @@ A grande diferença aqui é que as arestas podem ser repetidas, ou seja, usadas 
 	\label{graph}
 \end{wrapfigure}
 
-O nome do problema está relacionado a um problema que carteiros encontram no planejamento de suas rotas: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a passar por todas ruas da cidade entregando cartas e voltar ao posto de carteiros no fim de sua rota.
+O nome do problema está relacionado ao problema do planejamento de rotas de carteiros: dada uma cidade com várias ruas de diferentes comprimentos e um posto de carteiros, encontrar a menor rota que um carteiro deve percorrer de modo a passar por todas ruas da cidade entregando cartas e voltar ao posto de carteiros no fim de sua rota.
 
+Entre outras aplicações do problema estão o planejamento de rotas de coletadores de lixo e removedores de neve\footnote{Na cidade de Morris, em Minnesota, Estados Unidos, foi realizado um estudo para otimizar as rotas de removedores de neve baseado no Problema do Carteiro Chinês \cite{snow-removal}}.
 
 Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria: 
 
@@ -2013,22 +2014,25 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
 
     %TODO: Adicionar valor da solucao otima
-%    \subsection{Problema do carteiro chinês com vento}
-%        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. A corrente de vento tanto pode ajudar o carteiro que anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro que anda no sentido contrário.
-%
-%        A abstração em grafos dessa variação é que uma mesma aresta pode possuir custos diferentes dependendo do sentido que a mesma é percorrida.
-%
-%        Esta variação do problema do carteiro chinês também é NP-difícil.
-%        
-%
-%        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
-%
-%        ADICIONAR PROVA
-%
+    \subsection{Problema do carteiro chinês com vento }
+
+        Quando houver em um grafo uma aresta que possui custos diferentes dependendo do sentido em que a mesma é percorrida estamos tratando do Problema do Carteiro Chinês com Vento (PCCV).
+
+        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
+        A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro se ele anda no sentido contrário do vento.
+
+        Esta variação do problema do carteiro chinês também é NP-difícil.
+
+        Porém, como apontado por Meigu Guan \cite{guan-windy}
+        
+
+        Se todo ciclo do grafo tem o mesmo custo em ambos sentidos, transforma a aresta entre $i$ e $j$ de custos $c_{ij}$ e $c_{ji}$ em uma aresta não direcionada com custo $\frac{c_{ij} + c_{ji}}{2}$. Essa transformação reduz o problema de a um CPP não direcionado, que tem solução polinomial, porém para isso é necessário checar se todo ciclo tem o mesmo custo nas duas direções.
+
+        ADICIONAR PROVA
+
 %    \subsection{Problema do Carteiro Hierárquico}
 %
 %    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
 %    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
 %
 %    Esta variação também é NP-difícil.
-%
