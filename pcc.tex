@@ -58,6 +58,7 @@ Discutiremos nas seções a seguir a solução para o problema em questão com b
 Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
 
 \subsection{Grafos não direcionados}
+        \label{sec:pcc}
 
 Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e não direcionado.
 
@@ -2014,7 +2015,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
 
     %TODO: Adicionar valor da solucao otima
-    \subsection{Problema do carteiro chinês com vento }
+    \subsection{Problema do carteiro chinês com vento}
 
         Quando houver em um grafo uma aresta que possui custos diferentes dependendo do sentido em que a mesma é percorrida estamos tratando do Problema do Carteiro Chinês com Vento (PCCV).
 
@@ -2025,12 +2026,24 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Esta variação do problema do carteiro chinês também é NP-difícil.
 
-        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial.
+        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial.
 
         Seja $c_{ij}$ o custo de se percorrer a aresta $ij$ de $i$ a $j$ e $c_{ji}$ o custo de percorrer a mesma aresta no sentido contrário.
 
-        A ideia de tal algoritmo se baseia em igualar os custos de toda aresta $ij$ como $c_{ij} = c_{ji} = \frac{c_{ij} + c_{ji}}{2}$. 
-        Essa transformação reduz o problema a um PCC não direcionado, que tem solução polinomial.
+        O algoritmo sugerido por Guan se baseia em criar uma nova função de custo $c'$ para o problema, tal que $c'_{ij} = c'_{ji} = \frac{c_{ij} + c_{ji}}{2}$ para toda aresta $ij$. 
+        Essa transformação reduz o problema a um PCC não direcionado, que possui solução polinomial, como tratado na seção \ref{sec:pcc}.
+        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC para o grafo de função custo $c'$ equivale a uma resposta ótima, de mesmo custo, do PCCV para o grafo de função custo $c$ original.
+
+        \begin{theorem}
+            \label{windy-theorem}
+            Seja $G$ um grafo conexo não direcionado e cujos circuitos possuem o mesmo custo, independente do sentido que são percorridos. 
+
+            Qualquer solução ótima para o PCC em $(G, c')$ também é solução ótima do PCCV em $(G, c)$.
+        \end{theorem}
+        \begin{proof} 
+
+
+        \end{proof}
 
 %    \subsection{Problema do Carteiro Hierárquico}
 %
