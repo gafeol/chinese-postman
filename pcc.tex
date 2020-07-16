@@ -2034,15 +2034,85 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Essa transformação reduz o problema a um PCC não direcionado, que possui solução polinomial, como tratado na seção \ref{sec:pcc}.
         O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC para o grafo de função custo $c'$ equivale a uma resposta ótima, de mesmo custo, do PCCV para o grafo de função custo $c$ original.
 
+        \begin{lemma}
+            Seja $C$ um circuito de $G$, vale que:
+
+            \[
+                \sum_{ij \in C} c'_{ij} = \sum_{ij \in C} c'_{ji} =  \sum_{ij \in C} c_{ij} =  \sum_{ij \in C} c_{ji}
+            \]
+        \end{lemma}
+        \begin{proof}
+            Como $G$ respeita a propriedade que todo circuito possui custo igual, não importando a ordem em que o mesmo é percorrido, pode-se afirmar que:
+            \[
+                \sum_{ij \in C} c_{ij} =  \sum_{ij \in C} c_{ji}
+            \]
+
+            Além disso, por definição $c'_{ij} = c'_{ji}$, valendo assim que:
+            \[
+                \sum_{ij \in C} c'_{ij} = \sum_{ij \in C} c'_{ji} 
+            \]
+
+            Finalmente, pela definição de $c'$: 
+            \begin{align*}
+                \sum_{ij \in C} c'_{ij} &= \sum_{ij \in C} \frac{c_{ij} + c_{ji}}{2} \\
+                \sum_{ij \in C} c'_{ij} &= \frac{1}{2} \left(\sum_{ij \in C}c_{ij} + \sum_{ij \in C}c_{ji} \right) \\
+                \sum_{ij \in C} c'_{ij} &= \sum_{ij \in C} c_{ij}
+            \end{align*}
+
+        \end{proof}
+
+
         \begin{theorem}
             \label{windy-theorem}
-            Seja $G$ um grafo conexo não direcionado e cujos circuitos possuem o mesmo custo, independente do sentido que são percorridos. 
+            Seja $G$ um grafo conexo não direcionado cujos circuitos possuem o mesmo custo, independente do sentido que são percorridos. 
 
-            Qualquer solução ótima para o PCC em $(G, c')$ também é solução ótima do PCCV em $(G, c)$.
+            Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCCV em $(G, c)$.
+
         \end{theorem}
         \begin{proof} 
+            Seja $T$ uma solução para o PCC em $(G, c')$, $T$ será um passeio fechado em $G$, composto por arcos representando a orientação em que cada aresta de $G$ é percorrida.
 
+            Pode-se dividir $T$ em circuitos de arcos $C_1, C_2, \dots, C_k$, com $k \in \mathbb{N}$ .
+            Podemos expressar o custo da solução $T$ como a soma dos custos de cada arco dos circuitos $C_1, C_2, \dots, C_k$. 
 
+            Provaremos a seguir que para um circuito qualquer $C_i$ vale que:
+            \[
+                \sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}
+            \]
+
+            São dois os casos que devemos analisar:
+            \begin{itemize}
+                \item Se $C_i$ é um circuito de $G$, então pela propriedade que $G$ respeita, vale que $\sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}$
+                \item Do contrário, $C_i$ deverá percorrer uma mesma aresta de $G$ duas vezes, não podendo ser considerada assim um circuito de $G$.
+
+                    Como, por definição $C_i$ é um circuito direcionado, o mesmo não pode possuir arcos duplicados.  % TODO: talvez esteja um pouco confusa essa questao de ser um circuito porem nao ser circuito de $G$
+                    Sendo assim, deverá existir uma aresta $uv$ de $G$ que é percorrida em ambos sentidos em $C_i$.
+
+                    Pode-se representar $C_i$ como o seguinte circuito direcionado:
+                
+                    \[
+                        C_i = \{ w_1w_2, \dots, w_iu, uv, vw_{i+1}, \dots, w_jv,  vu, uw_{j+1}, \dots w_kw_1\}
+                    \]
+
+                    É possível, a partir de tal representação de $C_i$ construir dois novos circuitos direcionados, possivelmente vazios, que não incluam os arcos $uv$ e $vu$:
+
+                    \[
+                        C'_i = \{w_1w_2, \dots w_iu, uw_{j+1}, \dots, w_kw_1\} 
+                    \]
+                    \[
+                        C''_i = \{vw_{i+1}, \dots, w_jv\}
+                    \]
+
+                    Vale ainda que:
+
+                    \begin{align*}
+                        \sum_{ij \in C_i} c_{ij} &= \sum_{ij \in C_i} c'_{ij} \Leftrightarrow \\
+                        c_{uv} + c_{vu} + \sum_{ij \in C'_i} c_{ij} +  \sum_{ij \in C''_i} c_{ij}  &= c'_{uv} + c'_{vu} + \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} c'_{ij} \Leftrightarrow \\
+                        \sum_{ij \in C'_i} c_{ij} + \sum_{ij \in C''_i} c_{ij}  &= \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} c'_{ij}\\
+                    \end{align*}
+            \end{itemize}
+
+             
         \end{proof}
 
 %    \subsection{Problema do Carteiro Hierárquico}
