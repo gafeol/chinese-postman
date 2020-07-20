@@ -2026,15 +2026,17 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Esta variação do problema do carteiro chinês também é NP-difícil.
 
-        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial.
+        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial, trataremos esse caso a seguir.
 
         Seja $c_{ij}$ o custo de se percorrer a aresta $ij$ de $i$ a $j$ e $c_{ji}$ o custo de percorrer a mesma aresta no sentido contrário.
 
         O algoritmo sugerido por Guan se baseia em criar uma nova função de custo $c'$ para o problema, tal que $c'_{ij} = c'_{ji} = \frac{c_{ij} + c_{ji}}{2}$ para toda aresta $ij$. 
         Essa transformação reduz o problema a um PCC não direcionado, que possui solução polinomial, como tratado na seção \ref{sec:pcc}.
-        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC para o grafo de função custo $c'$ equivale a uma resposta ótima, de mesmo custo, do PCCV para o grafo de função custo $c$ original.
+
+        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC no grafo $(G, c')$ equivale a uma resposta ótima, de mesmo custo, do PCCV no grafo original $(G, c)$.
 
         \begin{lemma}
+            \label{lemma:pccv}
             Seja $C$ um circuito de $G$, vale que:
 
             \[
@@ -2070,49 +2072,77 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \end{theorem}
         \begin{proof} 
-            Seja $T$ uma solução para o PCC em $(G, c')$, $T$ será um passeio fechado em $G$, composto por arcos representando a orientação em que cada aresta de $G$ é percorrida.
+            Seja $T$ uma solução para o PCC em $(G, c')$. 
+            $T$ será um passeio fechado composto por arestas orientadas de $G$.
 
-            Pode-se dividir $T$ em circuitos de arcos $C_1, C_2, \dots, C_k$, com $k \in \mathbb{N}$ .
+            Pode-se dividir $T$ em circuitos de arcos $C_1, C_2, \dots, C_k$, com $k \in \mathbb{N}$ . % TODO: provar que pode dividir T em circuitos
             Podemos expressar o custo da solução $T$ como a soma dos custos de cada arco dos circuitos $C_1, C_2, \dots, C_k$. 
 
-            Provaremos a seguir que para um circuito qualquer $C_i$ vale que:
+            Provaremos por indução, que para um circuito qualquer $C_i$ vale que:
             \[
                 \sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}
             \]
 
-            São dois os casos que devemos analisar:
+            A indução é realizada com base no tamanho do circuito $C_i$ analisado.
+
+            Há dois casos base desta indução:
+
             \begin{itemize}
-                \item Se $C_i$ é um circuito de $G$, então pela propriedade que $G$ respeita, vale que $\sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}$
-                \item Do contrário, $C_i$ deverá percorrer uma mesma aresta de $G$ duas vezes, não podendo ser considerada assim um circuito de $G$.
-
-                    Como, por definição $C_i$ é um circuito direcionado, o mesmo não pode possuir arcos duplicados.  % TODO: talvez esteja um pouco confusa essa questao de ser um circuito porem nao ser circuito de $G$
-                    Sendo assim, deverá existir uma aresta $uv$ de $G$ que é percorrida em ambos sentidos em $C_i$.
-
-                    Pode-se representar $C_i$ como o seguinte circuito direcionado:
-                
-                    \[
-                        C_i = \{ w_1w_2, \dots, w_iu, uv, vw_{i+1}, \dots, w_jv,  vu, uw_{j+1}, \dots w_kw_1\}
-                    \]
-
-                    É possível, a partir de tal representação de $C_i$ construir dois novos circuitos direcionados, possivelmente vazios, que não incluam os arcos $uv$ e $vu$:
-
-                    \[
-                        C'_i = \{w_1w_2, \dots w_iu, uw_{j+1}, \dots, w_kw_1\} 
-                    \]
-                    \[
-                        C''_i = \{vw_{i+1}, \dots, w_jv\}
-                    \]
-
-                    Vale ainda que:
-
-                    \begin{align*}
-                        \sum_{ij \in C_i} c_{ij} &= \sum_{ij \in C_i} c'_{ij} \Leftrightarrow \\
-                        c_{uv} + c_{vu} + \sum_{ij \in C'_i} c_{ij} +  \sum_{ij \in C''_i} c_{ij}  &= c'_{uv} + c'_{vu} + \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} c'_{ij} \Leftrightarrow \\
-                        \sum_{ij \in C'_i} c_{ij} + \sum_{ij \in C''_i} c_{ij}  &= \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} c'_{ij}\\
-                    \end{align*}
+                \item Quando o circuito analisado $C_i$ é vazio.
+                \item Quando $C_i$ é um circuito que é presente no grafo original $G$. 
+                    Isto é, $C_i$ não percorre uma mesma aresta de $G$ mais que uma vez.
+                    O lema \ref{lemma:pccv} garante a hipótese de igualdade neste caso.
             \end{itemize}
 
+            Assume-se que a hipótese de indução vale para circuitos com até $k$ arcos.
+
+            Seja $C_i$ um circuito que não faz parte do caso base e que possui $k+1$ arcos.
+
+            Pela definição de circuitos, $C_i$ não pode possuir arcos duplicados.  % TODO: talvez esteja um pouco confusa essa questao de ser um circuito porem nao ser circuito de $G$
+            Sendo assim, para $C_i$ não estar presente em $G$, deverá existir uma aresta $uv$ de $G$ tal que $uv \in C_i$ e $vu \in C_i$, como representa-se a seguir:
+
+            \[
+                C_i = \{ w_1w_2, \dots, w_iu, uv, vw_{i+1}, \dots, w_jv,  vu, uw_{j+1}, \dots w_kw_1\}
+            \]
+
+            É possível, a partir de tal representação retirar de $C_i$ os arcos $uv$ e $vu$, separando-o em dois circuitos direcionados de tamanho menor:
+
+            \[
+                C'_i = \{w_1w_2, \dots w_iu, uw_{j+1}, \dots, w_kw_1\} 
+            \]
+            \[
+                C''_i = \{vw_{i+1}, \dots, w_jv\}
+            \]
+
+            Como ambos novos circuitos tem tamanho menor que $|C_i| = k+1$, vale a hipótese para ambos:
+            \begin{align}
+                \sum_{ij \in C'_i} c_{ij} &= \sum_{ij \in C'_i} c'_{ij} \\
+                \sum_{ij \in C''_i} c_{ij} &= \sum_{ij \in C''_i} c'_{ij}
+            \end{align}
+            
+            Além disso, vale pela definição da função $c'$, que:
+            
+            \begin{align}
+                c_{uv} + c_{vu}  &= c'_{uv} + c'_{vu} 
+            \end{align}
+
+            Somando as três igualdades apresentadas temos a representação do custo de $C_i$:
+
+            \begin{align*}
+                \sum_{ij \in C'_i} c_{ij} +  \sum_{ij \in C''_i} c_{ij} + c_{uv} + c_{vu}  &= \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} + c'_{ij} c'_{uv} + c'_{vu}  \\
+                \sum_{ij \in C_i} c_{ij} &= \sum_{ij \in C_i} c'_{ij} \\
+            \end{align*}
              
+            Provando assim que a hipótese de indução também vale para um circuito de tamanho $k+1$.
+
+            Finalmente, temos que o custo da solução $T$ do PCCV de $(G, c)$ será igual ao custo da solução do PCC em $(G, c')$:
+
+            \begin{align*}
+                \sum_{ij \in T} c_{ij} &= \sum_{1 \leq u \leq k} \sum_{ij \in C_u} c_{ij} \\
+                                       &= \sum_{1 \leq u \leq k} \sum_{ij \in C_u} c'_{ij} \\
+                                       &= \sum_{ij \in T} c'_{ij} \\
+            \end{align*}
+
         \end{proof}
 
 %    \subsection{Problema do Carteiro Hierárquico}
