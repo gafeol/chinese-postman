@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "../code/euler.cpp"
+#include "../code/euler_hierholzer_undirected.cpp"
 
 bool checkEulerianTrail(digrafo &d, vector<int> &trilha){
     map<int, map<int, int>> cnt;

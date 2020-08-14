@@ -1,6 +1,5 @@
 typedef pair<int, int> pii;
 
-
 struct digrafo {
     private:
         stack<int> trilha;
