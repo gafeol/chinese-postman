@@ -21,6 +21,8 @@ Depois de instalados os pacotes mencionados, basta rodar make que o pdf será co
 
 ## Organização
 
+### Arquivos LaTeX
+
 O documento principal é o main.tex, que tem todas as importações de pacotes e de arquivos auxiliares.
 
 - Em **euler.tex** você encontra a seção que trata sobre caminhos eulerianos.
@@ -28,6 +30,22 @@ O documento principal é o main.tex, que tem todas as importações de pacotes e
 - Em **prb.tex** você encontra exercícios e problemas resolvidos relacionados aos temas tratados no trabalho.
 - Finalmente em **ref.bib** estão as referências bibliográficas da monografia.
 
+### Código
+
+Os arquivos de código estão dispostos na pasta `code/`, e seus respectivos testes se encontram na pasta `test/`;
+
+### Testes de Código
+
+Os testes foram desenvolvidos usando a ferramenta "googletest" da Google.
+
+Para realizar os testes, certifique-se de que a pasta `test/gtest` foi devidamente clonada.
+Se a mesma estiver vazia, basta cloná-la usando o comando:
+
+```bash
+git clone git@github.com:google/googletest.git test/gtest
+```
+
+Após isso, basta rodar `make -C test` que todos os tetes serão executados.
 
 ## Problemas
 
