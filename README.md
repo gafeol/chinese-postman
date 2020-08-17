@@ -1,5 +1,7 @@
 # O problema do Carteiro Chinês
 
+[![Build Status](https://travis-ci.org/gafeol/chinese-postman.svg?branch=master)](https://travis-ci.org/gafeol/chinese-postman)
+
 Trabalho de Conclusão de Curso desenvolvido por Gabriel Fernandes de Oliveira no ano de 2020, com a orientação do Prof. Carlos Eduardo Ferreira.
 
 ## Compilando o documento
