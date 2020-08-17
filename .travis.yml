@@ -3,8 +3,11 @@ sudo: required
 language: generic
 services: docker
 
+before_install:
+    - sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-full
+
 script:
-  - make -C test/
+  - make
   # We use the docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
   - docker pull dxjoke/tectonic-docker
   # Compiling multiple files as well as using biber:
