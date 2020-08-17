@@ -1,5 +1,11 @@
 filename=main
 
+all: 
+	$(MAKE) -C test
+
+test:
+	$(MAKE) -C test
+
 pdf:
 	pdflatex ${filename}
 	biber ${filename}

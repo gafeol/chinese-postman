@@ -1,6 +1,5 @@
 typedef pair<int, int> pii;
 
-
 struct aresta{
     int prox;
     int id;
@@ -8,17 +7,18 @@ struct aresta{
 
 struct grafo {
     private:
+        map<int, bool> foiDeletada;
         stack<int> trilha;
         vector<vector<aresta>> _adj;
         void euler_hierholzer(int u){
             while(!_adj[u].empty()){
-                aresta e = _adj[u].top();
+                aresta e = _adj[u].back();
                 int v = e.prox;
                 int id = e.id;
-                _adj[u].pop();
+                _adj[u].pop_back();
                 if(!foiDeletada[id]){
                     foiDeletada[id] = true;
-                    euler_dfs(v);
+                    euler_hierholzer(v);
                 }
             }
             trilha.push(u);
@@ -41,15 +41,8 @@ struct grafo {
     public: 
         vector<vector<aresta>> adj;
         bool checkDeg(){
-            vector<int> deg(adj.size(), 0);
-            for(int u=0;u<(int)adj.size();u++){
-                for(aresta ar: adj[u]){
-                    deg[u]++;
-                    deg[ar.prox]++;
-                }
-            }
             for(int u=0;u<(int)adj.size();u++)
-                if(deg[u]&1)
+                if(adj[u].size()&1)
                     return false;
             return true;
         }
@@ -73,7 +66,8 @@ struct grafo {
             return checkDeg() && checkConexo();
         }
 
-        digrafo(int n, vector<pii> arest){
+        grafo(int n, vector<pii> arest){
+            foiDeletada.clear();
             adj.resize(n);
             _adj.resize(n);
             for(int a=0;a<n;a++){
@@ -81,16 +75,24 @@ struct grafo {
                 _adj[a].clear();
             }
             clear(trilha);
-            for(pii ar: arest){
+            for(int id=0;id<(int)arest.size();id++){
+                pii ar = arest[id];
                 assert(ar.first >= 0 && ar.first < n);
                 assert(ar.second >= 0 && ar.second < n);
-                adj[ar.first].push_back(ar.second);
-                _adj[ar.first].push_back(ar.second);
+                adj[ar.first].push_back({ar.second, id});
+                _adj[ar.first].push_back({ar.second, id});
+                adj[ar.second].push_back({ar.first, id});
+                _adj[ar.second].push_back({ar.first, id});
+            }
+        }
+
+        void print(){
+            printf("Grafo com %d nós\nArestas:\n", (int)adj.size());
+            for(int a=0;a<(int)adj.size();a++){
+                for(aresta ar: adj[a]){
+                    if(a <= ar.prox)
+                    printf("%d %d\n", a, ar.prox);
+                }
             }
         }
 };
-stack<int> trilha;
-
-stack<aresta> adj[N];
-map<int, bool> foiDeletada;
-
