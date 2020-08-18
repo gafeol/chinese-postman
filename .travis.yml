@@ -7,7 +7,7 @@ before_install:
     - sudo apt-get -qq update
 
 script:
-  - make
+  - make -C test
   # We use the docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
   - docker pull dxjoke/tectonic-docker
   # Compiling multiple files as well as using biber:
