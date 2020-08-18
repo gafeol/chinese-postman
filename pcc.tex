@@ -2017,9 +2017,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     %TODO: Adicionar valor da solucao otima
     \subsection{Problema do carteiro chinês com vento}
 
-        Quando houver em um grafo uma aresta que possui custos diferentes dependendo do sentido em que a mesma é percorrida estamos tratando do Problema do Carteiro Chinês com Vento (PCCV).
+        Considere o problema em que cada aresta tem um custo diferente dependendo do sentido em que é percorrida. Este problema é conhecido como o Problema do Carteiro Chinês com Vento (PCCV).
 
-        A motivação dessa variação é que podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
+        Este problema possui várias aplicações. 
+        Por exemplo, podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
         A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro se ele anda no sentido contrário do vento.
 
         Outra ilustração possível para esta variação é imaginar que uma estrada pode ser inclinada, sendo assim mais difícil subir tal estada do que descé-la.
@@ -2037,7 +2038,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \begin{lemma}
             \label{lemma:pccv}
-            Seja $C$ um circuito de $G$, vale que:
+            Seja $G$ um grafo cujos circuitos possuem os mesmos custos independente do sentido em que são percorridos.
+            Seja $C$ um circuito do grafo $G$, vale que:
 
             \[
                 \sum_{ij \in C} c'_{ij} = \sum_{ij \in C} c'_{ji} =  \sum_{ij \in C} c_{ij} =  \sum_{ij \in C} c_{ji}
@@ -2071,6 +2073,105 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCCV em $(G, c)$.
 
         \end{theorem}
+
+        Para exemplificar a prova deste teorema, usaremos o seguinte grafo $G$:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, 0) (1) {1};
+                \node[main node] at (-3.25, 2) (2) {2};
+                \node[main node] at (-1.5, 0) (3) {3};
+                \node[main node] at (1.5, 0) (4) {4};
+                \node[main node] at (3.25, 2) (5) {5};
+                \node[main node] at (5, 0) (6) {6};
+
+            \path[->] (1) edge[bend right=15, below] node {2} (2);
+            \path[->] (2) edge[bend right=15, below] node {5} (1);
+            \path[->] (2) edge[bend right=15, below] node {3} (3);
+            \path[->] (3) edge[bend right=15, below] node {1} (2);
+            \path[->] (1) edge[bend right=15, below] node {3} (3);
+            \path[->] (3) edge[bend right=15, below] node {4} (1);
+
+            \path[->] (3) edge[bend right=15, below] node {7} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (3);
+
+            \path[->] (4) edge[bend right=15, below] node {1} (6);
+            \path[->] (6) edge[bend right=15, below] node {2} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (5);
+            \path[->] (5) edge[bend right=15, below] node {3} (4);
+            \path[->] (5) edge[bend right=15, below] node {4} (6);
+            \path[->] (6) edge[bend right=15, below] node {3} (5);
+
+            \end{tikzpicture}
+            \caption{Grafo $G$, cada aresta não direcionada foi representada por um par de arcos}
+        \end{figure}
+
+        Note que os dois circuitos dessa imagem possuem o mesmo circuito independente do sentido em que são percorridos:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, 0) (1) {1};
+                \node[main node] at (-3.25, 2) (2) {2};
+                \node[main node] at (-1.5, 0) (3) {3};
+                \node[main node] at (1.5, 0) (4) {4};
+                \node[main node] at (3.25, 2) (5) {5};
+                \node[main node] at (5, 0) (6) {6};
+
+            \path[->] (1) edge[bend right=15, below] node {2} (2);
+            \path[->] (2) edge[blue, bend right=15, below] node {5} (1);
+            \path[->] (2) edge[bend right=15, below] node {3} (3);
+            \path[->] (3) edge[blue, bend right=15, below] node {1} (2);
+            \path[->] (1) edge[blue, bend right=15, below] node {3} (3);
+            \path[->] (3) edge[bend right=15, below] node {4} (1);
+
+            \path[->] (3) edge[bend right=15, below] node {7} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (3);
+
+            \path[->] (4) edge[red, bend right=15, below] node {1} (6);
+            \path[->] (6) edge[bend right=15, below] node {2} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (5);
+            \path[->] (5) edge[red, bend right=15, below] node {3} (4);
+            \path[->] (5) edge[bend right=15, below] node {4} (6);
+            \path[->] (6) edge[red, bend right=15, below] node {3} (5);
+
+            \end{tikzpicture}
+            \caption{Circuitos com custo $9$ e $7$ respectivamente}
+        \end{figure}
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, 0) (1) {1};
+                \node[main node] at (-3.25, 2) (2) {2};
+                \node[main node] at (-1.5, 0) (3) {3};
+                \node[main node] at (1.5, 0) (4) {4};
+                \node[main node] at (3.25, 2) (5) {5};
+                \node[main node] at (5, 0) (6) {6};
+
+            \path[->] (1) edge[blue, bend right=15, below] node {2} (2);
+            \path[->] (2) edge[bend right=15, below] node {5} (1);
+            \path[->] (2) edge[blue, bend right=15, below] node {3} (3);
+            \path[->] (3) edge[bend right=15, below] node {1} (2);
+            \path[->] (1) edge[bend right=15, below] node {3} (3);
+            \path[->] (3) edge[blue, bend right=15, below] node {4} (1);
+
+            \path[->] (3) edge[bend right=15, below] node {7} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (3);
+
+            \path[->] (4) edge[bend right=15, below] node {1} (6);
+            \path[->] (6) edge[red,bend right=15, below] node {2} (4);
+            \path[->] (4) edge[red,bend right=15, below] node {1} (5);
+            \path[->] (5) edge[bend right=15, below] node {3} (4);
+            \path[->] (5) edge[red, bend right=15, below] node {4} (6);
+            \path[->] (6) edge[bend right=15, below] node {3} (5);
+
+            \end{tikzpicture}
+            \caption{Circuitos no sentido contrário com mesmo custo, $9$ e $7$}
+        \end{figure}
+
         \begin{proof} 
             Seja $T$ uma solução para o PCC em $(G, c')$. 
             $T$ será um passeio fechado composto por arestas orientadas de $G$.

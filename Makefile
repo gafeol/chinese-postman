@@ -2,6 +2,7 @@ filename=main
 
 all: 
 	$(MAKE) -C test
+	$(MAKE) pdf
 
 test:
 	$(MAKE) -C test
