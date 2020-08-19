@@ -2075,6 +2075,58 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \end{theorem}
 
         Para exemplificar a prova deste teorema, usaremos o seguinte grafo $G$:
+    
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, 0) (1) {1};
+                \node[main node] at (-3.25, 2) (2) {2};
+                \node[main node] at (-1.5, 0) (3) {3};
+                \node[main node] at (1.5, 0) (4) {4};
+                \node[main node] at (3.25, 2) (5) {5};
+                \node[main node] at (5, 0) (6) {6};
+
+            \path[-] (1) edge[] node {} (2);
+            \path[-] (2) edge[] node {} (3);
+            \path[-] (1) edge[] node {} (3);
+            \path[-] (3) edge[] node {} (4);
+            \path[-] (4) edge[] node {} (6);
+            \path[-] (4) edge[] node {} (5);
+            \path[-] (5) edge[] node {} (6);
+
+            \end{tikzpicture}
+            \caption{Grafo $G$}
+            \label{goriginal}
+        \end{figure}
+
+        O custo de cada aresta será dado pela seguinte tabela:
+
+        \begin{center}
+            \begin{tabular}{|p{1.5cm}||p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+                \hline
+                    & \multicolumn{6}{|c|}{Destino} \\
+                \hline
+                   Origem & 1 & 2 & 3 & 4 & 5 & 6\\
+                \hline
+                \hline
+                1 &  & 2 & 3 &  & & \\
+                \hline
+                2 & 5 &  & 3 & & & \\
+                \hline
+                3 & 4 & 1 & & 7 & & \\
+                \hline
+                4 &  & & 1 & & 1 & 1\\
+                \hline
+                5 &  & & & 3 & & 4\\
+                \hline
+                6 &  &  & & 2 & 3 &\\
+                \hline
+            \end{tabular}
+        \end{center}
+        
+        Se existente, o valor da linha $i$ e coluna $j$ indica o custo de percorrer a aresta $ij$ de $i$ para $j$, caso contrário, não existe em $G$ aresta ligando $i$ a $j$.
+
+        Para melhor visualização destes custos, podemos representar o grafo original usando pares de arcos para cada aresta existente:
 
         \begin{figure}[H]
             \centering
@@ -2104,10 +2156,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \path[->] (6) edge[bend right=15, below] node {3} (5);
 
             \end{tikzpicture}
-            \caption{Grafo $G$, cada aresta não direcionada foi representada por um par de arcos}
+            \caption{Representação direcionada do grafo $G$}
         \end{figure}
 
-        Note que os dois circuitos dessa imagem possuem o mesmo circuito independente do sentido em que são percorridos:
+        Note que os dois circuitos dessa imagem possuem o mesmo custo independente do sentido em que são percorridos:
 
         \begin{figure}[H]
             \centering
@@ -2172,6 +2224,41 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \caption{Circuitos no sentido contrário com mesmo custo, $9$ e $7$}
         \end{figure}
 
+        Realizando a transformação da função custo $c_{ij}$ para $c'_{ij} = \frac{c_{ij} + c_{ji}}{2}$ temos a seguinte representação de $(G, c')$:
+
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] at (-5, 0) (1) {1};
+                \node[main node] at (-3.25, 2) (2) {2};
+                \node[main node] at (-1.5, 0) (3) {3};
+                \node[main node] at (1.5, 0) (4) {4};
+                \node[main node] at (3.25, 2) (5) {5};
+                \node[main node] at (5, 0) (6) {6};
+
+            \path[->] (1) edge[bend right=15, below, sloped] node {3.5} (2);
+            \path[->] (2) edge[bend right=15, sloped, above] node {3.5} (1);
+            \path[->] (2) edge[bend right=15, below] node {2} (3);
+            \path[->] (3) edge[bend right=15, below] node {2} (2);
+            \path[->] (1) edge[bend right=15, below] node {3.5} (3);
+            \path[->] (3) edge[bend right=15, below] node {3.5} (1);
+
+            \path[->] (3) edge[bend right=15, below] node {7} (4);
+            \path[->] (4) edge[bend right=15, below] node {1} (3);
+
+            \path[->] (4) edge[bend right=15, below] node {1.5} (6);
+            \path[->] (6) edge[bend right=15, below] node {1.5} (4);
+            \path[->] (4) edge[bend right=15, below] node {2} (5);
+            \path[->] (5) edge[bend right=15, below] node {2} (4);
+            \path[->] (5) edge[bend right=15, sloped, below] node {3.5} (6);
+            \path[->] (6) edge[bend right=15, sloped, above] node {3.5} (5);
+
+            \end{tikzpicture}
+            \caption{Representação direcionada do grafo $G$}
+            \label{gclinha}
+        \end{figure}
+
         \begin{proof} 
             Seja $T$ uma solução para o PCC em $(G, c')$. 
             $T$ será um passeio fechado composto por arestas orientadas de $G$.
@@ -2184,16 +2271,21 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}
             \]
 
+            Seja $T = \{1, 2, 3, 4, 5, 6, 4, 3, 1\}$ uma solução ótima do PCCV do exemplo da figura \ref{gclinha}.
+            Por si só, $T$ é um circuito de arcos, já que não percorre um mesmo arco duas vezes, mas para exemplificar melhor os casos a seguir decompomos $T$ em dois circuitos: $C_1 = \{1, 2, 3, 4, 3, 1\}, C_2 = \{4, 5, 6, 4\}$.
+
             A indução é realizada com base no tamanho do circuito $C_i$ analisado.
 
             Há dois casos base desta indução:
 
             \begin{itemize}
                 \item Quando o circuito analisado $C_i$ é vazio.
-                \item Quando $C_i$ é um circuito que é presente no grafo original $G$. 
+                \item Quando $C_i$ é um circuito presente no grafo original $G$. 
                     Isto é, $C_i$ não percorre uma mesma aresta de $G$ mais que uma vez.
                     O lema \ref{lemma:pccv} garante a hipótese de igualdade neste caso.
             \end{itemize}
+
+            No exemplo que estamos tratando, o circuito $C_2$ se enquadra no segundo tipo de caso base, já que o circuito $C_2 = \{4, 5, 6, 4\}$ está no grafo original \ref{goriginal}
 
             Assume-se que a hipótese de indução vale para circuitos com até $k$ arcos.
 
@@ -2236,12 +2328,41 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
              
             Provando assim que a hipótese de indução também vale para um circuito de tamanho $k+1$.
 
+            Voltando ao exemplo, podemos aplicar esse passo de indução para tratar o circuito $C_1$, quebrando-o como descrito acima.
+
+            $C_1$ não é um circuito do grafo original pois percorre a aresta entre $3$ e $4$ duas vezes. 
+
+            Representando $C_1$ como um conjunto de arcos percorridos:
+
+            \[
+                C_1 = \{ 3\rightarrow 4, 4\rightarrow 5, 5\rightarrow 6, 6\rightarrow 4, 4\rightarrow 3 \}                
+            \]
+
+            Realizando a quebra de $C_1$ a partir dos arcos $3 \rightarrow 4$ e $4 \rightarrow 3$ temos:
+
+            \[
+                C'_1  = \{4 \rightarrow 5, 5\rightarrow 6, 6\rightarrow 4\}
+            \]
+            \[
+                C''_1 = \{\}
+            \] 
+
+            Como $C'_1$ é um circuito presente no grafo original e $C''_1$ é um conjunto vazio, ambos são cobertos pelos casos base estabelecidos.
+
             Finalmente, temos que o custo da solução $T$ do PCCV de $(G, c)$ será igual ao custo da solução do PCC em $(G, c')$:
 
             \begin{align*}
                 \sum_{ij \in T} c_{ij} &= \sum_{1 \leq u \leq k} \sum_{ij \in C_u} c_{ij} \\
                                        &= \sum_{1 \leq u \leq k} \sum_{ij \in C_u} c'_{ij} \\
                                        &= \sum_{ij \in T} c'_{ij} \\
+            \end{align*}
+
+            \begin{align*}
+                2x + 2 &= 4 \\
+                2x &= 4 - 2 \\
+                2x &= 2 \\
+                x &= \frac{2}{2} \\
+                x &= 1
             \end{align*}
 
         \end{proof}
