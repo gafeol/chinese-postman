@@ -952,7 +952,7 @@ Segue agora a implementação do algoritmo de Hierholzer em C++ para digrafos:
 Optou-se nesta implementação pelo uso de uma pilha para o armazenamento da lista de adjacências $adj$, pois assim é possível apagar facilmente os arcos já percorridas na busca.
 
 
-Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $euler\_hierholzer$ tenha como parâmetro o vértice cujo grau de saída é maior que seu grau de entrada.
+Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $trilha\_euleriana$ tenha como parâmetro $u$ o vértice cujo grau de saída é maior que seu grau de entrada, ou seja o vértice que será necessariamente o ínico da trilha euleriana.
 
 Como em cada iteração deste algoritmo um arco é deletado, o número máximo de iterações que ele pode realizar é limitado pelo número de arcos de um digrafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$.
 
