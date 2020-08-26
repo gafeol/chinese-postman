@@ -40,6 +40,8 @@ Os arquivos de código estão dispostos na pasta `code/`, e seus respectivos tes
 
 Os testes foram desenvolvidos usando a ferramenta "googletest" da Google.
 
+Para entender os usos básicos e motivações de se usar o googletest, segue essa [apresentação](https://docs.google.com/presentation/d/1miS-qttABKfkIT9TG_HU6Kn3FrxZ9VNHD7nHIL4_3wE/present#slide=id.i0).
+
 Para realizar os testes, certifique-se de que a pasta `test/gtest` foi devidamente clonada.
 Se a mesma estiver vazia, basta cloná-la usando o comando:
 
@@ -49,7 +51,7 @@ git clone git@github.com:google/googletest.git test/gtest
 
 Após isso, basta rodar `make -C test` que todos os tetes serão executados.
 
-## Problemas
+## Problemas comuns
 
 **Se durante a compilação automática do arquivo tex você receber o erro "compilation failed, file "bla.tex" not found:**
 
