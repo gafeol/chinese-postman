@@ -2023,7 +2023,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Por exemplo, podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
         A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro se ele anda no sentido contrário do vento.
 
-        Outra ilustração possível para esta variação é imaginar que uma estrada pode ser inclinada, sendo assim mais difícil subir tal estada do que descé-la.
+        Outra ilustração possível para esta variação é imaginar que uma estrada pode ser inclinada, sendo assim mais difícil subir tal estrada do que descê-la.
 
         Esta variação do problema do carteiro chinês também é NP-difícil.
 
@@ -2099,7 +2099,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \label{goriginal}
         \end{figure}
 
-        O custo de cada aresta será dado pela seguinte tabela:
+        O custo de cada aresta será dado pela tabela \ref{tabela:exemplopccv}.
 
         \begin{table}[h!]
             \centering
@@ -2123,10 +2123,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 6 &  &  & & 2 & 3 &\\
                 \hline
             \end{tabular}
+            \caption{O custo de se percorrer a aresta de $i$ a $j$ é o valor da linha $i$ e coluna $j$}
+            \label{tabela:exemplopccv}
     \end{table}
         
-        Se existente, o valor da linha $i$ e coluna $j$ indica o custo de percorrer a aresta $ij$ de $i$ para $j$, caso contrário, não existe em $G$ aresta ligando $i$ a $j$.
-
         Para melhor visualização destes custos, podemos representar o grafo original usando pares de arcos para cada aresta existente:
 
         \begin{figure}[H]
@@ -2295,7 +2295,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
             Seja $C_i$ um circuito que não faz parte do caso base e que possui $k+1$ arcos.
 
-            Pela definição de circuitos, $C_i$ não pode possuir arcos duplicados.  % TODO: talvez esteja um pouco confusa essa questao de ser um circuito porem nao ser circuito de $G$
+            Pela definição de circuitos, $C_i$ não pode possuir arcos duplicados.  
             Sendo assim, para $C_i$ não estar presente em $G$, deverá existir uma aresta $uv$ de $G$ tal que $uv \in C_i$ e $vu \in C_i$, como representa-se a seguir:
 
             \[
