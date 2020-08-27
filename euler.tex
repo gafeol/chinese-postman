@@ -947,7 +947,7 @@ Como pode-se conferir, a trilha $T$ construída é um circuito euleriano de $G$.
 
 Segue agora a implementação do algoritmo de Hierholzer em C++ para digrafos:
 
-\lstinputlisting[language=c++]{code/euler.cpp}
+\lstinputlisting[language=c++]{code/euler-digrafo.cpp}
 
 Optou-se nesta implementação pelo uso de uma pilha para o armazenamento da lista de adjacências $adj$, pois assim é possível apagar facilmente os arcos já percorridas na busca.
 
@@ -960,5 +960,5 @@ Pode-se adaptar este algoritmo para grafos não direcionados mudando o modo como
 O algoritmo mostrado não funciona para grafos não direcionados pois o mesmo trata cada sentido de uma aresta $uv$ como dois arcos separados, $u \rightarrow v$ e $v \rightarrow u$. 
 Sendo assim, quando uma aresta é deletada, digamos $u \rightarrow v$, seu arco reverso $v \rightarrow u$, não é deletado automaticamente.
 
-Para corrigir isto, pode-se criar um identificador único para cada aresta (igual para os dois sentidos de uma mesma aresta) que pode ser utilizado para marcar as arestas já percorridas na busca em profundidade \footnote{Segue uma implementação do algoritmo para grafos não direcionados, que utiliza as modificações descritas \href{https://github.com/gafeol/chinese-postman/blob/master/code/euler_undirected.cpp}{https://github.com\-/gafeol\-/chinese-postman\-/blob/master\-/code/euler\-\_undirected.cpp}}. 
+Para corrigir isto, pode-se criar um identificador único para cada aresta (igual para os dois sentidos de uma mesma aresta) que pode ser utilizado para marcar as arestas já percorridas na busca em profundidade \footnote{Segue uma implementação do algoritmo para grafos não direcionados, que utiliza as modificações descritas \href{https://github.com/gafeol/chinese-postman/blob/master/code/euler-grafo.cpp}{https://github.com\-/gafeol\-/chinese-postman\-/blob/master\-/code/euler-grafo.cpp}}. 
 

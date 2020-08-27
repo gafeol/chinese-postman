@@ -58,3 +58,9 @@ Após isso, basta rodar `make -C test` que todos os tetes serão executados.
 Pare a compilação automática `\lk`, limpe os arquivos auxiliares de compilação `\lc`, reinicie a compilação automática `\ll`.
 
 Se isso não funcionar, feche tudo, e dê um `make` na pasta principal.
+
+## Referências
+
+https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching
+
+https://github.com/dilsonpereira/chinese-postman-problem
