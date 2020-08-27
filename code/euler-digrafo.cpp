@@ -1,6 +1,8 @@
-typedef pair<int, int> pii;
+#include <bits/stdc++.h>
+using namespace std;
+#include "digrafo.hpp"
 
-struct digrafo {
+struct Euler {
     private:
         stack<int> trilha;
         vector<vector<int>> _adj;
@@ -12,44 +14,53 @@ struct digrafo {
             }
             trilha.push(u);
         }
+
         void clear(stack<int> &st){
             while(!st.empty())
                 st.pop();
         }
 
-
         int dfs(int u, vector<bool>& vis){
             vis[u] = true;
             int cnt = 1;
-            for(int nxt: adj[u]){
+            for(int nxt: digrafo.adj[u]){
                 if(vis[nxt]) continue;
                 cnt += dfs(nxt, vis);
             }
             return cnt;
         }
+
+        void reset(){
+            _adj = digrafo.adj;
+            clear(trilha);
+        }
+
     public: 
-        vector<vector<int>> adj;
+        Digrafo digrafo;
+
         bool checkDeg(){
-            vector<int> inDeg(adj.size(), 0);
-            vector<int> outDeg(adj.size(), 0);
-            for(int u=0;u<(int)adj.size();u++){
-                for(int v: adj[u]){
+            vector<int> inDeg(digrafo.n, 0);
+            vector<int> outDeg(digrafo.n, 0);
+            for(int u=0;u<digrafo.n;u++){
+                for(int v: digrafo.adj[u]){
                     outDeg[u]++;
                     inDeg[v]++;
                 }
             }
-            for(int u=0;u<(int)adj.size();u++)
+            for(int u=0;u<digrafo.n;u++)
                 if(inDeg[u] != outDeg[u])
                     return false;
             return true;
         }
+
         bool checkConexo(){
-            vector<bool> vis(adj.size(), 0);
-            return (dfs(0, vis) == (int)adj.size());
+            vector<bool> vis(digrafo.n, 0);
+            return (dfs(0, vis) == digrafo.n);
         }
 
         vector<int> trilha_euleriana(int u=0){
-            clear(trilha);
+            reset();
+            assert(euleriano());
             euler_hierholzer(u); 
             vector<int> vTrilha;
             while(!trilha.empty()){
@@ -63,19 +74,34 @@ struct digrafo {
             return checkDeg() && checkConexo();
         }
 
-        digrafo(int n, vector<pii> arest){
-            adj.resize(n);
-            _adj.resize(n);
-            for(int a=0;a<n;a++){
-                adj[a].clear();
-                _adj[a].clear();
+        Euler(Digrafo d) : digrafo(d) {
+            reset();
+        }
+
+        Euler(int n, vector<pair<int, int>> arc) : Euler(Digrafo(n, arc)) {}
+
+
+        bool checkEulerianTrail(vector<int> trilha){
+            map<int, map<int, int>> cnt;
+            for(int u=0;u<digrafo.n;u++){
+                for(int v: digrafo.adj[u]){
+                    cnt[u][v]++;
+                }
             }
-            clear(trilha);
-            for(pii ar: arest){
-                assert(ar.first >= 0 && ar.first < n);
-                assert(ar.second >= 0 && ar.second < n);
-                adj[ar.first].push_back(ar.second);
-                _adj[ar.first].push_back(ar.second);
+            
+            for(int i=0;i+1<(int)trilha.size();i++){
+                int u = trilha[i], v = trilha[i+1]; 
+                cnt[u][v]--;
             }
+            for(auto lin: cnt){
+                for(auto col: lin.second){
+                    if(col.second != 0) return false;
+                }
+            }
+            return true;
+        }
+
+        bool checkEulerianTrail() {
+            return checkEulerianTrail(trilha_euleriana());
         }
 };
