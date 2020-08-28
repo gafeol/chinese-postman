@@ -76,7 +76,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 TESTS = $(basename $(wildcard **/*.cpp *.cpp))
 
-.PHONY: .gitignore clean 
+.PHONY: .gitignore clean matching
 clean:
 	rm -f $(TESTS) gtest.a gtest_main.a **/*.o *.o
 
@@ -93,3 +93,7 @@ test_all: $(addsuffix .test, $(TESTS))
 
 $(addsuffix .test, $(TESTS)) : % : $$(basename %)
 	./$< --gtest_color=yes
+
+MATCHING_TESTS = $(basename $(wildcard min-cost-matching/*.cpp))
+MATCHING_LIBS = $(basename $(wildcard min-cost-matching/*.h))
+matching: $(addsuffix .test, $(MATCHING_TESTS) $(MATCHING_LIBS)) 
