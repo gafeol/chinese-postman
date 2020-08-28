@@ -6,20 +6,18 @@ Trabalho de Conclusão de Curso desenvolvido por Gabriel Fernandes de Oliveira n
 
 ## Compilando o documento
 
-Para conseguir compilar o latex, precisei instalar os seguintes pacotes:
+Para conseguir compilar o latex, é necessário instalar os seguintes pacotes:
 
+
+```bash
 texlive-latex-base
-
 texlive-lang-portuguese
-
 texlive-science
-
 texlive-bibtex-extra
-
 biber
+```
 
-Depois de instalados os pacotes mencionados, basta rodar make que o pdf será compilado, e os arquivos auxiliares serão deletados.
-
+Depois de instalados, basta rodar `make` que o pdf será compilado, e os arquivos auxiliares serão deletados.
 
 ## Organização
 
