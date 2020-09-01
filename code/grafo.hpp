@@ -7,6 +7,13 @@ using namespace std;
 struct Aresta{
     int prox;
     int id;
+    double cus;
+
+    Aresta() {}
+    Aresta(int prox) : prox(prox) {}
+    Aresta(int prox, int id) : prox(prox), id(id) {}
+    Aresta(int prox, double cus) : prox(prox), cus(cus) {}
+    Aresta(int prox, int id, double cus) : prox(prox), id(id), cus(cus) {}
 };
 
 struct Grafo{
@@ -19,14 +26,26 @@ struct Grafo{
     /// Recebe: 
     ///     'nn' o número de vértices do grafo, 
     ///     'arestas' a lista de pares de vértices que possuem uma aresta entre si
-    Grafo(int nn, vector<pair<int, int>> arestas): n(nn) {
+    Grafo(int n, vector<pair<int, int>> arestas): n(n) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
             pair<int, int> ar = arestas[i];
             assert(ar.first >= 0 && ar.first < n);
-            adj[ar.first].push_back({ar.second, i});
+            adj[ar.first].emplace_back(ar.second, i);
             assert(ar.second >= 0 && ar.second < n);
-            adj[ar.second].push_back({ar.first, i});
+            adj[ar.second].emplace_back(ar.first, i);
+        }
+    }
+
+    Grafo(int n, vector<tuple<int, int, double>> arestas): n(n) {
+        adj.resize(n);
+        for(int i=0;i<(int)arestas.size();i++){
+            int u, v; double cus;
+            tie(u, v, cus) = arestas[i];
+            assert(u >= 0 && u < n);
+            adj[u].emplace_back(v, i, cus);
+            assert(v >= 0 && v < n);
+            adj[v].emplace_back(u, i, cus);
         }
     }
 
