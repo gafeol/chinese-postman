@@ -7,10 +7,10 @@ using namespace std;
 
 TEST(FloydWarshall, GrafoSimples){
     int n = 4;
-    Grafo G(n, { {0, 1, 2.}, 
-                 {1, 2, 5.}, 
-                 {0, 2, 2.},
-                 {3, 2, 1.}});
+    Grafo G(n, { make_tuple(0, 1, 2.), 
+                 make_tuple(1, 2, 5.), 
+                 make_tuple(0, 2, 2.),
+                 make_tuple(3, 2, 1.) });
     vector<vector<double>> d = floyd_warshall(G);
     EXPECT_EQ(d.size(), n);
     for(int i=0;i<(int)d.size();i++)
