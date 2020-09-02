@@ -38,8 +38,8 @@ TEST(FloydWarshall, GrafoSimples){
 
 TEST(FloydWarshall, Disconexo){
     int n = 3;
-    Grafo G(n, { {0, 1, 2.}, 
-                 {1, 0, 5.}});
+    Grafo G(n, { make_tuple(0, 1, 2.), 
+                 make_tuple(1, 0, 5.)});
     vector<vector<double>> d = floyd_warshall(G);
     EXPECT_EQ(d[0][0], 0.);
     EXPECT_EQ(d[0][1], 2.);
