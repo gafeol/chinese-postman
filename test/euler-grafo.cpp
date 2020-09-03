@@ -15,6 +15,13 @@ TEST(Euler, EulerChecker){
     EXPECT_FALSE(euler.checkEulerianTrail(fakeTrail));
 }
 
+TEST(Euler, EulerIdChecker){
+    Euler euler(3, { {0, 1}, {1, 2}, {2, 0} });
+    vector<int> trilha = euler.trilha_euleriana_id();
+    EXPECT_TRUE(euler.euleriano()) << "O grafo testado não é euleriano";
+    EXPECT_TRUE(euler.checkEulerianTrailById()) << "A trilha não é euleriana";
+}
+
 TEST(Euler, EulerCycle){
     Euler euler(3, { {0, 1}, {1, 2}, {2, 0} });
     EXPECT_TRUE(euler.euleriano()) << "O grafo é euleriano.";
