@@ -4,7 +4,7 @@ using namespace std;
 
 struct Euler {
     private:
-        map<int, bool> foiDeletada;
+        vector<bool> foiDeletada;
         stack<int> trilha;
         vector<vector<Aresta>> _adj;
         void euler_hierholzer(int u){
@@ -13,6 +13,7 @@ struct Euler {
                 int v = e.prox;
                 int id = e.id;
                 _adj[u].pop_back();
+                assert(id >= 0 && id < grafo.m);
                 if(!foiDeletada[id]){
                     foiDeletada[id] = true;
                     euler_hierholzer(v);
@@ -27,6 +28,7 @@ struct Euler {
                 int v = e.prox;
                 int id = e.id;
                 _adj[u].pop_back();
+                assert(id >= 0 && id < grafo.m);
                 if(!foiDeletada[id]){
                     foiDeletada[id] = true;
                     euler_hierholzer_id(v, id);
@@ -56,6 +58,7 @@ struct Euler {
             clear(trilha);
             _adj = grafo.adj;
             foiDeletada.clear();
+            foiDeletada.resize(grafo.m, false);
         }
 
         bool checkTrailByIdFrom(int ini, vector<int> &trilha, vector<pair<int, int>> &p){
