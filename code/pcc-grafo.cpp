@@ -27,7 +27,7 @@ struct PCC {
     }
 
     public:
-    pair<double, vector<int>> solve() {
+    pair<double, vector<int>> solve() {  // TODO: fazer checagem de trilha por id
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
         for(int a=0;a<G.n;a++)
@@ -64,7 +64,7 @@ struct PCC {
         return {cus, euler.trilha_euleriana()};
     }
 
-    bool checkSolution(pair<double, vector<int>> sol){
+    bool checkSolution(pair<double, vector<int>> sol){ 
         double solutionCost = sol.first;
         vector<int> cycle = sol.second;
         if(cycle[0] != cycle.back()) return false;

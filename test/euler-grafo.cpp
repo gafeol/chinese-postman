@@ -31,6 +31,14 @@ TEST(Euler, EulerCycle){
     EXPECT_TRUE(euler.checkEulerianTrail(trilha)) << "A trilha não é euleriana";
 }
 
+TEST(Euler, EulerIdCycle){
+    Euler euler(3, { {0, 1}, {1, 2}, {2, 0} });
+    EXPECT_TRUE(euler.checkEulerianTrailById()) << "A trilha não é euleriana";
+    EXPECT_TRUE(euler.checkEulerianTrailById({0, 1, 2}));
+    EXPECT_TRUE(euler.checkEulerianTrailById({1, 0, 2}));
+}
+
+
 TEST(Euler, EulerCycle2){
     Euler d(5, { {0, 1}, {1, 2}, {2, 0}, {1, 3}, {3, 4}, {4, 1} });
     EXPECT_TRUE(d.euleriano()) << "O grafo é euleriano.";

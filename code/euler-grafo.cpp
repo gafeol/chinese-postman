@@ -58,6 +58,22 @@ struct Euler {
             foiDeletada.clear();
         }
 
+        bool checkTrailByIdFrom(int ini, vector<int> &trilha, vector<pair<int, int>> &p){
+            int u = ini; 
+            for(int i=0;i<(int)trilha.size();i++){
+                int id = trilha[i]; 
+                if(u == p[id].first)
+                    u = p[id].second;
+                else if(u == p[id].second)
+                    u = p[id].first;
+                else
+                    return false;
+            }
+            if(u != ini) // fecha um circuito
+                return false;
+            return true;
+        }
+
     public: 
         Grafo grafo;
         vector<int> trilha_euleriana(int u=0){
@@ -144,35 +160,26 @@ struct Euler {
                 printf("%d ", u);
             }
             puts(""); */
-            map<int, int> cnt;
-            map<int, pair<int, int>> p;
+            vector<int> cnt(grafo.m);
+            vector<pair<int, int>> p(grafo.m);
             for(int u=0;u<(int)grafo.adj.size();u++){
                 for(Aresta ar: grafo.adj[u]){
+                    assert(ar.id >= 0 && ar.id < grafo.m);
                     p[ar.id] = {ar.prox, u};
                     //printf("id %d (%d %d)\n", ar.id, ar.prox, u);
                     cnt[ar.id]++;
                 }
             }
-            for(auto &it: cnt){ // cada aresta é contada duas vezes
-                it.second = it.second/2;
+            for(int id=0;id<grafo.m;id++){ // cada aresta é contada duas vezes
+                cnt[id] = cnt[id]/2;
             }
-            int u = p[trilha[0]].first; 
-            int pri = u;
-            for(int i=0;i<(int)trilha.size();i++){
-                int id = trilha[i]; 
-                if(u == p[id].first)
-                    u = p[id].second;
-                else if(u == p[id].second)
-                    u = p[id].first;
-                else
-                    return false;
-                
-                cnt[id]--;
-            }
-            if(u != pri) // fecha um circuito
+            if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
+                !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
                 return false;
-            for(auto it: cnt){
-                if(it.second != 0)
+            for(int id: trilha)
+                cnt[id]--;
+            for(int id=0;id<grafo.m;id++){
+                if(cnt[id] != 0)
                     return false;
             }
             return true;
