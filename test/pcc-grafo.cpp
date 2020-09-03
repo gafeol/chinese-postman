@@ -35,3 +35,12 @@ TEST(PCCGrafo, Ciclo){
     EXPECT_EQ(ans.first, 11);
     EXPECT_TRUE(pcc.checkSolution(ans));
 }
+
+TEST(PCCGrafo, ArestasParalelas){
+    Grafo G(2, {make_tuple(0, 1, 2.),
+                make_tuple(0, 1, 3.)});
+    PCC pcc(G);
+    auto ans = pcc.solve();
+    EXPECT_EQ(ans.first, 5);
+    EXPECT_TRUE(pcc.checkSolution(ans));
+}
