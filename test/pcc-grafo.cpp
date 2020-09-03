@@ -7,7 +7,8 @@ using namespace std;
 
 TEST(PCCGrafo, Simples){
     Grafo G(2, { make_tuple(0, 1, 2.)});
-    PCC pcc;
-    pair<double, vector<int>> ans = pcc.solve(G);
+    PCC pcc(G);
+    pair<double, vector<int>> ans = pcc.solve();
     EXPECT_EQ(ans.first, 4);
+    EXPECT_TRUE(pcc.checkSolution(ans));
 }

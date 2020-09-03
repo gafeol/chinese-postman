@@ -17,7 +17,7 @@ struct Aresta{
 };
 
 struct Grafo{
-    int n;
+    int n, m;
     vector<vector<Aresta>> adj;
 
     Grafo () {}
@@ -26,7 +26,7 @@ struct Grafo{
     /// Recebe: 
     ///     'nn' o número de vértices do grafo, 
     ///     'arestas' a lista de pares de vértices que possuem uma aresta entre si
-    Grafo(int n, vector<pair<int, int>> arestas): n(n) {
+    Grafo(int n, vector<pair<int, int>> arestas): n(n), m((int)arestas.size()) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
             pair<int, int> ar = arestas[i];
@@ -37,7 +37,7 @@ struct Grafo{
         }
     }
 
-    Grafo(int n, vector<tuple<int, int, double>> arestas): n(n) {
+    Grafo(int n, vector<tuple<int, int, double>> arestas): n(n), m((int)arestas.size()) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
             int u, v; double cus;
@@ -52,14 +52,25 @@ struct Grafo{
     /// Constrói grafo não direcionado a partir da lista de adjacências. Assume-se que os vértices vão de 0 a adjj.size()-1.
     /// Recebe: 
     ///     'adjj' a lista de adjacências do grafo
-    Grafo(vector<vector<Aresta>> adjj) : n((int)adjj.size()), adj(adjj) {} 
+    Grafo(vector<vector<Aresta>> adjj) : n((int)adjj.size()), adj(adjj) {
+        m = 0;
+        for(int u=0;u<(int)adj.size();u++){
+            m += adj[u].size();
+        }
+        m /= 2;
+        for(int u=0;u<(int)adj.size();u++){
+            for(Aresta ar: adj[u]){
+                assert(ar.id < m); // Garante que todas arestas tem id < m
+            }
+        }
+    } 
 
     void print(){
         printf("Grafo com %d nós\nArestas:\n", n);
         for(int a=0;a<n;a++){
             for(Aresta ar: adj[a]){
                 if(a <= ar.prox)
-                printf("%d %d\n", a, ar.prox);
+                    printf("%d %d %.3f (id %d)\n", a, ar.prox, ar.cus, ar.id);
             }
         }
     }
