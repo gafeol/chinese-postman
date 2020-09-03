@@ -173,15 +173,17 @@ struct Euler {
             for(int id=0;id<grafo.m;id++){ // cada aresta é contada duas vezes
                 cnt[id] = cnt[id]/2;
             }
-            if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
-                !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
-                return false;
-            for(int id: trilha)
+            for(int id: trilha){
+                assert(id >= 0 && id < grafo.m);
                 cnt[id]--;
+            }
             for(int id=0;id<grafo.m;id++){
                 if(cnt[id] != 0)
                     return false;
             }
+            if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
+                !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
+                return false;
             return true;
         }
 };
