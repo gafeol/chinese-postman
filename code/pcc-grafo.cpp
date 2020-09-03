@@ -43,7 +43,7 @@ struct PCC {
         vector<vector<Aresta>> nAdj = G.adj;
         int id = G.m;
         for(pair<int, int> ar: mcpm.second){
-            vector<pair<int, int>> path = expande(ar.first, ar.second, mnDist);
+            vector<pair<int, int>> path = expande(imp[ar.first], imp[ar.second], mnDist);
             for(auto ar: path){ // duplica aresta
                 int u = ar.first, v = ar.second;
                 nAdj[u].push_back(Aresta(v, id, mnDist[u][v]));
