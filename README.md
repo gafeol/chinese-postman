@@ -8,7 +8,6 @@ Trabalho de Conclusão de Curso desenvolvido por Gabriel Fernandes de Oliveira n
 
 Para conseguir compilar o latex, é necessário instalar os seguintes pacotes:
 
-
 ```bash
 texlive-latex-base
 texlive-lang-portuguese
@@ -59,6 +58,4 @@ Se isso não funcionar, feche tudo, e dê um `make` na pasta principal.
 
 ## Referências
 
-https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching
-
-https://github.com/dilsonpereira/chinese-postman-problem
+Implementações do Adilson Pereira de [Emparelhamento perfeito mínimo](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e do [Carteiro chinês](https://github.com/dilsonpereira/chinese-postman-problem).
