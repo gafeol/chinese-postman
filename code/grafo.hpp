@@ -74,6 +74,16 @@ struct Grafo{
             }
         }
     }
+
+    vector<tuple<int, int, double>> listaArestas(){
+        vector<tuple<int, int, double>> arestas(m);
+        for(int u=0;u<n;u++){
+            for(Aresta ar: adj[u]){
+                arestas[ar.id] = make_tuple(u, ar.prox, ar.cus);
+            }
+        }
+        return arestas;
+    }
 };
 
 #endif

@@ -36,11 +36,12 @@ TEST(PCCGrafo, Ciclo){
     EXPECT_TRUE(pcc.checkSolution(ans));
 }
 
+// Este teste força o algoritmo a usar arestas paralelas de custos diferentes
 TEST(PCCGrafo, ArestasParalelas){
     Grafo G(2, {make_tuple(0, 1, 2.),
                 make_tuple(0, 1, 3.)});
     PCC pcc(G);
-    auto ans = pcc.solve();
+    auto ans = pcc.solveById();
     EXPECT_EQ(ans.first, 5);
-    EXPECT_TRUE(pcc.checkSolution(ans));
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
 }

@@ -27,6 +27,56 @@ struct PCC {
     }
 
     public:
+    pair<double, vector<int>> solveById() {  // TODO: fazer checagem de trilha por id
+        vector<vector<double>> mnDist = floyd_warshall(G);
+        vector<int> imp;
+        for(int a=0;a<G.n;a++)
+            if(G.adj[a].size()&1)
+                imp.push_back(a);
+        vector<tuple<int, int, double>> arestasImp;
+        for(int i=0;i<(int)imp.size();i++){
+            for(int j=i+1;j<(int)imp.size();j++){
+                arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
+            }
+        }
+        pair<double, vector<pair<int, int>>> mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); // TODO: modificar para aceitar K
+        vector<vector<Aresta>> nAdj = G.adj;
+        int id = G.m;
+        vector<int> idReal(id + nAdj.size());
+        for(int a=0;a<id;a++)
+            idReal[a] = a;
+        for(pair<int, int> ar: mcpm.second){
+            vector<pair<int, int>> path = expande(imp[ar.first], imp[ar.second], mnDist);
+            for(auto ar: path){ // duplica aresta
+                int u = ar.first, v = ar.second;
+                for(Aresta ar: G.adj[u]){
+                    if(ar.prox == v && ar.cus == mnDist[u][v]){
+                        idReal[id] = ar.id;
+                        break;
+                    }
+                }
+                nAdj[u].push_back(Aresta(v, id, mnDist[u][v]));
+                nAdj[v].push_back(Aresta(u, id, mnDist[v][u]));
+                id++;
+            }
+        }
+        Grafo nG(nAdj);
+        Euler euler(nG);
+
+        double cus = 0;
+        for(int u=0;u<(int)nAdj.size();u++){
+            for(Aresta ar: nAdj[u]){
+                cus += ar.cus;
+            }
+        }
+        cus /= 2.;
+        vector<int> trilha = euler.trilha_euleriana_id();
+        // traduzir os ids artificiais para ids reais
+        for(int i=0;i<(int)trilha.size();i++)
+            trilha[i] = idReal[trilha[i]];
+        return {cus, trilha};
+    }
+
     pair<double, vector<int>> solve() {  // TODO: fazer checagem de trilha por id
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
@@ -64,6 +114,43 @@ struct PCC {
         return {cus, euler.trilha_euleriana()};
     }
 
+    bool checkSolutionByIdFrom(vector<int> idArestas, int ini){
+        auto listaArestas = G.listaArestas();
+        int u = ini;
+        for(int i=0;i<(int)idArestas.size();i++){
+            int l, r;
+            tie(l, r, ignore) = listaArestas[i];
+            if(l == u)
+                u = r;
+            else if(r == u)
+                u = l;
+            else
+                return false;
+        }
+        return (u == ini);
+    }
+
+    bool checkSolutionById(pair<double, vector<int>> sol){ 
+        double solutionCost = sol.first;
+        auto cycle = sol.second;
+        auto listaArestas = G.listaArestas();
+        vector<int> mrk(G.m, 1);
+        double realCost = 0;
+        for(int i=0;i<(int)cycle.size();i++){
+            int u, v;
+            double cus;
+            tie(u, v, cus) = listaArestas[i];
+            mrk[i]--;
+            realCost += cus;
+        }
+        if(realCost != solutionCost)
+            return false;
+        int u, v;
+        tie(u, v, ignore) = listaArestas[cycle[0]];
+        if(!checkSolutionByIdFrom(cycle, u) && !checkSolutionByIdFrom(cycle, v))
+            return false;
+        return (*max_element(mrk.begin(), mrk.end()) <= 0);
+    }
     bool checkSolution(pair<double, vector<int>> sol){ 
         double solutionCost = sol.first;
         vector<int> cycle = sol.second;
