@@ -45,3 +45,29 @@ TEST(PCCGrafo, ArestasParalelas){
     EXPECT_EQ(ans.first, 5);
     EXPECT_TRUE(pcc.checkSolutionById(ans));
 }
+
+/*
+
+0 3 2
+3 2 7
+0 1 4
+3 4 10
+1 5 1
+1 6 3
+
+Tem que duplicar todas arestas, custo otimo 2*27 = 54
+
+*/
+
+TEST(PCCGrafo, Arvore){
+    Grafo G(7, { make_tuple(0, 3, 2.),
+                 make_tuple(3, 2, 7),
+                 make_tuple(0, 1, 4),
+                 make_tuple(3, 4, 10),
+                 make_tuple(1, 5, 1),
+                 make_tuple(1, 6, 3)});
+    PCC pcc(G);
+    auto ans = pcc.solveById();
+    EXPECT_EQ(ans.first, 54);
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+}

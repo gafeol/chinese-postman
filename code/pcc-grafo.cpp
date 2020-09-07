@@ -27,7 +27,7 @@ struct PCC {
     }
 
     public:
-    pair<double, vector<int>> solveById() {  // TODO: fazer checagem de trilha por id
+    pair<double, vector<int>> solveById() {  
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
         for(int a=0;a<G.n;a++)
@@ -77,7 +77,7 @@ struct PCC {
         return {cus, trilha};
     }
 
-    pair<double, vector<int>> solve() {  // TODO: fazer checagem de trilha por id
+    pair<double, vector<int>> solve() {  
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
         for(int a=0;a<G.n;a++)
@@ -117,7 +117,7 @@ struct PCC {
     bool checkSolutionByIdFrom(vector<int> idArestas, int ini){
         auto listaArestas = G.listaArestas();
         int u = ini;
-        for(int i=0;i<(int)idArestas.size();i++){
+        for(int i : idArestas){
             int l, r;
             tie(l, r, ignore) = listaArestas[i];
             if(l == u)
@@ -136,15 +136,18 @@ struct PCC {
         auto listaArestas = G.listaArestas();
         vector<int> mrk(G.m, 1);
         double realCost = 0;
-        for(int i=0;i<(int)cycle.size();i++){
+        for(int id: cycle){
             int u, v;
             double cus;
-            tie(u, v, cus) = listaArestas[i];
-            mrk[i]--;
+            tie(u, v, cus) = listaArestas[id];
+            mrk[id]--;
             realCost += cus;
         }
-        if(realCost != solutionCost)
+
+        if(realCost != solutionCost){
+            printf("O custo da solução esperado era %lf mas o valor encontrado foi %lf\n", solutionCost, realCost);
             return false;
+        }
         int u, v;
         tie(u, v, ignore) = listaArestas[cycle[0]];
         if(!checkSolutionByIdFrom(cycle, u) && !checkSolutionByIdFrom(cycle, v))
