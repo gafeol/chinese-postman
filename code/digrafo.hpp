@@ -66,6 +66,16 @@ struct Digrafo{
         return arcos;
     }
 
+    vector<vector<Aresta>> getAdjInverso(){
+        vector<vector<Aresta>> inv(n);
+        for(int u=0;u<n;u++){
+            for(Aresta ar: adj[u]){
+                inv[ar.prox].pb(Aresta(u, ar.id, ar.cus));
+            }
+        }
+        return inv;
+    }
+
     void print(){
         printf("Digrafo com %d nós e %d arcos:\n", n, m);
         for(int a=0;a<n;a++){

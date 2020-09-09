@@ -26,5 +26,29 @@ struct PCC {
         assert(false);
     }
 
+    vector<int> solveById(){
+        vector<vector<double>> mnDist = floyd_warshall(G);
+        vector<int> demanda(G.n);
+        vector<pair<int, int>> F, S;
+
+        vector<vector<Aresta>> &adj = G.adj;
+        vector<vector<Aresta>> inv = G.getAdjInverso();
+        for(int u=0;u<G.n;u++){
+            demanda[u] =  (int)adj[u].size() - inv[u].size();
+            if(demanda[u] < 0)
+                F.emplace_back(u, demanda[u]);
+            else if(demanda[u] > 0)
+                S.emplace_back(u, demanda[u]);
+        }
+
+        ProblemaTransporte pt = ProblemaTransporte(F, S, dist);
+        vector<int> f = pt.solve();
+
+        assert(f.size() == G.m);
+        for(int e=0;e<G.m;e++){
+            
+        }
+    }
+
     
 };
