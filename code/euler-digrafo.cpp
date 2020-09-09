@@ -5,10 +5,11 @@ using namespace std;
 struct Euler {
     private:
         stack<int> trilha;
-        vector<vector<int>> _adj;
+        vector<vector<Aresta>> _adj;
         void euler_hierholzer(int u){
             while(!_adj[u].empty()){
-                int v = _adj[u].back();
+                Aresta e = _adj[u].back();
+                int v = e.prox;
                 _adj[u].pop_back();
                 euler_hierholzer(v);
             }
@@ -23,7 +24,8 @@ struct Euler {
         int dfs(int u, vector<bool>& vis){
             vis[u] = true;
             int cnt = 1;
-            for(int nxt: digrafo.adj[u]){
+            for(Aresta ar: digrafo.adj[u]){
+                int nxt = ar.prox;
                 if(vis[nxt]) continue;
                 cnt += dfs(nxt, vis);
             }
@@ -42,7 +44,8 @@ struct Euler {
             vector<int> inDeg(digrafo.n, 0);
             vector<int> outDeg(digrafo.n, 0);
             for(int u=0;u<digrafo.n;u++){
-                for(int v: digrafo.adj[u]){
+                for(auto ar: digrafo.adj[u]){
+                    int v = ar.prox;
                     outDeg[u]++;
                     inDeg[v]++;
                 }
@@ -78,13 +81,17 @@ struct Euler {
             reset();
         }
 
-        Euler(int n, vector<pair<int, int>> arc) : Euler(Digrafo(n, arc)) {}
+        Euler(int n, vector<pair<int, int>> arc) 
+            : Euler(Digrafo(n, arc)) {}
 
+        Euler(int n, vector<tuple<int, int, double>> arc)
+            : Euler(Digrafo(n, arc)) {}
 
         bool checkEulerianTrail(vector<int> trilha){
             map<int, map<int, int>> cnt;
             for(int u=0;u<digrafo.n;u++){
-                for(int v: digrafo.adj[u]){
+                for(Aresta ar: digrafo.adj[u]){
+                    int v = ar.prox;
                     cnt[u][v]++;
                 }
             }

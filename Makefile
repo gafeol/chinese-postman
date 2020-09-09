@@ -11,6 +11,7 @@ pdf:
 	pdflatex ${filename}
 	biber ${filename}
 	pdflatex ${filename}
+	$(MAKE) clean
 
 read:
 	evince ${filename}.pdf &

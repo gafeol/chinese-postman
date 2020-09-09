@@ -3,18 +3,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-struct Aresta{
-    int prox;
-    int id;
-    double cus;
-
-    Aresta() {}
-    Aresta(int prox) : prox(prox) {}
-    Aresta(int prox, int id) : prox(prox), id(id) {}
-    Aresta(int prox, double cus) : prox(prox), cus(cus) {}
-    Aresta(int prox, int id, double cus) : prox(prox), id(id), cus(cus) {}
-};
+#include "aresta.hpp"
 
 struct Grafo{
     int n, m;
