@@ -22,7 +22,7 @@ struct Digrafo{
             pair<int, int> ar = arcos[i];
             assert(ar.first >= 0 && ar.first < n);
             assert(ar.second >= 0 && ar.second < n);
-            adj[ar.first].push_back(Aresta(ar.second, i));
+            adj[ar.first].emplace_back(ar.second, i);
         }
     }
 
@@ -37,7 +37,7 @@ struct Digrafo{
             tie(u, v, cus) = arcos[i];
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
-            adj[u].push_back(Aresta(v, i, cus));
+            adj[u].emplace_back(v, i, cus);
         }
     }
 
@@ -51,7 +51,7 @@ struct Digrafo{
             for(auto ar: adjj[u]){
                 int v = ar.first;
                 double cus = ar.second;
-                adj[u].push_back(Aresta(v, m++, cus));
+                adj[u].emplace_back(v, m++, cus);
             }
         }
     } 
@@ -70,7 +70,7 @@ struct Digrafo{
         vector<vector<Aresta>> inv(n);
         for(int u=0;u<n;u++){
             for(Aresta ar: adj[u]){
-                inv[ar.prox].pb(Aresta(u, ar.id, ar.cus));
+                inv[ar.prox].emplace_back(u, ar.id, ar.cus);
             }
         }
         return inv;
