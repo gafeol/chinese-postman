@@ -19,7 +19,7 @@ struct MinCostFlow {
 
     MinCostFlow() {}
 
-    MinCostFlow(int n): N(n) {
+    MinCostFlow(int n): N(n), M(0) {
         en = 0;
         tempo = 0;
         es.clear();
@@ -28,10 +28,6 @@ struct MinCostFlow {
         d.resize(N);
         seen.resize(N);
         qu.resize(N);
-        flowOnEdge.clear();
-        edgeId.clear();
-        flowOnEdge.resize(M);
-        edgeId.resize(M);
     }
 
     MinCostFlow(int n, int m): N(n), M(m) {
@@ -47,11 +43,9 @@ struct MinCostFlow {
         edgeId.clear();
         flowOnEdge.resize(M);
         edgeId.resize(M);
-        flowOnEdge.resize(M);
-        edgeId.resize(M);
     }
 
-    bool spfa(int s, int t) {
+    val spfa(int s, int t) {
         tempo++;
         int a = 0, b = 0;
         for(int i = 0; i < N; i++) d[i] = inf;
@@ -81,6 +75,12 @@ struct MinCostFlow {
     num solve(int s, int t) {
         tot = 0; flow = 0;
         while(val a = spfa(s, t)) flow += a;
+        /*
+        printf("FLOW de %d a %d deu %d\n", s, t, flow);
+        for(int a=0;a<en;a++){
+            printf("    flow on en %d (to %d cp %d fl %d cs %.3f\n", a, to[a], cp[a], fl[a], cs[a]);
+        }
+        */
         for(int i=0;i<M;i++)
             flowOnEdge[i] = fl[edgeId[i]];
         return tot;
@@ -91,6 +91,7 @@ struct MinCostFlow {
         assert(v >= 0 && v < N);
         if(id != -1)
             edgeId[id] = en;
+        //printf("add edge %d %d %d %.3f %d\n", u, v, c, s, id);
         fl.resize(en+2); cp.resize(en+2); to.resize(en+2); nx.resize(en+2); cs.resize(en+2); 
         fl[en] = 0; cp[en] = c; to[en] = v; nx[en] = es[u]; cs[en] =  s; es[u] = en++;
         fl[en] = 0; cp[en] = 0; to[en] = u; nx[en] = es[v]; cs[en] = -s; es[v] = en++;
