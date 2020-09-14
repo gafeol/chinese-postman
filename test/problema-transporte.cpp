@@ -49,6 +49,6 @@ TEST(ProblemaTransporte, Rede){
                              });
     vector<tuple<int, int, int>> ans = pt.solve();
     sort(ans.begin(), ans.end());
-    vector<tuple<int, int, int>> exp = {{0, 1, 1}, {0, 3, 1}, {2, 1, 3}};
+    vector<tuple<int, int, int>> exp = {make_tuple(0, 1, 1), make_tuple(0, 3, 1), make_tuple(2, 1, 3)};
     EXPECT_EQ(ans, exp);
 }
