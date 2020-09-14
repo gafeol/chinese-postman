@@ -12,7 +12,7 @@ struct ProblemaTransporte {
 
     vector<pair<int, int>> arestas;
 
-    ProblemaTransporte(int N, vector<int> F, vector<int> dF, vector<int> S, vector<int> dS, vector<vector<int>> mnDist)
+    ProblemaTransporte(int N, vector<int> F, vector<int> dF, vector<int> S, vector<int> dS, vector<vector<double>> mnDist)
         : mcf(MinCostFlow(N+2, (int)F.size()*S.size())), s(N), t(N+1) {
 
         for(int i=0;i<(int)F.size();i++){
@@ -44,7 +44,6 @@ struct ProblemaTransporte {
         for(int i=0;i<(int)arestas.size();i++){
             if(f[i]){
                 ans.emplace_back(arestas[i].first, arestas[i].second, f[i]);
-                printf("ans emplace %d %d %d\n", arestas[i].first, arestas[i].second, f[i]);
             }
         }
 
