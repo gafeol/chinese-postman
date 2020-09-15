@@ -91,4 +91,9 @@ struct MinCostFlow {
         fl[en] = 0; cp[en] = c; to[en] = v; nx[en] = es[u]; cs[en] =  s; es[u] = en++;
         fl[en] = 0; cp[en] = 0; to[en] = u; nx[en] = es[v]; cs[en] = -s; es[v] = en++;
     }
+
+    void reset_flow(){
+        for(int a=0;a<(int)fl.size();a++)
+            fl[a] = 0;
+    }
 };
