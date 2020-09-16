@@ -75,6 +75,6 @@ struct PCC {
         for(int i=0;i<(int)trilha.size();i++){
             trilha[i] = realId[trilha[i]];
         }
-        return triliha;
+        return trilha;
     }
 };

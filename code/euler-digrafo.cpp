@@ -6,6 +6,7 @@ struct Euler {
     private:
         stack<int> trilha;
         vector<vector<Aresta>> _adj;
+
         void euler_hierholzer(int u){
             while(!_adj[u].empty()){
                 Aresta e = _adj[u].back();
@@ -14,6 +15,18 @@ struct Euler {
                 euler_hierholzer(v);
             }
             trilha.push(u);
+        }
+
+        void euler_hierholzer_id(int u, int id=-1){
+            while(!_adj[u].empty()){
+                Aresta e = _adj[u].back();
+                int v = e.prox;
+                int id = e.id;
+                _adj[u].pop_back();
+                euler_hierholzer_id(v, id);
+            }
+            if(id != -1)
+                trilha.push(id);
         }
 
         void clear(stack<int> &st){
@@ -73,6 +86,23 @@ struct Euler {
             return vTrilha; 
         }
 
+        /// Devolve uma trilha euleriana do digrafo `digrafo`, parâmetro desta classe
+        /// Recebe:
+        ///     'u' o vértice inicial da trilha.
+        /// Devolve:
+        ///     vector de inteiros, contendo os ids dos arcos percorridos na trilha euleriana
+        vector<int> trilha_euleriana_id(int u=0){
+            reset();
+            assert(euleriano());
+            euler_hierholzer_id(u); 
+            vector<int> vTrilha;
+            while(!trilha.empty()){
+                vTrilha.push_back(trilha.top());
+                trilha.pop();
+            }
+            return vTrilha; 
+        }
+
         bool euleriano(){
             return checkDeg() && checkConexo();
         }
@@ -105,6 +135,41 @@ struct Euler {
                     if(col.second != 0) return false;
                 }
             }
+            return true;
+        }
+
+        bool checkEulerianTrailById(vector<int> trilha){
+            /*
+            printf("check trilha por id:\n");
+            for(int id: trilha){
+                printf("%d ", id);
+            }
+            puts("");
+            */
+            for(int id: trilha)
+                assert(id >= 0 && id < digrafo.m);
+            vector<int> cnt(digrafo.m, 1);
+            vector<pair<int, int>> arco(digrafo.m);
+            for(int u=0;u<digrafo.n;u++){
+                for(Aresta ar: digrafo.adj[u]){
+                    int v = ar.prox;
+                    arco[ar.id] = {u, v};
+                    //printf("arco[%d] = %d %d\n", ar.id, u, v);
+                }
+            }
+            
+            int u = arco[trilha.back()].second; 
+            for(int id: trilha){
+                if(u != arco[id].first)
+                    return false;
+                cnt[id]--;
+                u = arco[id].second;
+            }
+
+            if(*max_element(cnt.begin(), cnt.end()) != 0 ||
+                *min_element(cnt.begin(), cnt.end()) != 0)
+                return false;
+            
             return true;
         }
 

@@ -4,9 +4,9 @@ using namespace std;
 
 struct Euler {
     private:
-        vector<bool> foiDeletada;
         stack<int> trilha;
         vector<vector<Aresta>> _adj;
+        vector<bool> foiDeletada;
         void euler_hierholzer(int u){
             while(!_adj[u].empty()){
                 Aresta e = _adj[u].back();
@@ -163,23 +163,20 @@ struct Euler {
                 printf("%d ", u);
             }
             puts(""); */
-            vector<int> cnt(grafo.m);
+            for(int id: trilha)
+                assert(id >= 0 && id < grafo.m);
+
+            vector<int> cnt(grafo.m, 1);
             vector<pair<int, int>> p(grafo.m);
             for(int u=0;u<(int)grafo.adj.size();u++){
                 for(Aresta ar: grafo.adj[u]){
                     assert(ar.id >= 0 && ar.id < grafo.m);
                     p[ar.id] = {ar.prox, u};
                     //printf("id %d (%d %d)\n", ar.id, ar.prox, u);
-                    cnt[ar.id]++;
                 }
             }
-            for(int id=0;id<grafo.m;id++){ // cada aresta é contada duas vezes
-                cnt[id] = cnt[id]/2;
-            }
-            for(int id: trilha){
-                assert(id >= 0 && id < grafo.m);
+            for(int id: trilha)
                 cnt[id]--;
-            }
             for(int id=0;id<grafo.m;id++){
                 if(cnt[id] != 0)
                     return false;
