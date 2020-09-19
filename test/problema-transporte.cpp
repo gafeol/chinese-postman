@@ -17,7 +17,7 @@ TEST(ProblemaTransporte, RedeSimples){
     EXPECT_EQ(v, 1);
     EXPECT_EQ(f, 2);
 
-    EXPECT_EQ(pt.cost, 2);
+    EXPECT_DOUBLE_EQ(pt.cost, 2);
     EXPECT_EQ(pt.flow, 2);
 }
 

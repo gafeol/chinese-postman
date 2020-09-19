@@ -9,7 +9,7 @@ TEST(PCCGrafo, Simples){
     Grafo G(2, { make_tuple(0, 1, 2.)});
     PCC pcc(G);
     pair<double, vector<int>> ans = pcc.solve();
-    EXPECT_EQ(ans.first, 4);
+    EXPECT_DOUBLE_EQ(ans.first, 4);
     EXPECT_TRUE(pcc.checkSolution(ans));
 }
 
@@ -32,7 +32,7 @@ TEST(PCCGrafo, Ciclo){
     
     PCC pcc(G);
     auto ans = pcc.solve();
-    EXPECT_EQ(ans.first, 11);
+    EXPECT_DOUBLE_EQ(ans.first, 11);
     EXPECT_TRUE(pcc.checkSolution(ans));
 }
 
@@ -42,7 +42,7 @@ TEST(PCCGrafo, ArestasParalelas){
                 make_tuple(0, 1, 3.)});
     PCC pcc(G);
     auto ans = pcc.solveById();
-    EXPECT_EQ(ans.first, 5);
+    EXPECT_DOUBLE_EQ(ans.first, 5);
     EXPECT_TRUE(pcc.checkSolutionById(ans));
 }
 
@@ -68,6 +68,6 @@ TEST(PCCGrafo, Arvore){
                  make_tuple(1, 6, 3)});
     PCC pcc(G);
     auto ans = pcc.solveById();
-    EXPECT_EQ(ans.first, 54);
+    EXPECT_DOUBLE_EQ(ans.first, 54);
     EXPECT_TRUE(pcc.checkSolutionById(ans));
 }
