@@ -7,7 +7,9 @@ using namespace std;
 #include "aresta.hpp"
 
 struct Digrafo{
+    /// 'n' representa o número de vértices e 'm' o de arcos
     int n, m;
+    /// 'adj' armazena a lista de adjacências do digrafo
     vector<vector<Aresta>> adj;
 
     Digrafo () {}
@@ -56,6 +58,11 @@ struct Digrafo{
         }
     } 
 
+    /// Constrói, a partir da lista de adjacências, um vetor com todos arcos do digrafo, indexados pelo seu id.
+    /// Retorna:
+    ///     Vetor de tupla de inteiro, inteiro e double
+    ///     Exemplo: 
+    ///         arcos[i] = (u, v, c) -> Representa o arco de id 'i', do nó 'u' a 'v' com custo real 'c'.
     vector<tuple<int, int, double>> listaArcos(){
         vector<tuple<int, int, double>> arcos(m);
         for(int u=0;u<n;u++){
@@ -66,6 +73,11 @@ struct Digrafo{
         return arcos;
     }
 
+    /// Constrói, a partir da lista de adjacências, a lista de adjacências inversa.
+    /// Se existe um arco de u a v no grafo, a lista de adjacências inversa representará uma aresta de mesmo id e custo de v a u
+    /// Particularmente útil para conseguir calcular o grau de entrada de cada vértice.
+    /// Retorna:
+    ///     Vector de vector de Aresta, representando a lista de adjacências inversa do grafo
     vector<vector<Aresta>> getAdjInverso(){
         vector<vector<Aresta>> inv(n);
         for(int u=0;u<n;u++){
@@ -76,6 +88,7 @@ struct Digrafo{
         return inv;
     }
 
+    /// Função de depuração que imprime o digrafo e todos seus arcos.
     void print(){
         printf("Digrafo com %d nós e %d arcos:\n", n, m);
         for(int a=0;a<n;a++){

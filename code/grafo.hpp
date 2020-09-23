@@ -6,7 +6,9 @@ using namespace std;
 #include "aresta.hpp"
 
 struct Grafo{
+    /// 'n' representa o número de vértices e 'm' o de arestas
     int n, m;
+    /// 'adj' armazena a lista de adjacências do digrafo
     vector<vector<Aresta>> adj;
 
     Grafo () {}
@@ -54,16 +56,11 @@ struct Grafo{
         }
     } 
 
-    void print(){
-        printf("Grafo com %d nós\nArestas:\n", n);
-        for(int a=0;a<n;a++){
-            for(Aresta ar: adj[a]){
-                if(a <= ar.prox)
-                    printf("%d %d %.3f (id %d)\n", a, ar.prox, ar.cus, ar.id);
-            }
-        }
-    }
-
+    /// Constrói, a partir da lista de adjacências, um vetor com todos arcos do grafo, indexados pelo seu id.
+    /// Retorna:
+    ///     Vetor de tupla de inteiro, inteiro e double
+    ///     Exemplo: 
+    ///         arcos[i] = (u, v, c) -> Representa a aresta de id 'i', entre os vértices 'u' e 'v' com custo real 'c'.
     vector<tuple<int, int, double>> listaArestas(){
         vector<tuple<int, int, double>> arestas(m);
         for(int u=0;u<n;u++){
@@ -72,6 +69,17 @@ struct Grafo{
             }
         }
         return arestas;
+    }
+
+    /// Função de depuração que imprime o grafo e todas suas arestas.
+    void print(){
+        printf("Grafo com %d nós\nArestas:\n", n);
+        for(int a=0;a<n;a++){
+            for(Aresta ar: adj[a]){
+                if(a <= ar.prox)
+                    printf("%d %d %.3f (id %d)\n", a, ar.prox, ar.cus, ar.id);
+            }
+        }
     }
 };
 
