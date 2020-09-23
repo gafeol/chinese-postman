@@ -11,3 +11,4 @@
 *.fls
 *.run.xml
 refs/
+secret.sh
