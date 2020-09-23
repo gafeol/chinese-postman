@@ -93,3 +93,38 @@ TEST(Euler, MultipleArc2){
     EXPECT_TRUE(d.euleriano());
     EXPECT_TRUE(d.checkEulerianTrail());
 }
+
+TEST(Euler, WrongTrailById){
+    Euler d(4, {{0, 1}, {1, 2}, {2, 3}, {3, 0}});
+    EXPECT_TRUE(d.euleriano());
+    EXPECT_TRUE(d.checkEulerianTrail());
+    EXPECT_TRUE(d.checkEulerianTrailById());
+    vector<int> fakeTrailById = {0, 2, 1, 3};
+    EXPECT_FALSE(d.checkEulerianTrailById(fakeTrailById));
+}
+
+TEST(Euler, InstanceReset){
+    Euler d(4, {{0, 1}, {1, 2}, {2, 3}, {3, 0}} );
+    EXPECT_TRUE(d.euleriano());
+    EXPECT_TRUE(d.checkEulerianTrail());
+    EXPECT_TRUE(d.checkEulerianTrailById());
+    EXPECT_TRUE(d.checkEulerianTrail());
+    EXPECT_TRUE(d.checkEulerianTrailById());
+    d = Euler(4, {{0, 1}, {1, 2}, {2, 3}, {3, 0}} );
+    EXPECT_TRUE(d.euleriano());
+    EXPECT_TRUE(d.checkEulerianTrail());
+    EXPECT_TRUE(d.checkEulerianTrailById());
+    EXPECT_TRUE(d.checkEulerianTrail());
+    EXPECT_TRUE(d.checkEulerianTrailById());
+    d = Euler(3, { {0, 1}, {1, 2}, {2, 0} });
+    EXPECT_TRUE(d.checkEulerianTrailById()) << "A trilha não é euleriana";
+    EXPECT_TRUE(d.checkEulerianTrailById({0, 1, 2}));
+    EXPECT_TRUE(d.checkEulerianTrailById({0, 2, 1}));
+    EXPECT_TRUE(d.checkEulerianTrailById({1, 0, 2}));
+    EXPECT_TRUE(d.checkEulerianTrailById({1, 2, 0}));
+    EXPECT_TRUE(d.checkEulerianTrailById({2, 0, 1}));
+    EXPECT_TRUE(d.checkEulerianTrailById({2, 1, 0}));
+
+    EXPECT_DEATH(d.checkEulerianTrailById({3, 0, 1, 2}), "");
+    EXPECT_FALSE(d.checkEulerianTrailById({0, 1, 0}));
+}
