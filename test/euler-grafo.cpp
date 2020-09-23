@@ -128,3 +128,9 @@ TEST(Euler, InstanceReset){
     EXPECT_DEATH(d.checkEulerianTrailById({3, 0, 1, 2}), "");
     EXPECT_FALSE(d.checkEulerianTrailById({0, 1, 0}));
 }
+
+TEST(Euler, NotCircuit){
+    Euler d(4, {{0, 1}, {1, 2}, {2, 3}});
+    vector<int> fakeTrailById = {0, 1, 2};
+    EXPECT_FALSE(d.checkEulerianTrailById(fakeTrailById));
+}

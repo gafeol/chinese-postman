@@ -165,7 +165,6 @@ struct Euler {
             puts(""); */
             for(int id: trilha)
                 assert(id >= 0 && id < grafo.m);
-
             vector<int> cnt(grafo.m, 1);
             vector<pair<int, int>> p(grafo.m);
             for(int u=0;u<(int)grafo.adj.size();u++){
@@ -177,10 +176,9 @@ struct Euler {
             }
             for(int id: trilha)
                 cnt[id]--;
-            for(int id=0;id<grafo.m;id++){
+            for(int id=0;id<grafo.m;id++)
                 if(cnt[id] != 0)
                     return false;
-            }
             if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
                 !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
                 return false;
