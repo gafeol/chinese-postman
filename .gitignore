@@ -11,4 +11,9 @@
 *.fls
 *.run.xml
 refs/
+
 secret.sh
+# Cobertura de Testes
+*.gcov
+*.gcda
+*.gcno

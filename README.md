@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/gafeol/chinese-postman.svg?branch=master)](https://travis-ci.org/gafeol/chinese-postman)
 
+[![codecov](https://codecov.io/gh/gafeol/chinese-postman/branch/master/graph/badge.svg)](https://codecov.io/gh/gafeol/chinese-postman)
+
 Trabalho de Conclusão de Curso desenvolvido por Gabriel Fernandes de Oliveira no ano de 2020, com a orientação do Prof. Carlos Eduardo Ferreira.
 
 ## Compilando o documento
@@ -47,6 +49,34 @@ git clone git@github.com:google/googletest.git test/gtest
 ```
 
 Após isso, basta rodar `make -C test` que todos os tetes serão executados.
+
+#### Cobertura de testes
+
+Para checar a cobertura de testes manualmente, primeiramente configure a variável de ambiente `CODECOV_TOKEN`.
+Minha sugestão é adicioná-la a um arquivo `secret.sh`, ignorado pelo github, no formato:
+
+```bash
+export CODECOV_TOKEN=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+```
+
+Após isso basta rodar `source ./secret.sh`.
+
+Tendo definida tal variável, pode-se testar manualmente a cobertura dos testes rodando:
+
+```bash
+make -C test/
+bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+```
+
+Se o comando rodou como esperado, a última linha do mesmo deverá ser da forma:
+
+```bash
+[...]
+-> View reports at https://codecov.io/github/gafeol/chinese-postman/commit/f81abd57f0e0238709a4000cd179163b32124ddb
+```
+
+Acessando o link dado pode-se observar o resultado de cobertura dos testes atualmente adicionados ao projeto.
+Este teste de cobertura nos oferece informações muito importantes, como por exemplo: quais linhas de código nunca foram executadas nos testes.
 
 ## Problemas comuns
 
