@@ -1,0 +1,4 @@
+ignore:
+  - "test/"
+  - "probs/"
+  - "code/min-cost-matching"
