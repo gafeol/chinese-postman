@@ -157,3 +157,25 @@ TEST(PCCGrafo, CircuitoErrado){
     ans.second = {1, 2, 3, 4, 0};
     EXPECT_FALSE(pcc.checkSolution(ans));
 }
+
+
+TEST(PCCGrafo, CaminhoSimples){
+    Grafo G(3, {{0, 1}, {1, 2}});
+    PCC pcc(G);
+    auto ans = pcc.solveById();
+    EXPECT_DOUBLE_EQ(4, ans.first);
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+
+    ans = pcc.solve();
+    EXPECT_DOUBLE_EQ(4, ans.first);
+    EXPECT_TRUE(pcc.checkSolution(ans));
+}
+
+TEST(PCCGrafo, ArestaNaoPercorrida){
+    Grafo G(3, {{0, 1}, {1, 2}});
+    PCC pcc(G);
+    pair<double, vector<int>> ansId = {2., {0, 0}};
+    EXPECT_FALSE(pcc.checkSolutionById(ansId));
+    pair<double, vector<int>> ans = {2., {0, 1, 0}};
+    EXPECT_FALSE(pcc.checkSolution(ans));
+}
