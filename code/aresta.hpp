@@ -4,7 +4,7 @@
 struct Aresta{
     int prox;
     int id;
-    double cus = 0.;
+    double cus = 1.;
 
     Aresta() {}
     Aresta(int prox) : prox(prox) {}
