@@ -7,6 +7,9 @@ struct Euler {
         stack<int> trilha;
         vector<vector<Aresta>> _adj;
 
+        /// Adiciona à 'trilha' um circuito euleriano.
+        /// O circuito é construido nesse método a partir dos vértices percorridas, o que pode ser ambíguo em relação aos arcos realmente percorridas.
+        /// Em uma situação que o digrafo possui arcos paralelos, vale a pena usar 'euler_hierholzer_id', que devolve o mesmo circuito, porém identificado pelos 'id' dos arcos percorridos.
         void euler_hierholzer(int u){
             while(!_adj[u].empty()){
                 Aresta e = _adj[u].back();
@@ -17,6 +20,8 @@ struct Euler {
             trilha.push(u);
         }
 
+        /// Adiciona à 'trilha' um circuito euleriano.
+        /// O circuito é construido nesse método a partir da identificação 'id' dos arcos que são percorridos.
         void euler_hierholzer_id(int u, int id=-1){
             while(!_adj[u].empty()){
                 Aresta e = _adj[u].back();
@@ -53,6 +58,7 @@ struct Euler {
     public: 
         Digrafo digrafo;
 
+        /// Verifica se o grau de entrada e saída de todos vértices são iguais.
         bool checkDeg(){
             vector<int> inDeg(digrafo.n, 0);
             vector<int> outDeg(digrafo.n, 0);
@@ -69,11 +75,16 @@ struct Euler {
             return true;
         }
 
+        /// Verifica se o digrafo é conexo.
         bool checkConexo(){
             vector<bool> vis(digrafo.n, 0);
             return (dfs(0, vis) == digrafo.n);
         }
 
+        /// Devolve um circuito euleriano dado um vértice inicial u.
+        /// O circuito devolvido é a sequência de vértices percorridos no passeio euleriano.
+        /// Retorna:
+        ///     vetor de inteiros com os vértices percorridos no circuito euleriano
         vector<int> trilha_euleriana(int u=0){
             reset();
             assert(euleriano());
@@ -103,6 +114,7 @@ struct Euler {
             return vTrilha; 
         }
 
+        /// Checa se um digrafo é euleriano.
         bool euleriano(){
             return checkDeg() && checkConexo();
         }
@@ -117,6 +129,7 @@ struct Euler {
         Euler(int n, vector<tuple<int, int, double>> arc)
             : Euler(Digrafo(n, arc)) {}
 
+        /// Checa se uma trilha euleriana por vértices, passada por parâmetro, é válida.
         bool checkEulerianTrail(vector<int> trilha){
             map<int, map<int, int>> cnt;
             for(int u=0;u<digrafo.n;u++){
@@ -138,14 +151,8 @@ struct Euler {
             return true;
         }
 
+        /// Checa se uma trilha euleriana por id, passada por parâmetro, é válida.
         bool checkEulerianTrailById(vector<int> trilha){
-            /*
-            printf("check trilha por id:\n");
-            for(int id: trilha){
-                printf("%d ", id);
-            }
-            puts("");
-            */
             for(int id: trilha)
                 assert(id >= 0 && id < digrafo.m);
             vector<int> cnt(digrafo.m, 1);
@@ -173,6 +180,7 @@ struct Euler {
             return true;
         }
 
+        /// Constrói e checa se a trilha euleriana por vértices é válida.
         bool checkEulerianTrail() {
             return checkEulerianTrail(trilha_euleriana());
         }
