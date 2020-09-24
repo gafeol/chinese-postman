@@ -71,3 +71,89 @@ TEST(PCCGrafo, Arvore){
     EXPECT_DOUBLE_EQ(ans.first, 54);
     EXPECT_TRUE(pcc.checkSolutionById(ans));
 }
+
+TEST(PCCGrafo, CustoErradoId){
+    Grafo G(7, { make_tuple(0, 3, 2.),
+                 make_tuple(3, 2, 7),
+                 make_tuple(0, 1, 4),
+                 make_tuple(3, 4, 10),
+                 make_tuple(1, 5, 1),
+                 make_tuple(1, 6, 3)});
+    PCC pcc(G);
+    auto ans = pcc.solveById();
+    EXPECT_DOUBLE_EQ(ans.first, 54);
+    ans.first = 53.9;
+    EXPECT_FALSE(pcc.checkSolutionById(ans));
+    ans.first = 54.1;
+    EXPECT_FALSE(pcc.checkSolutionById(ans));
+}
+
+TEST(PCCGrafo, CustoErrado){
+    Grafo G(7, { make_tuple(0, 3, 2.),
+                 make_tuple(3, 2, 7),
+                 make_tuple(0, 1, 4),
+                 make_tuple(3, 4, 10),
+                 make_tuple(1, 5, 1),
+                 make_tuple(1, 6, 3)});
+    PCC pcc(G);
+    auto ans = pcc.solve();
+    EXPECT_DOUBLE_EQ(ans.first, 54);
+    ans.first = 53.9;
+    EXPECT_FALSE(pcc.checkSolution(ans));
+    ans.first = 54.1;
+    EXPECT_FALSE(pcc.checkSolution(ans));
+}
+
+TEST(PCCGrafo, CircuitoErradoId){
+    Grafo G(5, {{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 0}});
+    PCC pcc(G);
+    pair<double, vector<int>> ans;
+    ans.first = 6;
+    ans.second = {0, 1, 2, 3, 4, 1};
+    EXPECT_FALSE(pcc.checkSolutionById(ans));
+    ans.first = 7;
+    ans.second = {0, 1, 2, 3, 4, 0, 1};
+    EXPECT_FALSE(pcc.checkSolutionById(ans));
+    ans.first = 6;
+    ans.second = {1, 2, 3, 4, 0, 1};
+    EXPECT_FALSE(pcc.checkSolutionById(ans));
+}
+
+TEST(PCCGrafo, CheckSolucoesId){
+    Grafo G(5, {{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 0}});
+    PCC pcc(G);
+    auto ans = pcc.solveById();
+    EXPECT_DOUBLE_EQ(5, ans.first);
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+    ans.first = 10;
+    int sz = ans.second.size();
+    for(int i=0;i<sz;i++)
+        ans.second.push_back(ans.second[i]);
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+    ans.first = 5;
+    ans.second = {1, 2, 3, 4, 0};
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+    ans.first = 7;
+    ans.second = {1, 2, 3, 4, 0, 1, 1};
+    EXPECT_TRUE(pcc.checkSolutionById(ans));
+}
+
+TEST(PCCGrafo, CircuitoErrado){
+    Grafo G(5, {{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 0}});
+    PCC pcc(G);
+    auto ans = pcc.solve();
+    EXPECT_DOUBLE_EQ(5, ans.first);
+    EXPECT_TRUE(pcc.checkSolution(ans));
+    ans.first = 6;
+    ans.second = {0, 1, 2, 3, 4, 0, 1};
+    EXPECT_FALSE(pcc.checkSolution(ans));
+    ans.first = 7;
+    ans.second = {0, 1, 2, 3, 4, 0, 1, 0};
+    EXPECT_TRUE(pcc.checkSolution(ans));
+    ans.first = 5;
+    ans.second = {1, 2, 3, 4, 0, 1};
+    EXPECT_TRUE(pcc.checkSolution(ans));
+    ans.first = 4;
+    ans.second = {1, 2, 3, 4, 0};
+    EXPECT_FALSE(pcc.checkSolution(ans));
+}
