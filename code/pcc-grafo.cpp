@@ -10,6 +10,9 @@ struct PCC {
     private:
     Grafo G;
 
+    /// Função auxiliar que expande uma aresta condensada entre 'ini' e 'fim' para um conjunto de arestas presente no grafo 'G'.
+    /// Retorna: 
+    ///     Vetor de pares que representa a aresta condensada. Cada par (u, v) representa uma aresta de 'G' entre 'u' e 'v'.
     vector<pair<int, int>> expande(int ini, int fim, vector<vector<double>> &mnDist){
         if(ini == fim)
             return {};
@@ -27,6 +30,10 @@ struct PCC {
     }
 
     public:
+
+    /// Resolve o PCC em grafos, devolvendo o circuito solução com base nos 'id's das arestas percorridas.
+    /// Retorna:
+    ///     Par de double e vector, representando respectivamente o custo da solução e o vetor de 'id's das arestas percorridas na solução.
     pair<double, vector<int>> solveById() {  
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
@@ -77,6 +84,9 @@ struct PCC {
         return {cus, trilha};
     }
 
+    /// Resolve o PCC em grafos, devolvendo o circuito solução baseado nos vértices percorridos.
+    /// Retorna:
+    ///     Par de double e vector, representando respectivamente o custo da solução e o vetor de vértices percorridas na solução.
     pair<double, vector<int>> solve() {  
         vector<vector<double>> mnDist = floyd_warshall(G);
         vector<int> imp;
@@ -144,16 +154,20 @@ struct PCC {
             realCost += cus;
         }
 
-        if(realCost != solutionCost){
-            printf("O custo da solução esperado era %lf mas o valor encontrado foi %lf\n", solutionCost, realCost);
+        if(realCost != solutionCost) 
             return false;
-        }
+
+        if(*max_element(mrk.begin(), mrk.end()) > 0) // Houve aresta nao percorrida
+            return false;
+
         int u, v;
         tie(u, v, ignore) = listaArestas[cycle[0]];
-        if(!checkSolutionByIdFrom(cycle, u) && !checkSolutionByIdFrom(cycle, v))
+        if(!checkSolutionByIdFrom(cycle, u) && !checkSolutionByIdFrom(cycle, v)){
             return false;
-        return (*max_element(mrk.begin(), mrk.end()) <= 0);
+        }
+        return true;
     }
+
     bool checkSolution(pair<double, vector<int>> sol){ 
         double solutionCost = sol.first;
         vector<int> cycle = sol.second;
@@ -166,7 +180,6 @@ struct PCC {
                 c[u][ar.prox] = ar.cus;
             }
         }
-        // TODO: Problema se houverem arestas paralelas
         double realCost = 0;
         for(int i=0;i+1<(int)cycle.size();i++){
             mrk[cycle[i]][cycle[i+1]]--;
