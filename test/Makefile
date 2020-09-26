@@ -79,6 +79,7 @@ TESTS = $(basename $(wildcard **/*.cpp *.cpp))
 .PHONY: .gitignore clean matching
 clean:
 	rm -f $(TESTS) gtest.a gtest_main.a **/*.o *.o
+	rm -f *.gcov *.gcda *.gcno *.o *.a
 
 .SECONDEXPANSION:
 PERCENT=%
