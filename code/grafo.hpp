@@ -8,7 +8,7 @@ using namespace std;
 struct Grafo{
     /// 'n' representa o número de vértices e 'm' o de arestas
     int n, m;
-    /// 'adj' armazena a lista de adjacências do digrafo
+    /// 'adj' armazena a lista de adjacências do grafo
     vector<vector<Aresta>> adj;
 
     Grafo () {}
