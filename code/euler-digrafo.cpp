@@ -39,16 +39,6 @@ struct Euler {
                 st.pop();
         }
 
-        int dfs(int u, vector<bool>& vis){
-            vis[u] = true;
-            int cnt = 1;
-            for(Aresta ar: digrafo.adj[u]){
-                int nxt = ar.prox;
-                if(vis[nxt]) continue;
-                cnt += dfs(nxt, vis);
-            }
-            return cnt;
-        }
 
         void reset(){
             _adj = digrafo.adj;
@@ -75,10 +65,9 @@ struct Euler {
             return true;
         }
 
-        /// Verifica se o digrafo é conexo.
-        bool checkConexo(){
-            vector<bool> vis(digrafo.n, 0);
-            return (dfs(0, vis) == digrafo.n);
+        /// Verifica se o digrafo é fortemente conexo.
+        bool checkFortementeConexo(){
+            return (digrafo.countSCC() == 1);
         }
 
         /// Devolve um circuito euleriano dado um vértice inicial u.
@@ -116,7 +105,7 @@ struct Euler {
 
         /// Checa se um digrafo é euleriano.
         bool euleriano(){
-            return checkDeg() && checkConexo();
+            return checkDeg() && checkFortementeConexo();
         }
 
         Euler(Digrafo d) : digrafo(d) {

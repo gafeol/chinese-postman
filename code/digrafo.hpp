@@ -88,6 +88,54 @@ struct Digrafo{
         return inv;
     }
 
+    vector<bool> vis;
+    vector<int> cy, id, mn;
+    stack<int> q;
+    int nc, idd;
+
+    int tarjan(int u) {
+        q.push(u);
+        vis[u] = true;
+        id[u] = idd++;
+        mn[u] = id[u];
+        for (Aresta ar : adj[u]) {
+            int nxt = ar.prox;
+            if (!vis[nxt])
+                mn[u] = min(mn[u], tarjan(nxt));
+            else if(cy[nxt] == cy[u])
+                mn[u] = min(mn[u], id[nxt]);
+        }
+        if(mn[u] == id[u]){
+            cy[u] = nc++;
+            while(q.top() != u){
+                cy[q.top()] = cy[u];
+                q.pop();
+            }
+            q.pop();
+        }
+        return mn[u];
+    }
+
+    /// Conta o número de componentes fortemente conexas em 'digrafo'
+    /// Implementação do algoritmo de Tarjan
+    int countSCC() {
+        vis.clear();
+        vis.resize(n, false);
+        cy.clear();
+        cy.resize(n, -1);
+        id.resize(n);
+        mn.resize(n);
+        nc = 0;
+        idd = 0;
+        while(!q.empty())
+            q.pop();
+        for (int ini = 0; ini < n; ini++) {
+            if (!vis[ini])
+                tarjan(ini);
+        }
+        return nc;
+    }
+
     /// Função de depuração que imprime o digrafo e todos seus arcos.
     void print(){
         printf("Digrafo com %d nós e %d arcos:\n", n, m);
