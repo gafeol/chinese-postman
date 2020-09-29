@@ -15,30 +15,33 @@ struct Misto{
 
     Misto () {}
 
-    /// Constrói grafo a partir do número de vértices e uma lista de arestas. Assume-se que os vértices vão de 0 a n-1.
+    /// Constrói grafo misto a partir do número de vértices e uma lista de arestas. Assume-se que os vértices vão de 0 a n-1.
     /// Recebe: 
-    ///     'nn' o número de vértices do grafo, 
+    ///     'n' o número de vértices do grafo, 
+    ///     'nArestas' o número de arestas (não direcionados)
     ///     'arestas' a lista de pares de vértices que possuem uma aresta entre si
-    Misto(int n, vector<pair<int, int>> arestas): n(n), m((int)arestas.size()) {
+    Misto(int n, int nArestas, vector<pair<int, int>> arestas): n(n), m((int)arestas.size()), nArestas(nArestas) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
             pair<int, int> ar = arestas[i];
             assert(ar.first >= 0 && ar.first < n);
-            adj[ar.first].emplace_back(ar.second, i);
             assert(ar.second >= 0 && ar.second < n);
-            adj[ar.second].emplace_back(ar.first, i);
+            adj[ar.first].emplace_back(ar.second, i);
+            if(i < nArestas)
+                adj[ar.second].emplace_back(ar.first, i);
         }
     }
 
-    Misto(int n, vector<tuple<int, int, double>> arestas): n(n), m((int)arestas.size()) {
+    Misto(int n, int nArestas, vector<tuple<int, int, double>> arestas): n(n), m((int)arestas.size()), nArestas(nArestas) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
             int u, v; double cus;
             tie(u, v, cus) = arestas[i];
             assert(u >= 0 && u < n);
-            adj[u].emplace_back(v, i, cus);
             assert(v >= 0 && v < n);
-            adj[v].emplace_back(u, i, cus);
+            adj[u].emplace_back(v, i, cus);
+            if(i < nArestas)
+                adj[v].emplace_back(u, i, cus);
         }
     }
 
@@ -46,11 +49,21 @@ struct Misto{
     /// Recebe: 
     ///     'adjj' a lista de adjacências do grafo
     Misto(vector<vector<Aresta>> adjj) : n((int)adjj.size()), adj(adjj) {
-        m = 0;
+        map<int, int> cnt;
         for(int u=0;u<(int)adj.size();u++){
-            m += adj[u].size();
+            for(Aresta ar: adj[u]){
+                cnt[ar.id]++;
+            }
         }
-        m /= 2;
+        nArestas = 0;
+        while(cnt[nArestas++] == 2);
+        m = cnt.size();
+        for(int a=0;a<m;a++){
+            if(a < nArestas)
+                assert(cnt[a] == 2);
+            else
+                assert(cnt[a] == 1);
+        }
         for(int u=0;u<(int)adj.size();u++){
             for(Aresta ar: adj[u]){
                 assert(ar.id < m); // Garante que todas arestas tem id < m

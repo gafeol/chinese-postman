@@ -14,7 +14,7 @@ struct Euler {
                 int v = e.prox;
                 int id = e.id;
                 _adj[u].pop_back();
-                assert(id >= 0 && id < grafo.m);
+                assert(id >= 0 && id < G.m);
                 if (!foiDeletada[id]) {
                     foiDeletada[id] = true;
                     euler_hierholzer_id(v, id);
@@ -77,14 +77,19 @@ struct Euler {
         /// Checa se o grafo G misto é euleriano.
         /// Isto é, checa se todos vértices tem grau de entrada igual ao grau de saída e se tem grau (não direcionado) par.
         bool euleriano(){
-            if(G.countSCC() > 1)
+            if(G.countSCC() > 1){
+                puts("FALHOU SCC");
+                G.print();
+                printf("tem %d SCCS", G.countSCC());
                 return false;
+            }
 
             vector<vector<Aresta>> adj = G.adj;
             vector<vector<Aresta>> inv = G.adjInverso();
 
             for(int u=0;u<G.n;u++){
                 int degIn, degOut, deg;
+                degIn = degOut = deg = 0;
                 for(Aresta nxt: adj[u]){
                     if(G.arco(nxt.id))
                         degOut++;
@@ -95,8 +100,10 @@ struct Euler {
                     if(G.arco(prv.id))
                         degIn++;
                 }
-                if(degIn != degOut || deg%2 != 0)
+                if(degIn != degOut || deg%2 != 0){
+                    printf("FALHOU NO GRAU u %d degin %d degout %d deg %d\n", u, degIn, degOut, deg);
                     return false;
+                }
             }
             return true;
         }
@@ -117,55 +124,36 @@ struct Euler {
             return vTrilha; 
         }
 
-    Euler () {}
-    Euler(Misto G): G(G) {}
-
-
-    /// Verifica se o grau de todos vértices do grafo são par.
-    bool checkDeg(){ /// TODO:  Checar se grau entrada e saida sao iguais e grau total par
-        for(int u=0;u<(int)G.adj.size();u++)
-            if(G.adj[u].size()&1) 
-                return false;
-        return true;
-    }
-
-    /// Verifica se o grafo é conexo.
-    bool checkConexo(){
-        vector<bool> vis(G.adj.size(), 0);
-        return (dfs(0, vis) == (int)G.adj.size());
-    }
-
-    /// Checa se um grafo é euleriano.
-    bool euleriano(){
-        return checkDeg() && checkConexo();
-    }
-
-
-    bool checkEulerianTrailById() {
-        vector<int> trilha = trilha_euleriana_id();
-        return checkEulerianTrailById(trilha);
-    }
-
-    /// Checa se uma trilha euleriana por id, passada por parâmetro, é válida.
-    bool checkEulerianTrailById(vector<int> trilha){
-        for(int id: trilha)
-            assert(id >= 0 && id < G.m);
-        vector<int> cnt(G.m, 1);
-        vector<pair<int, int>> p(G.m);
-        for(int u=0;u<(int)G.adj.size();u++){
-            for(Aresta ar: G.adj[u]){
-                assert(ar.id >= 0 && ar.id < G.m);
-                p[ar.id] = {ar.prox, u};
-            }
+        bool checkEulerianTrailById() {
+            vector<int> trilha = trilha_euleriana_id();
+            return checkEulerianTrailById(trilha);
         }
-        for(int id: trilha)
-            cnt[id]--;
-        for(int id=0;id<G.m;id++)
-            if(cnt[id] != 0)
+
+        /// Checa se uma trilha euleriana por id, passada por parâmetro, é válida.
+        bool checkEulerianTrailById(vector<int> trilha){
+            for(int id: trilha)
+                assert(id >= 0 && id < G.m);
+            vector<int> cnt(G.m, 1);
+            vector<pair<int, int>> p(G.m);
+            for(int u=0;u<(int)G.adj.size();u++){
+                for(Aresta ar: G.adj[u]){
+                    assert(ar.id >= 0 && ar.id < G.m);
+                    p[ar.id] = {ar.prox, u};
+                }
+            }
+            for(int id: trilha)
+                cnt[id]--;
+            for(int id=0;id<G.m;id++)
+                if(cnt[id] != 0)
+                    return false;
+            if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
+                !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
                 return false;
-        if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
-            !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
-            return false;
-        return true;
-    }
+            return true;
+        }
+
+        Euler () {}
+        Euler(Misto G): G(G) {}
+        Euler(int n, int nArestas, vector<pair<int, int>> ar) : G(Misto(n, nArestas, ar)) {}
+        Euler(int n, int nArestas, vector<tuple<int, int, double>> ar) : G(Misto(n, nArestas, ar)) {}
 };
