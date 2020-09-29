@@ -1,7 +1,7 @@
 #ifndef MISTO_H
 #define MISTO_H
 
-#include <bits/stdc++.h>
+#include "bits/stdc++.h"
 using namespace std;
 #include "aresta.hpp"
 

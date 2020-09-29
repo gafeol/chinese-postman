@@ -17,3 +17,7 @@ secret.sh
 *.gcov
 *.gcda
 *.gcno
+
+test/gtest_main.a
+test/gtest_main.o
+test/gtest-all.o
