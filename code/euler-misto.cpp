@@ -74,8 +74,31 @@ struct Euler {
     public:
         Misto G;
 
+        /// Checa se o grafo G misto é euleriano.
+        /// Isto é, checa se todos vértices tem grau de entrada igual ao grau de saída e se tem grau (não direcionado) par.
         bool euleriano(){
-            return false;
+            if(G.countSCC() > 1)
+                return false;
+
+            vector<vector<Aresta>> adj = G.adj;
+            vector<vector<Aresta>> inv = G.adjInverso();
+
+            for(int u=0;u<G.n;u++){
+                int degIn, degOut, deg;
+                for(Aresta nxt: adj[u]){
+                    if(G.arco(nxt.id))
+                        degOut++;
+                    else
+                        deg++;
+                }
+                for(Aresta prv: inv[u]){
+                    if(G.arco(prv.id))
+                        degIn++;
+                }
+                if(degIn != degOut || deg%2 != 0)
+                    return false;
+            }
+            return true;
         }
 
         /// Devolve um circuito euleriano dado um vértice inicial u.
