@@ -35,7 +35,7 @@ TEST(Euler, EulerCycle2){
 TEST(Euler, Disconnected){
     Euler d(4, { {0, 1}, {1, 0}, {2, 3}, {3, 2} });
     EXPECT_FALSE(d.euleriano()) << "O digrafo não é euleriano";
-    EXPECT_FALSE(d.checkConexo()) << "O digrafo não é conexo";
+    EXPECT_FALSE(d.checkFortementeConexo()) << "O digrafo não é conexo";
     EXPECT_TRUE(d.checkDeg()) << "Os graus de entrada e saída são iguais";
 }
 
@@ -43,7 +43,7 @@ TEST(Euler, WrongDeg){
     Euler d(4, { {0, 1}, {1, 2}, {2, 3} });
     EXPECT_FALSE(d.euleriano()) << "O digrafo não é euleriano";
     EXPECT_FALSE(d.checkDeg()) << "Os graus de entrada e saída não são iguais"; 
-    EXPECT_TRUE(d.checkConexo()) << "O digrafo é conexo";
+    EXPECT_FALSE(d.checkFortementeConexo()) << "O digrafo é fortemente conexo";
     EXPECT_DEATH(d.trilha_euleriana(), "") << "O algoritmo chega a uma exceção buscando trilha euleriana inexistente";
 }
 
@@ -104,7 +104,7 @@ TEST(EulerId, EulerCycle2){
 TEST(EulerId, Disconnected){
     Euler d(4, { {0, 1}, {1, 0}, {2, 3}, {3, 2} });
     EXPECT_FALSE(d.euleriano()) << "O digrafo não é euleriano";
-    EXPECT_FALSE(d.checkConexo()) << "O digrafo não é conexo";
+    EXPECT_FALSE(d.checkFortementeConexo()) << "O digrafo não é conexo";
     EXPECT_TRUE(d.checkDeg()) << "Os graus de entrada e saída são iguais";
 }
 
@@ -112,7 +112,7 @@ TEST(EulerId, WrongDeg){
     Euler d(4, { {0, 1}, {1, 2}, {2, 3} });
     EXPECT_FALSE(d.euleriano()) << "O digrafo não é euleriano";
     EXPECT_FALSE(d.checkDeg()) << "Os graus de entrada e saída não são iguais"; 
-    EXPECT_TRUE(d.checkConexo()) << "O digrafo é conexo";
+    EXPECT_FALSE(d.checkFortementeConexo()) << "O digrafo é fortemente conexo";
     EXPECT_DEATH(d.trilha_euleriana_id(), "") << "O algoritmo chega a uma exceção buscando trilha euleriana inexistente";
 }
 
