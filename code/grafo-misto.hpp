@@ -99,6 +99,18 @@ struct Misto{
         return arcos;
     }
 
+    /// Testa se aresta com identificador 'id' é aresta.
+    bool aresta(int id){
+        assert(id >= 0);
+        return (id < nArestas);
+    }
+
+    /// Testa se aresta com identificador 'id' é arco.
+    bool arco(int id){
+        assert(id >= 0);
+        return (id >= nArestas);
+    }
+
     /// Função de depuração que imprime o grafo e todas suas arestas.
     void print(){
         printf("Grafo misto com %d nós\nArestas:\n", n);
