@@ -21,3 +21,5 @@ secret.sh
 test/gtest_main.a
 test/gtest_main.o
 test/gtest-all.o
+
+bits/
