@@ -124,7 +124,7 @@ struct Euler {
     /// Verifica se o grau de todos vértices do grafo são par.
     bool checkDeg(){ /// TODO:  Checar se grau entrada e saida sao iguais e grau total par
         for(int u=0;u<(int)G.adj.size();u++)
-            if(grafo.adj[u].size()&1) 
+            if(G.adj[u].size()&1) 
                 return false;
         return true;
     }
@@ -132,7 +132,7 @@ struct Euler {
     /// Verifica se o grafo é conexo.
     bool checkConexo(){
         vector<bool> vis(G.adj.size(), 0);
-        return (dfs(0, vis) == (int)grafo.adj.size());
+        return (dfs(0, vis) == (int)G.adj.size());
     }
 
     /// Checa se um grafo é euleriano.
