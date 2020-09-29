@@ -12,7 +12,7 @@
 *.run.xml
 refs/
 
-secret.sh
+secret
 # Cobertura de Testes
 *.gcov
 *.gcda

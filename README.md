@@ -23,6 +23,8 @@ Depois de instalados, basta rodar `make` que o pdf será compilado, e os arquivo
 
 ### Arquivos LaTeX
 
+Os arquivos LaTeX estão todos dispostos na pasta `tex`.
+
 O documento principal é o main.tex, que tem todas as importações de pacotes e de arquivos auxiliares.
 
 - Em **euler.tex** você encontra a seção que trata sobre caminhos eulerianos.
@@ -52,13 +54,13 @@ Após isso, basta rodar `make -C test` que todos os tetes serão executados.
 #### Cobertura de testes
 
 Para checar a cobertura de testes manualmente, primeiramente configure a variável de ambiente `CODECOV_TOKEN`.
-Minha sugestão é adicioná-la a um arquivo `secret.sh`, ignorado pelo github, no formato:
+Minha sugestão é adicioná-la a um arquivo `secret`, ignorado pelo github, no formato:
 
 ```bash
 export CODECOV_TOKEN=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
 ```
 
-Após isso basta rodar `source ./secret.sh`.
+Após isso basta rodar `source secret`.
 
 Tendo definida tal variável, pode-se testar manualmente a cobertura dos testes rodando:
 
@@ -81,10 +83,12 @@ Este teste de cobertura nos oferece informações muito importantes, como por ex
 
 **Se durante a compilação automática do arquivo tex você receber o erro "compilation failed, file "bla.tex" not found:**
 
-Pare a compilação automática `\lk`, limpe os arquivos auxiliares de compilação `\lc`, reinicie a compilação automática `\ll`.
+Pare a compilação automática (usando o plugin vimtex) `\lk`, limpe os arquivos auxiliares de compilação `\lc`, reinicie a compilação automática `\ll`.
 
 Se isso não funcionar, feche tudo, e dê um `make` na pasta principal.
 
 ## Referências
+
+Todas as referências bibliográficas são apresentadas na monografia, e são organizadas usando Bibtex no arquivo `tex/ref.bib`.
 
 Implementações do Adilson Pereira de [Emparelhamento perfeito mínimo](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e do [Carteiro chinês](https://github.com/dilsonpereira/chinese-postman-problem).
