@@ -5,4 +5,5 @@ problema-transporte
 euler-grafo
 floyd-warshall
 pcc-grafo
+euler-misto
 min-cost-flow

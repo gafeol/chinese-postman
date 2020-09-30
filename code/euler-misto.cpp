@@ -78,9 +78,9 @@ struct Euler {
         /// Isto é, checa se todos vértices tem grau de entrada igual ao grau de saída e se tem grau (não direcionado) par.
         bool euleriano(){
             if(G.countSCC() > 1){
-                puts("FALHOU SCC");
-                G.print();
-                printf("tem %d SCCS", G.countSCC());
+                //puts("FALHOU por SCC");
+                //G.print();
+                //printf("tem %d SCCS", G.countSCC());
                 return false;
             }
 
@@ -138,14 +138,19 @@ struct Euler {
             for(int u=0;u<(int)G.adj.size();u++){
                 for(Aresta ar: G.adj[u]){
                     assert(ar.id >= 0 && ar.id < G.m);
-                    p[ar.id] = {ar.prox, u};
+                    p[ar.id] = {u, ar.prox};
                 }
             }
-            for(int id: trilha)
+            for(int id: trilha){
+                //printf("percorre id %d cnt = %d - 1\n", id, cnt[id]);
                 cnt[id]--;
-            for(int id=0;id<G.m;id++)
-                if(cnt[id] != 0)
+            }
+            for (int id = 0; id < G.m; id++) {
+                if(cnt[id] != 0){
+                    //printf("falhou no id %d cnt %d != 0\n",id, cnt[id]);
                     return false;
+                }
+            }
             if(!checkTrailByIdFrom(p[trilha[0]].first, trilha, p) &&
                 !checkTrailByIdFrom(p[trilha[0]].second, trilha, p))
                 return false;
