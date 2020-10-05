@@ -5,17 +5,38 @@ using namespace std;
 #include "aresta.hpp"
 #include "floyd-warshall.cpp"
 #include "euler-misto.cpp"
+#include "min-cost-matching/MCM.hpp"
 
-
-// TODO: implementar euler misto - Acho que vai ser so pegar o euler nao direcionado mesmo no caso
-// TODO: implementar arquivo para grafo misto
 
 struct PCC {
+
     /// Adiciona arestas ou arcos de forma ótima para tornar o grau total (delta_t) par para todo vértice.
     /// Retorna:
     ///     Grafo misto com alguns arestas e arcos duplicados 
     Misto grau_total_par(Misto G){
-        
+        vector<int> vImp;
+
+        for(int u=0;u<G.n;u++)
+            if(G.grauTotal(u)&1)
+                vImp.push_back(u);
+
+        Grafo undGraph(G.adj);
+        auto mnDist = floyd_warshall(undGraph);
+
+        vector<tuple<int, int, double>> kEdges;
+        for(int i=0;i<(int)vImp.size();i++){
+            int u = vImp[i];
+            for(int j=i+1;j<(int)vImp.size();j++){
+                int v = vImp[j];
+                kEdges.emplace_back(i, j, mnDist[u][v]);
+            }
+        }
+
+        auto M = MinimumCostPerfectMatching((int)vImp.size(), kEdges);
+        vector<pair<int, int>> mEdges = M.second;
+
+        // expandir mEdges em arcos e arestas de G
+        // criar metodo que adiciona aresta extra para grados mistos
     }
 
     /// Encontra multiconjuntos M, U, de arcos, arestas direcionadas e arestas não direcionadas que formam um supergrafo com grau de entrada igual ao grau de saída.
@@ -47,5 +68,4 @@ struct PCC {
     }
 
     PCC() {}
-    PCC(Misto G) : G(G) {}
 };
