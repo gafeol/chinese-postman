@@ -179,6 +179,32 @@ struct Misto{
         }
         return inv;
     }
+ 
+    int grauTotal(int u){
+        return grauEntrada(u) + grauSaida(u) + grau(u);
+    }
+
+    int grau(int u){
+        int deg = 0;
+        for(Aresta ar: adj[u])
+            deg += aresta(ar.id);
+        return deg;
+    }
+
+    int grauSaida(int u){
+        int deg = 0;
+        for(Aresta ar: adj[u])
+            deg += arco(ar.id);
+        return deg;
+    }
+
+    int grauEntrada(int u){
+        vector<vector<Aresta>> inv = adjInverso();
+        int deg = 0;
+        for(Aresta ar: adj[u])
+            deg += arco(ar.id);
+        return deg;
+    }
 
     /// Testa se aresta com identificador 'id' é aresta.
     bool aresta(int id){
