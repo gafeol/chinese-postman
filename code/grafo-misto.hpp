@@ -15,6 +15,58 @@ struct Misto{
 
     Misto () {}
 
+    /// Constrói grafo misto a partir do número de vértices e da lista de arestas e de arcos. Assume-se que os vértices vão de 0 a n-1.
+    /// Recebe: 
+    ///     'n' o número de vértices do grafo, 
+    ///     'arestas' a lista de pares de vértices que possuem uma aresta entre si
+    ///     'arcos' a lista de arcos do grafo
+    Misto(int n, vector<pair<int, int>> arestas, vector<pair<int, int>> arcos): n(n), m((int)arestas.size() + arcos.size()), nArestas((int)arestas.size()) {
+        adj.resize(n);
+        int id = 0;
+        for(pair<int, int> ar: arestas){
+            assert(ar.first >= 0 && ar.first < n);
+            assert(ar.second >= 0 && ar.second < n);
+            adj[ar.first].emplace_back(ar.second, id);
+            adj[ar.second].emplace_back(ar.first, id);
+            id++;
+        }
+        for(pair<int, int> ar: arcos){
+            assert(ar.first >= 0 && ar.first < n);
+            assert(ar.second >= 0 && ar.second < n);
+            adj[ar.first].emplace_back(ar.second, id);
+            id++;
+        }
+    }
+
+    /// Constrói grafo misto a partir do número de vértices e da lista de arestas e de arcos. Assume-se que os vértices vão de 0 a n-1.
+    /// Recebe: 
+    ///     'n' o número de vértices do grafo, 
+    ///     'arestas' a lista de pares de vértices que possuem uma aresta entre si
+    ///     'arcos' a lista de arcos do grafo
+    Misto(int n, vector<tuple<int, int, double>> arestas, vector<tuple<int, int, double>> arcos): n(n), m((int)arestas.size() + arcos.size()), nArestas((int)arestas.size()) {
+        adj.resize(n);
+        int id = 0;
+        for(tuple<int, int, double> ar: arestas){
+            int u, v;
+            double c;
+            tie(u, v, c) = ar;
+            assert(u >= 0 && u < n);
+            assert(v >= 0 && v < n);
+            adj[u].emplace_back(v, id);
+            adj[v].emplace_back(u, id);
+            id++;
+        }
+        for(tuple<int, int, double> ar: arcos){
+            int u, v;
+            double c;
+            tie(u, v, c) = ar;
+            assert(u >= 0 && u < n);
+            assert(v >= 0 && v < n);
+            adj[u].emplace_back(v, id);
+            id++;
+        }
+    }
+
     /// Constrói grafo misto a partir do número de vértices e uma lista de arestas. Assume-se que os vértices vão de 0 a n-1.
     /// Recebe: 
     ///     'n' o número de vértices do grafo, 

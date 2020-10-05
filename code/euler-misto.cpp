@@ -101,7 +101,7 @@ struct Euler {
                         degIn++;
                 }
                 if(degIn != degOut || deg%2 != 0){
-                    printf("FALHOU NO GRAU u %d degin %d degout %d deg %d\n", u, degIn, degOut, deg);
+                    //printf("FALHOU NO GRAU u %d degin %d degout %d deg %d\n", u, degIn, degOut, deg);
                     return false;
                 }
             }
@@ -159,6 +159,8 @@ struct Euler {
 
         Euler () {}
         Euler(Misto G): G(G) {}
+        Euler(int n, vector<pair<int, int>> arestas, vector<pair<int, int>> arcos) : G(Misto(n, arestas, arcos)) {}
+        Euler(int n, vector<tuple<int, int, double>> arestas, vector<tuple<int, int, double>> arcos) : G(Misto(n, arestas, arcos)) {}
         Euler(int n, int nArestas, vector<pair<int, int>> ar) : G(Misto(n, nArestas, ar)) {}
         Euler(int n, int nArestas, vector<tuple<int, int, double>> ar) : G(Misto(n, nArestas, ar)) {}
 };
