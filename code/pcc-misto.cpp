@@ -10,6 +10,27 @@ using namespace std;
 
 struct PCC {
 
+    /// Expande o caminho minimo de u a v, considerando os arcos de G como arestas nao direcionadas.
+    void expande(int u, int v, vector<vector<double>> &mnDist, Misto &G){
+        if(u == v)
+            return ;
+        int cus = mnDist[u][v];
+        for(Aresta ar: G.adj[u]){
+            if(ar.cus + mnDist[ar.prox][v] == mnDist[u][v]){
+                G.copia(ar.id);
+                return expande(ar.prox, v, mnDist, G);
+            }
+        }
+
+        vector<vector<Aresta>> inv = G.adjInverso();
+        for(Aresta ar: inv[u]){
+            if(ar.cus + mnDist[ar.prox][v] == mnDist[u][v]){
+                G.copia(ar.id);
+                return expande(ar.prox, v, mnDist, G);
+            }
+        }
+    }
+
     /// Adiciona arestas ou arcos de forma ótima para tornar o grau total (delta_t) par para todo vértice.
     /// Retorna:
     ///     Grafo misto com alguns arestas e arcos duplicados 
@@ -35,8 +56,10 @@ struct PCC {
         auto M = MinimumCostPerfectMatching((int)vImp.size(), kEdges);
         vector<pair<int, int>> mEdges = M.second;
 
-        // expandir mEdges em arcos e arestas de G
-        // criar metodo que adiciona aresta extra para grados mistos
+        for(pair<int, int> p : mEdges){
+            expande(p.first, p.second, mnDist, G);
+        }
+        return G;
     }
 
     /// Encontra multiconjuntos M, U, de arcos, arestas direcionadas e arestas não direcionadas que formam um supergrafo com grau de entrada igual ao grau de saída.
@@ -45,7 +68,8 @@ struct PCC {
     ///     Multiconjuntos M, composto por arcos e algumas arestas de G direcionadas, e U, composto por arestas de G não direcionadas.
     ///     O grafo misto induzido pelos multiconjuntos (M, U) deve possuir grau de entrada e saída iguais 
     pair<vector<Aresta>, vector<Aresta>> iguala_grau_dir(Misto G){
-
+        vector<int> F, S;
+        auto mnDist = floyd_warshall(G);
     }
 
     /// Retorna multiconjuntos M', U' que mantem a propriedade de M, U, que o grau de entrada e saída de todos vértices são iguais. 

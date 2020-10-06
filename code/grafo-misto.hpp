@@ -179,7 +179,7 @@ struct Misto{
         }
         return inv;
     }
- 
+    
     int grauTotal(int u){
         return grauEntrada(u) + grauSaida(u) + grau(u);
     }
@@ -218,6 +218,10 @@ struct Misto{
         return (id >= nArestas);
     }
 
+    /// Cria uma cópia da aresta/arco de identificador 'id'
+    void copia(int id){
+        assert(false);
+    }
 
     vector<bool> vis;
     vector<int> cy, id, mn;
