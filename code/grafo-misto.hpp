@@ -206,13 +206,13 @@ struct Misto{
         return deg;
     }
 
-    /// Testa se aresta com identificador 'id' é aresta.
+    /// Testa se a aresta com identificador 'id' é uma aresta.
     bool aresta(int id){
         assert(id >= 0);
         return (id < nArestas);
     }
 
-    /// Testa se aresta com identificador 'id' é arco.
+    /// Testa se a aresta com identificador 'id' é um arco.
     bool arco(int id){
         assert(id >= 0);
         return (id >= nArestas);
@@ -221,6 +221,7 @@ struct Misto{
     /// Cria uma cópia da aresta/arco de identificador 'id'
     void copia(int id){
         assert(false);
+        // Provavelmente so adiciona no fim do adj e marca num map o id real da aresta, que entao pode ser classificada por nArestas
     }
 
     vector<bool> vis;

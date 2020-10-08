@@ -3,6 +3,9 @@ using namespace std;
 
 #include "min-cost-flow.cpp"
 
+/// Resolve o problema do transporte dado um grafo F,S-bipartido completo.
+/// Respeita as demandas de escoamento dF dos vértices de F e as demandas dS dos vértices de S. 
+/// Utiliza o algoritmo de Fluxo máximo de custo mínimo para resolver o probema.
 struct ProblemaTransporte {
 
     MinCostFlow mcf;
