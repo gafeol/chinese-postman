@@ -49,7 +49,18 @@ Se a mesma estiver vazia, basta cloná-la usando o comando:
 git clone git@github.com:google/googletest.git test/gtest
 ```
 
-Após isso, basta rodar `make -C test` que todos os tetes serão executados.
+Após isso, basta rodar `make -C test` que todos os testes serão executados.
+
+Se desejar rodar apenas um conjunto específico de testes, inclua o nome do conjunto desejado após o `make`, por exemplo:
+
+```bash
+# Para rodar os testes de grafos nao direcionados
+make grafo -C test/
+make graph -C test/
+
+# Para todar os testes de emparelhamento
+make matching -C test/
+```
 
 #### Cobertura de testes
 
