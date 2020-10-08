@@ -6,6 +6,7 @@ using namespace std;
 #include "floyd-warshall.cpp"
 #include "euler-misto.cpp"
 #include "min-cost-matching/MCM.hpp"
+#include "problema-transporte.cpp"
 
 
 struct PCC {
@@ -62,14 +63,78 @@ struct PCC {
         return G;
     }
 
+    void insere(vector<tuple<int, int, double>> &v, tuple<int, int, double> ar, int copias=1){
+        while(copias--)
+            v.push_back(ar);
+    }
+
     /// Encontra multiconjuntos M, U, de arcos, arestas direcionadas e arestas não direcionadas que formam um supergrafo com grau de entrada igual ao grau de saída.
     /// Assume-se que o grafo misto M que é propriedade da classe já possui grau total par em todos seus vértices.
     /// Retorna:
     ///     Multiconjuntos M, composto por arcos e algumas arestas de G direcionadas, e U, composto por arestas de G não direcionadas.
     ///     O grafo misto induzido pelos multiconjuntos (M, U) deve possuir grau de entrada e saída iguais 
     pair<vector<Aresta>, vector<Aresta>> iguala_grau_dir(Misto G){
-        vector<int> F, S;
         auto mnDist = floyd_warshall(G);
+
+        vector<int> F, S, dF, dS;
+        for(int u=0;u<G.n;u++){
+            int d = G.grauSaida(u) - G.grauEntrada(u);
+            if(d < 0){
+                F.push_back(u);
+                dF.push_back(-d);
+            }
+            else if(d > 0){
+                S.push_back(u);
+                dS.push_back(d);
+            }
+        }
+        auto pt = ProblemaTransporte(G.n, F, dF, S, dS, mnDist);
+        auto edgeFlow = pt.solve();
+
+        vector<tuple<int, int, double>> M, U;
+        // expande edgeFlow em flow de arestas e arcos de G
+
+        // Guarda a quantidade de fluxo total passada por cada par ('id' de aresta, 'orientacao')
+        map<int, map<bool, int>> f;
+        vector<tuple<int, int, double>> listaArestas = G.listaAdj();
+
+        // Retorna verdadeiro se a aresta 'id' for do formato '(u, v)', falso se for '(v, u)'
+        auto orientacao = [&](int id, int u, int v) {
+            return (u == get<0>(listaArestas[id]));
+        };
+
+        auto expande = [&](tuple<int, int, int> aresta){
+            vector<Aresta> caminhoReal;
+            auto [u, v, flow] = aresta;
+            while(u != v){
+                for(auto [prox, id, cus]: G.adj[u]){
+                    if(cus + mnDist[prox][v] == mnDist[u][v]){
+                        f[id][orientacao(id, u, prox)] += flow;
+                        u = prox;
+                        break; 
+                    }
+                    assert(false);
+                }
+            }
+        };
+
+        for(auto aresta : edgeFlow)
+            expande(aresta);
+
+        for(int id=0;id<listaArestas.size();id++){
+            if(G.arco(id)){
+                insere(M, listaArestas[id], f[id][1]+1);
+            }
+            else{
+                if(f[id][0] >= 1 || f[id][1] >= 1){
+                    assert(f[id][0] * f[id][1] == 0); // se custo > 0 impossivel ter ambas orientacoes com fluxo
+                    auto [u, v, c] = listaArestas[id];
+                    insere(M, make_tuple(v, u, false), f[id][false]); 
+                    insere(M, make_tuple(u, v, true), f[id][true]);
+                }
+            }
+        }
+        //TALVEZ NAO SEJA SUFICIENTE, PRECISARIA PASSAR TAMBEM O ID DAS ARESTAS
     }
 
     /// Retorna multiconjuntos M', U' que mantem a propriedade de M, U, que o grau de entrada e saída de todos vértices são iguais. 
