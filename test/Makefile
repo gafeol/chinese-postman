@@ -33,7 +33,7 @@ GTEST_DIR = gtest/googletest
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -fprofile-arcs -ftest-coverage -lgcov
+CXXFLAGS += -g -Wall -Wextra -pthread -std=c++1z -fprofile-arcs -ftest-coverage -lgcov
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
