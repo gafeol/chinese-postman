@@ -2,8 +2,14 @@ dist: trusty
 sudo: required
 language: generic
 services: docker
-compiler: g++
-install: export CXX="g++-7"
+compiler: 
+  - gcc
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-7
 
 notifications:
  email:
@@ -14,6 +20,11 @@ before_install:
     - sudo apt-get -qq update
 
 script:
+  - ln -s /usr/bin/g++-7 /usr/local/bin/g++
+  # Export CXX to tell cmake which compiler to use
+  - export CXX=/usr/bin/g++-7
+  # Check versions of gcc, g++ and cmake
+  - g++ -v && cmake --version
   - make -C test
   # We use the docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
   - docker pull dxjoke/tectonic-docker
