@@ -2,6 +2,13 @@ dist: trusty
 sudo: required
 language: generic
 services: docker
+compiler: g++
+install: export CXX="g++-7"
+
+notifications:
+ email:
+  on_success: never
+  on_failure: always
 
 before_install:
     - sudo apt-get -qq update
