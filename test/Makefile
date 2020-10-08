@@ -98,9 +98,10 @@ $(addsuffix .test, $(TESTS)) : % : $$(basename %)
 MATCHING_TESTS = $(basename $(wildcard min-cost-matching/*.cpp))
 MATCHING_LIBS = $(basename $(wildcard min-cost-matching/*.h) $(wildcard min-cost-matching/*.hpp)) 
 matching: $(addsuffix .test, $(MATCHING_TESTS) $(MATCHING_LIBS)) 
+emparelhamento: $(addsuffix .test, $(MATCHING_TESTS) $(MATCHING_LIBS)) 
 
 DIGRAPH_TESTS = $(basename $(wildcard *-digrafo.cpp))
-DIGRAPH_LIBS = $(basename digrafo.hpp problema-transporte.cpp)
+DIGRAPH_LIBS = $(basename digrafo.hpp problema-transporte.cpp min-cost-flow.cpp)
 
 digraph: $(addsuffix .test, $(DIGRAPH_TESTS) $(DIGRAPH_LIBS))
 digrafo: $(addsuffix .test, $(DIGRAPH_TESTS) $(DIGRAPH_LIBS))
@@ -110,3 +111,9 @@ GRAPH_LIBS = $(basename grafo.hpp problema-transporte.cpp)
 
 graph: $(addsuffix .test, $(GRAPH_TESTS) $(GRAPH_LIBS))
 grafo: $(addsuffix .test, $(GRAPH_TESTS) $(GRAPH_LIBS))
+
+MIXED_TESTS = $(basename $(wildcard *-misto.cpp))
+MIXED_LIBS = $(basename grafo-misto.hpp problema-transporte.cpp min-cost-flow.cpp)
+
+mixed: $(addsuffix .test, $(MIXED_TESTS) $(MIXED_LIBS))
+misto: $(addsuffix .test, $(MIXED_TESTS) $(MIXED_LIBS))
