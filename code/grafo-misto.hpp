@@ -12,6 +12,9 @@ struct Misto{
     int nArestas;
     /// 'adj' armazena a lista de adjacências do digrafo
     vector<vector<Aresta>> adj;
+    /// 'idReal' armazena o 'id' base para as arestas e arcos copiados
+    /// Ver método 'copia'
+    map<int, int> idReal;
 
     Misto () {}
 
@@ -122,7 +125,6 @@ struct Misto{
     /// Constrói, a partir do vetor de adjacências, um vetor com todas arestas e arcos do grafo, indexados pelo seu id.
     /// Retorna:
     ///     Vetor de tupla de inteiro, inteiro e double
-    ///     Os primeiros 'nArestas' valores representam arestas, enquanto que os restantes arcos.
     ///     Exemplo: 
     ///         lista[i] = (u, v, c) -> Representa a aresta de id 'i', entre os vértices 'u' e 'v' com custo real 'c'.
     vector<tuple<int, int, double>> listaAdj(){
@@ -138,12 +140,16 @@ struct Misto{
     /// Constrói, a partir da lista de adjacências a lista de arestas do grafo, indexadas por seus ids
     /// Retorna:
     ///     Vetor de tupla de inteiro, inteiro e double
-    ///     Os primeiros 'nArestas' valores representam arestas, enquanto que os restantes arcos, por isso, apagam-se os arcos nesse método.
     ///     Exemplo: 
-    ///         arestas[i] = (u, v, c) -> Representa a aresta de id 'i', entre os vértices 'u' e 'v' com custo real 'c'.
+    ///         arestas[i] = (u, v, c) -> Representa a aresta entre os vértices 'u' e 'v' com custo real 'c'.
+    /// Cuidado: as arestas não são indexadas por seus 'id's na lista retornada
     vector<tuple<int, int, double>> listaArestas(){
-        auto arestas = listaAdj();
-        arestas.resize(nArestas);
+        auto lista = listaAdj();
+        vector<tuple<int, int, double>> arestas;
+        for(int i=0;i<(int)lista.size();i++){
+            if(aresta(i))
+                arestas.push_back(lista[i]);
+        }
         return arestas;
     }
 
@@ -153,10 +159,14 @@ struct Misto{
     ///     Os primeiros 'nArestas' valores representam arestas, enquanto que os restantes arcos, por isso, apagam-se os arcos nesse método.
     ///     Exemplo: 
     ///         arestas[i] = (u, v, c) -> Representa a aresta de id 'i', entre os vértices 'u' e 'v' com custo real 'c'.
-    /// Cuidado: os arcos não são indexados por seus 'id's, seus 'id's na verdade são i + nArestas
+    /// Cuidado: os arcos não são indexados por seus 'id's na lista retornada
     vector<tuple<int, int, double>> listaArcos(){
-        auto arcos = listaAdj();
-        arcos.erase(arcos.begin(), arcos.begin() + nArestas); 
+        auto lista = listaAdj();
+        vector<tuple<int, int, double>> arcos;
+        for(int i=0;i<(int)lista.size();i++){
+            if(arco(i))
+                arcos.push_back(lista[i]);
+        }
         return arcos;
     }
     
@@ -204,13 +214,15 @@ struct Misto{
 
     /// Testa se a aresta com identificador 'id' é uma aresta.
     bool aresta(int id){
-        assert(id >= 0);
+        if(idReal.find(id) != idReal.end())
+            id = idReal[id];
         return (id < nArestas);
     }
 
     /// Testa se a aresta com identificador 'id' é um arco.
     bool arco(int id){
-        assert(id >= 0);
+        if(idReal.find(id) != idReal.end())
+            id = idReal[id];
         return (id >= nArestas);
     }
 
@@ -218,6 +230,12 @@ struct Misto{
     void copia(int id){
         assert(false);
         // Provavelmente so adiciona no fim do adj e marca num map o id real da aresta, que entao pode ser classificada por nArestas
+        auto [u, v, c] = listaAdj()[id];
+        int novoId = m++;
+        idReal[novoId] = id;
+        adj[u].emplace_back(v, novoId, c);
+        if(aresta(novoId))
+            adj[v].emplace_back(u, novoId, c);
     }
 
     vector<bool> vis;
