@@ -47,22 +47,18 @@ struct Misto{
         adj.resize(n);
         int id = 0;
         for(tuple<int, int, double> ar: arestas){
-            int u, v;
-            double c;
-            tie(u, v, c) = ar;
+            auto [u, v, c] = ar;
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
-            adj[u].emplace_back(v, id);
-            adj[v].emplace_back(u, id);
+            adj[u].emplace_back(v, id, c);
+            adj[v].emplace_back(u, id, c);
             id++;
         }
         for(tuple<int, int, double> ar: arcos){
-            int u, v;
-            double c;
-            tie(u, v, c) = ar;
+            auto [u, v, c] = ar;
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
-            adj[u].emplace_back(v, id);
+            adj[u].emplace_back(v, id, c);
             id++;
         }
     }
