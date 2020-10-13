@@ -15,6 +15,10 @@ struct Misto{
     /// 'idReal' armazena o 'id' base para as arestas e arcos copiados
     /// Ver método 'copia'
     map<int, int> idReal;
+    /// 'idOriginal' armazena o 'id' da aresta original, sem orientação
+    /// Ver construtor Misto(n, M, U)
+    /// Utilizado para manter a identidade das arestas de um grafo 
+    map<int, int> idOriginal;
 
     Misto () {}
 
@@ -121,6 +125,24 @@ struct Misto{
             }
         }
     } 
+
+    /// Constrói, a partir do multiconjunto de arcos e arestas direcionadas (M), e o multiconjunto de arestas (U) um grafo misto. 
+    /// Essa construção faz parte da resolução do pcc-misto.
+    /// Assume-se que existe um grafo misto base G que é estendido para uma versão euleriana.
+    /// O grafo devolvido por esse construtor deve ser a extensão euleriana deste grafo original.
+    Misto(int n, vector<tuple<int, int, double, int>> M, vector<tuple<int, int, double, int>> U) : n(n), m(M.size() + U.size()), nArestas(M.size()) {
+        adj.resize(n);
+        int newId = 0;
+        for(auto [u, v, c, id]: U){
+            adj[u].emplace_back(v, c, newId);
+            adj[v].emplace_back(u, c, newId);
+            idOriginal[newId++] = id;
+        }
+        for(auto [u, v, c, id]: M){
+        adj[u].emplace_back(v, c, newId);
+            idOriginal[newId++] = id;
+        }
+    }
 
     /// Constrói, a partir do vetor de adjacências, um vetor com todas arestas e arcos do grafo, indexados pelo seu id.
     /// Retorna:
