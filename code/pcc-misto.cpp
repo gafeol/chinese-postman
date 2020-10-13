@@ -1,3 +1,5 @@
+/// Código desenvolvido com base no paper "Aproximation Algorithms for Some Postman Problems", por Greg N. Frederickson em 1979.
+
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -75,7 +77,8 @@ struct PCC {
     ///     Multiconjuntos M, composto por arcos e algumas arestas de G direcionadas, e U, composto por arestas de G não direcionadas.
     ///     O grafo misto induzido pelos multiconjuntos (M, U) deve possuir grau de entrada e saída iguais 
     ///     Os multiconjuntos devolvidos contem elementos (u, v, c, id), representando uma aresta uv, de custo c e identificador id
-    pair<vector<tuple<int, int, double, int>>, vector<tuple<int, int, double, int>>> iguala_grau_dir(Misto G){
+    ///     O ultimo multiconjunto retornado 'MAdd' é um subconjunto de M, contendo apenas as cópias adicionadis de arcos e as arestas direcionadas.
+    tuple<vector<tiidi>, vector<tiidi>, vector<tiidi>> iguala_grau_dir(Misto G){
         auto mnDist = floyd_warshall(G);
 
         vector<int> F, S, dF, dS;
@@ -93,7 +96,9 @@ struct PCC {
         auto pt = ProblemaTransporte(G.n, F, dF, S, dS, mnDist);
         auto edgeFlow = pt.solve();
 
-        vector<tuple<int, int, double, int>> M, U;
+        vector<tiidi> M, U;
+        // Conjunto dos arcos e arestas direcionadas adicionais, necessario para o funcionamento da funcao GRAU_PAR
+        vector<tiidi> MAdd;
         // expande edgeFlow em flow de arestas e arcos de G
 
         // Guarda a quantidade de fluxo total passada por cada par ('id' de aresta, 'orientacao')
@@ -127,25 +132,82 @@ struct PCC {
             auto [u, v, c] = listaArestas[id];
             if(G.arco(id)){
                 insere(M, make_tuple(u, v, c, id), f[id][1]+1);
+                insere(MAdd, make_tuple(u, v, c, id), f[id][1]);
             }
             else{
                 if(f[id][false] >= 1 || f[id][true] >= 1){
                     assert(f[id][0] * f[id][1] == 0); // se custo > 0 impossivel ter ambas orientacoes com fluxo
-                    insere(M, make_tuple(v, u, c, id), f[id][false]); 
+                    insere(M, make_tuple(v, u, c, id), f[id][false]);
                     insere(M, make_tuple(u, v, c, id), f[id][true]);
+                    insere(MAdd, make_tuple(v, u, c, id), f[id][false]);
+                    insere(MAdd, make_tuple(u, v, c, id), f[id][true]);
                 }
                 else
                     insere(U, make_tuple(u, v, c, id));
             }
         }
 
-        return {M, U};
+        return {M, U, MAdd};
+    }
+
+    inline bool in(int x, set<int> &C){
+        return (C.find(x) != C.end());
     }
 
     /// Retorna multiconjuntos M', U' que mantem a propriedade de M, U, que o grau de entrada e saída de todos vértices são iguais. 
     /// Porém M', U' devem garatir ainda que o grau (não direcionado) de todo vértice seja par. Tornando assim o grafo induzido por M', U' euleriano.
-    pair<vector<tiidi>, vector<tiidi>> grau_par(vector<tiidi> M, vector<tiidi> U){
+    pair<vector<tiidi>, vector<tiidi>> grau_par(int n, vector<tiidi> M, vector<tiidi> U, vector<tiidi> MAdd){
+        Misto G(n, M, U);
+        vector<vector<Aresta>> adj = G.adj;
+        vector<vector<Aresta>> inv = G.adjInverso();
 
+        set<int> V;
+        for(int u=0;u<n;u++){
+            if(G.grauTotal(u)&1){
+                V.insert(u);
+            }
+        }
+        while(!V.empty()){
+            int v = *V.begin();
+            int vIni = v;
+            while(in(v, V)){
+                V.erase(v);
+                do {
+                    int w = -1;
+                    for (int i = 0; i < MAdd.size() && w == -1; i++) {
+                        auto [x, y, ignore, ignore] = MAdd[i];
+                        if (x == v) {
+                            w = y;
+                            MAdd.push_back(MAdd[i]);
+                        }
+                        else if (y == v){
+                            w = x;
+                            swap(MAdd.back(), MAdd[i]);
+                            MAdd.pop_back();
+                        }
+                   }
+                   assert(w > -1);
+                   v = w;
+                } while(!in(v, V));
+                V.erase(v);
+                do {
+                    int w = -1;
+                    for (int i = 0; i < U.size() && w == -1; i++) {
+                        auto [x, y, c, id] = U[i];
+                        if(x != v) swap(x, y);
+                        if (x == v) {
+                            w = y;
+                            swap(U.back(), U[i]);
+                            U.pop_back();
+                            MAdd.emplace_back(v, w, c, id);
+                        }
+                   }
+                   assert(w > -1);
+                   v = w;
+                } while(!in(v, V) && v != vIni);
+            }
+        }
+        return {MAdd, U};
     }
 
     /// Implementa o algoritmo de 2-aproximação sugerido por Frederickson em paper de '79.
@@ -153,8 +215,16 @@ struct PCC {
     /// O circuito euleriano é dado por um vector de 'id's das arestas e arcos percorridos no circuito.
     vector<int> solveById(Misto G){
         G = grau_total_par(G);
-        auto [M, U] = iguala_grau_dir(G);
-        tie(M, U) =  grau_par(M, U);
+        auto [M, U, MAdd] = iguala_grau_dir(G);
+        tie(M, U) =  grau_par(G.n, M, U, MAdd);
+        // Readiciona em M os arcos de G
+        for(int u=0;u<G.n;u++){
+            for(Aresta ar: G.adj[u]){
+                if(G.arco(ar.id)){
+                    M.emplace_back(u, ar.prox, ar.cus, ar.id);
+                }
+            }
+        }
         Misto Ge = Misto(G.n, M, U);
         Euler E = Euler(Ge);
         return E.trilha_euleriana_id();

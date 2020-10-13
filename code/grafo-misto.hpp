@@ -142,6 +142,7 @@ struct Misto{
         adj[u].emplace_back(v, c, newId);
             idOriginal[newId++] = id;
         }
+        assert(newId == m);
     }
 
     /// Constrói, a partir do vetor de adjacências, um vetor com todas arestas e arcos do grafo, indexados pelo seu id.
@@ -241,7 +242,7 @@ struct Misto{
         return (id < nArestas);
     }
 
-    /// Testa se a aresta com identificador 'id' é um arco.
+    /// Testa se a aresta com identificador 'id' é um arco ou uma aresta direcionada.
     bool arco(int id){
         if(idReal.find(id) != idReal.end())
             id = idReal[id];
