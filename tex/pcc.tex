@@ -1028,7 +1028,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \caption{Função auxiliar GRAU PAR}
     \label{mixed-grau-par}
     \begin{algorithmic}[1]
-        \Function{grau\_par}{G, M, U}
+        \Function{grau\_par}{M, U}
             %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
             \State $U' \gets U$
             \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
@@ -1040,7 +1040,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \While{$v \in V'$}
                     \State $V' \gets V' \setminus v$
                     \Repeat 
-                        \State Seja $a$ um arco incidente a $v$, da forma $vw$ ou $wv$, pertencente a $M'$
+                        \State Seja $a \in M'$, um arco da forma $vw$ ou $wv$
                         \If{$a$ é o arco $vw$}
                             \State Insere outra cópia de $a$ em $M'$ \label{alg:duplica}
                         \Else
@@ -1048,6 +1048,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                         \EndIf
                         \State $v \gets w$
                     \Until{$v \notin V'$}
+                    \State $V' \gets V' \setminus v$
                     \Repeat
                         \State Remove uma aresta $vw$ de $U'$
                         \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$ \label{alg:orienta}
@@ -1055,6 +1056,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                     \Until{$v \notin V'$ e $v \neq v_{ini}$}
                 \EndWhile
             \EndWhile
+            \Return $M', U'$
         \EndFunction
     \end{algorithmic}
     \end{algorithm}
