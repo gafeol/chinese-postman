@@ -1,3 +1,6 @@
+#ifndef EULER_MISTO
+#define EULER_MISTO
+
 #include "bits/stdc++.h"
 using namespace std;
 #include "grafo-misto.hpp"
@@ -164,3 +167,5 @@ struct Euler {
         Euler(int n, int nArestas, vector<pair<int, int>> ar) : G(Misto(n, nArestas, ar)) {}
         Euler(int n, int nArestas, vector<tuple<int, int, double>> ar) : G(Misto(n, nArestas, ar)) {}
 };
+
+#endif
