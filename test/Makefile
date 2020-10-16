@@ -113,7 +113,7 @@ graph: $(addsuffix .test, $(GRAPH_TESTS) $(GRAPH_LIBS))
 grafo: $(addsuffix .test, $(GRAPH_TESTS) $(GRAPH_LIBS))
 
 MIXED_TESTS = $(basename $(wildcard *-misto.cpp))
-MIXED_LIBS = $(basename grafo-misto.hpp problema-transporte.cpp min-cost-flow.cpp)
+MIXED_LIBS = $(basename grafo-misto.hpp problema-transporte.cpp min-cost-flow.cpp min-cost-matching/MCM.cpp $(wildcard min-cost-matching/*.h) $(wildcard min-cost-matching/*.hpp))
 
 mixed: $(addsuffix .test, $(MIXED_TESTS) $(MIXED_LIBS))
 misto: $(addsuffix .test, $(MIXED_TESTS) $(MIXED_LIBS))
