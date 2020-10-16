@@ -230,8 +230,9 @@ struct Misto{
     int grauEntrada(int u){
         vector<vector<Aresta>> inv = adjInverso();
         int deg = 0;
-        for(Aresta ar: adj[u])
+        for(Aresta ar: inv[u]){
             deg += arco(ar.id);
+        }
         return deg;
     }
 
@@ -251,7 +252,6 @@ struct Misto{
 
     /// Cria uma cópia da aresta/arco de identificador 'id'
     void copia(int id){
-        assert(false);
         // Provavelmente so adiciona no fim do adj e marca num map o id real da aresta, que entao pode ser classificada por nArestas
         auto [u, v, c] = listaAdj()[id];
         int novoId = m++;
@@ -315,7 +315,14 @@ struct Misto{
         printf("Grafo misto com %d nós\nArestas:\n", n);
         for(int a=0;a<n;a++){
             for(Aresta ar: adj[a]){
-                if(a <= ar.prox)
+                if(aresta(ar.id))
+                    printf("%d %d %.3f (id %d)\n", a, ar.prox, ar.cus, ar.id);
+            }
+        }
+        puts("Arcos");
+        for(int a=0;a<n;a++){
+            for(Aresta ar: adj[a]){
+                if(arco(ar.id))
                     printf("%d %d %.3f (id %d)\n", a, ar.prox, ar.cus, ar.id);
             }
         }
