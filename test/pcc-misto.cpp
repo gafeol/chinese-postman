@@ -5,17 +5,28 @@ using namespace std;
 #include "../code/euler-misto.cpp"
 #include "../code/pcc-misto.cpp"
 
+PCC pcc;
+void testGrauPar(Misto G) { 
+    for(int u=0;u<G.n;u++){
+        EXPECT_EQ(G.grauTotal(u)%2, 0);
+    }
+}
 
 TEST(PCCMisto, GrauTotalPar){
     Misto G(2, {{1, 0}}, {{0, 1}});
-    EXPECT_EQ(G.grauEntrada(0), 0);
-    EXPECT_EQ(G.grauSaida(0), 1);
-    EXPECT_EQ(G.grau(0), 1);
-    PCC pcc;
     Misto GPar = pcc.grau_total_par(G);
     for(int u=0;u<G.n;u++){
         EXPECT_EQ(G.adj[u], GPar.adj[u]);
     }
+    testGrauPar(GPar);
+}
+
+TEST(PCCMisto, GrauTotalPar2){
+    Misto G(2, {{0, 1}}, {});
+    for(int u=0;u<2;u++)
+        EXPECT_NE(G.grauTotal(u)%2, 0);
+    Misto GPar = pcc.grau_total_par(G);
+    testGrauPar(GPar);
 }
 
 /*
