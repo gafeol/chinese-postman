@@ -7,7 +7,7 @@ using namespace std;
 #include "aresta.hpp"
 #include "floyd-warshall.cpp"
 #include "euler-misto.cpp"
-#include "min-cost-matching/MCM.hpp"
+#include "min-cost-matching/MCM.cpp"
 #include "problema-transporte.cpp"
 
 typedef tuple<int, int, double, int> tiidi;
@@ -18,7 +18,6 @@ struct PCC {
     void expande(int u, int v, vector<vector<double>> &mnDist, Misto &G){
         if(u == v)
             return ;
-        int cus = mnDist[u][v];
         for(Aresta ar: G.adj[u]){
             if(ar.cus + mnDist[ar.prox][v] == mnDist[u][v]){
                 G.copia(ar.id);
@@ -40,12 +39,12 @@ struct PCC {
     ///     Grafo misto com alguns arestas e arcos duplicados 
     Misto grau_total_par(Misto G){
         vector<int> vImp;
-
-        for(int u=0;u<G.n;u++)
+        for(int u=0;u<G.n;u++){
             if(G.grauTotal(u)&1)
                 vImp.push_back(u);
+        }
 
-        Grafo undGraph(G.adj);
+        Grafo undGraph(G.n, G.listaAdj());
         auto mnDist = floyd_warshall(undGraph);
 
         vector<tuple<int, int, double>> kEdges;
@@ -106,7 +105,7 @@ struct PCC {
         vector<tuple<int, int, double>> listaArestas = G.listaAdj();
 
         // Retorna verdadeiro se a aresta 'id' for do formato '(u, v)', falso se for '(v, u)'
-        auto orientacao = [&](int id, int u, int v) {
+        auto orientacao = [&](int id, int u) {
             return (u == get<0>(listaArestas[id]));
         };
 
@@ -116,7 +115,7 @@ struct PCC {
             while(u != v){
                 for(auto [prox, id, cus]: G.adj[u]){
                     if(cus + mnDist[prox][v] == mnDist[u][v]){
-                        f[id][orientacao(id, u, prox)] += flow;
+                        f[id][orientacao(id, u)] += flow;
                         u = prox;
                         break; 
                     }
@@ -128,7 +127,7 @@ struct PCC {
         for(auto aresta : edgeFlow)
             expande(aresta);
 
-        for(int id=0;id<listaArestas.size();id++){
+        for(int id=0;id<(int)listaArestas.size();id++){
             auto [u, v, c] = listaArestas[id];
             if(G.arco(id)){
                 insere(M, make_tuple(u, v, c, id), f[id][1]+1);
@@ -174,8 +173,9 @@ struct PCC {
                 V.erase(v);
                 do {
                     int w = -1;
-                    for (int i = 0; i < MAdd.size() && w == -1; i++) {
-                        auto [x, y, ignore, ignore] = MAdd[i];
+                    for (int i = 0; i < (int)MAdd.size() && w == -1; i++) {
+                        int x = get<0>(MAdd[i]);
+                        int y = get<1>(MAdd[i]);
                         if (x == v) {
                             w = y;
                             MAdd.push_back(MAdd[i]);
@@ -192,7 +192,7 @@ struct PCC {
                 V.erase(v);
                 do {
                     int w = -1;
-                    for (int i = 0; i < U.size() && w == -1; i++) {
+                    for (int i = 0; i < (int)U.size() && w == -1; i++) {
                         auto [x, y, c, id] = U[i];
                         if(x != v) swap(x, y);
                         if (x == v) {
