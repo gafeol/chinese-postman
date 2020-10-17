@@ -44,7 +44,7 @@ TEST(PCCMisto, GrauTotalPar2){
 TEST(PCCMisto, GrauDirIgual){
     Misto G(2, {{1, 0}}, {{0, 1}});
     auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
-    Misto GDir = Misto(G.n, M, U);
+    Misto GDir(G.n, M, U);
     testGrauDir(GDir);
     EXPECT_EQ(MAdd.size(), 1);
     EXPECT_EQ(GDir.grauEntrada(0), 1);
@@ -56,7 +56,7 @@ TEST(PCCMisto, GrauDirIgual){
 TEST(PCCMisto, GrauDirIgual2){
     Misto G(3, {{0, 1}}, {{0, 1}, {1, 2}, {2, 0}});
     auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
-    Misto GDir = Misto(G.n, M, U);
+    Misto GDir(G.n, M, U);
     testGrauDir(GDir);
     EXPECT_EQ(MAdd.size(), 0);
     EXPECT_EQ(GDir.grauEntrada(0), 1);
@@ -65,6 +65,21 @@ TEST(PCCMisto, GrauDirIgual2){
     EXPECT_EQ(GDir.grauSaida(1), 1);
     EXPECT_EQ(GDir.grauEntrada(2), 1);
     EXPECT_EQ(GDir.grauSaida(2), 1);
+}
+
+TEST(PCCMisto, GrauDirIgual3){
+    Misto G(3, {{0, 2}}, {{0, 1}, {1, 2}});
+    auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
+    Misto GDir(G.n, M, U);
+    EXPECT_EQ(MAdd.size(), 1);
+    EXPECT_TRUE(U.empty());
+    EXPECT_EQ(GDir.grauEntrada(0), 1);
+    EXPECT_EQ(GDir.grauEntrada(1), 1);
+    EXPECT_EQ(GDir.grauEntrada(2), 1);
+    EXPECT_EQ(GDir.grau(0), 0);
+    EXPECT_EQ(GDir.grau(1), 0);
+    EXPECT_EQ(GDir.grau(2), 0);
+    testGrauDir(GDir);
 }
 
 
