@@ -12,6 +12,12 @@ void testGrauPar(Misto G) {
     }
 }
 
+void testGrauDir(Misto G){
+    for(int u=0;u<G.n;u++){
+        EXPECT_EQ(G.grauEntrada(u), G.grauSaida(u));
+    }
+}
+
 TEST(PCCMisto, GrauTotalPar){
     Misto G(2, {{1, 0}}, {{0, 1}});
     Misto GPar = pcc.grau_total_par(G);
@@ -28,6 +34,18 @@ TEST(PCCMisto, GrauTotalPar2){
     Misto GPar = pcc.grau_total_par(G);
     testGrauPar(GPar);
 }
+
+TEST(PCCMisto, GrauDirIgual){
+    Misto G(2, {{1, 0}}, {{0, 1}});
+    auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
+    Misto GDir = Misto(G.n, M, U);
+    testGrauDir(GDir);
+    EXPECT_EQ(GDir.grauEntrada(0), 1);
+    EXPECT_EQ(GDir.grauSaida(0), 1);
+    EXPECT_EQ(GDir.grauEntrada(1), 1);
+    EXPECT_EQ(GDir.grauSaida(1), 1);
+}
+
 
 /*
 TEST(PCCMisto, MixedTwoNodes){
