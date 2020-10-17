@@ -130,7 +130,7 @@ struct Misto{
     /// Essa construção faz parte da resolução do pcc-misto.
     /// Assume-se que existe um grafo misto base G que é estendido para uma versão euleriana.
     /// O grafo devolvido por esse construtor deve ser a extensão euleriana deste grafo original.
-    Misto(int n, vector<tuple<int, int, double, int>> M, vector<tuple<int, int, double, int>> U) : n(n), m(M.size() + U.size()), nArestas(M.size()) {
+    Misto(int n, vector<tuple<int, int, double, int>> M, vector<tuple<int, int, double, int>> U) : n(n), m(M.size() + U.size()), nArestas(U.size()) {
         adj.resize(n);
         int newId = 0;
         for(auto [u, v, c, id]: U){
@@ -138,8 +138,9 @@ struct Misto{
             adj[v].emplace_back(u, c, newId);
             idOriginal[newId++] = id;
         }
+        assert(newId == nArestas);
         for(auto [u, v, c, id]: M){
-        adj[u].emplace_back(v, c, newId);
+            adj[u].emplace_back(v, c, newId);
             idOriginal[newId++] = id;
         }
         assert(newId == m);
