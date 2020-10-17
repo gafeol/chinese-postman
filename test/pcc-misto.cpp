@@ -18,6 +18,12 @@ void testGrauDir(Misto G){
     }
 }
 
+void printv(vector<tuple<int, int, double, int>> v){
+    for(auto [u, v, c, id]: v){
+        printf("u %d v %d c %.3f id %d\n", u, v, c, id);
+    }
+}
+
 TEST(PCCMisto, GrauTotalPar){
     Misto G(2, {{1, 0}}, {{0, 1}});
     Misto GPar = pcc.grau_total_par(G);
@@ -40,10 +46,25 @@ TEST(PCCMisto, GrauDirIgual){
     auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
     Misto GDir = Misto(G.n, M, U);
     testGrauDir(GDir);
+    EXPECT_EQ(MAdd.size(), 1);
     EXPECT_EQ(GDir.grauEntrada(0), 1);
     EXPECT_EQ(GDir.grauSaida(0), 1);
     EXPECT_EQ(GDir.grauEntrada(1), 1);
     EXPECT_EQ(GDir.grauSaida(1), 1);
+}
+
+TEST(PCCMisto, GrauDirIgual2){
+    Misto G(3, {{0, 1}}, {{0, 1}, {1, 2}, {2, 0}});
+    auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
+    Misto GDir = Misto(G.n, M, U);
+    testGrauDir(GDir);
+    EXPECT_EQ(MAdd.size(), 0);
+    EXPECT_EQ(GDir.grauEntrada(0), 1);
+    EXPECT_EQ(GDir.grauSaida(0), 1);
+    EXPECT_EQ(GDir.grauEntrada(1), 1);
+    EXPECT_EQ(GDir.grauSaida(1), 1);
+    EXPECT_EQ(GDir.grauEntrada(2), 1);
+    EXPECT_EQ(GDir.grauSaida(2), 1);
 }
 
 

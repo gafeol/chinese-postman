@@ -134,13 +134,13 @@ struct Misto{
         adj.resize(n);
         int newId = 0;
         for(auto [u, v, c, id]: U){
-            adj[u].emplace_back(v, c, newId);
-            adj[v].emplace_back(u, c, newId);
+            adj[u].emplace_back(v, newId, c);
+            adj[v].emplace_back(u, newId, c);
             idOriginal[newId++] = id;
         }
         assert(newId == nArestas);
         for(auto [u, v, c, id]: M){
-            adj[u].emplace_back(v, c, newId);
+            adj[u].emplace_back(v, newId, c);
             idOriginal[newId++] = id;
         }
         assert(newId == m);
