@@ -221,13 +221,25 @@ struct PCC {
         for(int u=0;u<G.n;u++){
             for(Aresta ar: G.adj[u]){
                 if(G.arco(ar.id)){
-                    M.emplace_back(u, ar.prox, ar.cus, ar.id);
+                    M.emplace_back(u, ar.prox, ar.cus, G.original(ar.id));
                 }
             }
         }
+
+        /// Traduz id's de multiconjuntos para ids originais.
+        for(auto& ar: M)
+            get<3>(ar) = G.original(get<3>(ar));
+        for(auto& ar: MAdd)
+            get<3>(ar) = G.original(get<3>(ar));
+        for(auto& ar: U)
+            get<3>(ar) = G.original(get<3>(ar));
+
         Misto Ge = Misto(G.n, M, U);
         Euler E = Euler(Ge);
-        return E.trilha_euleriana_id();
+        auto trilha = E.trilha_euleriana_id();
+        for(int i=0;i<(int)trilha.size();i++)
+            trilha[i] = Ge.original(trilha[i]);
+        return trilha;
     }
 
     PCC() {}
