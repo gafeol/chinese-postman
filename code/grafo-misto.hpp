@@ -310,6 +310,15 @@ struct Misto{
         return nc;
     }
 
+    /// Função que retorna o id da aresta ou arco base sobre o qual 'id' foi criado.
+    int original(int id){
+        assert(idReal.find(id) == idReal.end() || idOriginal.find(id) == idOriginal.end());
+        if(idReal.find(id) != idReal.end())
+            return idReal[id];
+        if(idOriginal.find(id) != idOriginal.end())
+            return idOriginal[id];
+        return id;
+    }
 
     /// Função de depuração que imprime o grafo e todas suas arestas.
     void print(){
