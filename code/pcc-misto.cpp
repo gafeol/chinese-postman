@@ -40,7 +40,7 @@ struct PCC {
     Misto grau_total_par(Misto G){
         vector<int> vImp;
         for(int u=0;u<G.n;u++){
-            if(G.grauTotal(u)&1)
+            if((G.grauTotal(u)&1))
                 vImp.push_back(u);
         }
 
@@ -52,6 +52,7 @@ struct PCC {
             int u = vImp[i];
             for(int j=i+1;j<(int)vImp.size();j++){
                 int v = vImp[j];
+                // Comprime indices de vertices impares u -> i, v -> j
                 kEdges.emplace_back(i, j, mnDist[u][v]);
             }
         }
@@ -60,7 +61,10 @@ struct PCC {
         vector<pair<int, int>> mEdges = M.second;
 
         for(pair<int, int> p : mEdges){
-            expande(p.first, p.second, mnDist, G);
+            // Descomprime os indices dos vertices do emparelhamento
+            int u = vImp[p.first];
+            int v = vImp[p.second];
+            expande(u, v, mnDist, G);
         }
         return G;
     }

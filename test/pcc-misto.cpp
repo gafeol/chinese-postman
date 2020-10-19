@@ -31,7 +31,7 @@ void printv(vector<tuple<int, int, double, int>> v){
     }
 }
 
-TEST(PCCMisto, GrauTotalPar){
+TEST(PCCMisto, GrauTotalParArestaArco){
     Misto G(2, {{1, 0}}, {{0, 1}});
     Misto GPar = pcc.grau_total_par(G);
     for(int u=0;u<G.n;u++){
@@ -40,12 +40,19 @@ TEST(PCCMisto, GrauTotalPar){
     testGrauTotalPar(GPar);
 }
 
-TEST(PCCMisto, GrauTotalPar2){
+TEST(PCCMisto, GrauTotalParAresta){
     Misto G(2, {{0, 1}}, {});
     for(int u=0;u<2;u++)
         EXPECT_NE(G.grauTotal(u)%2, 0);
     Misto GPar = pcc.grau_total_par(G);
     testGrauTotalPar(GPar);
+}
+
+TEST(PCCMisto, GrauTotalPar){
+    Misto G(4, {}, {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}});
+    G = pcc.grau_total_par(G);
+    G.print();
+    testGrauTotalPar(G);
 }
 
 TEST(PCCMisto, GrauDirIgual){
