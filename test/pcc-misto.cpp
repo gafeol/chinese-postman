@@ -51,8 +51,31 @@ TEST(PCCMisto, GrauTotalParAresta){
 TEST(PCCMisto, GrauTotalPar){
     Misto G(4, {}, {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}});
     G = pcc.grau_total_par(G);
-    G.print();
     testGrauTotalPar(G);
+    EXPECT_EQ(G.grauTotal(0), 4);
+    EXPECT_EQ(G.grauTotal(2), 4);
+    EXPECT_EQ(G.grauTotal(1), 2);
+    EXPECT_EQ(G.grauTotal(3), 2);
+}
+
+TEST(PCCMisto, GrauTotalParComPesos){
+    Misto G(4, {}, {{0, 1, 1.}, {1, 2, 1.}, {2, 3, 1.}, {3, 0, 1.}, {0, 2, 3.}});
+    G = pcc.grau_total_par(G);
+    testGrauTotalPar(G);
+    EXPECT_EQ(G.grauTotal(0), 4);
+    EXPECT_EQ(G.grauTotal(1), 4);
+    EXPECT_EQ(G.grauTotal(2), 4);
+    EXPECT_EQ(G.grauTotal(3), 2);
+}
+
+TEST(PCCMisto, GrauTotalParComPesos2){
+    Misto G(4, {}, {{0, 1, 1.}, {1, 2, 5.}, {2, 3, 2.}, {3, 0, 10.}, {0, 2, 3.}});
+    G = pcc.grau_total_par(G);
+    testGrauTotalPar(G);
+    EXPECT_EQ(G.grauTotal(0), 4);
+    EXPECT_EQ(G.grauTotal(2), 4);
+    EXPECT_EQ(G.grauTotal(1), 2);
+    EXPECT_EQ(G.grauTotal(3), 2);
 }
 
 TEST(PCCMisto, GrauDirIgual){
