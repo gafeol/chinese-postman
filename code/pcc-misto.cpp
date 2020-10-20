@@ -117,14 +117,17 @@ struct PCC {
             vector<Aresta> caminhoReal;
             auto [u, v, flow] = aresta;
             while(u != v){
+                int nxtu = -1;
                 for(auto [prox, id, cus]: G.adj[u]){
                     if(cus + mnDist[prox][v] == mnDist[u][v]){
                         f[id][orientacao(id, u)] += flow;
-                        u = prox;
+                        nxtu = prox;
                         break; 
                     }
-                    assert(false);
                 }
+                if(nxtu == -1)
+                    assert(false);
+                u = nxtu;
             }
         };
 
