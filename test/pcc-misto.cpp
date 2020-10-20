@@ -25,6 +25,33 @@ void testGrauPar(Misto G){
     }
 }
 
+bool testTrilhaDe(int u, vector<int> trilha, Misto G){
+    int ini = u;
+    auto lista = G.listaAdj();
+    for(int id: trilha){
+        int w, v;
+        tie(w, v, ignore) = lista[id];
+        if(u == w)
+            u = v;
+        else if(u == v && G.aresta(id))
+            u = w;
+        else
+            return false;
+    }    
+    return (ini == u);
+}
+
+void testTrilhaPCCM(Misto G, vector<int> trilha){
+    vector<int> cnt(G.m, 0);
+    for(int id: trilha)
+        cnt[id]++;
+    // Testa se toda aresta/arco foi percorrida ao menos uma vez
+    EXPECT_GE(*min_element(cnt.begin(), cnt.end()), 1);
+    auto lista = G.listaAdj();
+    EXPECT_TRUE(testTrilhaDe(get<0>(lista[trilha[0]]), trilha, G) ||
+                testTrilhaDe(get<1>(lista[trilha[0]]), trilha, G));
+}
+
 void printv(vector<tuple<int, int, double, int>> v){
     for(auto [u, v, c, id]: v){
         printf("u %d v %d c %.3f id %d\n", u, v, c, id);
@@ -164,6 +191,51 @@ TEST(PCCMisto, Solve){
     auto [custo, trilha] = pcc.solveById(G);
     vector<int> expTrilha = {0, 0};
     EXPECT_EQ(trilha, expTrilha);
+    EXPECT_DOUBLE_EQ(custo, 2.);
+}
+
+/*
+0 4 5.000 
+4 0 5.000
+
+1 2 1.000 
+2 1 1.000 
+
+2 3 3.000
+3 2 3.000
+
+3 4 2.000
+4 3 2.000
+
+0 2 5.000
+
+0 2 5.000
+
+1 0 3.000
+
+3 1 4.000
+
+1 2 1.000
+2 1 1.000
+
+2 3 3.000
+3 2 3.000
+*/
+
+TEST(PCCMisto, SolveExemplo){
+    /// Exemplo usado na seção referente ao PCCM da monografia
+    Misto G(5,
+            {{0, 4, 5.},
+             {1, 2, 1.},
+             {2, 3, 3.},
+             {3, 4, 2.}},
+            {{0, 2, 5.},
+             {0, 2, 5.},
+             {1, 0, 3.},
+             {3, 1, 4.}});
+    auto [custo, trilha] = pcc.solveById(G);
+    EXPECT_DOUBLE_EQ(custo, 32.);
+    testTrilhaPCCM(G, trilha);
 }
 /*
 TEST(PCCMisto, MixedTwoNodes){
