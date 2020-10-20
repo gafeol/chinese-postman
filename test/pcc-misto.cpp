@@ -161,7 +161,7 @@ TEST(PCCMisto, GrauPar2){
 
 TEST(PCCMisto, Solve){
     Misto G(2, {{0, 1}}, {});
-    auto trilha = pcc.solveById(G);
+    auto [custo, trilha] = pcc.solveById(G);
     vector<int> expTrilha = {0, 0};
     EXPECT_EQ(trilha, expTrilha);
 }

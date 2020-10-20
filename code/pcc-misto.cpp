@@ -220,7 +220,7 @@ struct PCC {
     /// Implementa o algoritmo de 2-aproximação sugerido por Frederickson em paper de '79.
     /// Retorna um circuito euleriano cujo custo é no máximo o dobro do custo ótimo.
     /// O circuito euleriano é dado por um vector de 'id's das arestas e arcos percorridos no circuito.
-    vector<int> solveById(Misto G){
+    pair<double, vector<int>> solveById(Misto G){
         G = grau_total_par(G);
         auto [M, U, MAdd] = iguala_grau_dir(G);
         tie(M, U) =  grau_par(G.n, M, U, MAdd);
@@ -246,7 +246,11 @@ struct PCC {
         auto trilha = E.trilha_euleriana_id();
         for(int i=0;i<(int)trilha.size();i++)
             trilha[i] = Ge.original(trilha[i]);
-        return trilha;
+        double custo = 0;
+        auto lista = G.listaAdj();
+        for(int id: trilha)
+            custo += get<double>(lista[id]);
+        return {custo, trilha};
     }
 
     PCC() {}
