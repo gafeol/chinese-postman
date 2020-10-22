@@ -4,6 +4,7 @@
 \usepackage[brazil]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{xcolor}
+\usepackage{verbatim}
 \usepackage{tikz}
 \usetikzlibrary {positioning}
 \usetikzlibrary{arrows}
@@ -105,6 +106,286 @@
                 \node[main node] (3) [right of=2] {3};
                 \node[main node] (4) [right of=1] {4};
 
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                %\path[->] (4) edge node[left] {3} (3);
+                %\path[->] (3) edge[] node[above] {2} (2);
+
+                %\path[->] (3) edge[bend right=15] node[above] {2} (2);
+                %\path[->] (3) edge[bend left=15, red] node[above] {2} (2);
+
+                %\path[->] (2) edge[] node[right] {2} (1);
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+                %\path[->] (1) edge node[above] {1} (3);
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node [right] {2} (2)
+                    (1) edge node [] {1} (3)
+                    %(1) edge node [above] {1} (4)
+                    (3) edge node [above] {2} (2)
+                    (4) edge node [left] {3} (3)
+                    ;
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                %\path[->] (3) edge[] node[above] {2} (2);
+
+                %\path[->] (3) edge[bend right=15] node[above] {2} (2);
+                %\path[->] (3) edge[bend left=15, red] node[above] {2} (2);
+
+                %\path[->] (2) edge[] node[right] {2} (1);
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+                %\path[->] (1) edge node[above] {1} (3);
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node [right] {2} (2)
+                    (1) edge node [] {1} (3)
+                    %(1) edge node [above] {1} (4)
+                    (3) edge node [above] {2} (2)
+                    %(4) edge node [left] {3} (3)
+                    ;
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                \path[->] (3) edge[blue] node[above] {2} (2);
+
+                %\path[->] (3) edge[bend right=15] node[above] {2} (2);
+                %\path[->] (3) edge[bend left=15, red] node[above] {2} (2);
+
+                %\path[->] (2) edge[] node[right] {2} (1);
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+                %\path[->] (1) edge node[above] {1} (3);
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node [right] {2} (2)
+                    (1) edge node [] {1} (3)
+                    %(1) edge node [above] {1} (4)
+                    %(3) edge node [above] {2} (2)
+                    %(4) edge node [left] {3} (3)
+                    ;
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                \path[->] (3) edge[blue] node[above] {2} (2);
+                \path[->] (2) edge[blue] node[right] {2} (1);
+
+                %\path[->] (3) edge[bend right=15] node[above] {2} (2);
+                %\path[->] (3) edge[bend left=15, red] node[above] {2} (2);
+
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+                %\path[->] (1) edge node[above] {1} (3);
+                \path[every node/.style={font=\sffamily\small}]
+                    (1) edge node [] {1} (3)
+                    ;
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                \path[->] (3) edge[blue] node[above] {2} (2);
+                \path[->] (2) edge[blue] node[right] {2} (1);
+                \path[->] (1) edge[blue] node[above] {1} (3);
+
+                %\path[->] (3) edge[bend right=15] node[above] {2} (2);
+                %\path[->] (3) edge[bend left=15, red] node[above] {2} (2);
+
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                \path[->] (2) edge[blue] node[right] {2} (1);
+                \path[->] (1) edge[blue] node[above] {1} (3);
+
+                \path[->] (3) edge[blue, bend right=15] node[above] {2} (2);
+                \path[->] (3) edge[red, bend left=15, red] node[above] {2} (2);
+
+
+                %\path[->] (2) edge[bend right=15] node[right] {2} (1);
+                %\path[->] (2) edge[bend left=15, red] node[right] {2} (1);
+
+            \end{tikzpicture}
+            %\caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
+                \path[->] (1) edge[blue] node[above] {1} (4);
+                \path[->] (4) edge[blue] node[left] {3} (3);
+                \path[->] (1) edge[blue] node[above] {1} (3);
+
+                \path[->] (3) edge[blue, bend right=15] node[above] {2} (2);
+                \path[->] (3) edge[red, bend left=15, red] node[above] {2} (2);
+
+                \path[->] (2) edge[blue, bend right=15] node[right] {2} (1);
+                \path[->] (2) edge[red, bend left=15, red] node[right] {2} (1);
+
+            \end{tikzpicture}
+            \caption{Custo de rota: 13}
+        \end{figure}
+
+        \column{0.5\textwidth}
+
+    \end{columns}
+\end{frame}
+\begin{frame}{O problema do carteiro chinês}
+    \begin{block}{Definição}
+        Encontrar uma rota fechada, de menor custo, que percorre toda aresta de um grafo ao menos uma vez.
+    \end{block}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+                \node[main node] (1) []{1};
+                \node[main node] (2) [below of=1] {2};
+                \node[main node] (3) [right of=2] {3};
+                \node[main node] (4) [right of=1] {4};
+
                 \path[->] (1) edge node[above] {1} (4);
                 \path[->] (4) edge node[left] {3} (3);
                 \path[->] (3) edge[bend right=15] node[above] {2} (2);
@@ -141,17 +422,17 @@
 \section{Solução}
 
 \begin{frame}{Solução}
-    Os algoritmos se baseam em escolher uma rota que minimize o custo das arestas repetidas
+    Escolher uma rota que minimize o custo das arestas repetidas
     \begin{itemize}
         \item Em \textbf{grafos eulerianos} a solução ótima é um circuito euleriano
-        \item Caso contrário, copiam-se algumas arestas para tornar o grafo euleriano
+        \item Do contrário, copiam-se arestas para formar um supergrafo euleriano
     \end{itemize}
 
     Existem soluções polinomiais para os casos do problema em grafos direcionados e em grafos não direcionados.
 
     \vspace{10px}
 
-    \begin{block}{Grafo euleriano}
+    \begin{block}{Definição: Grafo euleriano}
         \begin{columns}
             \column{0.6\textwidth}
                 Grafo que possui um circuito (chamado circuito euleriano) que percorre todas arestas de um grafo uma única vez. 
@@ -310,7 +591,7 @@
 
             \begin{itemize}
                 \item Caso especial, custo de cada circuito é o mesmo independente da direção em que são percorridos.
-                \item No caso em que todo circuito tem o mesmo custo não importando o sentido que é percorrido, há uma solução polinomial, de Mei-Ko Kwan (1983).
+                \item Solução polinomial, de Mei-Ko Kwan (1983).
                 \item Modifica custos das arestas do grafo, reduzindo o problema para uma instância simples do carteiro chinês.
             \end{itemize}
     \end{itemize}
