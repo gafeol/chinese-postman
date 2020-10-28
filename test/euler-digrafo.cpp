@@ -143,3 +143,11 @@ TEST(EulerId, MultipleArc2){
     vector<int> trilha = d.trilha_euleriana_id();
     EXPECT_TRUE(d.checkEulerianTrailById(trilha));
 } 
+
+TEST(EulerChecker, CheckFail){
+    Euler d(3, { {0, 1}, {1, 2}, {2, 0}, {0, 0} });
+    EXPECT_TRUE(d.euleriano());
+    EXPECT_TRUE(d.checkEulerianTrailById({0, 1, 2, 3}));
+    EXPECT_FALSE(d.checkEulerianTrailById({0, 1, 2, 3, 3}));
+    EXPECT_FALSE(d.checkEulerianTrailById({0, 1, 2}));
+}
