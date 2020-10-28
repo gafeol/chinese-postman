@@ -237,6 +237,18 @@ TEST(PCCMisto, SolveExemplo){
     EXPECT_DOUBLE_EQ(custo, 32.);
     testTrilhaPCCM(G, trilha);
 }
+
+
+TEST(PCCMisto, SolvePesos){
+    Misto G(2, 
+            {{0, 1, 2.}},
+            {{0, 1, 2.}, 
+             {1, 0, 1.}});
+    auto [custo, trilha] = pcc.solveById(G);
+    EXPECT_DOUBLE_EQ(custo, 6.);
+    testTrilhaPCCM(G, trilha);
+}
+
 /*
 TEST(PCCMisto, MixedTwoNodes){
     Misto G(2, {{1, 0}}, {{0, 1}});
