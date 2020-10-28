@@ -74,6 +74,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 # Tests all tests automagically
 
+#TESTS = $(basename pcc-misto.cpp)
 TESTS = $(basename $(wildcard **/*.cpp *.cpp))
 
 .PHONY: .gitignore clean matching

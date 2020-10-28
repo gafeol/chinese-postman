@@ -90,16 +90,8 @@ Se o comando rodou como esperado, a última linha do mesmo deverá ser da forma:
 Acessando o link dado pode-se observar o resultado de cobertura dos testes atualmente adicionados ao projeto.
 Este teste de cobertura nos oferece informações muito importantes, como por exemplo: quais linhas de código nunca foram executadas nos testes.
 
-## Problemas comuns
-
-**Se durante a compilação automática do arquivo tex você receber o erro "compilation failed, file "bla.tex" not found:**
-
-Pare a compilação automática (usando o plugin vimtex) `\lk`, limpe os arquivos auxiliares de compilação `\lc`, reinicie a compilação automática `\ll`.
-
-Se isso não funcionar, feche tudo, e dê um `make` na pasta principal.
-
 ## Referências
 
 Todas as referências bibliográficas são apresentadas na monografia, e são organizadas usando Bibtex no arquivo `tex/ref.bib`.
 
-Implementações do Adilson Pereira de [Emparelhamento perfeito mínimo](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e do [Carteiro chinês](https://github.com/dilsonpereira/chinese-postman-problem).
+A implementação do Emparelhamento Perfeito Mínimo foi baseada na implementação de [Adilson Pereira](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e adaptada para esse projeto em um [fork próprio](https://github.com/gafeol/Minimum-Cost-Perfect-Matching).
