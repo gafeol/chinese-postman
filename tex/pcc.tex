@@ -1371,30 +1371,28 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \subsection{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
     
-    Nesta variação, além do grafo $G(V, A)$, sendo $V$ o conjunto de vértices e $A$ o conjunto de arestas, uma função de custo $c_e$, para algum $e\in A$, é também necessário se especificar um subconjunto $R \subseteq A$. 
-
-    Nesta versão mais geral do PCC devemos realizar o planejamento de uma rota de custo mínimo que se inicia e termina no mesmo vértice e passa ao menos uma vez por toda aresta pertencente a $R$. 
-    Isto é, não há necessidade de se percorrer as arestas de $A \setminus R$.
+    Nesta versão mais geral do PCC devemos realizar o planejamento de um circuito de custo mínimo que passa ao menos uma vez por toda aresta pertencente a um subconjunto $R \subseteq A$. 
+    Isto é, não há a necessidade de se percorrer na solução todas arestas do grafo, apenas as pertencentes ao subconjunto $R$.
 
     Denomina-se esta variação de Problema do Carteiro Rural (PCR).
 
-    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar a rota de um carteiro que não necessariamente precisa percorrer todas as ruas de uma cidade, ou mesmo a rota de um ônibus escolar, que precisa passar apenas nas ruas dos alunos que ele atende, e não necessariamente por todas ruas de um bairro.
+    Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar com ele a rota de um ônibus escolar, que deve percorrer as ruas dos alunos que ele atende, mas não necessariamente por todas ruas de um bairro.
 
-    O PCR é um problema NP-completo \cite{rural-np-complete}. %e np dificil
+    O PCR é um problema NP-completo \cite{rural-np-complete}. 
 
     De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
     Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
 
-        \subsubsection{PCR em grafos não direcionados}
+        \subsubsection{Grafos não direcionados}
 
 
-        \textbf{Heurística da árvore geradora mínima}
 
-        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possui o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides}. % https://en.wikipedia.org/wiki/Christofides_algorithm
+        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides} até junho de 2020 \cite{klein-tsp}. % https://en.wikipedia.org/wiki/Christofides_algorithm
 
-        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson \cite{frederickson}.
-        Pode-se provar que tal algoritmo possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
+        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson \cite{frederickson}, denominada \textbf{heurística da árvore geradora mínima}.
+
+        Pode-se provar que tal algoritmo é polinomial e possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
 
@@ -1687,17 +1685,16 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \end{enumerate}
 
-        \subsubsection{PCR em grafos direcionados}
+        \subsubsection{Grafos direcionados}
 
         Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
 
         Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
-        Será apresentada agora uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+        Será apresentada uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+        Nesse caso ela a heurística é denominada \textbf{heurística da arborescência geradora mínima}.
 
-        \textbf{Heurística da arborescência geradora mínima}
-
-        Para guiar a explicação da heurística toma-se, como exemplo, o digrafo $G$, a seguir:
+        Para guiar a explicação toma-se, como exemplo, o digrafo $G$, a seguir:
    
 
         \begin{figure}[H]
