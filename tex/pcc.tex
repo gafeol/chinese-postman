@@ -1378,17 +1378,15 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Esse problema possui aplicações mais gerais que a sua versão original, por exemplo: pode-se modelar com ele a rota de um ônibus escolar, que deve percorrer as ruas dos alunos que ele atende, mas não necessariamente por todas ruas de um bairro.
 
-    O PCR é um problema NP-completo \cite{rural-np-complete}. 
+    O PCR é um problema NP-completo, como provado por Lenstra e Kan \cite{rural-np-complete}. 
 
-    De modo similar aos outros casos do PCC, a solução padrão para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
+    De modo similar aos outros casos do PCC, a solução aproximada para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
-    Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas tanto heurísticas quanto discussões das soluções ótimas existentes.
+    Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas duas heurísticas, uma para cada tipo de grafo.
 
         \subsubsection{Grafos não direcionados}
 
-
-
-        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides} até junho de 2020 \cite{klein-tsp}. % https://en.wikipedia.org/wiki/Christofides_algorithm
+        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides} até junho de 2020, quando uma aproximação sutilmente melhor foi desenvolvida por Karlin, Klein e Gharan \cite{klein-tsp}.
 
         Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson \cite{frederickson}, denominada \textbf{heurística da árvore geradora mínima}.
 
@@ -1428,7 +1426,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \end{figure}
 
         Define-se o conjunto de vértices de $G'$: $V' = \{a, b, c, e, f\}$.
-        Exclui-se de tal conjunto apenas o vértice $d$, que não possui qualquer ligação com aresta em $R$.
+        Exclui-se de tal conjunto apenas o vértice $d$, que não possui ligação com alguma aresta de $R$.
 
     O conjunto $A'$ é definido em duas etapas: primeiramente criam-se novas arestas entre os vértices de $V'$ com custo igual ao custo da menor distância entre os mesmos vértices em $G$, tais arestas são representadas em azul na imagem \ref{grafo-intermediario}.
 
