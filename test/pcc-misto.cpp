@@ -238,6 +238,25 @@ TEST(PCCMisto, SolveExemplo){
     testTrilhaPCCM(G, trilha);
 }
 
+TEST(PCCMisto, SolveCiclos){
+    /// Exemplo usado na seção referente ao PCCM da monografia
+    Misto G(10,
+            {{2, 3},
+             {3, 0},
+             {4, 5},
+             {5, 6},
+             {7, 8},
+             {8, 9},
+             {9, 3}},
+            {{0, 1},
+             {1, 2},
+             {3, 4},
+             {6, 3},
+             {7, 3}});
+    auto [custo, trilha] = pcc.solveById(G);
+    EXPECT_DOUBLE_EQ(custo, 12.);
+    testTrilhaPCCM(G, trilha);
+}
 
 TEST(PCCMisto, SolvePesos){
     Misto G(2, 
