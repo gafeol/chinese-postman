@@ -11,6 +11,8 @@ struct PCC {
     private:
     Digrafo G;
 
+    public:
+
     vector<Aresta> expande(int ini, int fim, vector<vector<double>> &mnDist){
         if(ini == fim)
             return {};
@@ -27,8 +29,6 @@ struct PCC {
         assert(false);
     }
 
-    public:
-
     bool checkSolutionById(pair<double, vector<int>> sol) {
         double cost = sol.first;
         vector<int> pathId = sol.second;
@@ -37,9 +37,7 @@ struct PCC {
 
         int u = get<1>(listaArcos[pathId.back()]);
         for(int id: pathId){
-            int from, to;
-            double c;
-            tie(from, to, c) = listaArcos[id];
+            auto [from,to, c] = listaArcos[id];
             if(u != from)
                 return false;
             u = to;

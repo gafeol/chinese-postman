@@ -82,3 +82,21 @@ TEST(PCCDigrafo, Arco){
     PCC pcc(G);
     EXPECT_DEATH(pcc.solveById(), "");
 }
+
+
+TEST(PCCDigrafo, TrilhaErrada){
+    Digrafo G(4, {{0, 1},
+                  {1, 2},
+                  {2, 3},
+                  {3, 1}});
+    PCC pcc(G);
+    EXPECT_FALSE(pcc.checkSolutionById({3, {0, 2, 3}}));
+}
+
+TEST(PCCDigrafo, ExpandeImpossivel){
+    vector<vector<pair<int, double>>> adj(2);
+    Digrafo G(adj);
+    PCC pcc(G);
+    vector<vector<double>> mnDist = {{0.,0.}, {0., 0.}};
+    EXPECT_DEATH(pcc.expande(0, 1, mnDist), "");
+}
