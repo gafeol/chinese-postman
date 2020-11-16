@@ -1390,7 +1390,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson \cite{frederickson}, denominada \textbf{heurística da árvore geradora mínima}.
 
-        Pode-se provar que tal algoritmo é polinomial e possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular. 
+        Pode-se provar que tal algoritmo é polinomial e possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular.
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
 
@@ -1398,8 +1398,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         
         \begin{enumerate}
             \item Inicialmente adiciona-se a $A'$ as arestas $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$ em $G$
-            \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w$.
+            \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w \in V'$.
         \end{enumerate}
+
+        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e substituido por duas arestas, de custos $3$ e $5$).
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
