@@ -1394,10 +1394,14 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
 
-        $A'$ é obtido por adicionar ao conjunto $A$ uma aresta $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$; e retirar-se de $A'$ duplicatas de arestas paralelas de mesmo custo e todas arestas $(u, v) \in A \setminus R$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w$.
+        Define-se um novo conjunto de arestas $A'$ em dois passos:
+        
+        \begin{enumerate}
+            \item Inicialmente adiciona-se a $A'$ as arestas $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$ em $G$
+            \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w$.
+        \end{enumerate}
 
         Pode-se visualizar um exemplo de tal separação a seguir:
-
 
         \begin{figure}[H]
             \centering
