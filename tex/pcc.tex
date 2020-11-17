@@ -248,11 +248,8 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
 		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
 
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Solução do PCC em grafos não direcionados}
-    \label{pcc-pseudocode}
     \begin{algorithmic}[1]
+    \label{pcc-pseudocode}
     \Function{pcc}{G}
     \State $(V, E, dist) \gets G$
     \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
@@ -281,7 +278,6 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
     \EndFunction
 
     \end{algorithmic}
-    \end{algorithm}
 
 Escolheu-se o algoritmo de Floyd-Warshall para encontrar as distâncias mínimas entre todo par de vértices de $G$.
 Apesar de tal algoritmo possuir complexidade $\mathcal{O}(|V|^3)$, ele possui uma simples implementação.
@@ -427,11 +423,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Outra solução para a redução é usar uma variação do algoritmo de Edmonds-Karp \cite{edmonds-karp} para fluxo de custo mínimo de complexidade $\mathcal{O}(V^2E^2)$. 
     A explicação e implementação dessa variação estão disponíveis online, no site E-maxx \cite{min-cost}. 
 
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Solução do PCC em digrafos}
-    \label{di-pcc-pseudocode}
     \begin{algorithmic}[1]
+    \label{di-pcc-pseudocode}
     \Function{pcc}{G}
     \State $(V, E, dist) \gets G$
     \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
@@ -482,7 +475,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, custo, cap)$
     \EndFunction
     \end{algorithmic}
-    \end{algorithm}
 
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
@@ -862,11 +854,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Definiremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas, grau de entrada e saída, ou seja $\grt(v) = \gr(v) + \gre(v) + \grs(v)$.
 
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Função principal do algoritmo sugerido por Frederickson}
-    \label{mixed-1}
     \begin{algorithmic}[1]
+    \label{mixed-1}
     \Function{Misto}{G, c} 
         \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
         \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
@@ -875,7 +864,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
     \EndFunction 
     \end{algorithmic}
-    \end{algorithm}
 
     Para exemplificar o funcionamento do algoritmo, usaremos o seguinte grafo:
 
@@ -908,11 +896,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Os arcos e arestas duplicados são escolhidos de modo a minimizar o custo total dos arcos e arestas de $G'$.
     
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar GRAU TOTAL PAR}
-    \label{mixed-grau-total-par}
     \begin{algorithmic}[1]
+    \label{mixed-grau-total-par}
     \Function{grau\_total\_par}{G,c}
         \State $(V, E, A) \gets G$
         \State $V' \gets \{v \in V : \delta_t(v)$ é impar$\}$
@@ -925,7 +910,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State \Return $(V, E + E', A + A')$ 
     \EndFunction
     \end{algorithmic}
-    \end{algorithm}
 
     \begin{figure}[H]
         \centering
@@ -958,11 +942,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     O multiconjunto $M$ será formado por ao menos uma cópia de todos arcos de $A$ e cópias de arestas de $E$ direcionadas.
     Já $U$ será composto pelas arestas de $E$ que não foram direcionadas e adicionadas a $M$.
 
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar IGUALA GRAU DIR}
-    \label{mixed-iguala-grau-dir}
     \begin{algorithmic}[1]
+    \label{mixed-iguala-grau-dir}
     \Function{iguala\_grau\_dir}{G, c, custMin}
     \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
         \State $(V, E, A) \gets G$
@@ -990,7 +971,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \State \Return $M, U$
     \EndFunction
     \end{algorithmic}
-    \end{algorithm}
 
     \begin{figure}[H]
         \centering
@@ -1023,11 +1003,8 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que o grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
     Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice.
 
-    \begin{algorithm}
-    \floatname{algorithm}{Algoritmo}%
-    \caption{Função auxiliar GRAU PAR}
-    \label{mixed-grau-par}
     \begin{algorithmic}[1]
+    \label{mixed-grau-par}
         \Function{grau\_par}{M, U}
             %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
             \State $U' \gets U$
@@ -1059,7 +1036,6 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \Return $M', U'$
         \EndFunction
     \end{algorithmic}
-    \end{algorithm}
 
     \begin{figure}[H]
         \centering
