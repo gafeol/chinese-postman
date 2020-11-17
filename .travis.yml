@@ -28,5 +28,5 @@ script:
   # We use the docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
   - docker pull dxjoke/tectonic-docker:0.1.11-buster-biber
   # Compiling multiple files as well as using biber:
-  - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic:0.1.11-buster-biber --keep-intermediates --reruns 0 tex/main.tex; biber tex/main; tectonic tex/main.tex"
+  - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker:0.1.11-buster-biber /bin/sh -c "tectonic --keep-intermediates --reruns 0 tex/main.tex; biber tex/main; tectonic tex/main.tex"
   - bash <(curl -s https://codecov.io/bash) 
