@@ -247,37 +247,40 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
 		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
 		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Solução do PCC em grafos não direcionados}
+        \label{pcc-pseudocode}
+        \begin{algorithmic}[1]
+        \Function{pcc}{G}
+        \State $(V, E, dist) \gets G$
+        \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
+        \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+        \State $E' \gets V' \times V'$
+        \State $G' \gets (V', E', dist')$
+        \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
+        \State $E^* \gets E$
+        \For{$uv \in M$}
+            \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+            \State $E^* \gets E^* \cup C$
+        \EndFor
+        \State $G^* \gets (V, E^*)$
+        \State \Return CIRCUITO\_EULERIANO$(G^*)$
+        \EndFunction 
 
-    \begin{algorithmic}[1]
-    \label{pcc-pseudocode}
-    \Function{pcc}{G}
-    \State $(V, E, dist) \gets G$
-    \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
-    \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
-    \State $E' \gets V' \times V'$
-    \State $G' \gets (V', E', dist')$
-    \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
-    \State $E^* \gets E$
-    \For{$uv \in M$}
-        \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
-        \State $E^* \gets E^* \cup C$
-    \EndFor
-    \State $G^* \gets (V, E^*)$
-    \State \Return CIRCUITO\_EULERIANO$(G^*)$
-    \EndFunction 
-
-    \Function{expande}{uv, E, dist, dist'}
-    \If{$u = v$}
-    \Return $\emptyset$
-    \EndIf
-    \For{$w : uw \in E$}
-        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
-        \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+        \Function{expande}{uv, E, dist, dist'}
+        \If{$u = v$}
+        \Return $\emptyset$
         \EndIf
-    \EndFor
-    \EndFunction
+        \For{$w : uw \in E$}
+            \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
+            \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+            \EndIf
+        \EndFor
+        \EndFunction
 
-    \end{algorithmic}
+        \end{algorithmic}
+    \end{algorithm}
 
 Escolheu-se o algoritmo de Floyd-Warshall para encontrar as distâncias mínimas entre todo par de vértices de $G$.
 Apesar de tal algoritmo possuir complexidade $\mathcal{O}(|V|^3)$, ele possui uma simples implementação.
@@ -423,58 +426,62 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Outra solução para a redução é usar uma variação do algoritmo de Edmonds-Karp \cite{edmonds-karp} para fluxo de custo mínimo de complexidade $\mathcal{O}(V^2E^2)$. 
     A explicação e implementação dessa variação estão disponíveis online, no site E-maxx \cite{min-cost}. 
 
-    \begin{algorithmic}[1]
-    \label{di-pcc-pseudocode}
-    \Function{pcc}{G}
-    \State $(V, E, dist) \gets G$
-    \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
-    \For{$v \in V$}
-        \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
-    \EndFor
-    \State $F \gets \{v \in V : b(v) < 0\}$
-    \State $S \gets \{v \in V : b(v) > 0\}$
-    \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, dist, b)$
-    \State $E^* \gets E$ \Comment{Cria uma cópia de $E$}
-    \For{$uv \in E$}
-        \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
-        \For{$i$ de $1$ a $f(uv)$} 
-            \State $E^* \gets E^* \cup C$ \Comment Duplica $f(uv)$ vezes os arcos de $C$ 
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Solução do PCC em digrafos}
+        \label{di-pcc-pseudocode}
+        \begin{algorithmic}[1]
+        \Function{pcc}{G}
+        \State $(V, E, dist) \gets G$
+        \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+        \For{$v \in V$}
+            \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
         \EndFor
-    \EndFor
-    \State $G^* \gets (V, E^*)$
-    \State \Return CIRCUITO\_EULERIANO$(G^*)$
-    \EndFunction 
-
-    \Function{expande}{uv, E, dist, dist'}
-    \If{$u = v$}
-    \Return $\emptyset$
-    \EndIf
-    \For{$w : uw \in E$}
-        \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
-        \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
-        \EndIf
-    \EndFor
-    \EndFunction
-
-    \Function{problema\_de\_transporte}{F, S, custo, b}
-        \State Define dois vértices artificiais, uma fonte $s$ e um sorvedouro $t$
-        \State $E \gets F\times S$
+        \State $F \gets \{v \in V : b(v) < 0\}$
+        \State $S \gets \{v \in V : b(v) > 0\}$
+        \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, dist, b)$
+        \State $E^* \gets E$ \Comment{Cria uma cópia de $E$}
         \For{$uv \in E$}
-            \State $cap(uv) = \infty$
+            \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+            \For{$i$ de $1$ a $f(uv)$} 
+                \State $E^* \gets E^* \cup C$ \Comment Duplica $f(uv)$ vezes os arcos de $C$ 
+            \EndFor
         \EndFor
-        \For{$u \in F$}
-            \State $cap(su) = -b(u)$
-            \State $custo(su) = 0$
-            \State $E = E \cup \{su\}$
+        \State $G^* \gets (V, E^*)$
+        \State \Return CIRCUITO\_EULERIANO$(G^*)$
+        \EndFunction 
+
+        \Function{expande}{uv, E, dist, dist'}
+        \If{$u = v$}
+        \Return $\emptyset$
+        \EndIf
+        \For{$w : uw \in E$}
+            \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
+            \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+            \EndIf
         \EndFor
-        \For{$v \in S$}
-            \State $cap(vt) = b(v)$
-            \State $custo(vt) = 0$
-            \State $E = E \cup \{vt\}$
-        \EndFor
-        \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, custo, cap)$
-    \EndFunction
-    \end{algorithmic}
+        \EndFunction
+
+        \Function{problema\_de\_transporte}{F, S, custo, b}
+            \State Define dois vértices artificiais, uma fonte $s$ e um sorvedouro $t$
+            \State $E \gets F\times S$
+            \For{$uv \in E$}
+                \State $cap(uv) = \infty$
+            \EndFor
+            \For{$u \in F$}
+                \State $cap(su) = -b(u)$
+                \State $custo(su) = 0$
+                \State $E = E \cup \{su\}$
+            \EndFor
+            \For{$v \in S$}
+                \State $cap(vt) = b(v)$
+                \State $custo(vt) = 0$
+                \State $E = E \cup \{vt\}$
+            \EndFor
+            \State \Return FLUXO\_CUSTO\_MINIMO$(s, t, E, custo, cap)$
+        \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
     Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
 
@@ -854,16 +861,22 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Definiremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas, grau de entrada e saída, ou seja $\grt(v) = \gr(v) + \gre(v) + \grs(v)$.
 
-    \begin{algorithmic}[1]
-    \label{mixed-1}
-    \Function{Misto}{G, c} 
-        \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
-        \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
-        \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{Torna $\delta$ par, mantendo $\delta^+ = \delta^-$}
-        \State $G_e = (V(G), U', M')$
-        \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
-    \EndFunction 
-    \end{algorithmic}
+
+
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Função principal do algoritmo sugerido por Frederickson}
+        \label{mixed-1}
+        \begin{algorithmic}[1]
+        \Function{Misto}{G, c} 
+            \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
+            \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
+            \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{Torna $\delta$ par, mantendo $\delta^+ = \delta^-$}
+            \State $G_e = (V(G), U', M')$
+            \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
+        \EndFunction 
+        \end{algorithmic}
+    \end{algorithm}
 
     Para exemplificar o funcionamento do algoritmo, usaremos o seguinte grafo:
 
@@ -896,20 +909,24 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Os arcos e arestas duplicados são escolhidos de modo a minimizar o custo total dos arcos e arestas de $G'$.
     
-    \begin{algorithmic}[1]
-    \label{mixed-grau-total-par}
-    \Function{grau\_total\_par}{G,c}
-        \State $(V, E, A) \gets G$
-        \State $V' \gets \{v \in V : \delta_t(v)$ é impar$\}$
-        \State $custMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
-            \Comment{Ignora o sentido dos arcos de $A$}
-        \State $K \gets (V', V' \times V', custMin)$ 
-            \Comment{Grafo completo de $V'$}
-        \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(K)$
-        \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa, adicionando ao multiconjunto $A'$ os arcos expandidos e ao multiconjunto $E'$ as arestas expandidas.
-        \State \Return $(V, E + E', A + A')$ 
-    \EndFunction
-    \end{algorithmic}
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Função auxiliar GRAU TOTAL PAR}
+        \label{mixed-grau-total-par}
+        \begin{algorithmic}[1]
+        \Function{grau\_total\_par}{G,c}
+            \State $(V, E, A) \gets G$
+            \State $V' \gets \{v \in V : \delta_t(v)$ é impar$\}$
+            \State $custMin \gets $ FLOYD\_WARSHALL$(G, c)$ 
+                \Comment{Ignora o sentido dos arcos de $A$}
+            \State $K \gets (V', V' \times V', custMin)$ 
+                \Comment{Grafo completo de $V'$}
+            \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(K)$
+            \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa, adicionando ao multiconjunto $A'$ os arcos expandidos e ao multiconjunto $E'$ as arestas expandidas.
+            \State \Return $(V, E + E', A + A')$ 
+        \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
     \begin{figure}[H]
         \centering
@@ -942,35 +959,40 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     O multiconjunto $M$ será formado por ao menos uma cópia de todos arcos de $A$ e cópias de arestas de $E$ direcionadas.
     Já $U$ será composto pelas arestas de $E$ que não foram direcionadas e adicionadas a $M$.
 
-    \begin{algorithmic}[1]
-    \label{mixed-iguala-grau-dir}
-    \Function{iguala\_grau\_dir}{G, c, custMin}
-    \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
-        \State $(V, E, A) \gets G$
-        \For{$v \in V$}
-            \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
-        \EndFor
-        \State $F \gets \{v \in V : b(v) < 0\}$
-        \State $S \gets \{v \in V : b(v) > 0\}$
-        \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, custMin, b)$
-        \State Seja $f_a$ a quantidade de fluxo que passa por cada arco $a \in A$ 
-        \State Sejam $f_{uv}$ e $f_{vu}$ as quantidades de fluxo transportadas pelas duas orientações de uma aresta $uv \in E$
 
-        \State $M, U \gets \emptyset$
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Função auxiliar IGUALA GRAU DIR}
+        \label{mixed-iguala-grau-dir}
+        \begin{algorithmic}[1]
+        \Function{iguala\_grau\_dir}{G, c, custMin}
+        \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
+            \State $(V, E, A) \gets G$
+            \For{$v \in V$}
+                \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
+            \EndFor
+            \State $F \gets \{v \in V : b(v) < 0\}$
+            \State $S \gets \{v \in V : b(v) > 0\}$
+            \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, custMin, b)$
+            \State Seja $f_a$ a quantidade de fluxo que passa por cada arco $a \in A$ 
+            \State Sejam $f_{uv}$ e $f_{vu}$ as quantidades de fluxo transportadas pelas duas orientações de uma aresta $uv \in E$
 
-        \For{$a \in A$}
-            \State Insere $f_a + 1$ cópias do arco $a$ em $M$
-        \EndFor
-        \For{$uv \in E$}
-            \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} ao mesmo tempo % TODO: PROVAR
-                \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
-            \Else 
-                \State Insere $uv$ em $U$ 
-            \EndIf
-        \EndFor
-        \State \Return $M, U$
-    \EndFunction
-    \end{algorithmic}
+            \State $M, U \gets \emptyset$
+
+            \For{$a \in A$}
+                \State Insere $f_a + 1$ cópias do arco $a$ em $M$
+            \EndFor
+            \For{$uv \in E$}
+                \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} ao mesmo tempo % TODO: PROVAR
+                    \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
+                \Else 
+                    \State Insere $uv$ em $U$ 
+                \EndIf
+            \EndFor
+            \State \Return $M, U$
+        \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
     \begin{figure}[H]
         \centering
@@ -1003,39 +1025,43 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que o grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
     Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice.
 
-    \begin{algorithmic}[1]
-    \label{mixed-grau-par}
-        \Function{grau\_par}{M, U}
-            %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
-            \State $U' \gets U$
-            \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
-            \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
+    \begin{algorithm}
+        \floatname{algorithm}{Algoritmo}%
+        \caption{Função auxiliar GRAU PAR}
+        \label{mixed-grau-par}
+        \begin{algorithmic}[1]
+            \Function{grau\_par}{M, U}
+                %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
+                \State $U' \gets U$
+                \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
+                \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
 
-            \While{$V'$ não é vazio}
-                \State Seleciona um vértice qualquer $v_{ini}$ de $V'$ 
-                \State $v \gets v_{ini}$
-                \While{$v \in V'$}
-                    \State $V' \gets V' \setminus v$
-                    \Repeat 
-                        \State Seja $a \in M'$, um arco da forma $vw$ ou $wv$
-                        \If{$a$ é o arco $vw$}
-                            \State Insere outra cópia de $a$ em $M'$ \label{alg:duplica}
-                        \Else
-                            \State Apague uma cópia de $a$ de $M'$ \label{alg:deleta}
-                        \EndIf
-                        \State $v \gets w$
-                    \Until{$v \notin V'$}
-                    \State $V' \gets V' \setminus v$
-                    \Repeat
-                        \State Remove uma aresta $vw$ de $U'$
-                        \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$ \label{alg:orienta}
-                        \State $v \gets w$
-                    \Until{$v \notin V'$ e $v \neq v_{ini}$}
+                \While{$V'$ não é vazio}
+                    \State Seleciona um vértice qualquer $v_{ini}$ de $V'$ 
+                    \State $v \gets v_{ini}$
+                    \While{$v \in V'$}
+                        \State $V' \gets V' \setminus v$
+                        \Repeat 
+                            \State Seja $a \in M'$, um arco da forma $vw$ ou $wv$
+                            \If{$a$ é o arco $vw$}
+                                \State Insere outra cópia de $a$ em $M'$ \label{alg:duplica}
+                            \Else
+                                \State Apague uma cópia de $a$ de $M'$ \label{alg:deleta}
+                            \EndIf
+                            \State $v \gets w$
+                        \Until{$v \notin V'$}
+                        \State $V' \gets V' \setminus v$
+                        \Repeat
+                            \State Remove uma aresta $vw$ de $U'$
+                            \State Orienta tal aresta no sentido de $v$ para $w$ e a adiciona em $M'$ \label{alg:orienta}
+                            \State $v \gets w$
+                        \Until{$v \notin V'$ e $v \neq v_{ini}$}
+                    \EndWhile
                 \EndWhile
-            \EndWhile
-            \Return $M', U'$
-        \EndFunction
-    \end{algorithmic}
+                \Return $M', U'$
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
     \begin{figure}[H]
         \centering

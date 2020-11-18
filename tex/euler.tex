@@ -495,15 +495,19 @@ Quando o vértice atual da busca não possui mais arestas para se percorrer, o m
 
 Segue o pseudo código do algoritmo de Hierholzer para encontrar uma trilha euleriana dado um grafo euleriano.
 
-\begin{algorithmic}[1]
-\Function{euler\_hierholzer}{u}
-\For{\textbf{cada} v em adj[u]}
-    \State \textbf{apaga} a aresta de $u$ a $v$
-    \State EULER\_HIERHOLZER($v$)
-\EndFor
-\State Insere $u$ no início de $trilha\_euleriana$
-\EndFunction
-\end{algorithmic}
+\begin{algorithm}
+    \floatname{algorithm}{Algoritmo}
+    \caption{Solução de Hierholzer}\label{eulerian-hierholzer}
+    \begin{algorithmic}[1]
+    \Function{euler\_hierholzer}{u}
+    \For{\textbf{cada} v em adj[u]}
+        \State \textbf{apaga} a aresta de $u$ a $v$
+        \State EULER\_HIERHOLZER($v$)
+    \EndFor
+    \State Insere $u$ no início de $trilha\_euleriana$
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 Digamos que a função apresentada seja chamada com um vértice inicial $v$, pertencente a um grafo euleriano $G$. A busca segue visitando vértices e apagando arestas até chegar no primeiro vértice em que não existem mais arestas para se percorrer. 
 
