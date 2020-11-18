@@ -89,8 +89,7 @@ struct PCC {
             realId.push_back(i);
 
         for(tuple<int, int, int> tp: f){
-            int u, v, flow;
-            tie(u, v, flow) = tp;
+            auto [u, v, flow] = tp;
             while(flow--){
                 //printf("expande de u %d a v %d\n", u, v);
                 vector<Aresta> arcos = expande(u, v, mnDist);
@@ -104,9 +103,7 @@ struct PCC {
         }
 
         for(int a=0;a<(int)listaArcos.size();a++){
-            int i, j;
-            double c;
-            tie(i, j, c) = listaArcos[a];
+            auto [i, j, c] = listaArcos[a];
             //printf("arcos %d %d %.4f\n", i, j, c);
         }
         Euler e = Euler(G.n, listaArcos);

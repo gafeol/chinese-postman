@@ -46,8 +46,8 @@ struct PCC {
                 arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
             }
         }
-        pair<double, vector<pair<int, int>>> mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); // TODO: modificar para aceitar K
-        vector<vector<Aresta>> nAdj = G.adj;
+        auto mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); 
+        auto nAdj = G.adj;
         int id = G.m;
         vector<int> idReal(id + nAdj.size());
         for(int a=0;a<id;a++)
@@ -99,8 +99,8 @@ struct PCC {
                 arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
             }
         }
-        pair<double, vector<pair<int, int>>> mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); // TODO: modificar para aceitar K
-        vector<vector<Aresta>> nAdj = G.adj;
+        auto mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); // TODO: modificar para aceitar K
+        auto nAdj = G.adj;
         int id = G.m;
         for(pair<int, int> ar: mcpm.second){
             vector<pair<int, int>> path = expande(imp[ar.first], imp[ar.second], mnDist);
@@ -147,9 +147,7 @@ struct PCC {
         vector<int> mrk(G.m, 1);
         double realCost = 0;
         for(int id: cycle){
-            int u, v;
-            double cus;
-            tie(u, v, cus) = listaArestas[id];
+            auto [u, v, cus] = listaArestas[id];
             mrk[id]--;
             realCost += cus;
         }

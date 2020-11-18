@@ -31,8 +31,7 @@ struct Grafo{
     Grafo(int n, vector<tuple<int, int, double>> arestas): n(n), m((int)arestas.size()) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
-            int u, v; double cus;
-            tie(u, v, cus) = arestas[i];
+            auto [u, v, cus] = arestas[i];
             assert(u >= 0 && u < n);
             adj[u].emplace_back(v, i, cus);
             assert(v >= 0 && v < n);

@@ -35,8 +35,7 @@ struct Digrafo{
     Digrafo(int nv, vector<tuple<int, int, double>> arcos): n(nv), m((int)arcos.size()) {
         adj.resize(n);
         for(int i=0;i<m;i++){
-            int u, v; double cus;
-            tie(u, v, cus) = arcos[i];
+            auto [u, v, cus] = arcos[i];
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
             adj[u].emplace_back(v, i, cus);

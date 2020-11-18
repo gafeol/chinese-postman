@@ -90,8 +90,7 @@ struct Misto{
     Misto(int n, int nArestas, vector<tuple<int, int, double>> arestas): n(n), m((int)arestas.size()), nArestas(nArestas) {
         adj.resize(n);
         for(int i=0;i<(int)arestas.size();i++){
-            int u, v; double cus;
-            tie(u, v, cus) = arestas[i];
+            auto [u, v, cus] = arestas[i];
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
             adj[u].emplace_back(v, i, cus);
