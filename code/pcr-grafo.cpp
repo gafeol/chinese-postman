@@ -4,7 +4,7 @@ using namespace std;
 #include "floyd-warshall.cpp"
 #include "euler-grafo.cpp"
 #include "union-find.cpp"
-#include "min-cost-matching/MCM.hpp"
+#include "min-cost-matching/MCM.cpp"
 
 struct PCR {
 
@@ -67,6 +67,7 @@ struct PCR {
         for(auto [u, v, c]: condensedEdges){
             int ru = uf.raiz(u);
             int rv = uf.raiz(v);
+            if(uf.sz[ru] == 1 || uf.sz[rv] == 1) continue; // não é componente especial
             if(mstUf.join(ru, rv)){
                 condensedT.emplace_back(u, v, c);
             }
@@ -104,7 +105,7 @@ struct PCR {
         
         for(auto [ini, fim]: M){
             vector<int> path = expande(imp[ini], imp[fim], mnDist, G);
-            int u = ini, v;
+            int u = imp[ini], v;
             for(int id: path){ 
                 int fakeId = idReal.size();
                 idReal.push_back(id);
@@ -118,16 +119,18 @@ struct PCR {
                 novoAdj[v].emplace_back(u, fakeId, c);
                 u = v;
             }
-            assert(u == fim);
+            assert(u == imp[fim]);
         }
         Grafo nG(novoAdj);
-        return make_pair(nG, idReal);
+        return {nG, idReal};
     }
 
     /// Devolve o custo e os identificadores de uma rota que resolve o problema do carteiro rural.
     /// O conjunto R define as arestas que devem ser percorridas no trajeto final.
     /// Implementa a 1.5 aproximação polinomial sugerida por Christofides.
     vector<int> solveById(Grafo G, vector<int> R){
+        if(R.empty())
+            return vector<int>();
         vector<bool> isSpecial(G.m, false);
         for(int id: R)
             isSpecial[id] = true;
@@ -158,8 +161,16 @@ struct PCR {
         Grafo GRT(G.n, edgesRT);
         auto [Ge, edgesDict] = makeEulerian(GRT);
         auto euler = Euler(Ge);
-        auto trilha = euler.trilha_euleriana_id();
 
+        // Não necessariamente o grafo Ge é conexo, por isso é importante escolher um vértice de início que esteja na componente conexa de Ge
+        int ini;
+        for(int u=0;u<G.n;u++){
+            if(uf.sz[u] > 1){
+                ini = u;
+                break;
+            }
+        }
+        auto trilha = euler.trilha_euleriana_id(ini);
         for(auto &id: trilha){
             id = edgesDict[id]; // transforma arestas de M -> arestas de GRT
             id = realIds[id]; // transforma arestas de GRT -> arestas de G
