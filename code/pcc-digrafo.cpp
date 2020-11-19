@@ -102,10 +102,6 @@ struct PCC {
             }
         }
 
-        for(int a=0;a<(int)listaArcos.size();a++){
-            auto [i, j, c] = listaArcos[a];
-            //printf("arcos %d %d %.4f\n", i, j, c);
-        }
         Euler e = Euler(G.n, listaArcos);
 
         vector<int> trilha = e.trilha_euleriana_id();
