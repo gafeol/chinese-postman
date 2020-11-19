@@ -80,16 +80,54 @@ struct PCR {
         return T;
     }
 
-    /// Devolve um supergrafo euleriano a partir de G, usando um emparelhamento perfeito de custo mínimo.
-    Grafo makeEulerian(Grafo G){
+    /// Devolve um supergrafo euleriano a partir de G, usando um emparelhamento perfeito de custo mínimo entre vértices de grau ímpar.
+    /// Devolve também um vetor com o id real. Isso é importante para conseguir mapear as arestas duplicadas pelo matching em arestas reais do grafo original G.
+    pair<Grafo, vector<int>> makeEulerian(Grafo &G){
+        auto mnDist = floyd_warshall(G);
+        vector<int> imp;
+        for(int u=0;u<G.n;u++)
+            if(G.adj[u].size()&1)
+                imp.push_back(u);
+        vector<tuple<int, int, double>> arestasImp;
+        for(int i=0;i<(int)imp.size();i++){
+            for(int j=i+1;j<(int)imp.size();j++){
+                arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
+            }
+        }
+        auto [ignore, M] = MinimumCostPerfectMatching(imp.size(), arestasImp); 
+        auto novoAdj = G.adj;
+        vector<int> idReal;
+        for(int a=0;a<G.m;a++)
+            idReal.push_back(a);
 
+        auto listaAdj = G.listaArestas();
         
+        for(auto [ini, fim]: M){
+            vector<int> path = expande(imp[ini], imp[fim], mnDist, G);
+            int u = ini, v;
+            for(int id: path){ 
+                int fakeId = idReal.size();
+                idReal.push_back(id);
+                auto [w1, w2, c] = listaAdj[id];
+                assert(u == w1 || u == w2);
+                if(u == w1)
+                    v = w2;
+                else 
+                    v = w1;
+                novoAdj[u].emplace_back(v, fakeId, c);
+                novoAdj[v].emplace_back(u, fakeId, c);
+                u = v;
+            }
+            assert(u == fim);
+        }
+        Grafo nG(novoAdj);
+        return make_pair(nG, idReal);
     }
 
     /// Devolve o custo e os identificadores de uma rota que resolve o problema do carteiro rural.
     /// O conjunto R define as arestas que devem ser percorridas no trajeto final.
     /// Implementa a 1.5 aproximação polinomial sugerida por Christofides.
-    pair<double, vector<int>> solveById(Grafo G, vector<int> R){
+    vector<int> solveById(Grafo G, vector<int> R){
         vector<bool> isSpecial(G.m, false);
         for(int id: R)
             isSpecial[id] = true;
@@ -107,13 +145,25 @@ struct PCR {
         auto T = getMST(G, mnDist, uf);
         auto listaAdj = G.listaArestas();
         vector<tuple<int, int, double>> edgesRT;
-        for(int id: R)
+        vector<int> realIds;
+        // Quebra nocao de ids aqui
+        for(int id: R){
             edgesRT.push_back(listaAdj[id]);
-        for(int id: T)
+            realIds.push_back(id);
+        }
+        for(int id: T){
             edgesRT.push_back(listaAdj[id]);
+            realIds.push_back(id);
+        }
         Grafo GRT(G.n, edgesRT);
-        Grafo Ge = makeEulerian(GRT);
+        auto [Ge, edgesDict] = makeEulerian(GRT);
         auto euler = Euler(Ge);
-        return euler.solveById();
+        auto trilha = euler.trilha_euleriana_id();
+
+        for(auto &id: trilha){
+            id = edgesDict[id]; // transforma arestas de M -> arestas de GRT
+            id = realIds[id]; // transforma arestas de GRT -> arestas de G
+        }
+        return trilha;
     }
 };
