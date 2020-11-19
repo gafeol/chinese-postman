@@ -67,7 +67,6 @@ TEST(Euler, WrongDeg){
     EXPECT_FALSE(d.euleriano()) << "O grafo é euleriano";
     EXPECT_FALSE(d.checkDeg()) << "Os graus são pares"; 
     EXPECT_TRUE(d.checkConexo()) << "O grafo não é conexo";
-    EXPECT_DEATH(d.trilha_euleriana(), "") << "O algoritmo entra em exceção";
 }
 
 TEST(Euler, Loop){

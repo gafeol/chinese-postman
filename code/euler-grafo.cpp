@@ -92,7 +92,6 @@ struct Euler {
         ///     vetor de inteiros com os vértices percorridos no circuito euleriano
         vector<int> trilha_euleriana(int u=0){
             reset();
-            assert(euleriano());
             euler_hierholzer(u); 
             vector<int> vTrilha;
             while(!trilha.empty()){
@@ -108,7 +107,6 @@ struct Euler {
         ///     vetor de inteiros com os id's de aresta percorridas no circuito euleriano
         vector<int> trilha_euleriana_id(int u=0){
             reset();
-            assert(euleriano());
             euler_hierholzer_id(u); 
             vector<int> vTrilha;
             while(!trilha.empty()){
