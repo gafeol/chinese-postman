@@ -9,25 +9,6 @@ using namespace std;
 struct PCR {
 
     /// Função auxiliar que expande uma aresta condensada entre 'ini' e 'fim' para um conjunto de arestas presente no grafo 'G'.
-    /// Retorna:
-    ///     Vetor de identificadores que representam as arestas condensadas. 
-    vector<int> expande(Grafo &G, int ini, int fim, vector<vector<double>> &mnDist) {
-        if (ini == fim)
-            return {};
-        vector<vector<Aresta>> &adj = G.adj;
-        vector<int> ans;
-        for (Aresta ar : adj[ini]) {
-            if (ar.cus + mnDist[ar.prox][fim] == mnDist[ini][fim]) {
-                ans.push_back(ar.id);
-                vector<int> aux = expande(G, ar.prox, fim, mnDist);
-                ans.insert(ans.end(), aux.begin(), aux.end());
-                return ans;
-            }
-        }
-        assert(false);
-    }
-
-    /// Função auxiliar que expande uma aresta condensada entre 'ini' e 'fim' para um conjunto de arestas presente no grafo 'G'.
     /// Retorna: 
     ///     Vetor de identificadores das arestas que compõem a aresta condensada entre ini e fim.
     vector<int> expande(int ini, int fim, vector<vector<double>> &mnDist, Grafo& G){
@@ -82,9 +63,8 @@ struct PCR {
     }
 
     /// Devolve um supergrafo euleriano a partir de G, usando um emparelhamento perfeito de custo mínimo entre vértices de grau ímpar.
-    /// Devolve também um vetor com o id real. Isso é importante para conseguir mapear as arestas duplicadas pelo matching em arestas reais do grafo original G.
-    pair<Grafo, vector<int>> makeEulerian(Grafo &G){
-        auto mnDist = floyd_warshall(G);
+    /// Recebe o grafo que quer se tornar euleriano, um vetor que mapeia o indice artificial das arestas criadas aos seus índices originais, o grafo original do problema e a matriz de distâncias mínimas do grafo original.
+    Grafo makeEulerian(Grafo &G, vector<int> &realIds, Grafo &origG, vector<vector<double>> &mnDist){
         vector<int> imp;
         for(int u=0;u<G.n;u++)
             if(G.adj[u].size()&1)
@@ -97,18 +77,14 @@ struct PCR {
         }
         auto [ignore, M] = MinimumCostPerfectMatching(imp.size(), arestasImp); 
         auto novoAdj = G.adj;
-        vector<int> idReal;
-        for(int a=0;a<G.m;a++)
-            idReal.push_back(a);
 
-        auto listaAdj = G.listaArestas();
-        
+        auto listaAdj = origG.listaArestas();
         for(auto [ini, fim]: M){
-            vector<int> path = expande(imp[ini], imp[fim], mnDist, G);
+            vector<int> path = expande(imp[ini], imp[fim], mnDist, origG);
             int u = imp[ini], v;
             for(int id: path){ 
-                int fakeId = idReal.size();
-                idReal.push_back(id);
+                int fakeId = realIds.size();
+                realIds.push_back(id);
                 auto [w1, w2, c] = listaAdj[id];
                 assert(u == w1 || u == w2);
                 if(u == w1)
@@ -122,7 +98,7 @@ struct PCR {
             assert(u == imp[fim]);
         }
         Grafo nG(novoAdj);
-        return {nG, idReal};
+        return nG;
     }
 
     /// Devolve o custo e os identificadores de uma rota que resolve o problema do carteiro rural.
@@ -159,7 +135,7 @@ struct PCR {
             realIds.push_back(id);
         }
         Grafo GRT(G.n, edgesRT);
-        auto [Ge, edgesDict] = makeEulerian(GRT);
+        auto Ge = makeEulerian(GRT, realIds, G, mnDist);
         auto euler = Euler(Ge);
 
         // Não necessariamente o grafo Ge é conexo, por isso é importante escolher um vértice de início que esteja na componente conexa de Ge
@@ -171,10 +147,7 @@ struct PCR {
             }
         }
         auto trilha = euler.trilha_euleriana_id(ini);
-        for(auto &id: trilha){
-            id = edgesDict[id]; // transforma arestas de M -> arestas de GRT
-            id = realIds[id]; // transforma arestas de GRT -> arestas de G
-        }
+        for(auto &id: trilha) id = realIds[id]; 
         return trilha;
     }
 };

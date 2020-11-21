@@ -34,6 +34,17 @@ TEST(PCRGrafo, Arvore){
     EXPECT_EQ(ans, vector<int>(2, 1));
 }
 
+TEST(PCRGrafo, Circuito) {
+    Grafo G(4, {{0, 1, 1.},
+                {1, 2, 2.},
+                {2, 3, 3.},
+                {3, 0, 4.}});
+    PCR pcr;
+    auto ans = pcr.solveById(G, {1, 2, 3}); 
+    vector<int> exp = {0, 1, 2, 3};
+    EXPECT_EQ(ans, exp);
+}
+
 /*
 1 2 3
 0 3 1
