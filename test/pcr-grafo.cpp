@@ -45,6 +45,68 @@ TEST(PCRGrafo, Circuito) {
     EXPECT_EQ(ans, exp);
 }
 
+TEST(PCRGrafo, Circuito2) {
+    Grafo G(4, {{0, 1, 10.},
+                {1, 2, 2.},
+                {2, 3, 3.},
+                {3, 0, 4.}});
+    PCR pcr;
+    auto ans = pcr.solveById(G, {1, 2, 3}); 
+    vector<int> exp = {3, 2, 1, 1, 2, 3};
+    EXPECT_EQ(ans, exp);
+}
+
+TEST(PCRGrafo, Circuito3) {
+    Grafo G(4, {{0, 1, 10.},
+                {1, 2, 2.},
+                {2, 3, 3.},
+                {3, 0, 4.}});
+    PCR pcr;
+    auto ans = pcr.solveById(G, {1, 2}); 
+    vector<int> exp = {1, 2, 2, 1};
+    EXPECT_EQ(ans, exp);
+}
+
+/*
+0 1 
+0 2 
+0 3 
+1 4
+2 5
+3 6
+*/
+
+TEST(PCRGrafo, Estrela){
+    Grafo G(7, {{0, 1},
+                {0, 2},
+                {0, 3},
+                {1, 4},
+                {2, 5},
+                {3, 6}});
+    PCR pcr;
+    auto ans = pcr.solveById(G, {3, 4, 5});
+    // trilha se inicia em 1
+    auto exp = vector<int> { 3, 3, 0, 2, 5, 5, 2, 1, 4, 4, 1, 0 };
+    EXPECT_EQ(ans, exp);
+}
+
+TEST(PCRGrafo, EstrelaComAtalhos){
+    Grafo G(7, {{0, 1}, // 0
+                {0, 2},// 1
+                {0, 3},// 2
+                {1, 4},// 3
+                {2, 5},// 4
+                {3, 6},// 5
+                {4, 5},// 6
+                {5, 6},// 7
+                {6, 4}});// 8
+    PCR pcr;
+    auto ans = pcr.solveById(G, {3, 4, 5});
+    // trilha se inicia em 1, solucao otima com custo 8
+    auto exp = vector<int> {3, 8, 5, 2, 1, 4, 6, 3 };
+    EXPECT_EQ(ans, exp);
+}
+
 /*
 1 2 3
 0 3 1
