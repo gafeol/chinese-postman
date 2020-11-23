@@ -129,3 +129,9 @@ TEST(EulerMisto, MixedThreeNodes){
     Euler d(3, {{2, 0}}, {{0, 1}, {1, 2}});
     EXPECT_FALSE(d.euleriano());
 }
+
+TEST(EulerMisto, TwoSCC){
+    Misto G(2, {}, {{0, 1}});
+    Euler d(G);
+    EXPECT_FALSE(d.euleriano());
+}

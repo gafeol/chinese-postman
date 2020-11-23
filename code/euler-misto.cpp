@@ -26,11 +26,6 @@ struct Euler {
             if (id != -1) trilha.push(id);
         }
 
-        void clear(stack<int> &st){
-            while(!st.empty())
-                st.pop();
-        }
-
         int dfs(int u, vector<bool>& vis){
             vis[u] = true;
             int cnt = 1;
@@ -42,7 +37,7 @@ struct Euler {
         }
 
         void reset(){
-            clear(trilha);
+            assert(trilha.empty());
             _adj = G.adj;
             foiDeletada.clear();
             foiDeletada.resize(G.m, false);
@@ -80,12 +75,8 @@ struct Euler {
         /// Checa se o grafo G misto é euleriano.
         /// Isto é, checa se todos vértices tem grau de entrada igual ao grau de saída e se tem grau (não direcionado) par.
         bool euleriano(){
-            if(G.countSCC() > 1){
-                //puts("FALHOU por SCC");
-                //G.print();
-                //printf("tem %d SCCS", G.countSCC());
+            if(G.countSCC() > 1)
                 return false;
-            }
 
             vector<vector<Aresta>> adj = G.adj;
             vector<vector<Aresta>> inv = G.adjInverso();
@@ -104,7 +95,6 @@ struct Euler {
                         degIn++;
                 }
                 if(degIn != degOut || deg%2 != 0){
-                    //printf("FALHOU NO GRAU u %d degin %d degout %d deg %d\n", u, degIn, degOut, deg);
                     return false;
                 }
             }

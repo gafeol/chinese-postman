@@ -125,8 +125,7 @@ struct PCC {
                         break; 
                     }
                 }
-                if(nxtu == -1)
-                    assert(false);
+                assert(nxtu != -1);
                 u = nxtu;
             }
         };
