@@ -107,6 +107,26 @@ TEST(PCRGrafo, EstrelaComAtalhos){
     EXPECT_EQ(ans, exp);
 }
 
+
+/// Exemplo apresentado na seção do PCR da monografia.
+/// Solução ótima encontrada, com custo 16
+TEST(PCRGrafo, Exemplo){
+    const int a = 0, b = 1, c = 2, d = 3, e = 4, f = 5;
+    Grafo G(6, {{a, b, 2.}, // 0
+                {a, c, 4.}, // 1
+                {b, c, 2.}, // 2
+                {b, d, 1.}, // 3
+                {c, d, 1.}, // 4
+                {b, f, 3.}, // 5
+                {d, f, 2.}, // 6
+                {c, e, 5.}, // 7
+                {e, f, 2.}}); // 8
+    PCR pcr;
+    auto ans = pcr.solveById(G, {0, 1, 2, 8});
+    auto exp = vector<int>{1, 4, 6, 8, 8, 6, 4, 2, 0};
+    EXPECT_EQ(ans, exp);
+}
+
 /*
 1 2 3
 0 3 1
