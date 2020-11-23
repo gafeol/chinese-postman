@@ -95,6 +95,7 @@ TEST(PCCDigrafo, TrilhaErrada){
 
 TEST(PCCDigrafo, ExpandeImpossivel){
     vector<vector<pair<int, double>>> adj(2);
+    adj[1].emplace_back(0, 1.);
     Digrafo G(adj);
     PCC pcc(G);
     vector<vector<double>> mnDist = {{0.,0.}, {0., 0.}};

@@ -47,6 +47,7 @@ struct Digrafo{
     ///     'adjj' a lista de adjacências do grafo, cada par (v, c) na linha u indica um arco de custo c de u a v
     Digrafo(vector<vector<pair<int, double>>> adjj) : n((int)adjj.size()) {
         adj.clear();
+        adj.resize(n);
         m = 0;
         for(int u=0;u<n;u++){
             for(auto ar: adjj[u]){
@@ -124,10 +125,9 @@ struct Digrafo{
         cy.resize(n, -1);
         id.resize(n);
         mn.resize(n);
+        assert(q.empty());
         nc = 0;
         idd = 0;
-        while(!q.empty())
-            q.pop();
         for (int ini = 0; ini < n; ini++) {
             if (!vis[ini])
                 tarjan(ini);
