@@ -8,12 +8,15 @@ using namespace std;
 struct UnionFind {
     /// Número de vértices no grafo.
     int n;
+    /// Número de componentes ainda restantes.
+    int nComp;
     /// Array que guarda o ancestral direto de cada vértice.
     vector<int> p;
     /// Array que armazena o tamanho da subárvore de cada vértice.
     vector<int> sz;
 
-    UnionFind(int n) : n(n) {
+
+    UnionFind(int n) : n(n), nComp(n) {
         p.resize(n);
         sz.resize(n);
         for(int u=0;u<n;u++){
@@ -30,6 +33,7 @@ struct UnionFind {
         u = raiz(u); v = raiz(v);
         if(u == v)
             return false;
+        nComp--;
         if(sz[u] < sz[v])
             swap(u, v);
         p[v] = u;
