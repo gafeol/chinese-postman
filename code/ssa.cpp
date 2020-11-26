@@ -7,33 +7,41 @@ using namespace std;
 struct compress {
     private:
     Digrafo oriG, compG;
-    vector<int> A;
     vector<int> arcDict; 
     vector<vector<int>> vDict;
     UnionFind uf;
 
+
+    /// Retorna a lista de novos "id" para os arcos do grafo original.
+    /// Exemplo: seja oriId o índice de um vértice do grafo original oriG, o valor de id[oriId] será o valor de índice do vértice condensado correspondente no grafo compG
+    /// Essa função também preenche o valor de vDict, que tem a associação inversa, mapeando cada vértice de compG para os vértices originais que o compõe.
+    vector<int> getNewV(){
+        // Renomeando nós de G para nós de compG
+        vector<int> newV(oriG.n);
+        int cnt = 0;
+        for(int u=0;u<oriG.n;u++)
+            if(uf.p[u] == u)
+                newV[u] = cnt++;
+        vDict.clear();
+        vDict.resize(cnt);
+        for(int u=0;u<oriG.n;u++){
+            newV[u] = newV[uf.raiz(u)];
+            vDict[uf.raiz(u)].push_back(u);
+        }
+        return newV;
+    }
+
     public:
     // Recebe um digrafo G e um conjunto de arcos A que devem ser comprimidos.
     // O grafo G será salvo em oriG, e a compressão desse grafo será salva por compG.
-    compress(Digrafo G, vector<int> A) : oriG(G), A(A), uf(UnionFind(G.n)) {
+    compress(Digrafo G, vector<int> A) : oriG(G), uf(UnionFind(G.n)) {
         auto listaArcos = G.listaArcos();
         for(int id: A){
             auto [u, v, c] = listaArcos[id];
             uf.join(u, v);
         }
-        // Renomeando nós de G para nós de compG
-        vector<int> newV(G.n);
-        int cnt = 0;
-        for(int u=0;u<G.n;u++)
-            if(uf.p[u] == u)
-                newV[u] = cnt++;
-        vDict.clear();
-        vDict.resize(cnt);
-        for(int u=0;u<G.n;u++){
-            newV[u] = newV[uf.raiz(u)];
-            vDict[uf.raiz(u)].push_back(u);
-        }
-        
+
+        auto newV = getNewV();
 
         // Criando a lista de adjacências do grafo comprimido
         vector<tuple<int, int, double>> nAdj;
@@ -46,12 +54,31 @@ struct compress {
                 nAdj.emplace_back(newV[u], newV[v], c);
             }
         }
-        compG = Digrafo(cnt, nAdj);
+        compG = Digrafo(uf.nComp, nAdj);
     }
 
     /// Realiza a compressão do algoritmo de Chu-Liu.
-    compress(Digrafo G, vector<int> A, vector<int> pi): oriG(G), A(A), uf(UnionFind(G.n)) {
-        
+    compress(Digrafo G, vector<int> C, vector<Aresta> pi): oriG(G), uf(UnionFind(G.n)) {
+        auto listaArcos = G.listaArcos();
+        for(int i=0;i+1<C.size();i++)
+            uf.join(C[i], C[i+1]);
+        int cycleRoot = uf.raiz(C[0]);
+        auto newV = getNewV();
+        // Criando a lista de adjacências do grafo comprimido
+        vector<tuple<int, int, double>> nAdj;
+        arcDict.clear();
+        arcDict.resize(G.m);
+        for(int u=0;u<G.n;u++){
+            for(auto [v, id, c] : G.adj[u]){
+                if(newV[u] == newV[v]) continue;
+                arcDict[id] = nAdj.size();
+                if(uf.raiz(v) == cycleRoot) // an edge coming into the cycle
+                    nAdj.emplace_back(newV[u], newV[v], c - pi[v].cus);
+                else // an edge going away from the cycle or unrelated to the cycle
+                    nAdj.emplace_back(newV[u], newV[v], c);
+            }
+        }
+        compG = Digrafo(uf.nComp, nAdj);
     }
 
     // Devolve o grafo comprimido gerado.   
