@@ -58,6 +58,22 @@ struct Digrafo{
         }
     } 
 
+    /// Constrói grafo direcionado a partir da matriz de adjacências. Assume-se que os vértices vão de 0 a adjj.size()-1.
+    /// Recebe: 
+    ///     'adjj' a matriz de adjacências do grafo, cada valor c na linha u e coluna v indica um arco de custo c de u a v
+    Digrafo(vector<vector<double>> adjj) : n((int)adjj.size()) {
+        adj.clear();
+        adj.resize(n);
+        m = 0;
+        for(int u=0;u<n;u++){
+            for(int v=0;v<n;v++){
+                if(u == v) continue;
+                double cus = adjj[u][v];
+                adj[u].emplace_back(v, m++, cus);
+            }
+        }
+    } 
+
     /// Constrói, a partir da lista de adjacências, um vetor com todos arcos do digrafo, indexados pelo seu id.
     /// Retorna:
     ///     Vetor de tupla de inteiro, inteiro e double
