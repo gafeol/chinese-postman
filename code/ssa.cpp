@@ -3,6 +3,7 @@
 using namespace std;
 #include "digrafo.hpp"
 #include "union-find.cpp"
+#include "floyd-warshall.cpp"
 
 struct compress {
     private:
@@ -30,6 +31,7 @@ struct compress {
         }
         return newV;
     }
+
 
     public:
     // Recebe um digrafo G e um conjunto de arcos A que devem ser comprimidos.
@@ -97,33 +99,81 @@ struct compress {
     }
 };
 
+vector<int> expande(int ini, int fim, vector<vector<double>> &mnDist, Digrafo &G){
+    if(ini == fim)
+        return {};
+    auto &adj = G.adj;
+    vector<int> ans;
+    for(Aresta ar: adj[ini]){
+        if(ar.cus + mnDist[ar.prox][fim] == mnDist[ini][fim]){
+            ans.push_back(ar.id);
+            auto aux = expande(ar.prox, fim, mnDist, G);
+            ans.insert(ans.end(), aux.begin(), aux.end());
+            return ans;
+        }
+    }
+    assert(false);
+}
+
 /// Encontra a arborescência geradora mínima do grafo G enraizado em 'root'.
 //
-vector<int> findSSA(Digrafo G, int root){
-
-   // Remover arcos do grafo que apontem para a raiz
-
+vector<int> findSSA(Digrafo G, int root=0){
+    // Remover arcos do grafo que apontem para a raiz
 
     // Gerar grafo induzido por pi(v)
     /*
-    Otherwise, P {\displaystyle P} P contains at least one cycle. Arbitrarily choose one of these cycles and call it C {\displaystyle C} C. We now define a new weighted directed graph D ′ = ⟨ V ′ , E ′ ⟩ {\displaystyle D^{\prime }=\langle V^{\prime },E^{\prime }\rangle } D^\prime = \langle V^\prime, E^\prime \rangle in which the cycle C {\displaystyle C} C is "contracted" into one node as follows:
+       Otherwise, P {\displaystyle P} P contains at least one cycle. Arbitrarily choose one of these cycles and call it C {\displaystyle C} C. We now define a new weighted directed graph D ′ = ⟨ V ′ , E ′ ⟩ {\displaystyle D^{\prime }=\langle V^{\prime },E^{\prime }\rangle } D^\prime = \langle V^\prime, E^\prime \rangle in which the cycle C {\displaystyle C} C is "contracted" into one node as follows:
 
-    The nodes of V ′ {\displaystyle V^{\prime }} V^\prime are the nodes of V {\displaystyle V} V not in C {\displaystyle C} C plus a new node denoted v C {\displaystyle v_{C}} v_C.
-        If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∉ C {\displaystyle u\notin C} u\notin C and v ∈ C {\displaystyle v\in C} v\in C (an edge coming into the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( u , v C ) {\displaystyle e=(u,v_{C})} e = (u, v_C), and define w ′ ( e ) = w ( u , v ) − w ( π ( v ) , v ) {\displaystyle w^{\prime }(e)=w(u,v)-w(\pi (v),v)} w^\prime(e) = w(u,v) - w(\pi(v),v).
-        If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∈ C {\displaystyle u\in C} u\in C and v ∉ C {\displaystyle v\notin C} v\notin C (an edge going away from the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( v C , v ) {\displaystyle e=(v_{C},v)} e = (v_C, v), and define w ′ ( e ) = w ( u , v ) {\displaystyle w^{\prime }(e)=w(u,v)} w^\prime(e) = w(u,v) .
-        If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∉ C {\displaystyle u\notin C} u\notin C and v ∉ C {\displaystyle v\notin C} v\notin C (an edge unrelated to the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( u , v ) {\displaystyle e=(u,v)} e=(u,v), and define w ′ ( e ) = w ( u , v ) {\displaystyle w^{\prime }(e)=w(u,v)} w^\prime(e) = w(u,v) .
+       The nodes of V ′ {\displaystyle V^{\prime }} V^\prime are the nodes of V {\displaystyle V} V not in C {\displaystyle C} C plus a new node denoted v C {\displaystyle v_{C}} v_C.
+       If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∉ C {\displaystyle u\notin C} u\notin C and v ∈ C {\displaystyle v\in C} v\in C (an edge coming into the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( u , v C ) {\displaystyle e=(u,v_{C})} e = (u, v_C), and define w ′ ( e ) = w ( u , v ) − w ( π ( v ) , v ) {\displaystyle w^{\prime }(e)=w(u,v)-w(\pi (v),v)} w^\prime(e) = w(u,v) - w(\pi(v),v).
+       If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∈ C {\displaystyle u\in C} u\in C and v ∉ C {\displaystyle v\notin C} v\notin C (an edge going away from the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( v C , v ) {\displaystyle e=(v_{C},v)} e = (v_C, v), and define w ′ ( e ) = w ( u , v ) {\displaystyle w^{\prime }(e)=w(u,v)} w^\prime(e) = w(u,v) .
+       If ( u , v ) {\displaystyle (u,v)} (u,v) is an edge in E {\displaystyle E} E with u ∉ C {\displaystyle u\notin C} u\notin C and v ∉ C {\displaystyle v\notin C} v\notin C (an edge unrelated to the cycle), then include in E ′ {\displaystyle E^{\prime }} E^\prime a new edge e = ( u , v ) {\displaystyle e=(u,v)} e=(u,v), and define w ′ ( e ) = w ( u , v ) {\displaystyle w^{\prime }(e)=w(u,v)} w^\prime(e) = w(u,v) .
 
-    For each edge in E ′ {\displaystyle E^{\prime }} E^\prime, we remember which edge in E {\displaystyle E} E it corresponds to. 
+       For each edge in E ′ {\displaystyle E^{\prime }} E^\prime, we remember which edge in E {\displaystyle E} E it corresponds to. 
     */
 }
 
+
+
 /// Encontra a arborescência geradora mínima do grafo G enraizado em um vértice especial qualquer (pertencente a uma componente de R).
 /// Serão retornados tanto a raiz escolhida para o grafo quanto um vetor dos arcos que formam a arborescência.
-pair<int, vector<int>> findRuralSSA(Digrafo G, vector<int> R){
+vector<int> findRuralSSA(Digrafo G, vector<int> R){
     // Condensar o grafo nas R-componentes
     auto comp = compress(G, R);
     auto cG = comp.getCompressed();
-    
 
-    // Escolher a raiz (pode ser a primeira componente condensada)
+    // Condensa o grafo cG em um Kcomp, grafo completo contendo apenas as componentes condensadas.
+    auto mnDist = floyd_warshall(cG);
+
+    vector<int> compId;
+    for(int u=0;u<cG.n;u++){
+        if(comp.vId(u).size() > 1){ // Vertice adjacente a arco de R
+            compId.push_back(u);
+        }
+    }
+    int nComps = compId.size();
+
+    vector<vector<double>> compAdj(nComps, vector<double>(nComps));
+    for(int u=0;u<nComps;u++){
+        for(int v=0;v<nComps;v++){
+            compAdj[u][v] = mnDist[compId[u]][compId[v]];
+        }
+    }
+    auto Kcomp = Digrafo(compAdj);
+    auto kAns = findSSA(Kcomp);
+
+    // Passa de Kcomp -> cG
+    auto listaAdjKcomp = Kcomp.listaArcos();
+    vector<int> cGAns;
+    for(int id: kAns){ 
+        auto [u, v, c] = listaAdjKcomp[id];
+        auto aux = expande(u, v, compAdj, cG);
+        cGAns.insert(cGAns.end(), aux.begin(), aux.end());
+    }
+    // Passa de cG -> G
+    vector<int> ans;
+    for(int id: cGAns){
+        ans.push_back(comp.arcId(id));
+    }
+    return ans;
 }
