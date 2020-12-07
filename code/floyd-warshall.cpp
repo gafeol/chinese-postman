@@ -7,8 +7,8 @@
 #include "bits/stdc++.h"
 using namespace std;
 
-const double INF = DBL_MAX/3.;
 vector<vector<double>> floyd_warshall(Grafo G){
+    const double INF = DBL_MAX/3.;
     int n = G.n;
     vector<vector<double>> dist(n, vector<double>(n, INF));
     for(int i=0;i<n;i++){
@@ -33,6 +33,7 @@ vector<vector<double>> floyd_warshall(Grafo G){
 }
 
 vector<vector<double>> floyd_warshall(Digrafo G){
+    const double INF = DBL_MAX/3.;
     int n = G.n;
     vector<vector<double>> dist(n, vector<double>(n, INF));
     for(int i=0;i<n;i++){
@@ -56,6 +57,7 @@ vector<vector<double>> floyd_warshall(Digrafo G){
 }
 
 vector<vector<double>> floyd_warshall(Misto G){
+    const double INF = DBL_MAX/3.;
     int n = G.n;
     vector<vector<double>> dist(n, vector<double>(n, INF));
     for(int i=0;i<n;i++){

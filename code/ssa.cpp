@@ -115,6 +115,23 @@ vector<int> expande(int ini, int fim, vector<vector<double>> &mnDist, Digrafo &G
     assert(false);
 }
 
+
+/// Se o grafo induzido pelos arcos pi possuir circuitos, essa função retornará o vetor contendo os vértices de um circuito desse grafo.
+vector<int> extractCycle(Digrafo &G, vector<int> &pi){
+    auto lista = G.listaArcos();
+    vector<vector<pair<int, double>>> adjPi(G.n);
+    vector<int> indeg(G.n, 0);
+    for(int u=0;u<G.n;u++){
+        auto [i, j, c] = lista[pi[u]];
+        adjPi[i].emplace_back(j, c);
+        indeg[j]++;
+    }
+    queue<int> q;
+    for(int u=0;u<G.n;u++){
+        
+    }
+}
+
 /// Encontra a arborescência geradora mínima do grafo G enraizado em 'root'.
 vector<int> findSSA(Digrafo G, int root=0){
     // Checar se G é fortemente conexo
@@ -132,7 +149,6 @@ vector<int> findSSA(Digrafo G, int root=0){
 
     // CUIDADO: Alguns id nao existem mais, foram removidos os que apontam para root
     // Gerar grafo induzido por pi(v)
-    auto lista = G.listaArcos();
     auto inv  = G.getAdjInverso();
     vector<int> pi(G.n);
     for(int u=0;u<G.n;u++){
@@ -144,6 +160,16 @@ vector<int> findSSA(Digrafo G, int root=0){
             }
         }
     }
+
+
+    vector<int> C = extractCycle(G, pi);
+
+    auto comp = compress(G, C);
+
+    auto cAns = findSSA(comp.getCompressed());
+
+
+
 
     // TODO: continuar daqui!
 
@@ -206,3 +232,76 @@ vector<int> findRuralSSA(Digrafo G, vector<int> R){
     }
     return ans;
 }
+
+typedef double tw;
+tw INF = 1ll<<30;
+struct edge{int u,v,id;tw len;};
+struct ChuLiu{
+	int n; vector<edge> e;
+	vector<int> inc,dec,take,pre,num,id,vis;
+	vector<tw> inw;
+	void add_edge(int x, int y, tw w){
+		inc.push_back(0); dec.push_back(0); take.push_back(0);
+		e.push_back({x,y,(int)e.size(),w});
+	}
+	ChuLiu(int n):n(n),pre(n),num(n),id(n),vis(n),inw(n){}
+
+    ChuLiu(Digrafo G) : ChuLiu(G.n) {
+        auto lista = G.listaArcos();
+        for(int id=0;id<G.m;id++){
+            auto [u, v, c] = lista[id];
+            add_edge(u, v, c);
+        }
+    }
+	tw doit(int root){
+		auto e2=e;
+		tw ans=0; int eg=e.size()-1,pos=e.size()-1;
+		while(1){
+			for(int i=0;i<n;i++)
+                inw[i]=INF,id[i]=vis[i]=-1;
+			for(auto ed:e2) if(ed.len<inw[ed.v]){
+				inw[ed.v]=ed.len; pre[ed.v]=ed.u;
+				num[ed.v]=ed.id;
+			}
+			inw[root]=0;
+            for(int i=0;i<n;i++)
+                if(inw[i]==INF) 
+                    return -1;
+			int tot=-1;
+            for(int i=0;i<n;i++){
+				ans+=inw[i];
+				if(i!=root)take[num[i]]++;
+				int j=i;
+				while(vis[j]!=i&&j!=root&&id[j]<0)vis[j]=i,j=pre[j];
+				if(j!=root&&id[j]<0){
+					id[j]=++tot;
+					for(int k=pre[j];k!=j;k=pre[k]) id[k]=tot;
+				}
+			}
+			if(tot<0)break;
+			for(int i=0;i<n;i++)
+                if(id[i]<0)
+                    id[i]=++tot;
+			n=tot+1; int j=0;
+            for(int i=0;i<(int)e2.size();i++){
+				int v=e2[i].v;
+				e2[j].v=id[e2[i].v];
+				e2[j].u=id[e2[i].u];
+				if(e2[j].v!=e2[j].u){
+					e2[j].len=e2[i].len-inw[v];
+					inc.push_back(e2[i].id);
+					dec.push_back(num[v]);
+					take.push_back(0);
+					e2[j++].id=++pos;
+				}
+			}
+			e2.resize(j);
+			root=id[root];
+		}
+		while(pos>eg){
+			if(take[pos]>0) take[inc[pos]]++, take[dec[pos]]--;
+			pos--;
+		}
+		return ans;
+	}
+};
