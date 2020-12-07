@@ -62,7 +62,7 @@ struct compress {
     /// Realiza a compressão do algoritmo de Chu-Liu.
     compress(Digrafo G, vector<int> C, vector<Aresta> pi): oriG(G), uf(UnionFind(G.n)) {
         auto listaArcos = G.listaArcos();
-        for(int i=0;i+1<C.size();i++)
+        for(int i=0;i+1<(int)C.size();i++)
             uf.join(C[i], C[i+1]);
         int cycleRoot = uf.raiz(C[0]);
         auto newV = getNewV();
@@ -116,11 +116,40 @@ vector<int> expande(int ini, int fim, vector<vector<double>> &mnDist, Digrafo &G
 }
 
 /// Encontra a arborescência geradora mínima do grafo G enraizado em 'root'.
-//
 vector<int> findSSA(Digrafo G, int root=0){
+    // Checar se G é fortemente conexo
+    assert(G.countSCC() == 1);
     // Remover arcos do grafo que apontem para a raiz
+    for(int u=0;u<G.n;u++){
+        for(int i=G.adj[u].size()-1;i>=0;i--){
+            auto [v, id, c] = G.adj[u][i];
+            if(v == root){
+                swap(G.adj[u][i], G.adj[u].back());
+                G.adj[u].pop_back();
+            }
+        }
+    }
 
+    // CUIDADO: Alguns id nao existem mais, foram removidos os que apontam para root
     // Gerar grafo induzido por pi(v)
+    auto lista = G.listaArcos();
+    auto inv  = G.getAdjInverso();
+    vector<int> pi(G.n);
+    for(int u=0;u<G.n;u++){
+        double minCost = DBL_MAX;
+        for(auto [v, id, c] : inv[u]){
+            if(c < minCost){
+                minCost = c;
+                pi[u] = id;
+            }
+        }
+    }
+
+    // TODO: continuar daqui!
+
+    // Checar se o grafo induzido possui ao menos um circuito.
+    // - Se não, só retorna pi.
+    // - Se sim, então pega as arestas do circuito, condensa o grafo nelas e chama findSSA nele. Depois precisa descondensar o grafo pra remontar o pi.
     /*
        Otherwise, P {\displaystyle P} P contains at least one cycle. Arbitrarily choose one of these cycles and call it C {\displaystyle C} C. We now define a new weighted directed graph D ′ = ⟨ V ′ , E ′ ⟩ {\displaystyle D^{\prime }=\langle V^{\prime },E^{\prime }\rangle } D^\prime = \langle V^\prime, E^\prime \rangle in which the cycle C {\displaystyle C} C is "contracted" into one node as follows:
 
