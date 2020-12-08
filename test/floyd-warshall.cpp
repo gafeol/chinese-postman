@@ -5,6 +5,8 @@ using namespace std;
 #include "../code/grafo.hpp"
 #include "../code/floyd-warshall.cpp"
 
+const double INF = DBL_MAX/3.;
+
 TEST(FloydWarshall, GrafoSimples){
     int n = 4;
     Grafo G(n, { make_tuple(0, 1, 2.), 
