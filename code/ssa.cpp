@@ -233,75 +233,94 @@ vector<int> findRuralSSA(Digrafo G, vector<int> R){
     return ans;
 }
 
-typedef double tw;
-tw INF = 1ll<<30;
-struct edge{int u,v,id;tw len;};
-struct ChuLiu{
-	int n; vector<edge> e;
-	vector<int> inc,dec,take,pre,num,id,vis;
-	vector<tw> inw;
-	void add_edge(int x, int y, tw w){
-		inc.push_back(0); dec.push_back(0); take.push_back(0);
-		e.push_back({x,y,(int)e.size(),w});
-	}
-	ChuLiu(int n):n(n),pre(n),num(n),id(n),vis(n),inw(n){}
+
+// Implementação do ChuLiu por elvasito (https://github.com/mhunicken/icpc-team-notebook-el-vasito)
+double INF = 1ll << 30;
+struct edge {
+    int u, v, id;
+    double cus;
+};
+struct ChuLiu {
+    int n;
+    vector<edge> e;
+    vector<int> inc, dec, take, pre, num, id, vis;
+    vector<double> inw;
+    void add_edge(int x, int y, double w) {
+        inc.push_back(0);
+        dec.push_back(0);
+        take.push_back(0);
+        e.push_back({x, y, (int)e.size(), w});
+    }
+    ChuLiu(int n) : n(n), pre(n), num(n), id(n), vis(n), inw(n) {}
 
     ChuLiu(Digrafo G) : ChuLiu(G.n) {
         auto lista = G.listaArcos();
-        for(int id=0;id<G.m;id++){
+        for (int id = 0; id < G.m; id++) {
             auto [u, v, c] = lista[id];
             add_edge(u, v, c);
         }
     }
-	tw doit(int root){
-		auto e2=e;
-		tw ans=0; int eg=e.size()-1,pos=e.size()-1;
-		while(1){
-			for(int i=0;i<n;i++)
-                inw[i]=INF,id[i]=vis[i]=-1;
-			for(auto ed:e2) if(ed.len<inw[ed.v]){
-				inw[ed.v]=ed.len; pre[ed.v]=ed.u;
-				num[ed.v]=ed.id;
-			}
-			inw[root]=0;
-            for(int i=0;i<n;i++)
-                if(inw[i]==INF) 
-                    return -1;
-			int tot=-1;
-            for(int i=0;i<n;i++){
-				ans+=inw[i];
-				if(i!=root)take[num[i]]++;
-				int j=i;
-				while(vis[j]!=i&&j!=root&&id[j]<0)vis[j]=i,j=pre[j];
-				if(j!=root&&id[j]<0){
-					id[j]=++tot;
-					for(int k=pre[j];k!=j;k=pre[k]) id[k]=tot;
-				}
-			}
-			if(tot<0)break;
-			for(int i=0;i<n;i++)
-                if(id[i]<0)
-                    id[i]=++tot;
-			n=tot+1; int j=0;
-            for(int i=0;i<(int)e2.size();i++){
-				int v=e2[i].v;
-				e2[j].v=id[e2[i].v];
-				e2[j].u=id[e2[i].u];
-				if(e2[j].v!=e2[j].u){
-					e2[j].len=e2[i].len-inw[v];
-					inc.push_back(e2[i].id);
-					dec.push_back(num[v]);
-					take.push_back(0);
-					e2[j++].id=++pos;
-				}
-			}
-			e2.resize(j);
-			root=id[root];
-		}
-		while(pos>eg){
-			if(take[pos]>0) take[inc[pos]]++, take[dec[pos]]--;
-			pos--;
-		}
-		return ans;
-	}
+    double doit(int root) {
+        auto eCopy = e;
+        double ans = 0;
+        int eg = e.size() - 1, pos = e.size() - 1;
+        while (1) {
+            for (int i = 0; i < n; i++) {
+                inw[i] = INF; 
+                id[i] = vis[i] = -1;
+            }
+            // Define a função pi(v), representando o arco de menor custo que chega em v.
+            // O arco pi(v) é representada pelos valores: num[v] - salvando o id do arco, pre[v] - salvando a origem do arco e inw[v] - salvando o custo do arco
+            for (auto [u, v, id, cus] : eCopy)
+                if (cus < inw[ed.v]) {
+                    inw[v] = cus;
+                    pre[v] = u;
+                    num[v] = id;
+                }
+            inw[root] = 0; // Remove-se o pi(root).
+            if(*max_element(inw.begin(), inw.end()) == INF)
+                return -1;
+            int tot = -1;
+            for (int i = 0; i < n; i++) {
+                ans += inw[i];
+                if (i != root)
+                    take[num[i]]++;
+                int j = i;
+                while (vis[j] != i && j != root && id[j] < 0)
+                    vis[j] = i, j = pre[j];
+                if (j != root && id[j] < 0) {
+                    id[j] = ++tot;
+                    for (int k = pre[j]; k != j; k = pre[k])
+                        id[k] = tot;
+                }
+            }
+            if (tot < 0)
+                break;
+            for (int i = 0; i < n; i++)
+                if (id[i] < 0)
+                    id[i] = ++tot;
+            n = tot + 1;
+            int j = 0;
+            for (int i = 0; i < (int)eCopy.size(); i++) {
+                int v = eCopy[i].v;
+                eCopy[j].v = id[eCopy[i].v];
+                eCopy[j].u = id[eCopy[i].u];
+                if (eCopy[j].v != eCopy[j].u) {
+                    eCopy[j].cus = eCopy[i].cus - inw[v];
+                    inc.push_back(eCopy[i].id);
+                    dec.push_back(num[v]);
+                    take.push_back(0);
+                    eCopy[j++].id = ++pos;
+                }
+            }
+            eCopy.resize(j);
+            root = id[root];
+        }
+        while (pos > eg) {
+            if (take[pos] > 0)
+                take[inc[pos]]++, take[dec[pos]]--;
+            pos--;
+        }
+        return ans;
+    }
 };
