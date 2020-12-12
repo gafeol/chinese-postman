@@ -272,7 +272,7 @@ struct ChuLiu {
             // Define a função pi(v), representando o arco de menor custo que chega em v.
             // O arco pi(v) é representada pelos valores: num[v] - salvando o id do arco, pre[v] - salvando a origem do arco e inw[v] - salvando o custo do arco
             for (auto [u, v, id, cus] : eCopy)
-                if (cus < inw[ed.v]) {
+                if (cus < inw[v]) {
                     inw[v] = cus;
                     pre[v] = u;
                     num[v] = id;
