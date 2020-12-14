@@ -21,10 +21,10 @@ struct Digrafo{
     Digrafo(int nv, vector<pair<int, int>> arcos): n(nv), m((int)arcos.size()) {
         adj.resize(n);
         for(int i=0;i<m;i++){
-            pair<int, int> ar = arcos[i];
-            assert(ar.first >= 0 && ar.first < n);
-            assert(ar.second >= 0 && ar.second < n);
-            adj[ar.first].emplace_back(ar.second, i);
+            auto [u, v] = arcos[i];
+            assert(u >= 0 && u < n);
+            assert(v >= 0 && v < n);
+            adj[u].emplace_back(v, i);
         }
     }
 

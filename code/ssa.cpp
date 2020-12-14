@@ -235,7 +235,7 @@ vector<int> findRuralSSA(Digrafo G, vector<int> R){
 
 
 // Implementação do ChuLiu por elvasito (https://github.com/mhunicken/icpc-team-notebook-el-vasito)
-double INF = 1ll << 30;
+double INF = DBL_MAX/2.;
 struct edge {
     int u, v, id;
     double cus;
@@ -278,8 +278,7 @@ struct ChuLiu {
                     num[v] = id;
                 }
             inw[root] = 0; // Remove-se o pi(root).
-            if(*max_element(inw.begin(), inw.end()) == INF)
-                return -1;
+            assert(*max_element(inw.begin(), inw.end()) < INF);
             int tot = -1;
             for (int i = 0; i < n; i++) {
                 ans += inw[i];
