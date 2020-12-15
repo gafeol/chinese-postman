@@ -260,7 +260,8 @@ struct ChuLiu {
             add_edge(u, v, c);
         }
     }
-    double doit(int root) {
+
+    pair<double, vector<int>> solve(int root) {
         auto eCopy = e;
         double ans = 0;
         int eg = e.size() - 1, pos = e.size() - 1;
@@ -320,6 +321,11 @@ struct ChuLiu {
                 take[inc[pos]]++, take[dec[pos]]--;
             pos--;
         }
-        return ans;
+        vector<int> edges; 
+        for(int id=0;id<(int)e.size();id++){
+            if(take[id])
+                edges.push_back(id);
+        }
+        return {ans, edges};
     }
 };
