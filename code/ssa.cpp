@@ -278,8 +278,7 @@ struct ChuLiu {
                     num[v] = id;
                 }
             inw[root] = 0; // Remove-se o pi(root).
-            if(*max_element(inw.begin(), inw.end()) == INF)
-                return -1;
+            assert(*max_element(inw.begin(), inw.end()) < INF); 
             int tot = -1;
             for (int i = 0; i < n; i++) {
                 ans += inw[i];
