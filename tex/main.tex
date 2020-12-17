@@ -29,13 +29,13 @@
   marginparsep=5mm,
 }
 
-\usepackage[brazil]{babel} % Separacao de silabas em portugues
+\usepackage[brazil]{babel} 
 \usepackage[noend]{algpseudocode}
 \usepackage[utf8]{inputenc}
 \usepackage{algorithm} 
 \usepackage{amsfonts}
 \usepackage{amsmath}
-\usepackage{amsthm} % has proof
+\usepackage{amsthm} 
 \usepackage{array}
 \usepackage{float}
 \usepackage{graphicx}
@@ -44,10 +44,11 @@
 \usepackage{listings}
 \usepackage{tcolorbox}
 \usepackage{tikz}
-\usepackage{wrapfig}
-\usepackage{setspace}
 \usetikzlibrary {positioning}
 \usetikzlibrary{arrows}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{lmodern}
 
 \algrenewcommand\algorithmicend{\textbf{fim}}
 \algrenewcommand\algorithmicdo{\textbf{faça}}
@@ -70,7 +71,6 @@
     {./img/}
 }
 
-%\renewcommand\refname{Referências}
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{corollary}{Corolário}
 \newtheorem{lemma}{Lema}
@@ -116,25 +116,23 @@ maxbibnames=10
 % Nota: O título para as dissertações/teses do IME-USP devem caber em um 
 % orifício de 10,7cm de largura x 6,0cm de altura que há na capa fornecida pela SPG.
 \thispagestyle{empty}
+
+
 \begin{center}
-    \vspace*{2.3cm}
-    \textbf{\huge{O problema do Carteiro Chinês}}\\
-    
-    \vspace*{1cm}
-    \Large{Gabriel Fernandes de Oliveira}
-
-    \vskip 1.8cm
-    Orientador: Carlos Eduardo Ferreira\\
-
-    \vspace{\fill}
+    \Large \textsc{O Problema do Carteiro Chinês} \\[120pt]
+    \large \textsc{Trabalho de conclusão de curso} \\
+    \large \textsc{Universidade de São Paulo} \\
+    \large \textsc{Bacharelado em Ciência da Computação}\\[120pt]
+    \large \textsc{Gabriel Fernandes de Oliveira} \\
+    \large \textsc{Orientador: Carlos Eduardo Ferreira}
+    \vfill
     \normalsize{São Paulo, 2020}
 \end{center}
 
 % ---------------------------------------------------------------------------- %
 
-\newpage
 
-\section*{Resumo}
+\chapter*{Resumo}
 
 O Problema do Carteiro Chinês, enunciado pelo matemático chinês Meigu Guan em 1962, consiste em encontrar um trajeto fechado de custo mínimo que percorre todas arestas de um grafo ao menos uma vez.
 
@@ -142,7 +140,22 @@ Essa generalização do problema dos circuitos eulerianos possui muitas aplicaç
 
 Este trabalho tem como objetivos explicar e implementar a solução do Problema do Carteiro Chinês e de algumas de suas variações (\textit{e.g.} o Problema aplicado a grafos mistos e o Problema do Carteiro Rural).
 
-\textbf{Palavras-chave}: grafos, circuito euleriano, problema do carteiro chinês
+
+\noindent \\ \textbf{Palavras-chave}: grafos, circuito euleriano, problema do carteiro chinês
+
+
+
+\chapter*{Abstract}
+
+
+The Chinese Postman Problem, originally studied by the Chinese mathematician Meigu Guan in 1962, consists of finding a minimum cost closed path that passes every edge in a graph at least once.
+
+This generalization of the eulerian circuit problem has many applications in logistics. Some of its applications are optimizing routes for mail delivery, waste collection, and even snow plowing.
+
+The goals of this project are to explain and implement solutions for the Chinese Postman Problem and some of its variations (e.g. Mixed and Rural Postman Problem).
+
+
+\noindent \\ \textbf{Keywords}: graphs, eulerian circuit, chinese postman problem
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
