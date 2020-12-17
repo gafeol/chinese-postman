@@ -95,3 +95,5 @@ Este teste de cobertura nos oferece informações muito importantes, como por ex
 Todas as referências bibliográficas são apresentadas na monografia, e são organizadas usando Bibtex no arquivo `tex/ref.bib`.
 
 A implementação do Emparelhamento Perfeito Mínimo foi baseada na implementação de [Adilson Pereira](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e adaptada para esse projeto em um [fork próprio](https://github.com/gafeol/Minimum-Cost-Perfect-Matching).
+
+A implementação do algoritmo de Chu-Liu para encontrar a arborescência geradora mínima em um digrafo foi baseada na implementação do time ["el-vasito"](https://github.com/mhunicken/icpc-team-notebook-el-vasito)
