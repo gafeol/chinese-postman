@@ -1,4 +1,4 @@
-\section{O problema do Carteiro Chinês (PCC)}
+\chapter{O problema do Carteiro Chinês (PCC)}
 
 Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
 
@@ -57,7 +57,7 @@ Por esse motivo podemos dizer que o problema das T-junções é uma generalizaç
 Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
 Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
 
-\subsection{Grafos não direcionados}
+\section{Grafos não direcionados}
         \label{sec:pcc}
 
 Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e não direcionado.
@@ -290,7 +290,7 @@ Se $G$ não possuir arestas de custo negativo, uma alternativa ao algoritmo de F
 Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds\cite{blossom}. 
 Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009\cite{kolmogorov}.
 
-    \subsection{Grafos direcionados}
+    \section{Grafos direcionados}
 
     Analisaremos agora o problema do carteiro chinês aplicado a digrafos.
 
@@ -786,7 +786,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     \end{itemize}
 
-    \subsection{Grafos mistos}
+    \section{Grafos mistos}
 
     Já analisamos o Problema do Carteiro Chinês aplicado a grafos e digrafos, agora discutiremos o mesmo problema aplicado a grafos mistos, ou seja, grafos que tenham tanto arestas quanto arcos.
 
@@ -1370,7 +1370,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         % TODO: Provar que fator de aproximação é justo, mostrar exemplo que chega próximo a 2 a aproximação.
     \end{proof}
 
-    \subsection{Problema do carteiro rural}
+    \section{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
     
     Nesta versão mais geral do PCC devemos realizar o planejamento de um circuito de custo mínimo que passa ao menos uma vez por toda aresta pertencente a um subconjunto $R \subseteq A$. 
@@ -1386,7 +1386,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas duas heurísticas, uma para cada tipo de grafo.
 
-        \subsubsection{Grafos não direcionados}
+        \section{Grafos não direcionados}
 
         Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides} até junho de 2020, quando uma aproximação sutilmente melhor foi desenvolvida por Karlin, Klein e Gharan \cite{klein-tsp}.
 
@@ -1403,7 +1403,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w \in V'$.
         \end{enumerate}
 
-        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e substituido por duas arestas, de custos $3$ e $5$).
+        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e stituido por duas arestas, de custos $3$ e $5$).
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
@@ -1689,7 +1689,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \end{enumerate}
 
-        \subsubsection{Grafos direcionados}
+        \section{Grafos direcionados}
 
         Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
 
@@ -2021,7 +2021,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
 
     %TODO: Adicionar valor da solucao otima
-    \subsection{Problema do carteiro chinês com vento}
+    \section{Problema do carteiro chinês com vento}
 
         Considere o problema em que cada aresta tem um custo diferente dependendo do sentido em que é percorrida. Este problema é conhecido como o Problema do Carteiro Chinês com Vento (PCCV).
 
@@ -2383,7 +2383,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             Como provado, ambas funções de custo são equivalentes para o cálculo do custo da solução $T$.
         \end{proof}
 
-%    \subsection{Problema do Carteiro Hierárquico}
+%    \section{Problema do Carteiro Hierárquico}
 %
 %    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
 %    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.

@@ -1,6 +1,6 @@
-\section{Grafos eulerianos}
+\chapter{Grafos eulerianos}
 
-\subsection{As sete pontes de Königsberg}
+\section{As sete pontes de Königsberg}
 
 \begin{wrapfigure}{r}{0.5\textwidth} 
     \centering
@@ -36,7 +36,7 @@ Provando assim que não existe um trajeto como o pedido no enunciado do problema
 Essa observação que, aos olhos de hoje, parece muito simples, teve um impacto profundo nas áreas da Matemática e Computação.
 A modelagem de Euler, tratando as massas de terra e pontes de forma abstrata foi absolutamente inovadora e é o embrião da área da teoria dos grafos.
 
-\subsection{Grafos não direcionados}
+\section{Grafos não direcionados}
 
 Antes de voltar ao problema de Euler, realizaremos algumas definições de teoria dos grafos.
 
@@ -226,7 +226,7 @@ Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por ind
 \end{proof}
 
 % Grafos direcionados
-\subsection{Grafos direcionados}
+\section{Grafos direcionados}
 
 Até então tratamos apenas de grafos não direcionados, mas podemos expandir esses mesmos conceitos para grafos direcionados, os \textbf{digrafos}.
 
@@ -479,13 +479,13 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
 \end{proof}
 
-%\subsection{Soluções}
+%\section{Soluções}
 
 % Referencia pra explicacao e https://cp-algorithms.com/graph/euler_path.html
 
-%\subsubsection{Algoritmo de Fleury}
+%\subsection{Algoritmo de Fleury}
 
-\subsection{Algoritmo de Hierholzer}
+\section{Algoritmo de Hierholzer}
 
 O algoritmo de Hierholzer foca em encontrar e unir um conjunto de circuitos $C_1, C_2, \dots, C_k$, tal que não existe aresta pertencente a dois circuitos diferentes, e que toda aresta pertence ao menos a um circuito.
 Tal união gera um grafo conexo euleriano.

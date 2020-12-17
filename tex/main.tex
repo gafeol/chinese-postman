@@ -1,4 +1,3 @@
-%:LLPStartPreview para rodar o pdf com mudancas automaticas
 % vim-tex cheatsheet (https://github.com/lervag/vimtex):
     % \ll - start compiling document
     % \lv - open pdf viewer
@@ -6,7 +5,30 @@
     % \le parse log files for errors and warnings
 % \lc remove auxiliary files
 
-\documentclass[12pt, a4paper]{article}
+\documentclass[12pt,twoside,english,brazilian]{book}
+\usepackage[a4paper]{geometry}
+
+\geometry{
+  %top=32mm,
+  %bottom=28mm,
+  %left=24mm,
+  %right=34mm,
+  textwidth=152mm, % 210-24-34
+  textheight=237mm, % 297-32-28
+  vmarginratio=8:7, % 32:28
+  hmarginratio=12:17, % 24:34
+  % Com geometry, esta medida não é tão relevante; basta garantir que ela
+  % seja menor que "top" e que o texto do cabeçalho caiba nela.
+  headheight=25.4mm,
+  % distância entre o início do texto principal e a base do cabeçalho;
+  % ou seja, o cabeçalho "invade" a margem superior nessa medida. Essa
+  % é a medida que determina a posição do cabeçalho
+  headsep=11mm,
+  footskip=10mm,
+  marginpar=20mm,
+  marginparsep=5mm,
+}
+
 \usepackage[brazil]{babel} % Separacao de silabas em portugues
 \usepackage[noend]{algpseudocode}
 \usepackage[utf8]{inputenc}
@@ -23,9 +45,9 @@
 \usepackage{tcolorbox}
 \usepackage{tikz}
 \usepackage{wrapfig}
+\usepackage{setspace}
 \usetikzlibrary {positioning}
 \usetikzlibrary{arrows}
-%\usepackage {xcolor}
 
 \algrenewcommand\algorithmicend{\textbf{fim}}
 \algrenewcommand\algorithmicdo{\textbf{faça}}
@@ -41,8 +63,6 @@
 \algrenewcommand\algorithmicuntil{\textbf{enquanto}}
 
 
-
-
 \tikzset{edge/.style = {->,> = latex'}}
 
     \graphicspath{
@@ -50,7 +70,7 @@
     {./img/}
 }
 
-\renewcommand\refname{Referências}
+%\renewcommand\refname{Referências}
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{corollary}{Corolário}
 \newtheorem{lemma}{Lema}
@@ -81,6 +101,16 @@ maxbibnames=10
 
 \begin{document}
 
+% Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
+% página de rosto, resumo, sumário etc. O comando frontmatter faz números
+% de página aparecem em algarismos romanos ao invés de arábicos e
+% desabilita a contagem de capítulos.
+\frontmatter
+
+% Este formato está (re)definido na package imeusp-headers
+\pagestyle{plain}
+
+
 % ---------------------------------------------------------------------------- %
 % CAPA
 % Nota: O título para as dissertações/teses do IME-USP devem caber em um 
@@ -103,14 +133,41 @@ maxbibnames=10
 % ---------------------------------------------------------------------------- %
 
 \newpage
+
+\section*{Resumo}
+
+O Problema do Carteiro Chinês, enunciado pelo matemático chinês Meigu Guan em 1962, consiste em encontrar um trajeto fechado de custo mínimo que percorre todas arestas de um grafo ao menos uma vez.
+
+Essa generalização do problema dos circuitos eulerianos possui muitas aplicações na área de logística, podendo ser usado, por exemplo, para reduzir a distância percorrida na rota de carteiros, caminhões de lixo, ou mesmo de veículos de remoção de neve.
+
+Este trabalho tem como objetivos explicar e implementar a solução do Problema do Carteiro Chinês e de algumas de suas variações (\textit{e.g.} o Problema aplicado a grafos mistos e o Problema do Carteiro Rural).
+
+\textbf{Palavras-chave}: grafos, circuito euleriano, problema do carteiro chinês
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Aqui vai o conteúdo principal do trabalho, ou seja, os capítulos que compõem
+% a dissertação/tese. O comando mainmatter reinicia a contagem de páginas,
+% modifica a numeração para números arábicos e ativa a contagem de capítulos.
+\mainmatter
+
+% Este formato está definido na package imeusp-headers e só funciona com
+% book/report, pois usa o nome dos capítulos nos cabeçalhos.
+%\pagestyle{mainmatter}
+
+% Espaçamento simples
+\singlespacing
+
+\newpage
 \tableofcontents
 \newpage
 
-\import{/}{euler.tex}
+\import{capitulos/}{euler.tex}
 
-\import{/}{pcc.tex}
+\import{capitulos/}{pcc.tex}
 
-\import{/}{prb.tex}
+\import{capitulos/}{prb.tex}
 
     \iffalse
         \section{Anotações}
