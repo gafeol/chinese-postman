@@ -140,7 +140,7 @@ struct compress {
         vDict.resize(cnt);
         for(int u=0;u<oriG.n;u++){
             newV[u] = newV[uf.raiz(u)];
-            vDict[uf.raiz(u)].push_back(u);
+            vDict[newV[uf.raiz(u)]].push_back(u);
         }
         return newV;
     }
@@ -165,7 +165,7 @@ struct compress {
         for(int u=0;u<G.n;u++){
             for(auto [v, id, c] : G.adj[u]){
                 if(newV[u] == newV[v]) continue;
-                arcDict[id] = nAdj.size();
+                arcDict.push_back(id);
                 nAdj.emplace_back(newV[u], newV[v], c);
             }
         }
