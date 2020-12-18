@@ -161,7 +161,6 @@ struct compress {
         // Criando a lista de adjacências do grafo comprimido
         vector<tuple<int, int, double>> nAdj;
         arcDict.clear();
-        arcDict.resize(G.m);
         for(int u=0;u<G.n;u++){
             for(auto [v, id, c] : G.adj[u]){
                 if(newV[u] == newV[v]) continue;
