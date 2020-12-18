@@ -50,18 +50,10 @@ struct Euler {
 
         /// Verifica se o grau de entrada e saída de todos vértices são iguais.
         bool checkDeg(){
-            vector<int> inDeg(digrafo.n, 0);
-            vector<int> outDeg(digrafo.n, 0);
             for(int u=0;u<digrafo.n;u++){
-                for(auto ar: digrafo.adj[u]){
-                    int v = ar.prox;
-                    outDeg[u]++;
-                    inDeg[v]++;
-                }
-            }
-            for(int u=0;u<digrafo.n;u++)
-                if(inDeg[u] != outDeg[u])
+                if(digrafo.grauEntrada[u] != digrafo.grauSaida[u])
                     return false;
+            }
             return true;
         }
 

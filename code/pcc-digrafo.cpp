@@ -51,36 +51,22 @@ struct PCC {
     /// Retorna um par cujo primeiro elemento é o custo da solução, enquanto que o segundo é a lista de ids dos arcos escolhidos
     pair<double, vector<int>> solveById(){
         vector<vector<double>> mnDist = floyd_warshall(G);
-        vector<int> demanda(G.n);
         vector<int> F, S;
         vector<int> dF, dS;
 
-        vector<vector<Aresta>> &adj = G.adj;
-        vector<vector<Aresta>> inv = G.getAdjInverso();
         for(int u=0;u<G.n;u++){
-            demanda[u] =  (int)adj[u].size() - inv[u].size();
-            if(demanda[u] < 0){
+            int demanda = G.grauSaida[u] - G.grauEntrada[u];
+            if(demanda < 0){
                 F.push_back(u);
-                dF.push_back(-demanda[u]);
+                dF.push_back(-demanda);
             }
-            else if(demanda[u] > 0){
+            else if(demanda > 0){
                 S.push_back(u);
-                dS.push_back(demanda[u]);
+                dS.push_back(demanda);
             }
         }
 
-        /*
-        puts("F:");
-        for(int i=0;i<F.size();i++){
-            printf("%d  demanda %d\n", F[i], dF[i]);
-        }
-        puts("S:");
-        for(int i=0;i<S.size();i++){
-            printf("%d  demanda %d\n", S[i], dS[i]);
-        }
-        */
-
-        ProblemaTransporte pt(G.n, F, dF, S, dS, mnDist); // dist ou mnDist?
+        ProblemaTransporte pt(G.n, F, dF, S, dS, mnDist); 
         vector<tuple<int, int, int>> f = pt.solve();
 
         vector<tuple<int, int, double>> listaArcos = G.listaArcos();
@@ -91,7 +77,6 @@ struct PCC {
         for(tuple<int, int, int> tp: f){
             auto [u, v, flow] = tp;
             while(flow--){
-                //printf("expande de u %d a v %d\n", u, v);
                 vector<Aresta> arcos = expande(u, v, mnDist);
                 for(Aresta arco: arcos){
                     realId.push_back(arco.id);

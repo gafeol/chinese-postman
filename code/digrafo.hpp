@@ -11,6 +11,7 @@ struct Digrafo{
     int n, m;
     /// 'adj' armazena a lista de adjacências do digrafo
     vector<vector<Aresta>> adj;
+    vector<int> grauEntrada, grauSaida;
 
     Digrafo () {}
 
@@ -18,13 +19,15 @@ struct Digrafo{
     /// Recebe: 
     ///     'nv' o número de vértices do grafo, 
     ///     'arcos' a lista de pares de vértices que possuem um arco entre si
-    Digrafo(int nv, vector<pair<int, int>> arcos): n(nv), m((int)arcos.size()) {
+    Digrafo(int nv, vector<pair<int, int>> arcos): n(nv), m((int)arcos.size()), grauEntrada(vector<int>(nv, 0)), grauSaida(vector<int>(nv, 0)) {
         adj.resize(n);
         for(int i=0;i<m;i++){
             auto [u, v] = arcos[i];
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
             adj[u].emplace_back(v, i);
+            grauEntrada[v]++;
+            grauSaida[u]++;
         }
     }
 
@@ -32,20 +35,22 @@ struct Digrafo{
     /// Recebe: 
     ///     'nv' o número de vértices do grafo, 
     ///     'arcos' a lista de vértices que possuem um arco entre si e o custo de tal arco
-    Digrafo(int nv, vector<tuple<int, int, double>> arcos): n(nv), m((int)arcos.size()) {
+    Digrafo(int nv, vector<tuple<int, int, double>> arcos): n(nv), m((int)arcos.size()), grauEntrada(vector<int>(nv, 0)), grauSaida(vector<int>(nv, 0)) {
         adj.resize(n);
         for(int i=0;i<m;i++){
             auto [u, v, cus] = arcos[i];
             assert(u >= 0 && u < n);
             assert(v >= 0 && v < n);
             adj[u].emplace_back(v, i, cus);
+            grauEntrada[v]++;
+            grauSaida[u]++;
         }
     }
 
     /// Constrói grafo direcionado a partir da lista de adjacências. Assume-se que os vértices vão de 0 a adjj.size()-1.
     /// Recebe: 
     ///     'adjj' a lista de adjacências do grafo, cada par (v, c) na linha u indica um arco de custo c de u a v
-    Digrafo(vector<vector<pair<int, double>>> adjj) : n((int)adjj.size()) {
+    Digrafo(vector<vector<pair<int, double>>> adjj) : n((int)adjj.size()), grauEntrada(vector<int>(adjj.size(), 0)), grauSaida(vector<int>(adjj.size(), 0)) {
         adj.clear();
         adj.resize(n);
         m = 0;
@@ -54,6 +59,8 @@ struct Digrafo{
                 int v = ar.first;
                 double cus = ar.second;
                 adj[u].emplace_back(v, m++, cus);
+                grauEntrada[v]++;
+                grauSaida[u]++;
             }
         }
     } 
@@ -61,7 +68,7 @@ struct Digrafo{
     /// Constrói grafo direcionado a partir da matriz de adjacências. Assume-se que os vértices vão de 0 a adjj.size()-1.
     /// Recebe: 
     ///     'adjj' a matriz de adjacências do grafo, cada valor c na linha u e coluna v indica um arco de custo c de u a v
-    Digrafo(vector<vector<double>> adjj) : n((int)adjj.size()) {
+    Digrafo(vector<vector<double>> adjj) : n((int)adjj.size()), grauEntrada(vector<int>(adjj.size(), 0)), grauSaida(vector<int>(adjj.size(), 0)) {
         adj.clear();
         adj.resize(n);
         m = 0;
@@ -70,6 +77,8 @@ struct Digrafo{
                 if(u == v) continue;
                 double cus = adjj[u][v];
                 adj[u].emplace_back(v, m++, cus);
+                grauEntrada[v]++;
+                grauSaida[u]++;
             }
         }
     } 
@@ -103,7 +112,7 @@ struct Digrafo{
         }
         return inv;
     }
-
+    
     vector<bool> vis;
     vector<int> cy, id, mn;
     stack<int> q;
