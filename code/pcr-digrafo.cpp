@@ -28,17 +28,20 @@ struct PCR {
     pair<double, vector<int>> solve(Digrafo G, vector<int> R){
         auto [ssaCost, ssa] = findRuralSSA(G, R);
 
-        // Derivar novo digrafo induzido apenas pelos arcos de ssa.
+        // Derivar novo digrafo induzido pelos arcos de ssa e os arcos de R.
         auto origListaAdj = G.listaArcos();
         auto mnDist = floyd_warshall(G);
 
-        // Lista de arcos selecionados pelo SSA
         vector<tuple<int, int, double>> nArcos;
         for(int id: ssa)
             nArcos.push_back(origListaAdj[id]);
+        for(int id: R)
+            nArcos.push_back(origListaAdj[id]);
         // Possivelmente nG é desconexo. (vértices que não são especiais podem ter grau zero)
         Digrafo nG(G.n, nArcos); 
-        
+
+        printf("Digrafo nG com ssa e arestas R:");
+        nG.print();
         // Resolver problema de transporte para tornar o digrafo euleriano.
             // Condensar o grafo nG em um F,S-bipartido completo 
         vector<int> F, dF, S, dS; 
@@ -59,15 +62,19 @@ struct PCR {
             // Montar grafo GM com os arcos escolhidos expandidos e duplicados.
             // O grafo GM sera montado a partir dos arcos de 'listaArcos', declarado a seguir.
         vector<tuple<int, int, double>> listaArcos;
-        vector<int> realId;
+        vector<int> origId;
 
-        // TODO: Adicionar em listaArcos todos arcos do ssa com os ids reais do grafo original.
+        // Adiciona em listaArcos todos arcos do ssa com os ids reais do grafo original.
+        for(int id: ssa){
+            listaArcos.push_back(origListaAdj[id]);
+            origId.push_back(id);
+        }
 
         for (auto [u, v, flow] : M) {
             while(flow--){
                 vector<Aresta> arcos = expande(u, v, G, mnDist);
                 for(Aresta arco: arcos){
-                    realId.push_back(arco.id);
+                    origId.push_back(arco.id);
                     listaArcos.emplace_back(u, arco.prox, arco.cus);
                     u = arco.prox;
                 }
@@ -78,8 +85,7 @@ struct PCR {
         Digrafo GM(G.n, listaArcos);
         // Encontrar circuito euleriano no digrafo estendido.
         auto euler = Euler(GM);
-        assert(euler.euleriano());
-        int no_especial;
+        int no_especial = get<0>(origListaAdj[R[0]]);
         vector<int> circuito = euler.trilha_euleriana_id(no_especial);
         return {ssaCost + tCost, circuito};
     }
