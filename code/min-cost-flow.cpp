@@ -84,6 +84,7 @@ struct MinCostFlow {
     void add_edge(int u, int v, val c, num s, int id=-1) {
         assert(u >= 0 && u < N);
         assert(v >= 0 && v < N);
+        assert(c >= 0);
         if(id != -1)
             edgeId[id] = en;
         //printf("add edge %d %d %d %.3f %d\n", u, v, c, s, id);
