@@ -82,3 +82,59 @@ TEST(SSA, NotStronglyConnected){
     EXPECT_DEATH(ssa.solve(0), "");
 }
 
+void print(vector<int> v){
+    printf("vector with %d elements:\n", (int)v.size());
+    for(int x: v)
+        printf("%d ", x);
+    puts("");
+}
+
+TEST(SSARural, Arco){
+    Digrafo G(2, { {0, 1, 2.}});
+    auto [c, ssa] = findRuralSSA(G, {0});
+    EXPECT_DOUBLE_EQ(c, 0.);
+    EXPECT_TRUE(ssa.empty());
+}
+
+TEST(SSARural, Simples){
+    Digrafo G(2, { {0, 1, 2.}, {1, 0, 1.}});
+    auto [cost, ssa] = findRuralSSA(G, {0, 1});
+    EXPECT_DOUBLE_EQ(cost, 0);
+    EXPECT_TRUE(ssa.empty());
+}
+
+TEST(SSARural, DoisArcosR){
+    Digrafo G(4, { {0, 1}, {1, 2}, {2, 3}, {3, 0}});
+    auto [cost, ssa] = findRuralSSA(G, {0, 2});
+    EXPECT_DOUBLE_EQ(cost, 1.);
+    EXPECT_EQ(ssa, vector<int> {1});
+}
+
+/*
+TEST(SSARural, Simples2){
+    Digrafo G(2, { {0, 1, 2.}, {1, 0, 1.}});
+    PCR pcr;
+    auto [cost, arcs] = pcr.solve(G, {1});
+    EXPECT_DOUBLE_EQ(cost, 3.);
+    vector<int> expArcs = {0, 1};
+    EXPECT_EQ(arcs, expArcs);
+}
+
+TEST(SSARural, Simples3){
+    Digrafo G(2, { {0, 1, 2.}, {1, 0, 1.}});
+    PCR pcr;
+    auto [cost, arcs] = pcr.solve(G, {0, 1});
+    EXPECT_DOUBLE_EQ(cost, 3.);
+    vector<int> expArcs = {0, 1};
+    EXPECT_EQ(arcs, expArcs);
+}
+
+TEST(SSARural, ArvoreCircuito){
+    Digrafo G(3, { {0, 1, 2.}, {1, 0, 1.}, {1, 2, 1.}});
+    PCR pcr;
+    auto [cost, arcs] = pcr.solve(G, {1});
+    EXPECT_DOUBLE_EQ(cost, 3.);
+    vector<int> expArcs = {0, 1};
+    EXPECT_EQ(arcs, expArcs);
+}
+*/
