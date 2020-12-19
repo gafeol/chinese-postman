@@ -147,7 +147,7 @@ struct PCC {
         vector<int> mrk(G.m, 1);
         double realCost = 0;
         for(int id: cycle){
-            auto [u, v, cus] = listaArestas[id];
+            double cus = get<double>(listaArestas[id]);
             mrk[id]--;
             realCost += cus;
         }
