@@ -74,7 +74,7 @@ struct PCR {
         for (auto [u, v, flow] : M) {
             vector<Aresta> arcos = expande(u, v, G, mnDist);
             for (Aresta arco : arcos) {
-                while (flow--) {
+                for(int ncopias=0;ncopias < flow;ncopias++){
                     origId.push_back(arco.id);
                     listaArcos.emplace_back(u, arco.prox, arco.cus);
                 }

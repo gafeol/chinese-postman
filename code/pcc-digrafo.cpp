@@ -76,14 +76,13 @@ struct PCC {
 
         for(tuple<int, int, int> tp: f){
             auto [u, v, flow] = tp;
-            while(flow--){
-                vector<Aresta> arcos = expande(u, v, mnDist);
-                for(Aresta arco: arcos){
+            vector<Aresta> arcos = expande(u, v, mnDist);
+            for (Aresta arco : arcos) {
+                for(int ncopias=0;ncopias<flow;ncopias++){
                     realId.push_back(arco.id);
                     listaArcos.emplace_back(u, arco.prox, arco.cus);
-                    u = arco.prox;
                 }
-
+                u = arco.prox;
             }
         }
 

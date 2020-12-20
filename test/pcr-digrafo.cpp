@@ -25,7 +25,7 @@ TEST(PCRDigrafo, Simples2){
     PCR pcr;
     auto [cost, arcs] = pcr.solve(G, {1});
     EXPECT_DOUBLE_EQ(cost, 3.);
-    vector<int> expArcs = {0, 1};
+    vector<int> expArcs = {1, 0};
     EXPECT_EQ(arcs, expArcs);
 }
 
@@ -43,7 +43,7 @@ TEST(PCRDigrafo, ArvoreCircuito){
     PCR pcr;
     auto [cost, arcs] = pcr.solve(G, {1});
     EXPECT_DOUBLE_EQ(cost, 3.);
-    vector<int> expArcs = {0, 1};
+    vector<int> expArcs = {1, 0};
     EXPECT_EQ(arcs, expArcs);
 }
 
