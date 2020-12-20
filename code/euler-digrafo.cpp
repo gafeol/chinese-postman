@@ -85,7 +85,6 @@ struct Euler {
         ///     vector de inteiros, contendo os ids dos arcos percorridos na trilha euleriana
         vector<int> trilha_euleriana_id(int u=0){
             reset();
-            assert(euleriano());
             euler_hierholzer_id(u); 
             vector<int> vTrilha;
             while(!trilha.empty()){
