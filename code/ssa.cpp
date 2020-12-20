@@ -102,36 +102,38 @@ struct ChuLiu {
     }
 };
 
-vector<int> expande(int ini, int fim, vector<vector<double>> &mnDist, Digrafo &G){
+vector<int> expande(int ini, int fim, Digrafo &G, vector<vector<double>> &mnDist){
+    printf("expande ini %d fim %d dis %.4f\n", ini, fim, mnDist[ini][fim]);
     if(ini == fim)
         return {};
-    auto &adj = G.adj;
     vector<int> ans;
-    for(Aresta ar: adj[ini]){
+    for(Aresta ar: G.adj[ini]){
         if(ar.cus + mnDist[ar.prox][fim] == mnDist[ini][fim]){
+            printf("    usa aresta %d %d %.4f\n", ini, ar.prox, ar.cus);
             ans.push_back(ar.id);
-            auto aux = expande(ar.prox, fim, mnDist, G);
+            auto aux = expande(ar.prox, fim, G, mnDist);
             ans.insert(ans.end(), aux.begin(), aux.end());
             return ans;
         }
     }
+    puts("assert false aqui no expande");
     assert(false);
 }
 
 struct compress {
     private:
     Digrafo oriG, compG;
-    vector<int> arcDict; 
+    vector<int> arcDict, newV; 
     vector<vector<int>> vDict;
     UnionFind uf;
 
 
-    /// Retorna a lista de novos "id" para os arcos do grafo original.
+    /// Preenche a lista de novos "id" para os arcos do grafo original.
     /// Exemplo: seja oriId o índice de um vértice do grafo original oriG, o valor de id[oriId] será o valor de índice do vértice condensado correspondente no grafo compG
     /// Essa função também preenche o valor de vDict, que tem a associação inversa, mapeando cada vértice de compG para os vértices originais que o compõe.
-    vector<int> getNewV(){
+    void getNewV(){
         // Renomeando nós de G para nós de compG
-        vector<int> newV(oriG.n);
+        assert((int)newV.size() == oriG.n);
         int cnt = 0;
         for(int u=0;u<oriG.n;u++)
             if(uf.p[u] == u)
@@ -142,21 +144,20 @@ struct compress {
             newV[u] = newV[uf.raiz(u)];
             vDict[newV[uf.raiz(u)]].push_back(u);
         }
-        return newV;
     }
 
 
     public:
     // Recebe um digrafo G e um conjunto de arcos A que devem ser comprimidos.
     // O grafo G será salvo em oriG, e a compressão desse grafo será salva por compG.
-    compress(Digrafo G, vector<int> A) : oriG(G), uf(UnionFind(G.n)) {
+    compress(Digrafo G, vector<int> A) : oriG(G), newV(vector<int>(G.n)), uf(UnionFind(G.n)) {
         auto listaArcos = G.listaArcos();
         for(int id: A){
             auto [u, v, c] = listaArcos[id];
             uf.join(u, v);
         }
 
-        auto newV = getNewV();
+        getNewV();
 
         // Criando a lista de adjacências do grafo comprimido
         vector<tuple<int, int, double>> nAdj;
@@ -185,14 +186,26 @@ struct compress {
     vector<int> vId(int v){
         return vDict[v];
     }
+
+    // Recebe o identificador de um vértice do grafo original e devolve seu identificador correspondente comprimido.
+    // É o inverso da função vId
+    int newVId(int v){
+        return newV[v];
+    }
 };
 
 /// Encontra a arborescência geradora mínima do grafo G enraizado em um vértice especial qualquer (pertencente a uma componente de R).
 /// Serão retornados tanto a raiz escolhida para o grafo quanto um vetor dos arcos que formam a arborescência.
-pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R){
+pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
     // Condensar o grafo nas R-componentes
     auto comp = compress(G, R);
     auto cG = comp.getCompressed();
+
+    root = (root >= 0 ? comp.newVId(root) : root);
+    printf("root %d\n", root);
+
+    puts("print cG");
+    cG.print();
 
     // Condensa o grafo cG em um Kcomp, grafo completo contendo apenas as componentes condensadas.
     auto mnDist = floyd_warshall(cG);
@@ -206,27 +219,43 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R){
     int nComps = compId.size();
 
     vector<vector<double>> compAdj(nComps, vector<double>(nComps));
-    for(int u=0;u<nComps;u++){
-        for(int v=0;v<nComps;v++){
-            compAdj[u][v] = mnDist[compId[u]][compId[v]];
+    for(int i=0;i<nComps;i++){
+        for(int j=0;j<nComps;j++){
+            compAdj[i][j] = mnDist[compId[i]][compId[j]];
         }
     }
+    root = (root >= 0 ? compId[root] : 0);
+    printf("root %d\n", root);
     auto Kcomp = Digrafo(compAdj);
     auto cl = ChuLiu(Kcomp);
-    auto [ssaCost, ssaKcomp] = cl.solve(0);
+    printf("ChuLiu com root %d\n\n\n\n", root);
+    auto [ssaCost, ssaKcomp] = cl.solve(root);
+
+    puts("Kcomp:");
+    Kcomp.print();
 
     // Passa de Kcomp -> cG
     auto listaAdjKcomp = Kcomp.listaArcos();
     vector<int> ssaCG;
+    printf("listaAdjKcomp sz %d\n", (int)listaAdjKcomp.size());
     for(int id: ssaKcomp){ 
-        auto [u, v, c] = listaAdjKcomp[id];
-        auto aux = expande(u, v, compAdj, cG);
+        printf("id %d\n", id);
+        auto [ku, kv, c] = listaAdjKcomp[id];
+        int u = compId[ku];
+        int v = compId[kv];
+
+        printf("u %d v %d c %.4f\n", u, v, c);
+        auto aux = expande(u, v, cG, mnDist);
+        puts("expandiu");
         ssaCG.insert(ssaCG.end(), aux.begin(), aux.end());
     }
     // Passa de cG -> G
     vector<int> ssa;
     for(int id: ssaCG){
+        printf("retrieve ArcId(%d): ", id);
         ssa.push_back(comp.arcId(id));
+        printf("%d\n", comp.arcId(id));
     }
+    puts("got ssa");
     return {ssaCost, ssa};
 }

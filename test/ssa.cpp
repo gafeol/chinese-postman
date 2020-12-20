@@ -50,15 +50,14 @@ TEST(SSA, Cycle){
 1 4
 3 0
 1 3
-2 0
 2 4
 4 2
 */ 
 
 TEST(SSA, Triangles){
-    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 0}, {2, 4}, {4, 2}} );
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}, {4, 2}} );
     auto ssa = ChuLiu(G);
-    vector<int> expTake = {0, 4, 6, 9};
+    vector<int> expTake = {0, 4, 6, 8};
     auto [cost, take] = ssa.solve(0);
     EXPECT_DOUBLE_EQ(cost, 4);
     EXPECT_EQ(take, expTake);
@@ -72,12 +71,11 @@ TEST(SSA, Triangles){
 1 4
 3 0
 1 3
-2 0
 2 4
 */
 
 TEST(SSA, NotStronglyConnected){
-    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 0}, {2, 4}} );
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}} );
     auto ssa = ChuLiu(G);
     EXPECT_DEATH(ssa.solve(0), "");
 }
@@ -108,6 +106,22 @@ TEST(SSARural, DoisArcosR){
     auto [cost, ssa] = findRuralSSA(G, {0, 2});
     EXPECT_DOUBLE_EQ(cost, 1.);
     EXPECT_EQ(ssa, vector<int> {1});
+}
+
+TEST(SSARural, Triangles){
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}, {4, 2}} );
+    auto [cost, ssa] = findRuralSSA(G, {5, 8});
+    vector<int> expArcs = {0, 4};
+    EXPECT_DOUBLE_EQ(cost, 2.);
+    EXPECT_EQ(ssa, expArcs);
+}
+
+TEST(SSARural, Triangles2){
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}, {4, 2}} );
+    auto [cost, ssa] = findRuralSSA(G, {5, 8}, 2);
+    vector<int> expArcs = {1, 6};
+    EXPECT_DOUBLE_EQ(cost, 2.);
+    EXPECT_EQ(ssa, expArcs);
 }
 
 /*

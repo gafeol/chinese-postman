@@ -48,6 +48,39 @@ TEST(PCRDigrafo, ArvoreCircuito){
 }
 
 /*
+0 1
+2 1
+4 1
+2 0
+1 4
+3 0
+1 3
+2 0
+2 4
+4 2
+*/ 
+
+TEST(PCRDigrafo, Triangles){
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 0}, {2, 4}, {4, 2}} );
+    
+    PCR pcr;
+    auto [cost, arcs] = pcr.solve(G, {0, 3, 5});
+    vector<int> expArcs = {0, 6, 5, 0, 4, 9, 3};
+    EXPECT_DOUBLE_EQ(cost, 7);
+    EXPECT_EQ(arcs, expArcs);
+}
+
+TEST(PCRDigrafo, Triangles2){
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 0}, {2, 4}, {4, 2}} );
+    
+    PCR pcr;
+    auto [cost, arcs] = pcr.solve(G, {5, 9});
+    vector<int> expArcs = {5, 0, 4, 9, 1, 6};
+    EXPECT_DOUBLE_EQ(cost, 6);
+    EXPECT_EQ(arcs, expArcs);
+}
+
+/*
 TEST(PCRDigrafo, Circuito) {
     Digrafo G(4, {{0, 1, 1.},
                 {1, 2, 2.},

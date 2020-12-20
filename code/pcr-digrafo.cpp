@@ -27,6 +27,7 @@ struct PCR {
     pair<double, vector<int>> solve(Digrafo G, vector<int> R){
         auto ssa = findRuralSSA(G, R).second;
 
+        puts("found ssa");
         // Derivar novo digrafo induzido pelos arcos de ssa e os arcos de R.
         auto origListaAdj = G.listaArcos();
         auto mnDist = floyd_warshall(G);
@@ -55,6 +56,7 @@ struct PCR {
         }
         auto pt  = ProblemaTransporte(G.n, F, dF, S, dS, mnDist);
         auto M = pt.solve();
+        puts("got M");
             // Montar grafo GM com os arcos escolhidos expandidos e duplicados.
             // O grafo GM sera montado a partir dos arcos de 'listaArcos', declarado a seguir.
         vector<tuple<int, int, double>> listaArcos;
@@ -84,6 +86,7 @@ struct PCR {
 
         // GM também pode ser não conexo. Talvez precise determinar um nó inicial pro circuito euleriano que seja especial.
         Digrafo GM(G.n, listaArcos);
+        GM.print();
         // Encontrar circuito euleriano no digrafo estendido.
         auto euler = Euler(GM);
         int no_especial = get<0>(origListaAdj[R[0]]);
