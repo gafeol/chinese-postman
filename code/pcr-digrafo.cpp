@@ -10,12 +10,11 @@ struct PCR {
     vector<Aresta> expande(int ini, int fim, Digrafo &G, vector<vector<double>> &mnDist){
         if(ini == fim)
             return {};
-        vector<vector<Aresta>> &adj = G.adj;
         vector<Aresta> ans;
-        for(Aresta ar: adj[ini]){
+        for(Aresta ar: G.adj[ini]){
             if(ar.cus + mnDist[ar.prox][fim] == mnDist[ini][fim]){
                 ans.push_back(ar);
-                vector<Aresta> aux = expande(ar.prox, fim, G, mnDist);
+                auto aux = expande(ar.prox, fim, G, mnDist);
                 ans.insert(ans.end(), aux.begin(), aux.end());
                 return ans;
             }
@@ -26,7 +25,7 @@ struct PCR {
     /// Devolve uma solução do PCR: um circuito que percorre todo arco de R ao menos uma vez.
     /// Serão retornados o custo da solução encontrada pro PCR e um vetor dos arcos que formam a solução.
     pair<double, vector<int>> solve(Digrafo G, vector<int> R){
-        auto [ssaCost, ssa] = findRuralSSA(G, R);
+        auto ssa = findRuralSSA(G, R).second;
 
         // Derivar novo digrafo induzido pelos arcos de ssa e os arcos de R.
         auto origListaAdj = G.listaArcos();
@@ -40,8 +39,6 @@ struct PCR {
         // Possivelmente nG é desconexo. (vértices que não são especiais podem ter grau zero)
         Digrafo nG(G.n, nArcos); 
 
-        printf("Digrafo nG com ssa e arestas R:");
-        nG.print();
         // Resolver problema de transporte para tornar o digrafo euleriano.
             // Condensar o grafo nG em um F,S-bipartido completo 
         vector<int> F, dF, S, dS; 
@@ -56,7 +53,6 @@ struct PCR {
                 dS.push_back(demanda);
             }
         }
-        double tCost;
         auto pt  = ProblemaTransporte(G.n, F, dF, S, dS, mnDist);
         auto M = pt.solve();
             // Montar grafo GM com os arcos escolhidos expandidos e duplicados.
@@ -69,15 +65,20 @@ struct PCR {
             listaArcos.push_back(origListaAdj[id]);
             origId.push_back(id);
         }
+        // Adiciona em listaArcos os arcos de R
+        for(int id: R){
+            listaArcos.push_back(origListaAdj[id]);
+            origId.push_back(id);
+        }
 
         for (auto [u, v, flow] : M) {
-            while(flow--){
-                vector<Aresta> arcos = expande(u, v, G, mnDist);
-                for(Aresta arco: arcos){
+            vector<Aresta> arcos = expande(u, v, G, mnDist);
+            for (Aresta arco : arcos) {
+                while (flow--) {
                     origId.push_back(arco.id);
                     listaArcos.emplace_back(u, arco.prox, arco.cus);
-                    u = arco.prox;
                 }
+                u = arco.prox;
             }
         }
 
@@ -87,6 +88,13 @@ struct PCR {
         auto euler = Euler(GM);
         int no_especial = get<0>(origListaAdj[R[0]]);
         vector<int> circuito = euler.trilha_euleriana_id(no_especial);
-        return {ssaCost + tCost, circuito};
+        for(auto &id: circuito)
+            id = origId[id];
+
+        double cost = 0;
+        for(auto ar: listaArcos)
+            cost += get<double>(ar);
+
+        return {cost, circuito};
     }
 };
