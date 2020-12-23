@@ -50,7 +50,7 @@ Um passeio é considerado \textbf{fechado} se sua origem e término são iguais.
 
 Uma trilha fechada é um \textbf{circuito}.
 
-Devido às contribuições de Euler ao problema descrito, chama-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriano fechado.
+Devido às contribuições de Euler ao problema descrito, define-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo, \textbf{circuito euleriano} como um circuito que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriano.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
     \centering
@@ -91,7 +91,7 @@ Seja $\delta(G)$ o \textbf{grau mínimo} de um vértice pertencente a $G$.
 
 	Basta tomar o subcaminho entre os vértices $v$ e $w$ pertencente à $P$ juntamente com a aresta $vw$ que teremos um caminho fechado. Chegando assim em uma contradição.
 
-	Demonstra-se assim que $G$ deverá possuir ao menos um caminho fechado dadas as condições do lema.
+	Demonstra-se assim que $G$ deverá possuir ao menos um circuito dadas as condições do lema.
 \end{proof}
 
 Provado tal lema, podemos agora provar o teorema \ref{euler}:
@@ -111,14 +111,14 @@ Além disso, cada aparição de $v$ como vértice interno de $T$ contabiliza mai
 
 Sendo assim, se $G$ é euleriano, então todos seus vértices (extremos ou não) possuem grau par, como queriamos demonstrar.
 
-($\Leftarrow$) Agora, provaremos por indução no número de arestas de $G$ que se o grafo for conexo e se todos seus nós possuem grau par, então ele é euleriano.
+($\Leftarrow$) Agora, prova-se por indução no número de arestas de $G$ que se o grafo for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
 O caso base da indução é quando não há arestas em $G$. 
 O único grafo conexo que respeita tal condição é o grafo que possui apenas um vértice $v$.
 Neste exemplo, $\{v\}$ é o circuito euleriano do grafo.
 
 A hipótese de indução é que todo grafo simples, conexo, que possui até $k-1$ arestas e cujos vértices têm grau par é euleriano. 
-Seja $G$ um grafo conexo, de vértices de grau par e que possua $k > 1$ arestas, provaremos que ele também deverá ser euleriano.
+Seja $G$ um grafo conexo, de vértices de grau par e que possua $k > 1$ arestas, prova-se a seguir que $G$ também deverá ser euleriano.
 
 Como $G$ é conexo, vale que $\delta(G) \geq 1$ e como todos nós de $G$ têm grau par, podemos afirmar que $\delta(G) \geq 2$. 
 Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um circuito $C$.
