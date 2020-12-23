@@ -201,7 +201,11 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
     auto comp = compress(G, R);
     auto cG = comp.getCompressed();
 
-    root = (root >= 0 ? comp.newVId(root) : root);
+    if(root >= 0){
+        // Garante que root é vértice especial (com adjacência em R).
+        assert(comp.vId(comp.newVId(root)).size() > 1);
+        root = comp.newVId(root);
+    }
     printf("root %d\n", root);
 
     puts("print cG");
@@ -213,6 +217,8 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
     vector<int> compId;
     for(int u=0;u<cG.n;u++){
         if(comp.vId(u).size() > 1){ // Vertice adjacente a arco de R
+            if(u == root)
+                root = compId.size();
             compId.push_back(u);
         }
     }
@@ -224,9 +230,14 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
             compAdj[i][j] = mnDist[compId[i]][compId[j]];
         }
     }
-    root = (root >= 0 ? compId[root] : 0);
+    //// Ta errado aqui no compId[2]
+    //root = (root >= 0 ? compId[root] : 0);
+    if(root == -1)
+        root = 0;
     printf("root %d\n", root);
     auto Kcomp = Digrafo(compAdj);
+    printf("chuliu on Kcomp:\n");
+    Kcomp.print();
     auto cl = ChuLiu(Kcomp);
     printf("ChuLiu com root %d\n\n\n\n", root);
     auto [ssaCost, ssaKcomp] = cl.solve(root);

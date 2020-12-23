@@ -119,9 +119,22 @@ TEST(SSARural, Triangles){
 TEST(SSARural, Triangles2){
     Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}, {4, 2}} );
     auto [cost, ssa] = findRuralSSA(G, {5, 8}, 2);
-    vector<int> expArcs = {1, 6};
+    vector<int> expArcs = {3};
+    EXPECT_DOUBLE_EQ(cost, 1.);
+    EXPECT_EQ(ssa, expArcs);
+}
+
+TEST(SSARural, Triangles3){
+    Digrafo G(5, {{0, 1}, {2, 1}, {4, 1}, {2, 0}, {1, 4}, {3, 0}, {1, 3}, {2, 4}, {4, 2}} );
+    auto [cost, ssa] = findRuralSSA(G, {5, 8}, 0);
+    vector<int> expArcs = {0, 4};
     EXPECT_DOUBLE_EQ(cost, 2.);
     EXPECT_EQ(ssa, expArcs);
+}
+
+TEST(SSARural, InvalidRoot){
+    Digrafo G(3, {{0, 1}, {1, 2}});
+    EXPECT_DEATH(findRuralSSA(G, {0}, 2), "");
 }
 
 /*
