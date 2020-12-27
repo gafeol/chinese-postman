@@ -150,7 +150,8 @@ struct compress {
     compress(Digrafo G, vector<int> A) : oriG(G), newV(vector<int>(G.n)), uf(UnionFind(G.n)) {
         auto listaArcos = G.listaArcos();
         for(int id: A){
-            auto [u, v, c] = listaArcos[id];
+            int u, v;
+            tie(u, v, ignore) = listaArcos[id];
             uf.join(u, v);
         }
 
@@ -236,7 +237,8 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
     auto listaAdjKcomp = Kcomp.listaArcos();
     vector<int> ssaCG;
     for(int id: ssaKcomp){ 
-        auto [ku, kv, c] = listaAdjKcomp[id];
+        int ku, kv;
+        tie(ku, kv, ignore) = listaAdjKcomp[id];
         int u = compId[ku];
         int v = compId[kv];
 

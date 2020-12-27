@@ -84,7 +84,6 @@ struct PCR {
 
         // GM também pode ser não conexo. Talvez precise determinar um nó inicial pro circuito euleriano que seja especial.
         Digrafo GM(G.n, listaArcos);
-        GM.print();
         // Encontrar circuito euleriano no digrafo estendido.
         auto euler = Euler(GM);
         int no_especial = get<0>(origListaAdj[R[0]]);

@@ -75,6 +75,7 @@ struct PCR {
                 arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
             }
         }
+
         auto [ignore, M] = MinimumCostPerfectMatching(imp.size(), arestasImp); 
         auto novoAdj = G.adj;
 
