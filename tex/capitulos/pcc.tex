@@ -2,7 +2,7 @@
 
 Com o passar dos anos, a área de teoria dos grafos se desenvolveu muito, tratando dos mais variados tipos de problemas.
 
-Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de Konigsberg, o matemático chinês Meigu Guan publicou um estudo que generalizava ainda mais o problema dos grafos eulerianos. 
+Em 1962, mais de 200 anos após Euler descrever sua solução para o problema de Königsberg, o matemático chinês Meigu Guan publicou um estudo que generalizava ainda mais o problema dos grafos eulerianos. 
 Esse problema foi denominado Problema da Inspeção de Rotas, ou, como também é conhecido hoje: Problema do carteiro chinês, nomeado assim em homenagem a Guan.
 
 O problema consiste em encontrar um passeio fechado que visite toda aresta de um grafo conexo pelo menos uma vez e que possua menor custo. 
@@ -64,14 +64,14 @@ Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$
 
 Uma solução qualquer $T$ do problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
 Se $G$ é euleriano, então uma solução para o PCC é o próprio circuito euleriano do grafo.
-Do contrário, será necessário que $T$ percorra pelo menos uma aresta multiplas vezes.
+Do contrário, será necessário que $T$ percorra pelo menos uma aresta múltiplas vezes.
 
 Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em $T$.
 Definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
 Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes e a trilha fechada $T$ (solução do PCC em $G$) percorre cada uma dessas arestas uma única vez.
 Por definição $G'$ será euleriano, e a trilha euleriana de $G'$ corresponderá à $T$, solução do PCC para o grafo $G$.
 
-Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construido.
+Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
 
 Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
@@ -212,7 +212,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
     Imagine que um caminho $C$ pertencente a $S$, que liga os vértices quaisquer $u$ e $v$, não é o caminho mínimo entre os vértices que liga. 
     Isto é, existe um caminho $C'$ de custo menor que $C$ que liga $u$ e $v$.
 
-    Neste caso, poderiamos retirar de $S$ as arestas do caminho $C$ e adicionar ao conjunto as arestas de $C'$. Deste modo, o conjunto $S$ possuiria um custo menor que o original, nos permitindo derivar de $S$ uma solução para o PCC de custo menor que a solução original.
+    Neste caso, poderíamos retirar de $S$ as arestas do caminho $C$ e adicionar ao conjunto as arestas de $C'$. Deste modo, o conjunto $S$ possuiria um custo menor que o original, nos permitindo derivar de $S$ uma solução para o PCC de custo menor que a solução original.
 
     Porém, fazia parte da hipótese que a solução original era ótima, nos levando assim a uma contradição.
 
@@ -366,7 +366,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Em linhas gerais, o algoritmo que soluciona o problema do carteiro chinês para digrafos envolve multiplicar arestas do grafo original até que o mesmo se torne euleriano. O circuito euleriano desse digrafo modificado será a solução do problema do carteiro chinês para o digrafo original, do modo similar à solução para o PCC em grafos não direcionados.
     
     Uma grande diferença na solução do problema do carteiro chinês é que, para digrafos, não vale o lema \ref{lemma-pcc}, que garante a existência de uma solução para todo PCC em que cada aresta do grafo é percorrida no máximo duas vezes.
-    Um contra-exemplo disso é o caso ilustrado na figura \ref{counter-lemma}. 
+    Um contra exemplo disso é o caso ilustrado na figura \ref{counter-lemma}. 
 
     \begin{figure}[h]
         \centering
@@ -735,7 +735,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos os vértices possuam grau de saída e entrada iguais. Pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano para o digrafo construído.
 
 
-\item[\textbf{4º}]  Um possível circuito eulerian $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
+\item[\textbf{4º}]  Um possível circuito euleriano $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
 
     \[ 
         \mathcal{C} = \{ a, c, f, g, d, c, d, e, g, d, e, b, a, d, e, b, a, b, a \}
@@ -782,7 +782,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     O circuito $\mathcal{C}$ percorrido no grafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
 
-    Analisando o peso dos arcos de $G$ concluimos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer os arcos em vermelho.
+    Analisando o peso dos arcos de $G$ concluímos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer os arcos em vermelho.
 
     \end{itemize}
 
@@ -792,7 +792,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Ao contrário do que uma análise breve pode sugerir, não é possível reduzir o PCC para grafos mistos ao caso de grafos direcionados simplesmente transformando as arestas não direcionadas em dois arcos de sentidos opostos.
 
-    Um contra-exemplo para este pensamento é o seguinte:
+    Um contra exemplo para este pensamento é o seguinte:
 
     \begin{center}
         \begin{tikzpicture}[node distance=2cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
@@ -811,7 +811,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \end{tikzpicture}
     \end{center}
 
-    Na esquerda temos um grafo misto, e na direita temos o mesmo grafo com sua aresta substituida por dois arcos em sentidos opostos. 
+    Na esquerda temos um grafo misto, e na direita temos o mesmo grafo com sua aresta substituída por dois arcos em sentidos opostos. 
 
     Apesar da similaridade dos grafos, suas soluções para o problema do carteiro chinês diferem.
     \sloppy Uma solução ótima do problema para o primeiro grafo é $\{1, 2, 1\}$, enquanto que uma solução ótima possível para o segundo grafo é $\{1, 2, 1, 2, 1\}$, como representado visualmente a seguir.
@@ -849,9 +849,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     O algoritmo é composto por três passos principais:
 
     \begin{enumerate}
-        \item Adicionar cópias de arestas ao grafo de modo a tornar o grau de todo vértice par, considereando arcos como arestas sem orientação
+        \item Adicionar cópias de arestas ao grafo de modo a tornar o grau de todo vértice par, considerando arcos como arestas sem orientação
         \item Igualar o grau de entrada e saída de todo vértice, adicionando cópias de arcos e orientando arestas existentes, mantendo par o grau de cada vértice
-        \item Encontrar um circuito euleriano no digrafo construido
+        \item Encontrar um circuito euleriano no digrafo construído
     \end{enumerate}
     
 
@@ -1031,7 +1031,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \label{mixed-grau-par}
         \begin{algorithmic}[1]
             \Function{grau\_par}{M, U}
-                %\State \Comment{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
+                %\Skate \Comenta{Devolve os multiconjuntos $M'$, $U'$, que mantêm, para todo vértice, a igualdade dos graus $\delta^+$ e $\delta^-$ e torna $\delta^+ + \delta^- + \delta$ par.}
                 \State $U' \gets U$
                 \State O multiconjunto $M' \subseteq M$ deverá possuir apenas as arestas direcionadas e as cópias de arcos criadas em $GRAU\_DIR$.
                 \State Seja $V' = \{v \in V : \delta^+ + \delta^- + \delta$ é ímpar $\}$
@@ -1143,7 +1143,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         Sejam $C_1, C_2, \dots, C_k$  os circuitos eulerianos das $k$ componentes de $G_e$.
 
         A mesma análise pode ser feita com o grafo $G_a$, cada uma de suas componentes fortemente conexas possuirá grau de entrada e saída iguais, sendo assim grafos eulerianos pelo teorema \ref{euler-digraph}. 
-        Sejam $C'_1, \dots, C'_l$ os circuitos eulerianos dessas componenetes.
+        Sejam $C'_1, \dots, C'_l$ os circuitos eulerianos dessas componentes.
 
         Pode-se definir um procedimento de união de dois circuitos em um único circuito se ambos possuem ao menos um vértice em comum:
         
@@ -1233,12 +1233,12 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \end{lemma}
 
     \begin{proof}
-        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuimos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G(V, A, E)$. 
+        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuímos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G(V, A, E)$. 
         Em particular, vale que $C(M', U') \geq C(M, U)$. 
 
         Para mostrar que $C(M', U') = C(M, U)$ chegaremos a uma contradição assumindo que $C(M', U') > C(M, U)$:
 
-        Os multiconjuntos $M'$ e $U'$ são construidos pelo algoritmo \ref{mixed-grau-par} a partir de $M$ e $U$. 
+        Os multiconjuntos $M'$ e $U'$ são construídos pelo algoritmo \ref{mixed-grau-par} a partir de $M$ e $U$. 
         Como exemplificado na figura \ref{ex-grau-par} na construção de $M', U'$ podem ocorrer três tipos de eventos:
 
         \begin{enumerate}
@@ -1331,7 +1331,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             C_+ - C_- &\leq 0 
         \end{align*}
 
-        Como haviamos provado anteriormente que $C_+ - C_- > 0$, chegamos a uma contradição.
+        Como havíamos provado anteriormente que $C_+ - C_- > 0$, chegamos a uma contradição.
         Provando por absurdo, que $C(M', U') = C(M, U)$.
     \end{proof}
 
@@ -1403,7 +1403,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w \in V'$.
         \end{enumerate}
 
-        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e stituido por duas arestas, de custos $3$ e $5$).
+        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e substituído por duas arestas, de custos $3$ e $5$).
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
@@ -1695,7 +1695,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
-        Será apresentada uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhente à heurística apresentada para o caso de grafos não direcionados.
+        Será apresentada uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhante à heurística apresentada para o caso de grafos não direcionados.
         Nesse caso ela a heurística é denominada \textbf{heurística da arborescência geradora mínima}.
 
         Para guiar a explicação toma-se, como exemplo, o digrafo $G$, a seguir:
@@ -1786,7 +1786,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
             Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
 
-            Condensando o digrafo $G'$ em suas components $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
+            Condensando o digrafo $G'$ em suas componentes $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
 
 
             \begin{figure}[H]
@@ -2347,7 +2347,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \end{align*}
 
 
-            Voltando ao exemplo, temos agora que analisar o cirtcuito $C_1$.
+            Voltando ao exemplo, temos agora que analisar o circuito $C_1$.
 
             Apesar de $C_1$ ser um circuito válido na representação direcionada de $G$ (figura \ref{exGdir}), o mesmo não pode ser considerado um circuito do grafo não direcionado $G$ pois percorre a mesma aresta $(3 - 4)$ duas vezes, devemos portanto aplicar o passo da indução a $C_1$.
             

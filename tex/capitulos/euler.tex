@@ -8,7 +8,7 @@
     \caption{Representação das sete pontes de Königsberg}
 \end{wrapfigure}
 
-O pro\-blema das sete pontes de Kö\-nigsberg foi des\-crito e solucio\-nado pelo matemático Leonhard Eu\-ler em 1736. 
+O problema das sete pontes de Kö\-nigsberg foi des\-crito e solucio\-nado pelo matemático Leonhard Eu\-ler em 1736. 
 O problema consistia em decidir se seria possível traçar no mapa de Königsberg um trajeto que percorresse cada uma de suas 7 pon\-tes uma única vez, sem repetições.
 
 Euler resolveu esse problema do seguinte modo: 
@@ -109,7 +109,7 @@ Se $v$ não for um vértice extremo de $T$, então sempre que o mesmo aparecer e
 Do contrário, se $v$ for o vértice extremo de $T$ ele necessariamente possui duas arestas, uma ligando-o ao segundo vértice do circuito, e outra o ligando ao penúltimo vértice de $T$. 
 Além disso, cada aparição de $v$ como vértice interno de $T$ contabiliza mais duas arestas ao vértice em questão, de modo que $v$ possuirá um grau par ao final.
 
-Sendo assim, se $G$ é euleriano, então todos seus vértices (extremos ou não) possuem grau par, como queriamos demonstrar.
+Sendo assim, se $G$ é euleriano, então todos seus vértices (extremos ou não) possuem grau par, como queríamos demonstrar.
 
 ($\Leftarrow$) Agora, prova-se por indução no número de arestas de $G$ que se o grafo for conexo e se todos seus nós possuem grau par, então ele é euleriano.
 
@@ -125,14 +125,14 @@ Sendo assim, pelo lema \ref{lema}, $G$ deverá possuir um circuito $C$.
 
 Se $C$ possui todas arestas de $G$, então $C$ é um circuito euleriano do grafo, finalizando a prova.
 
-Do contrário, aplicamos o seguinte procedimento para constuir um circuito euleriano $\mathcal{C}$ de $G$:
+Do contrário, aplicamos o seguinte procedimento para construir um circuito euleriano $\mathcal{C}$ de $G$:
 
 Retira-se de $G$ as arestas pertencentes a $C$, resultando assim em um grafo $G'$. 
-Possivelmente $G'$ será desconexo, por isso definimos que $G'$ será a união de $k$ componenetes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
+Possivelmente $G'$ será desconexo, por isso definimos que $G'$ será a união de $k$ componentes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
 
-O grau dos vértices dessas componenentes $G'_i$ deverá ser par, já que, ao retirar todas as arestas de um circuito do grafo $G$, diminuímos o grau de um vértice qualquer $v$ em duas vezes o número de aparições do mesmo no circuito. mantendo assim a paridade dos graus. 
+O grau dos vértices dessas componentes $G'_i$ deverá ser par, já que, ao retirar todas as arestas de um circuito do grafo $G$, diminuímos o grau de um vértice qualquer $v$ em duas vezes o número de aparições do mesmo no circuito. mantendo assim a paridade dos graus. 
 
-Além disso, cada componenete conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$.
+Além disso, cada componente conexa de $G'$ possuirá uma quantidade de arestas menor do que $k$.
 Portanto, pela hipótese da indução, cada uma dessas componentes deverá possuir um circuito euleriano próprio. 
 Chamaremos de $C_i$ o circuito euleriano da componente $G'_i$.
 
@@ -244,7 +244,7 @@ Dadas as devidas definições, apresentamos agora o teorema de Euler para o caso
 \begin{theorem}[Teorema de Euler para digrafos]
 
     Seja $G$ um digrafo fortemente conexo.
-$G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de entrada e saída iguais, ou seja, se para todo vértice $v$ de $G$ vale que $\delta^+(v) = \delta^-(v)$.
+$G$ é euleriano se, e somente se, todos seus vértices têm valores de grau de entrada e saída iguais, ou seja, se para todo vértice $v$ de $G$ vale que $\delta^+(v) = \delta^-(v)$.
 \label{euler-digraph}
 \end{theorem}
 
@@ -297,7 +297,7 @@ $G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de e
 
             Porém, não é garantido que $G'$ é fortemente conexo. 
 
-            Seja $G$ a união de $k$ componentes fortementes conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
+            Seja $G$ a união de $k$ componentes fortemente conexas $G'_1, G'_2, \dots, G'_k$ disjuntas entre si.
 
             Sabemos que cada componente $G'_i$ possuirá uma quantidade de arcos menor que $k$. 
             Portanto, pela hipótese de indução definida. cada componente de $G'$ é euleriana.
@@ -335,7 +335,8 @@ $G$ é euleriano se, e somente se, todos seus vérices têm valores de grau de e
             \end{tcolorbox}
 
 
-Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que todo circuito $C_i$ possui pelo menos um vértice em $C$. Além disso, todo circuito $C_i$ deverá ter sido adicionado a $\mathcal{C}$ uma única vez, já que logo após adicionar um circuito a $\mathcal{C}$ já o removiamos de $\mathcal{T}$, impedindo que ele fosse adicionado outra vez no circuito euleriano final.
+Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que todo circuito $C_i$ possui pelo menos um vértice em $C$. 
+Além disso, todo circuito $C_i$ deverá ter sido adicionado a $\mathcal{C}$ uma única vez, já que logo após adicionar um circuito a $\mathcal{C}$ já o removíamos de $\mathcal{T}$, impedindo que ele fosse adicionado outra vez no circuito euleriano final.
 
 Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$ provamos que qualquer digrafo fortemente conexo com vértices possuindo valores iguais de grau de entrada e saída é euleriano.
 
@@ -481,13 +482,13 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
 %\section{Soluções}
 
-% Referencia pra explicacao e https://cp-algorithms.com/graph/euler_path.html
+% Referencia pra explicação e https://cp-algorithms.com/graph/euler_path.html
 
 %\subsection{Algoritmo de Fleury}
 
 \section{Algoritmo de Hierholzer}
 
-O algoritmo de Hierholzer foca em encontrar e unir um conjunto de circuitos $C_1, C_2, \dots, C_k$, tal que não existe aresta pertencente a dois circuitos diferentes, e que toda aresta pertence ao menos a um circuito.
+O algoritmo de Hierholzer foca em encontrar e unir um conjunto de circuitos $C_1, C_2,\- \dots, C_k$, tal que não existe aresta pertencente a dois circuitos diferentes, e que toda aresta pertence ao menos a um circuito.
 Tal união gera um grafo conexo euleriano.
 
 O algoritmo desenvolvido se baseia em percorrer o grafo euleriano com uma busca em profundidade, apagando todas as arestas percorridas nesta busca.
@@ -934,7 +935,7 @@ Como todas as arestas de $G$ foram percorridas, a busca realiza, nos próximos p
 \end{minipage}%
 \end{figure}
 
-\sloppy Nesta série de retornos são adicionados ao início de $T$ os vértices $E, B, D, E, C, B, A$, um a um.
+Nesta série de retornos são adicionados ao início de $T$ os vértices $E, B,\- D,\- E, C,\- B, A$, um a um.
 
 Finalizando-se a simulação do algoritmo temos a seguinte trilha $T$:
 
