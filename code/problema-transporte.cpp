@@ -43,7 +43,6 @@ struct ProblemaTransporte {
         cost = mcf.solve(s, t);
         vector<int> f = mcf.flowOnEdge;
         flow = mcf.flow;
-        //printf("cost %.3f flow %d\n", cost, flow);
         vector<tuple<int, int, int>> ans;
         for(int i=0;i<(int)arestas.size();i++){
             if(f[i]){

@@ -72,10 +72,6 @@ struct MinCostFlow {
     num solve(int s, int t) {
         tot = 0; flow = 0;
         while(val a = spfa(s, t)) flow += a;
-        /*printf("FLOW de %d a %d deu %d\n", s, t, flow);
-        for(int a=0;a<en;a++){
-            printf("    flow on en %d (to %d cp %d fl %d cs %.3f\n", a, to[a], cp[a], fl[a], cs[a]);
-        }*/
         for(int i=0;i<M;i++)
             flowOnEdge[i] = fl[edgeId[i]];
         return tot;

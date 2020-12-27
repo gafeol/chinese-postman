@@ -103,20 +103,17 @@ struct ChuLiu {
 };
 
 vector<int> expande(int ini, int fim, Digrafo &G, vector<vector<double>> &mnDist){
-    printf("expande ini %d fim %d dis %.4f\n", ini, fim, mnDist[ini][fim]);
     if(ini == fim)
         return {};
     vector<int> ans;
     for(Aresta ar: G.adj[ini]){
         if(ar.cus + mnDist[ar.prox][fim] == mnDist[ini][fim]){
-            printf("    usa aresta %d %d %.4f\n", ini, ar.prox, ar.cus);
             ans.push_back(ar.id);
             auto aux = expande(ar.prox, fim, G, mnDist);
             ans.insert(ans.end(), aux.begin(), aux.end());
             return ans;
         }
     }
-    puts("assert false aqui no expande");
     assert(false);
 }
 
@@ -206,10 +203,7 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
         assert(comp.vId(comp.newVId(root)).size() > 1);
         root = comp.newVId(root);
     }
-    printf("root %d\n", root);
 
-    puts("print cG");
-    cG.print();
 
     // Condensa o grafo cG em um Kcomp, grafo completo contendo apenas as componentes condensadas.
     auto mnDist = floyd_warshall(cG);
@@ -234,39 +228,25 @@ pair<double, vector<int>> findRuralSSA(Digrafo G, vector<int> R, int root=-1){
     //root = (root >= 0 ? compId[root] : 0);
     if(root == -1)
         root = 0;
-    printf("root %d\n", root);
     auto Kcomp = Digrafo(compAdj);
-    printf("chuliu on Kcomp:\n");
-    Kcomp.print();
     auto cl = ChuLiu(Kcomp);
-    printf("ChuLiu com root %d\n\n\n\n", root);
     auto [ssaCost, ssaKcomp] = cl.solve(root);
-
-    puts("Kcomp:");
-    Kcomp.print();
 
     // Passa de Kcomp -> cG
     auto listaAdjKcomp = Kcomp.listaArcos();
     vector<int> ssaCG;
-    printf("listaAdjKcomp sz %d\n", (int)listaAdjKcomp.size());
     for(int id: ssaKcomp){ 
-        printf("id %d\n", id);
         auto [ku, kv, c] = listaAdjKcomp[id];
         int u = compId[ku];
         int v = compId[kv];
 
-        printf("u %d v %d c %.4f\n", u, v, c);
         auto aux = expande(u, v, cG, mnDist);
-        puts("expandiu");
         ssaCG.insert(ssaCG.end(), aux.begin(), aux.end());
     }
     // Passa de cG -> G
     vector<int> ssa;
     for(int id: ssaCG){
-        printf("retrieve ArcId(%d): ", id);
         ssa.push_back(comp.arcId(id));
-        printf("%d\n", comp.arcId(id));
     }
-    puts("got ssa");
     return {ssaCost, ssa};
 }

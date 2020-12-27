@@ -135,12 +135,10 @@ struct Euler {
                 }
             }
             for(int id: trilha){
-                //printf("percorre id %d cnt = %d - 1\n", id, cnt[id]);
                 cnt[id]--;
             }
             for (int id = 0; id < G.m; id++) {
                 if(cnt[id] != 0){
-                    //printf("falhou no id %d cnt %d != 0\n",id, cnt[id]);
                     return false;
                 }
             }

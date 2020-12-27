@@ -141,7 +141,6 @@ struct Euler {
                 for(Aresta ar: digrafo.adj[u]){
                     int v = ar.prox;
                     arco[ar.id] = {u, v};
-                    //printf("arco[%d] = %d %d\n", ar.id, u, v);
                 }
             }
             
