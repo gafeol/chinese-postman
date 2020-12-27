@@ -42,6 +42,36 @@ TEST(SSA, Cycle){
     EXPECT_EQ(take, expTake);
 }
 
+TEST(SSA, CompressedCycle){
+    Digrafo G(4, {{0, 1, 2.},
+                  {1, 0, 2.},
+                  {1, 2, 1.},
+                  {2, 3, 1.},
+                  {3, 1, 1.}});
+    auto ssa = ChuLiu(G);
+    auto [cost, take] = ssa.solve(0);
+    EXPECT_DOUBLE_EQ(cost, 4);
+    vector<int> expTake = {0, 2, 3};
+    EXPECT_EQ(take, expTake);
+}
+
+TEST(SSA, CompressedCycle2){
+    Digrafo G(6, {{0, 1, 2.},
+                  {1, 0, 2.},
+                  {1, 2, 1.},
+                  {2, 3, 1.},
+                  {3, 1, 1.},
+                  {3, 4, 3.}, 
+                  {4, 2, 2.},
+                  {4, 5, 1.},
+                  {5, 4, 1.}});
+    auto ssa = ChuLiu(G);
+    auto [cost, take] = ssa.solve(0);
+    EXPECT_DOUBLE_EQ(cost, 8);
+    vector<int> expTake = {0, 2, 3, 5, 7};
+    EXPECT_EQ(take, expTake);
+}
+
 /*
 0 1
 2 1
