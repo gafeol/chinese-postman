@@ -185,7 +185,6 @@ struct Euler {
                 for(Aresta ar: grafo.adj[u]){
                     assert(ar.id >= 0 && ar.id < grafo.m);
                     p[ar.id] = {ar.prox, u};
-                    //printf("id %d (%d %d)\n", ar.id, ar.prox, u);
                 }
             }
             for(int id: trilha)
