@@ -11,23 +11,19 @@ using namespace std;
 
 struct PCI {
     bool dfs(int u, int lstId, vector<bool> &mrk, vector<double> &pc, vector<double> &pic, GrafoIngrime &G){
-        printf("dfs u %d lstId %d\n", u, lstId);
         bool ok = true;
         mrk[u] = true;
         for(auto [nxt, id, c, ic]: G.adj[u]){
             if(id == lstId) continue;
             double nxtc = pc[u] + c;
             double nxtic = pic[u] + ic;
-            printf("nxt %d id %d c %.4f ic %.4f\n", nxt, id, c, ic);
             if(mrk[nxt]){
                 ok &= (nxtc - pc[nxt] == nxtic - pic[nxt]);
-                printf("ok %d depois de u %d nxtc nxti com nxt %d\n", ok, u, nxt);
             }
             else{
                 pc[nxt] = nxtc;
                 pic[nxt] = nxtic;
                 ok &= dfs(nxt, id, mrk, pc, pic, G);
-                printf("ok %d depois de dfs(%d)\n", ok, nxt);
             }
         }
         return ok;
