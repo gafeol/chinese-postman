@@ -4,10 +4,10 @@
 using namespace std;
 
 #include "../code/pcv-guan.cpp"
-#include "../code/grafo-ingrime.hpp"
+#include "../code/grafo-ingreme.hpp"
 
 TEST(PCV, Aresta){
-    GrafoIngrime G(2, { {0, 1, 2., 3.}});
+    GrafoIngreme G(2, { {0, 1, 2., 3.}});
     PCV pcv;
     auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 5);
@@ -15,7 +15,7 @@ TEST(PCV, Aresta){
 }
 
 TEST(PCV, Ciclo){
-    GrafoIngrime G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 1.}});
+    GrafoIngreme G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 1.}});
     PCV pcv;
     auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 6.);
@@ -24,7 +24,7 @@ TEST(PCV, Ciclo){
 }
 
 TEST(PCV, Ciclo2){
-    GrafoIngrime G(4, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 3., 1.}, {3, 0, 1., 1.}});
+    GrafoIngreme G(4, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 3., 1.}, {3, 0, 1., 1.}});
     PCV pcv;
     auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 7.);
@@ -33,7 +33,7 @@ TEST(PCV, Ciclo2){
 }
 
 TEST(PCV, Ciclo3){
-    GrafoIngrime G(4, {{0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 2., 1.}, {3, 0, 2., 1.}, {0, 2, 2., 4.}});
+    GrafoIngreme G(4, {{0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 2., 1.}, {3, 0, 2., 1.}, {0, 2, 2., 4.}});
     PCV pcv;
     auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 13.);
@@ -42,7 +42,7 @@ TEST(PCV, Ciclo3){
 }
 
 TEST(PCV, Falha){
-    GrafoIngrime G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 2.}});
+    GrafoIngreme G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 2.}});
     PCV pcv;
     EXPECT_FALSE(pcv.checkCyclesCost(G));
     EXPECT_DEATH(pcv.solve(G), "");
