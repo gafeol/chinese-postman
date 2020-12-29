@@ -11,17 +11,58 @@ Nesse capítulo explica-se a organização do código e discute-se mais a fundo 
 São disponibilizados códigos gerais para estruturas de dados, focados na área de grafos:
 \begin{itemize}
     \item \texttt{aresta.hpp} 
+
+        Define a \texttt{struct Aresta}, usada para modelar tanto aresta direcionadas quanto não-direcionadas.
+
+    Toda aresta possui um valor  \texttt{prox} indicando o vértice com o qual ela se liga, um identificador \texttt{id} e um custo real \texttt{cus}.
     \item \texttt{aresta-ingreme.hpp}
+
+        Define a \texttt{struct ArestaIngreme}, modelando uma aresta que possui custos diferentes dependendo do sentido em que é percorrida.
+
+        Além de armazenar os mesmos valores \texttt{prox} e \texttt{id} de uma aresta comum, também armazena \texttt{dirCus} e \texttt{invCus}, custos para se percorrer uma aresta na direção do vértice \texttt{prox} e no sentido inverso, a partir de \texttt{prox}, respectivamente.
+
     \item \texttt{grafo.hpp} 
+        
+        Define a \texttt{struct Grafo}, com \texttt{n} vértices e \texttt{m} arestas, armazenadas em uma lista de adjacências \texttt{adj}.
+
+        Utiliza a \texttt{struct Aresta} para representar as arestas do grafo.
+
     \item \texttt{digrafo.hpp}
+
+        Analogamente, define a \texttt{struct Digrafo}, com \texttt{n} vértices e \texttt{m} arcos, armazenados em uma lista de adjacências \texttt{adj}.
+
+        Também utiliza a \texttt{struct Aresta} para representar os arcos do digrafo.
+
     \item \texttt{grafo-misto.hpp}
+
+        Define a \texttt{struct Misto} que representa grafos que possuem tanto arestas quanto arcos. 
+
+        Além das propriedades \texttt{n, m, adj}, esta estrutura contem um contador \texttt{nArestas} que conta a quantidade de arestas no grafo.
+
+        Isso é especialmente útil para determinar se uma aresta com identificador \texttt{id} qualquer é uma aresta (\texttt{id $<$ nArestas}) ou um arco (\texttt{id $\geq$ nArestas}).
+
+        Para facilitar a manipulação desta estrutura, a \texttt{struct Misto} contêm métodos auxiliares como:
+        \begin{itemize}
+            \item  Devolver o grau total (\texttt{grauTotal(v)}), grau de entrada (\texttt{grauEntrada(v)}) e saída (\texttt{grauSaida(v)}) de todo vértice
+            \item Contar o número de componentes fortemente conexas, usando o algoritmo de Tarjan (\texttt{countSCC()})
+            \item Checar se uma aresta, dada um identificador é arco (\texttt{arco(id)}) ou aresta (\texttt{aresta(id)})
+        \end{itemize}
+
     \item \texttt{grafo-ingreme.hpp}
+
+    Define a \texttt{struct GrafoIngreme} usada na modelagem do problema do carteiro com vento.
+
+    Este grafo utiliza a estrutura \texttt{ArestaIngreme} para representar suas arestas.
+
 \end{itemize}
 
 Além disso disponibilizam-se também estruturas de dados gerais como:
 
 \begin{itemize}
     \item \texttt{union-find.cpp}
+
+        Essa implementação do Union Find utiliza as otimizações de compressão de caminhos, encurtando as relações de ancestralidade sempre que possível, e a união das componentes de menor tamanho sob as componentes maiores.
+        Atingindo assim uma complexidade $O(\log^*)$ amortizada por operações de busca e união.
 \end{itemize}
 
 \section{Algoritmos auxiliares}
