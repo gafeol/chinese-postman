@@ -1,4 +1,4 @@
-// Problema do carteiro com ruas íngrimes (windy postman problem).
+// Problema do carteiro com ruas com vento (windy postman problem), ou problema do carteiro chinês em grafo íngrime.
 // Resolve o caso particular em que todo circuito de um grafo possui o mesmo custo em ambos sentidos.
 
 #include "bits/stdc++.h"
@@ -9,7 +9,9 @@ using namespace std;
 #include "aresta-ingrime.hpp"
 #include "pcc-grafo.cpp"
 
-struct PCI {
+struct PCV {
+    private:
+    // Função auxiliar que checa se os ciclos de G possuem o mesmo custo independente do sentido que são percorridos.
     bool dfs(int u, int lstId, vector<bool> &mrk, vector<double> &pc, vector<double> &pic, GrafoIngrime &G){
         bool ok = true;
         mrk[u] = true;
@@ -29,6 +31,7 @@ struct PCI {
         return ok;
     }
 
+    public:
     // Checa se todo ciclo do grafo G tem o mesmo custo independente do sentido que é percorrido.
     bool checkCyclesCost(GrafoIngrime G){
         vector<bool> mrk(G.n, 0);
@@ -36,7 +39,7 @@ struct PCI {
         return dfs(0, -1, mrk, pathCost, pathInvCost, G);
     }
 
-    // Devolve o custo e os identificadores da 
+    // Devolve o custo e os identificadores de uma solução para o Problema do Carteiro Íngrime
     pair<double, vector<int>> solve(GrafoIngrime G){
         assert(checkCyclesCost(G));
         auto listaArestas = G.listaArestas();

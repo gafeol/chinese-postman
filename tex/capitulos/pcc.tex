@@ -2023,7 +2023,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     %TODO: Adicionar valor da solucao otima
     \section{Problema do carteiro chinês com vento}
 
-        Considere o problema em que cada aresta tem um custo diferente dependendo do sentido em que é percorrida. Este problema é conhecido como o Problema do Carteiro Chinês com Vento (PCCV).
+        Considere o problema em que cada aresta tem um custo diferente dependendo do sentido em que é percorrida. Este problema é conhecido como o Problema do Carteiro Chinês com Vento (PCV).
 
         Este problema possui várias aplicações. 
         Por exemplo, podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
@@ -2033,14 +2033,14 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         Esta variação do problema do carteiro chinês também é NP-difícil.
 
-        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCCV usando um algoritmo polinomial, trataremos esse caso a seguir.
+        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCV usando um algoritmo polinomial, trataremos esse caso a seguir.
 
         Seja $c_{ij}$ o custo de se percorrer a aresta $ij$ de $i$ a $j$ e $c_{ji}$ o custo de percorrer a mesma aresta no sentido contrário.
 
         O algoritmo sugerido por Guan se baseia em criar uma nova função de custo $c'$ para o problema, tal que $c'_{ij} = c'_{ji} = \frac{c_{ij} + c_{ji}}{2}$ para toda aresta $ij$. 
         Essa transformação reduz o problema a um PCC não direcionado, que possui solução polinomial, como tratado na seção \ref{sec:pcc}.
 
-        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC no grafo $(G, c')$ equivale a uma resposta ótima, de mesmo custo, do PCCV no grafo original $(G, c)$.
+        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC no grafo $(G, c')$ equivale a uma resposta ótima, de mesmo custo, do PCV no grafo original $(G, c)$.
 
         \begin{lemma}
             \label{lemma:pccv}
@@ -2076,7 +2076,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \label{windy-theorem}
             Seja $G$ um grafo conexo não direcionado cujos circuitos possuem o mesmo custo, independente do sentido que são percorridos. 
 
-            Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCCV em $(G, c)$.
+            Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCV em $(G, c)$.
 
         \end{theorem}
 
@@ -2281,7 +2281,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}
             \]
 
-            Seja $T = \{1, 2, 3, 4, 5, 6, 4, 3, 1\}$ uma solução ótima do PCCV do exemplo da figura \ref{gclinha}.
+            Seja $T = \{1, 2, 3, 4, 5, 6, 4, 3, 1\}$ uma solução ótima do PCV do exemplo da figura \ref{gclinha}.
             Por si só, $T$ é um circuito de arcos, já que não percorre um mesmo arco duas vezes, mas para exemplificar melhor os casos a seguir decompomos $T$ em dois circuitos: $C_1 = \{1, 2, 3, 4, 3, 1\}, C_2 = \{4, 5, 6, 4\}$.
 
             A indução é realizada com base no tamanho do circuito $C_i$ analisado.
@@ -2338,7 +2338,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
              
             Provando assim que a hipótese de indução também vale para um circuito de tamanho $k+1$.
 
-            Finalmente, temos que o custo da solução $T$ do PCCV de $(G, c)$ será igual ao custo da solução do PCC em $(G, c')$:
+            Finalmente, temos que o custo da solução $T$ do PCV de $(G, c)$ será igual ao custo da solução do PCC em $(G, c')$:
 
             \begin{align*}
                 \sum_{ij \in T} c_{ij} &= \sum_{1 \leq u \leq k} \sum_{ij \in C_u} c_{ij} \\
@@ -2368,7 +2368,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
             Como $C'_1$ é um circuito presente no grafo original e $C''_1$ é um conjunto vazio, ambos são cobertos pelos casos base estabelecidos.
 
-            Finalmente, pode-se comparar o custo da solução $T$ do PCCV de $G$ com as duas funções de custo definidas: $c$ e $c'$.
+            Finalmente, pode-se comparar o custo da solução $T$ do PCV de $G$ com as duas funções de custo definidas: $c$ e $c'$.
 
             \begin{align*}
                 & T = \{ 1, 2, 3, 4, 5, 6, 4, 3, 1\} \\

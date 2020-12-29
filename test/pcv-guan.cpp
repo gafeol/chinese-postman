@@ -3,49 +3,49 @@
 #include "bits/stdc++.h"
 using namespace std;
 
-#include "../code/pci-guan.cpp"
+#include "../code/pcv-guan.cpp"
 #include "../code/grafo-ingrime.hpp"
 
-TEST(PCI, Aresta){
+TEST(PCV, Aresta){
     GrafoIngrime G(2, { {0, 1, 2., 3.}});
-    PCI pci;
-    auto [c, p] = pci.solve(G);
+    PCV pcv;
+    auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 5);
     EXPECT_EQ(p, vector<int>(2,0));
 }
 
-TEST(PCI, Ciclo){
+TEST(PCV, Ciclo){
     GrafoIngrime G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 1.}});
-    PCI pci;
-    auto [c, p] = pci.solve(G);
+    PCV pcv;
+    auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 6.);
     vector<int> expPath = {2, 1, 0};
     EXPECT_EQ(p, expPath);
 }
 
-TEST(PCI, Ciclo2){
+TEST(PCV, Ciclo2){
     GrafoIngrime G(4, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 3., 1.}, {3, 0, 1., 1.}});
-    PCI pci;
-    auto [c, p] = pci.solve(G);
+    PCV pcv;
+    auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 7.);
     vector<int> expPath = {3, 2, 1, 0};
     EXPECT_EQ(p, expPath);
 }
 
-TEST(PCI, Ciclo3){
+TEST(PCV, Ciclo3){
     GrafoIngrime G(4, {{0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 3, 2., 1.}, {3, 0, 2., 1.}, {0, 2, 2., 4.}});
-    PCI pci;
-    auto [c, p] = pci.solve(G);
+    PCV pcv;
+    auto [c, p] = pcv.solve(G);
     EXPECT_DOUBLE_EQ(c, 13.);
     vector<int> expPath = {3, 2, 4, 3, 2, 1, 0};
     EXPECT_EQ(p, expPath);
 }
 
-TEST(PCI, Falha){
+TEST(PCV, Falha){
     GrafoIngrime G(3, { {0, 1, 2., 3.}, {1, 2, 1., 2.}, {2, 0, 3., 2.}});
-    PCI pci;
-    EXPECT_FALSE(pci.checkCyclesCost(G));
-    EXPECT_DEATH(pci.solve(G), "");
+    PCV pcv;
+    EXPECT_FALSE(pcv.checkCyclesCost(G));
+    EXPECT_DEATH(pcv.solve(G), "");
 }
 /*
 1 2 3
