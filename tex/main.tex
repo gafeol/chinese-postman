@@ -31,6 +31,7 @@
 
 \usepackage[brazil]{babel} 
 \usepackage[noend]{algpseudocode}
+\usepackage[titletoc,toc,page]{appendix}
 \usepackage[utf8]{inputenc}
 \usepackage{algorithm} 
 \usepackage{amsfonts}
@@ -42,13 +43,25 @@
 \usepackage{hyperref}
 \usepackage{import}
 \usepackage{listings}
+\usepackage{lmodern}
+\usepackage{setspace}
 \usepackage{tcolorbox}
 \usepackage{tikz}
+\usepackage{wrapfig}
 \usetikzlibrary {positioning}
 \usetikzlibrary{arrows}
-\usepackage{wrapfig}
-\usepackage{setspace}
-\usepackage{lmodern}
+
+
+
+%%% Definições de estilo do IME 
+
+\input{extras/basics}
+
+\dowithsubdir{extras/}{\usepackage{imeusp-headers}}
+\dowithsubdir{extras/}{\usepackage{appendixlabel}}
+%\dowithsubdir{extras/}{\usepackage{frufru}}
+\dowithsubdir{extras/}{\usepackage{imeusp-capa}}
+
 
 \algrenewcommand\algorithmicend{\textbf{fim}}
 \algrenewcommand\algorithmicdo{\textbf{faça}}
@@ -179,6 +192,8 @@ The goals of this project are to explain and implement solutions for the Chinese
 \import{capitulos/}{euler.tex}
 
 \import{capitulos/}{pcc.tex}
+
+\import{capitulos/}{code.tex}
 
 \import{capitulos/}{prb.tex}
 
