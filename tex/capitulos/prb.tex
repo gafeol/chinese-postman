@@ -1,14 +1,16 @@
     \begin{appendices}
-        
+    
     \chapter{Aplicações em problemas}
 
-        Esta seção se dedica a discutir aplicações do Problema do Carteiro Chinês em problemas de competições de programação.
+        Esta seção se dedica a discutir aplicações do Problema de Euler e do Problema do Carteiro Chinês em competições de programação, como a Maratona de Programação ou a ICPC.
+
+        As soluções implementadas estão disponibilizadas na pasta \href{https://github.com/gafeol/chinese-postman/tree/master/probs}{\texttt{probs}} do repositório do GitHub.
 
         \section{Tanya and Password}
 
-        \hspace{0.55cm}URL do problema: \href{https://codeforces.com/contest/508/problem/D}{https://codeforces.com/contest/508/problem/D}
+        \hspace{0.6cm}URL do problema: \href{https://codeforces.com/contest/508/problem/D}{codeforces.com/contest/508/problem/D}
 
-        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/508/D.cpp}{https://github.com/gafeol/competitive-programming\-/blob/master/ojs/cf/508/D.cpp}
+        Solução: \href{github.com/gafeol/chinese-postman/blob/master/probs/cf/508D.cpp}{github.com/gafeol/chinese-postman/blob/master/probs/cf/508D.cpp}
 
         Este problema fornece um multiconjunto $\mathcal{C}$ de $n$ strings de tamanho 3 e pede para que se construa, se possível, uma string $S$ de tamanho $n+2$ com a restrição de que o conjunto das substrings de tamanho 3 da string $S$ deve corresponder a $\mathcal{C}$.
 
@@ -87,11 +89,9 @@
 
         \section{Sereja and the Arrangement of Numbers}
 
-        \hspace{0.55cm} URL do problema: \href{https://codeforces.com/problemset/problem/367/C}{https://codeforces.com/problemset/problem/367/C}
+        \hspace{0.6cm} URL do problema: \href{https://codeforces.com/problemset/problem/367/C}{https://codeforces.com/problemset/problem/367/C}
 
-        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/cf/367/C.cpp}{https://github.com/gafeol/competitive-program\-ming\-/blob/master/ojs/cf/367/C.cpp}
-
-        \textbf{Definição do problema}
+        Solução: \href{https://github.com/gafeol/chinese-postman/blob/master/probs/cf/367C.cpp}{github.com/gafeol/chinese-postman/blob/master/probs/cf/367C.cpp}
 
         No enunciado do problema define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
 
@@ -118,8 +118,6 @@
         Para este exemplo, uma solução ótima é a sequência $1,2,3,1,1$, que é bonita e possui recompensa total igual a $17$. 
         Não existe uma sequência bonita que possua os quatro valores do exemplo.
 
-
-        \textbf{Descrição da solução}
 
         Como todo valor possui uma recompensa positiva, a solução final deverá usar a maior quantidade de valores distintos que for possível.
 
@@ -263,9 +261,9 @@
 
         \section{Jogging Trails}
 
-        \hspace{.55cm} URL do problema: \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{https://onlinejudge.org/index.php?option=\-com\_\-onli\-ne\-judge\-\&Itemid\-=8\&page=show\_problem\&problem=1237}
+        \hspace{.6cm} URL do problema: \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=\-com\_\-onli\-ne\-judge\-\&Itemid\-=8\&page=show\_problem\&problem=1237}
 
-        URL da solução: \href{https://github.com/gafeol/competitive-programming/blob/master/ojs/UVa/1237.cpp}{https://github.com/gafeol/\-compe\-titive-program\-ming\-/blob/master/ojs/UVa/1237.cpp}
+        Solução: \href{https://github.com/gafeol/chinese-postman/blob/master/probs/uva/1237.cpp}{github.com/gafeol/chinese-postman/blob/master/probs/uva/1237.cpp}
         
         Neste problema devemos desenvolver um programa que calcula o custo de uma solução ótima para o problema do carteiro chinês em um grafo não direcionado de até 15 vértices com pesos nas arestas.
 
@@ -289,6 +287,6 @@
         \]
 
         Para representar os subconjuntos de vértices pode-se utilizar uma bitmask.
-        Como foi utilizado na implementação referenciada.
+        Como foi utilizado na solução referenciada.
         
     \end{appendices}
