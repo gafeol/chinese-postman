@@ -835,7 +835,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Apesar de conseguirmos encontrar uma solução para o caso direcionado derivado, não há um modo trivial de transformar uma solução para tal caso em uma solução do caso não direcionado.
 
-    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos não possui solução polinomial, pois é um problema NP-difícil. 
+    Diferentemente do problema aplicado a grafos ou digrafos, o PCC aplicado a grafos mistos é um problema NP-difícil. 
 
 
     %%%%%%%%%%%%%% REF: PROBLEMA LINEAR DO KOEHLER E KAPPAUF
@@ -965,9 +965,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \caption{Função auxiliar IGUALA GRAU DIR}
         \label{mixed-iguala-grau-dir}
         \begin{algorithmic}[1]
-        \Function{iguala\_grau\_dir}{G, c, custMin}
+        \Function{iguala\_grau\_dir}{G, c}
         \State \Comment Devolve dois multiconjuntos $M$ e $U$, tal que $M$ contém ao menos uma cópia de cada arco de $A$ e algumas arestas de $E$ orientadas, e $U \subseteq E$ contém apenas arestas não orientadas e não pertencentes a $M$.
             \State $(V, E, A) \gets G$
+            \State $custMin \gets $ FLOYD\_WARSHALL$(V, E, A, c)$
             \For{$v \in V$}
                 \State $b(v) \gets \delta^-(v) - \delta^+(v)$ \Comment Calcula a função demanda
             \EndFor
