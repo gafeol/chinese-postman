@@ -1,6 +1,6 @@
 \chapter{Código desenvolvido}
 
-Estão disponíveis no GitHub as implementações para todos os algoritmos apresentados na monografia, com comentários explicando cada estrutura e método desenvolvidos.
+Estão disponíveis no GitHub as implementações em \texttt{C++17} para todos os algoritmos apresentados na monografia, com comentários explicando cada estrutura e método desenvolvidos.
 
 Para acessá-las, basta navegar à pasta \textit{code} do \href{github.com/gafeol/chinese-postman/}{repositório}.
 
@@ -70,7 +70,7 @@ Além disso disponibiliza-se também uma estrutura de dados de utilidade geral:
 \begin{itemize}
     \item \texttt{floyd-warshall.cpp}
 
-        O algoritmo de Floyd Warshall foi utilizado amplamente para calcular a menor distância entre quaisquer pares de vértices.
+        O algoritmo de Floyd-Warshall foi utilizado amplamente para calcular a menor distância entre quaisquer pares de vértices.
 
         O código disponibilizado, como definido originalmente, possui complexidade $\mathcal{O}(|V|^3)$.
 
@@ -108,18 +108,31 @@ Para facilitar o desenvolvimento, usaram-se também adaptações de implementaç
         São utilizados desta subpasta códigos que resolvem os problemas:
         \begin{itemize}
             \item Emparelhamento perfeito de custo mínimo 
-            \item Emparelhamento máximo
+            \item Emparelhamento de cardinalidade máxima
         \end{itemize}
 
-        Ambos problemas são resolvidos usando uma combinação de uma heurística de geração de um emparelhamento aliada com a versão do algoritmo Blossom de Edmonds para grafos com peso.
+        Ambos problemas são resolvidos usando uma combinação de uma heurística de geração de um emparelhamento aliada ao algoritmo Blossom de Edmonds, que tem complexidade de pior caso $\mathcal{O}(|E||V|^2)$.
 
 \end{itemize}
 
 \section{Implementações}
 
+O padrão de implementação que foi seguido é criar uma \texttt{struct} que contem os métodos e parâmetros necessários para se resolver o problema.
+
+Geralmente, o método \texttt{solve} ou \texttt{solveById} de cada \texttt{struct} é aquele que devolve a solução desejada.
+Como a solução de tanto do problema de Euler quanto do Carteiro Chinês são passeios em um grafo, usou-se dois meios de se representar tal passeio
+
+\begin{itemize}
+    \item Um vetor de vértices, retornado geralmente pelo método \texttt{solve}
+    \item Um vetor de identificadores de arestas do passeio, retornado geralmente pelo método \texttt{solveById}
+\end{itemize}
+
+Apesar de um pouco mais intuitiva, em casos onde um grafo pode possuir arestas paralelas, a primeira representação (por vértices) é ambígua, por isso opta-se preferencialmente pelo uso do método \texttt{solveById}.
+
 \subsection{Euler}
 
 Foram implementadas versões do algoritmo de Hierholzer, explicado na seção \ref{alg-hierholzer} para grafos não direcionados, direcionados e mistos, respectivamente:
+
 
 \begin{itemize}
     \item \texttt{euler-grafo.cpp}
@@ -132,9 +145,24 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
 \subsection{Problema do Carteiro Chinês}
 \begin{itemize}
     \item \texttt{pcc-grafo.cpp}
+
+        Implementa a \texttt{struct PCC} que resolve o problema do carteiro chinês em grafos não direcionados. 
+
+        O algoritmo implementado tem complexidade $\mathcal{O}(|E||V|^2)$, devido a necessidade de utilizar o algoritmo do emparelhamento perfeito de custo mínimo, além do algoritmo Floyd-Warshall.
     \item \texttt{pcc-digrafo.cpp}
+
+        Também implementa a \texttt{struct PCC}, porém neste caso resolve o problema do carteiro chinês para digrafos.
+
+        Utiliza o algoritmo que resolve o problema de transporte, implementado em \texttt{problema-transporte.cpp}, por isso também possui complexidade $\mathcal{O}(|E||V|^2)$.
     \item \texttt{pcc-misto.cpp}
+
+        Implementa a $2$-aproximação descrita por Frederickson \cite{frederickson} que resolve o problema do carteiro chinês em grafos mistos com complexidade $\mathcal{O}(|V|^4)$, devido a utilização do algoritmo que resolve o problema de transporte em um grafo bipartido completo com $\mathcal{O}(|V|)$ vértices.
+
     \item \texttt{pcr-grafo.cpp}
+        
+        Implementa a $\frac{3}{2}$-aproximação que resolve o problema do carteiro rural em grafos métricos, isto é, cuja função custo respeita a desigualdade triangular.  
+        Tal solução foi desenvolvida a partir de um artigo de Eiselt \cite{michel} e originalmente sugerida por Frederickson \cite{frederickson}.
+        
     \item \texttt{pcr-digrafo.cpp}
     \item \texttt{pcv-guan.cpp}
 \end{itemize}
@@ -144,4 +172,14 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
 Todos os testes estão disponíveis na pasta \texttt{test} do repositório, organizados do mesmo modo que os arquivos de código.
 Por exemplo, o arquivo \texttt{test/pcc-grafo.cpp} possui testes para o arquivo homônimo da pasta \texttt{code}.
 
-Foi utilizado o \href{https://github.com/google/googletest}{framework googletest} para o desenvolvimento dos testes deste projeto.
+
+Utilizou-se o \href{https://github.com/google/googletest}{framework googletest} para o desenvolvimento dos testes deste projeto.
+A configuração de compilação de código e execução de testes é automatizada com o \texttt{Makefile} da pasta \texttt{test}, basta rodar \texttt{make} que todos os testes são executados, como se demonstra na figura \ref{maketest}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{make-test}
+    \caption{Rodando os testes usando o comando \texttt{make}}
+    \label{maketest}
+\end{figure}
+
