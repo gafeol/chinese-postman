@@ -52,18 +52,17 @@ struct PCC {
         vector<int> idReal(id + nAdj.size());
         for(int a=0;a<id;a++)
             idReal[a] = a;
-        for(pair<int, int> ar: mcpm.second){
-            vector<pair<int, int>> path = expande(imp[ar.first], imp[ar.second], mnDist);
-            for(auto ar: path){ // duplica aresta
-                int u = ar.first, v = ar.second;
+        for(pair<int, int> ar: mcpm.second){ // Duplica arestas do emparelhamento
+            auto path = expande(imp[ar.first], imp[ar.second], mnDist);
+            for(auto [u, v]: path){ 
                 for(Aresta ar: G.adj[u]){
                     if(ar.prox == v && ar.cus == mnDist[u][v]){
                         idReal[id] = ar.id;
                         break;
                     }
                 }
-                nAdj[u].push_back(Aresta(v, id, mnDist[u][v]));
-                nAdj[v].push_back(Aresta(u, id, mnDist[v][u]));
+                nAdj[u].emplace_back(v, id, mnDist[u][v]);
+                nAdj[v].emplace_back(u, id, mnDist[v][u]);
                 id++;
             }
         }
@@ -99,15 +98,14 @@ struct PCC {
                 arestasImp.emplace_back(i, j, mnDist[imp[i]][imp[j]]);
             }
         }
-        auto mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); // TODO: modificar para aceitar K
+        auto mcpm = MinimumCostPerfectMatching(imp.size(), arestasImp); 
         auto nAdj = G.adj;
         int id = G.m;
         for(pair<int, int> ar: mcpm.second){
-            vector<pair<int, int>> path = expande(imp[ar.first], imp[ar.second], mnDist);
-            for(auto ar: path){ // duplica aresta
-                int u = ar.first, v = ar.second;
-                nAdj[u].push_back(Aresta(v, id, mnDist[u][v]));
-                nAdj[v].push_back(Aresta(u, id, mnDist[v][u]));
+            auto path = expande(imp[ar.first], imp[ar.second], mnDist);
+            for(auto [u, v]: path){ 
+                nAdj[u].emplace_back(v, id, mnDist[u][v]);
+                nAdj[v].emplace_back(u, id, mnDist[v][u]);
                 id++;
             }
         }
