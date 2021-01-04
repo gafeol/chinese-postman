@@ -12,7 +12,7 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
 \begin{itemize}
     \item \texttt{aresta.hpp} 
 
-        Define a \texttt{struct Aresta}, usada para modelar tanto aresta direcionadas quanto não-direcionadas.
+        Define a \texttt{struct Aresta}, usada para modelar tanto aresta direcionadas quanto não direcionadas.
 
     Toda aresta possui um valor  \texttt{prox} indicando o vértice com o qual ela se liga, um identificador \texttt{id} e um custo real \texttt{cus}.
     \item \texttt{aresta-ingreme.hpp}
@@ -127,7 +127,7 @@ Como a solução de tanto do problema de Euler quanto do Carteiro Chinês são p
     \item Um vetor de identificadores de arestas do passeio, retornado geralmente pelo método \texttt{solveById}
 \end{itemize}
 
-Apesar de um pouco mais intuitiva, em casos onde um grafo pode possuir arestas paralelas, a primeira representação (por vértices) é ambígua, por isso opta-se preferencialmente pelo uso do método \texttt{solveById}.
+Apesar de ser mais intuitiva a representação de um passeio por vértices pode ser ambígua nos casos de arestas paralelas, por isso opta-se preferencialmente pelo uso do método \texttt{solveById}.
 
 \subsection{Euler}
 
@@ -184,10 +184,10 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
 \section{Testes}
 
 Todos os testes estão disponíveis na pasta \texttt{test} do repositório, organizados do mesmo modo que os arquivos de código.
-Por exemplo, o arquivo \texttt{test/pcc-grafo.cpp} possui testes para o arquivo homônimo da pasta \texttt{code}.
+Por exemplo, o arquivo \texttt{test/pcc-grafo.cpp} implementa testes para o arquivo homônimo da pasta \texttt{code}.
 
 
-Utilizou-se o \href{https://github.com/google/googletest}{framework googletest} para o desenvolvimento dos testes deste projeto.
+Utilizou-se o framework \href{https://github.com/google/googletest}{googletest} para o desenvolvimento dos testes deste projeto.
 A configuração de compilação de código e execução de testes é automatizada com o \texttt{Makefile} da pasta \texttt{test}, basta rodar \texttt{make} que todos os testes são executados, como se demonstra na figura \ref{maketest}.
 
 \begin{figure}[h]
@@ -195,5 +195,23 @@ A configuração de compilação de código e execução de testes é automatiza
     \includegraphics[width=\textwidth]{make-test}
     \caption{Rodando os testes usando o comando \texttt{make}}
     \label{maketest}
+\end{figure}
+
+Além disso, utiliza-se o site \texttt{codecov.io} para manter atualizadas as últimas informações de cobertura de testes.
+
+Acessando o \href{https://codecov.io/gh/gafeol/chinese-postman}{codecov} é possível ver informações como: a porcentagem de linhas de código cobertas por testes (figura \ref{codecov}), quantas vezes uma linha específica é executada por testes desenvolvidos e linhas de código que ainda não são cobertas por nenhum teste (linhas em vermelho na figura \ref{codecov2}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{codecov}
+    \caption{Visualização do codecov para um arquivo de código}
+    \label{codecov}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{codecov2}
+    \caption{Visualização da porcentagem de cobertura}
+    \label{codecov2}
 \end{figure}
 
