@@ -164,7 +164,21 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
         Tal solução foi desenvolvida a partir de um artigo de Eiselt \cite{michel} e originalmente sugerida por Frederickson \cite{frederickson}.
         
     \item \texttt{pcr-digrafo.cpp}
+
+        Implementa a heurística que resolve de maneira aproximada o problema do carteiro rural em digrafos.
+
+        Utiliza como sub-rotina o algoritmo de Chu-Liu do arquivo \texttt{ssa.cpp}, que possui complexidade $\mathcal{O}(|E||V|)$ e o algoritmo do Problema de Transporte.
+
+        Assim como a solução para o caso rural em grafos não direcionados, esta solução foi baseada no artigo de Eiselt \cite{michel} e originalmente desenvolvida por Christofides et al. \cite{christofides-86}.
+            
     \item \texttt{pcv-guan.cpp}
+
+        Implementa o algoritmo descrito por Guan \cite{guan-windy} que resolve o problema do carteiro chinês com vento no caso em que todos circuitos possuem o mesmo custo independente do sentido em que são percorridos.
+        
+        Esta solução é polinomial e exata, com complexidade igual à do problema do carteiro em grafos direcionados $\mathcal{O}(|E||V|^2)$.
+        
+        O código implementado também checa se o grafo em questão respeita a característica especial do custo de seus ciclos por meio de uma busca em profundidade, tendo assim complexidade $\mathcal{O}(|V| + |E|)$, vide método \texttt{checkCyclesCost}.
+
 \end{itemize}
 
 \section{Testes}
