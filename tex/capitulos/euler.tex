@@ -44,13 +44,13 @@ Define-se como \textbf{passeio} em um grafo uma sequência finita não vazia $P 
 Os vértices $v_0$ e $v_k$ são a origem e o término de $P$, respectivamente; e os vértices $v_1, v_2, \dots, v_{k-1}$ são chamados vértices internos de P. 
 
 Uma \textbf{trilha} é um passeio sem arestas repetidas enquanto que um \textbf{caminho} é um passeio sem vértices repetidos.
-Definimos o comprimento de um passeio, denotado por $||P||$, como o número de arestas de $P$.
+Definimos o comprimento de um passeio como o número de arestas do mesmo.
 
 Um passeio é considerado \textbf{fechado} se sua origem e término são iguais.
 
 Uma trilha fechada é um \textbf{circuito}.
 
-Devido às contribuições de Euler ao problema descrito, define-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo, \textbf{circuito euleriano} como um circuito que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriano.
+Como homenagem às contribuições de Euler, definiu-se \textbf{trilha euleriana} como uma trilha que passa por todas arestas de um grafo, \textbf{circuito euleriano} como um circuito que passa por todas arestas de um grafo e \textbf{grafo euleriano} como um grafo que possui um circuito euleriano.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
     \centering
@@ -71,9 +71,9 @@ Apesar de ter recebido grande parte do crédito histórico pelas suas implicaç�
     \label{euler}
 \end{theorem}
 
-Para suportar a prova de tal teorema, primeiramente apresentaremos o seguinte lema:
+Para suportar a prova de tal teorema, primeiramente apresenta-se o seguinte lema:
 
-Seja $\delta(G)$ o \textbf{grau mínimo} de um vértice pertencente a $G$.
+Seja $\delta(G)$ o menor grau de um vértice pertencente a $G$.
 
 \begin{lemma}
 	Se $G$ é um grafo tal que $\delta(G) \geq 2$, então $G$ possui um circuito.
@@ -81,24 +81,23 @@ Seja $\delta(G)$ o \textbf{grau mínimo} de um vértice pertencente a $G$.
 \end{lemma}
 
 \begin{proof}
-	Vamos assumir que um grafo qualquer $G = \{V, A\}$ não possui um caminho fechado. 
 	Seja $P$ um caminho de comprimento maximal pertencente a $G$, denominamos $v$ um dos extremos de $P$. 
-	Como $P$ é um caminho de comprimento maximal, é impossível, por definição, que $v$ possua uma aresta $vu$ que o ligue a um vértice $u$ não pertencente a $P$.
+
+    Como $\delta(G) \geq 2$, então $v$ possui ao menos dois vértices adjacentes $u, w$.
+
+	Por $P$ ser maximal é impossível que $v$ possua uma adjacência que o ligue a um vértice não pertencente a $P$.
+    Implicando assim que $u, w \in P$.
 	
-	Como, da premissa, todos vértices possuem grau maior ou igual a 2, isso implica que $v$ possuirá ao menos duas arestas que o ligam a vértices pertencentes a $P$.
+    Consequentemente garante-se a existência de um circuito em $G$, basta tomar as arestas $vu, wv$ e o subcaminho de $P$ que liga $u$ a $w$, fechando assim um circuito.
 
-	Porém, como $v$ é um vértice extremo de $P$, apenas uma dessas arestas pode pertencer ao caminho $P$. Isso implica que a outra aresta, digamos $vw$, não pertencente a $P$, implica na existência de um caminho fechado.
-
-	Basta tomar o subcaminho entre os vértices $v$ e $w$ pertencente à $P$ juntamente com a aresta $vw$ que teremos um caminho fechado. Chegando assim em uma contradição.
-
-	Demonstra-se assim que $G$ deverá possuir ao menos um circuito dadas as condições do lema.
+	Demonstra-se assim que se $\delta(G) \geq 2$, então $G$ deverá possuir ao menos um circuito.
 \end{proof}
 
 Provado tal lema, podemos agora provar o teorema \ref{euler}:
 
 \begin{proof}
 
-Seja $G = \{V, E\}$ o grafo em questão.
+Seja $G$ o grafo em questão.
 
 ($\Rightarrow$) Começamos provando que se um grafo é euleriano então todos seus vértices possuem grau par.
 
