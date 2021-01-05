@@ -1,12 +1,15 @@
 min-cost-matching/MCM
 pcr-grafo
 euler-digrafo
+pcc-grafo
 pcc-digrafo
 union-find
+pcr-digrafo
 problema-transporte
 pcc-misto
+pcv-guan
 euler-grafo
+ssa
 floyd-warshall
-pcc-grafo
 euler-misto
 min-cost-flow
