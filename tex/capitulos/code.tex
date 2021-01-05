@@ -54,20 +54,19 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
 
     Este grafo utiliza a estrutura \texttt{ArestaIngreme} para representar suas arestas.
 
-\end{itemize}
-
-Além disso disponibiliza-se também uma estrutura de dados de utilidade geral:
-
-\begin{itemize}
     \item \texttt{union-find.cpp}
 
-        Essa implementação do Union Find utiliza as otimizações de compressão de caminhos, encurtando as relações de ancestralidade sempre que possível, e a união das componentes de menor tamanho sob as componentes maiores.
+        Essa implementação da estrutura ``Union Find'' utiliza as otimizações de compressão de caminhos, encurtando as relações de ancestralidade sempre que possível, e a união das componentes de menor tamanho sob as componentes maiores.
         Atingindo assim uma complexidade amortizada $\mathcal{O}(\log^*|V|)$ por operações de busca e união.
 \end{itemize}
 
 \section{Algoritmos auxiliares}
 
 \begin{itemize}
+    \item \texttt{mst.cpp}
+
+        Implementa o algoritmo de Kruskal para encontrar a árvore geradora mínima de um grafo não direcionado, com complexidade $\mathcal{O}(|E|\log |E|)$.
+        
     \item \texttt{floyd-warshall.cpp}
 
         O algoritmo de Floyd-Warshall foi utilizado amplamente para calcular a menor distância entre quaisquer pares de vértices.
@@ -82,11 +81,11 @@ Além disso disponibiliza-se também uma estrutura de dados de utilidade geral:
 
         A solução deste problema é um conjunto de arestas escolhidas para realizar o transporte, juntamente com a quantidade de fluxo que é passada por cada aresta.
 
-        Esta modelagem consiste em uma simples abstração usada em cima do problema do fluxo máximo de custo mínimo, por isso possui a mesma complexidade que tal algoritmo, $\mathcal{O}(|V|^2 |E|^2)$.
+        Esta modelagem consiste em uma simples abstração usada em cima do problema do fluxo máximo de custo mínimo, por isso possui a mesma complexidade que tal algoritmo, $\mathcal{O}(|E|^2 |V|^2)$.
         
     \item \texttt{min-cost-flow.cpp}
 
-        Para resolver o problema do fluxo de custo mínimo usou-se o algoritmo de Edmonds-Karp, que possui complexidade $\mathcal{O}(|V|^2 |E|^2)$.
+        Para resolver o problema do fluxo de custo mínimo usou-se o algoritmo de Edmonds-Karp, que possui complexidade $\mathcal{O}(|E|^2 |V|^2 )$.
         A implementação realizada se baseou no artigo \cite{min-cost} do site \href{https://cp-algorithms.com/}{cp-algorithms.com}.
         
 \end{itemize}
@@ -99,7 +98,7 @@ Para facilitar o desenvolvimento, usaram-se também adaptações de implementaç
         O algoritmo de Chu-Liu/Edmonds que encontra uma arborescência geradora mínima foi implementado no arquivo \texttt{ssa.cpp}, que referencia o nome em inglês deste problema: \textit{shortest spanning arborescence}.
 
         Adaptou-se o código disponibilizado pela equipe \textit{el-vasito} em seu \href{https://github.com/mhunicken/icpc-team-notebook-el-vasito}{repositório do GitHub} para implementar a \texttt{struct ChuLiu} deste arquivo.
-        Esta implementação possui complexidade $\mathcal{O}(|V||E|)$
+        Esta implementação possui complexidade $\mathcal{O}(|E||V|)$
 
     \item \texttt{min-cost-matching/}
 
@@ -116,6 +115,8 @@ Para facilitar o desenvolvimento, usaram-se também adaptações de implementaç
 \end{itemize}
 
 \section{Implementações}
+
+Esta seção apresenta os códigos implementados que resolvem os problemas tratados na monografia.
 
 O padrão de implementação que foi seguido é criar uma \texttt{struct} que contem os métodos e parâmetros necessários para se resolver o problema.
 
@@ -167,7 +168,7 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
 
         Implementa a heurística que resolve de maneira aproximada o problema do carteiro rural em digrafos.
 
-        Utiliza como sub-rotina o algoritmo de Chu-Liu do arquivo \texttt{ssa.cpp}, que possui complexidade $\mathcal{O}(|E||V|)$ e o algoritmo do Problema de Transporte.
+        Utiliza como sub-rotinas o algoritmo de Chu-Liu do arquivo \texttt{ssa.cpp}, que possui complexidade $\mathcal{O}(|E||V|)$ e o algoritmo do Problema de Transporte, $\mathcal{O}(|E|^2|V|^2)$.
 
         Assim como a solução para o caso rural em grafos não direcionados, esta solução foi baseada no artigo de Eiselt \cite{michel} e originalmente desenvolvida por Christofides et al. \cite{christofides-86}.
             
