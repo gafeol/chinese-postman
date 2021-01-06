@@ -191,7 +191,7 @@ Por exemplo, o arquivo \texttt{test/pcc-grafo.cpp} implementa testes para o arqu
 Utilizou-se o framework \href{https://github.com/google/googletest}{googletest} para o desenvolvimento dos testes deste projeto.
 A configuração de compilação de código e execução de testes é automatizada com o \texttt{Makefile} da pasta \texttt{test}, basta rodar \texttt{make} que todos os testes são executados, como se demonstra na figura \ref{maketest}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{make-test}
     \caption{Rodando os testes usando o comando \texttt{make}}
@@ -202,14 +202,14 @@ Além disso, utiliza-se o site \texttt{codecov.io} para manter atualizadas as ú
 
 Acessando o \href{https://codecov.io/gh/gafeol/chinese-postman}{codecov} é possível ver informações como: a porcentagem de linhas de código cobertas por testes (figura \ref{codecov}), quantas vezes uma linha específica é executada por testes desenvolvidos e linhas de código que ainda não são cobertas por nenhum teste (linhas em vermelho na figura \ref{codecov2}).
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{codecov}
     \caption{Visualização do codecov para um arquivo de código}
     \label{codecov}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{codecov2}
     \caption{Visualização da porcentagem de cobertura}
