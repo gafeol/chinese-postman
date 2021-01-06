@@ -300,8 +300,6 @@ struct Misto{
         mn.resize(n);
         nc = 0;
         idd = 0;
-        while(!q.empty())
-            q.pop();
         for (int ini = 0; ini < n; ini++) {
             if (!vis[ini])
                 tarjan(ini);

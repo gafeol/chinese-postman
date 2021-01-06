@@ -78,7 +78,6 @@ TEST(PCCGrafo, ArestasParalelas){
     EXPECT_TRUE(pcc.checkSolutionById(ans));
 }
 
-/*
 
 0 3 2
 3 2 7

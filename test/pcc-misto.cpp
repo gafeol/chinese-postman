@@ -186,6 +186,24 @@ TEST(PCCMisto, GrauPar2){
     testGrauPar(Misto(G.n, M, U));
 }
 
+TEST(PCCMisto, GrauPar3){
+    Misto G(2, 1, {{1, 0, 2}, {0, 1, 3}});
+    G = pcc.grau_total_par(G);
+    auto [M, U, MAdd] = pcc.iguala_grau_dir(G);
+    tie(M, U) = pcc.grau_par(G.n, M, U, MAdd);
+    EXPECT_EQ(M.size(), 1);
+    EXPECT_EQ(M[0], make_tuple(1, 0, 2., 0));
+    EXPECT_EQ(U.size(), 0);
+    for (int u = 0; u < G.n;u++) {
+        for (Aresta ar : G.adj[u]) {
+            if (G.arco(ar.id)) {
+                M.emplace_back(u, ar.prox, ar.cus, ar.id);
+            }
+        }
+    }
+    testGrauPar(Misto(G.n, M, U));
+}
+
 TEST(PCCMisto, Solve){
     Misto G(2, {{0, 1}}, {});
     auto [custo, trilha] = pcc.solveById(G);
