@@ -19,7 +19,6 @@ struct PCR {
                 return ans;
             }
         }
-        assert(false);
     }
 
     /// Devolve uma solução do PCR: um circuito que percorre todo arco de R ao menos uma vez.

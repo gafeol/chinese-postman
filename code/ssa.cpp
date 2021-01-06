@@ -114,7 +114,6 @@ vector<int> expande(int ini, int fim, Digrafo &G, vector<vector<double>> &mnDist
             return ans;
         }
     }
-    assert(false);
 }
 
 struct compress {

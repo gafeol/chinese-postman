@@ -26,7 +26,6 @@ struct PCC {
                 return ans;
             }
         }
-        assert(false);
     }
 
     public:

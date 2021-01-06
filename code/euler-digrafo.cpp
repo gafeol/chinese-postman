@@ -34,15 +34,9 @@ struct Euler {
                 trilha.push(id);
         }
 
-        void clear(stack<int> &st){
-            while(!st.empty())
-                st.pop();
-        }
-
 
         void reset(){
             _adj = digrafo.adj;
-            clear(trilha);
         }
 
     public: 

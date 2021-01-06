@@ -45,11 +45,6 @@ struct Euler {
         }
 
 
-        void clear(stack<int> &st){
-            while(!st.empty())
-                st.pop();
-        }
-
         int dfs(int u, vector<bool>& vis){
             vis[u] = true;
             int cnt = 1;
@@ -61,7 +56,6 @@ struct Euler {
         }
 
         void reset(){
-            clear(trilha);
             _adj = grafo.adj;
             foiDeletada.clear();
             foiDeletada.resize(grafo.m, false);
