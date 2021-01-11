@@ -39,13 +39,13 @@ Por exemplo, para a figura \ref{graph}, um passeio fechado de custo ótimo seria
 
 \[ \{A, B, D, C, A, D, C, B, A\} \] 
 
-Sendo este um caminho fechado de custo 12.
+Sendo este um caminho fechado de custo 12 que percorre todas arestas do grafo.
 Neste exemplo foi necessário que as arestas $AB$ e $DC$ fossem percorridas duas vezes no passeio, porém nem sempre é necessária esta repetição.
 
-No caso em que o grafo tratado é euleriano, a resposta para o problema do carteiro chinês é justamente o circuito euleriano do grafo.
-Nos outros casos, sendo o grafo conexo, o procedimento que seguiremos será a realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano.
+No caso dos grafos eulerianos, a resposta para o problema do carteiro chinês é justamente o circuito euleriano.
+Nos outros casos, o procedimento será realizar a cópia de algumas arestas do grafo de modo a torná-lo euleriano.
 
-A solução do PCC para um grafo $G$ terá duas partes: Tornar $G$ euleriano com o menor custo possível, criando cópias de arestas existentes e encontrar o ciclo euleriano do grafo $G$ modificado.
+A solução do PCC para um grafo $G$ terá duas partes: Tornar $G$ euleriano com o menor custo possível e então encontrar o ciclo euleriano do grafo $G$ modificado.
 
 Uma generalização do Problema do Carteiro Chinês é o \textbf{problema das T-junções}.
 Este problema consiste em, dado um grafo $(V, E)$ e um conjunto de vértices $T \subseteq V$, definir um conjunto de arestas $J$ de custo mínimo tal que todo vértice do conjunto $T$ possui grau ímpar no grafo $(V, J)$ e todo vértice em $V \setminus T$ possui grau par no mesmo grafo.
@@ -54,8 +54,7 @@ Se tomamos, por exemplo, $T$ como o conjunto de vértices de grau ímpar em um g
 Sendo assim, o problema das T-junções resolve a primeira parte do PCC: tornar um grafo euleriano com o menor custo possível. 
 Por esse motivo podemos dizer que o problema das T-junções é uma generalização do problema do carteiro chinês.
 
-Discutiremos nas seções a seguir a solução para o problema em questão com base nas especificidades do grafo do problema. 
-Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, isto é, vértices que não possuam arestas, já que tais vértices não afetam a solução do problema.
+Discutiremos nas seções a seguir a solução para o problema para diferentes tipos de grafo quanto à orientação de suas arestas. 
 
 \section{Grafos não direcionados}
         \label{sec:pcc}
@@ -63,17 +62,21 @@ Desconsideraremos nas análises a seguir grafos que possuam vértices isolados, 
 Analisaremos o caso em que o problema é modelado a partir de um grafo $G(V, E)$ simples, conexo e não direcionado.
 
 Uma solução qualquer $T$ do problema do carteiro chinês deverá percorrer cada aresta de $G$ pelo menos uma vez, sendo assim uma trilha fechada.
-Se $G$ é euleriano, então uma solução para o PCC é o próprio circuito euleriano do grafo.
-Do contrário, será necessário que $T$ percorra pelo menos uma aresta múltiplas vezes.
+
+Se $G$ é euleriano, então as soluções ótimas para o PCC são os circuitos eulerianos do grafo.
+Do contrário, será necessário que $T$ percorra uma mesma aresta duas vezes.
 
 Seja $1 + x_e$ o número de vezes que uma aresta $e \in E$ é percorrida em $T$.
 Definimos $G'$ como o grafo formado por $G$ adicionado de $x_e$ cópias de cada aresta $e \in E$. 
-Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes e a trilha fechada $T$ (solução do PCC em $G$) percorre cada uma dessas arestas uma única vez.
-Por definição $G'$ será euleriano, e a trilha euleriana de $G'$ corresponderá à $T$, solução do PCC para o grafo $G$.
+Isto é, cada aresta $e$ de $G$ aparecerá em $G'$ $1 + x_e$ vezes. 
 
-Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de $x_e$ para o problema descrito e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
+Além disso, podemos modelar a trilha fechada $T$ (solução do PCC em $G$) como uma trilha euleriana do grafo $G'$, já que agora cada aresta repetida em  $T$ tem uma cópia correspondente no grafo $G'$. 
 
-Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
+Em outras palavras, o grafo $G'$ será euleriano, e uma trilha euleriana de $G'$ corresponderá a $T$, solução do PCC para o grafo $G$.
+
+Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valor ótimo de cópias $x_e$ e, em seguida, encontrar um circuito euleriano no grafo $G'$ construído.
+
+Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 
 %Seja $E(v)$ o conjunto de arestas ligadas ao vértice $v \in V$, e seja $c_e$ o custo de se percorrer uma aresta $e \in E$, que deverá ser não-negativo.
 
@@ -81,26 +84,30 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
 \begin{lemma} 
     \label{lemma-pcc}
-    Para todo grafo simples e conexo, existe uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ vale 0 ou 1. 
+    Para todo grafo simples e conexo, existe uma solução ótima do PCC em que cada aresta é copiada no máximo 1 vez, ou seja $x_e \in \{0, 1\}$. 
 \end{lemma}
 
 \begin{proof}
-    Seja $T$ uma solução ótima do PCC para um grafo $G$ e $x$ um vetor indicando a quantidade de cópias necessárias de cada aresta de $G$ para a solução $T$. 
-    Sabemos que $x$ deverá possuir valores inteiros não negativos, além disso, sabemos que o grafo $G'$, induzido por $x$, deverá ser euleriano e que o valor de $\sum_e c_ex_e$ será mínimo.
+    Seja $T$ uma solução ótima do PCC para um grafo $G$ e $x$ um vetor indexado pelas arestas indicando a quantidade de cópias necessárias de cada aresta para a formação de um supergrafo euleriano $G'$. 
+
+    Por definição, $x$ deverá possuir valores inteiros não negativos. 
+    Além disso, por $x$ ser derivado de uma solução ótima, sabe-se que o valor de $\sum_e c_ex_e$ será o mínimo possível.
 
     Seja $x^*$ um vetor definido do seguinte modo:
 
     \[  x^*_e = x_e \bmod 2    \]
 
-    Como o grafo $G'$ induzido por $x$ era euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos vértices em ambos grafos é a mesma, e também pois tanto $G'$ quanto $G^*$ possuem $G$, que é conexo, como um subgrafo, e portanto também são conexos.
+    Como o grafo $G'$ induzido por $x$ é euleriano, o grafo $G^*$ induzido por $x^*$ também deverá ser euleriano, pois a paridade dos graus de vértices em ambos os grafos é a mesma. 
+    Além disso, $G'$ e $G^*$ são conexos, pois possuem $G$ como subgrafo.
     
-    Pela definição, $G^*$ usa um número menor ou igual de arestas duplicadas que $G'$, fazendo com que o seguinte se mantenha: $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
+    Pela definição de $x^*$, $x^*_e \leq x_e, \forall e \in E$, garantindo assim que $\sum_e c_ex^*_e \leq \sum_e c_ex_e$.
 
     No entanto, como $x$ foi derivado da solução ótima $T$, sabemos que $\sum_e c_ex_e$ deverá ser mínimo, e portanto, $\sum_e c_ex^*_e = \sum_e c_ex_e$. 
 
-    Sendo assim, os valores de $x^*$ serão apenas 0 ou 1, por definição, e $T^*$ consistirá em uma solução ótima, assim como $T$, provando o lema.
+    Sendo assim, os valores de $x^*$ serão apenas 0 ou 1 e $T^*$ consistirá em uma solução ótima, assim como $T$, provando o lema.
 
 \end{proof}
+
 
 \begin{lemma}
     Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas consiste na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
@@ -117,16 +124,17 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
 
     Seja $T$ uma solução ótima do PCC para um grafo $G(V, E)$  em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá 0 ou 1. 
     A existência de tal solução é garantida pelo lema \ref{lemma-pcc}.
+
     Realizaremos uma prova por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
 
     O caso base dessa indução é quando $\sum_e x_e = 0$. 
-    Neste caso, o conjunto de arestas duplicadas será vazio, valendo então a propriedade do lema.
+    Neste caso, o grafo em questão é euleriano e o conjunto de arestas duplicadas será vazio, valendo então a propriedade do lema.
 
     A hipótese de indução será que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
 
     Analisaremos agora a situação em que $\sum_e x_e = k$, com $k > 0$.
 
-    Seja $v$ um vértice de $G$ de grau ímpar,  $C$ um caminho de tamanho maximal que começa no vértice $v$ e percorre apenas arestas duplicadas e seja $G'$ o grafo, possivelmente desconexo, $G$ decrescido das arestas pertencentes a $C$.
+    Sejam $v$ um vértice de $G$ de grau ímpar,  $C$ um caminho de tamanho maximal que começa em $v$ e percorre apenas arestas duplicadas e $G'$ o grafo, possivelmente desconexo, formado por $G$ decrescido das arestas de $C$.
 
 
     Todos os vértices em $G$ e $G'$ terão a mesma paridade de grau, exceto pelos vértices extremos de $C$. 
@@ -151,15 +159,16 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
         \sum_e x'_e &< k
     \end{align*}
 
-    Sendo assim, vale a hipótese de indução para o grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto por arestas duplicadas (ou seja, para as quais $x'_e = 1$).
+    Sendo assim, vale a hipótese de indução para as componentes conexas do grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto apenas por arestas duplicadas, indicadas por $x'_e = 1$.
 
     Como o grafo $G'$ não possui as arestas do caminho $C$, temos que todo caminho de $\mathcal{C}$ deverá ser aresta-disjunto com $C$.
+    
     Deste modo, o conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar $\mathcal{C} \cup C$, que induz o grafo $T$, consistirá de uma solução ótima para o PCC em $G$.
     Provando assim o passo da indução.
 
     Finalizando então a prova por indução do lema.
 
-    \begin{figure}
+    \begin{figure}[H]
         \centering
         \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
             \node[main node] (5) {5};
@@ -180,7 +189,7 @@ Resolveremos a primeira parte do problema com um algoritmo de emparelhamento.
         \caption{Possível estrutura em grafo com vértices de grau ímpar}
         \label{pcc-case1}
     \end{figure}
-    \begin{figure}
+    \begin{figure}[H]
         \centering
         \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
             \node[main node] (1) {1};
