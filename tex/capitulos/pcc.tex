@@ -114,59 +114,43 @@ Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 \end{lemma}
 
 \begin{proof}
+    Realizaremos uma prova por indução no número de arestas duplicadas (indicada pelo vetor $x$) em uma solução ótima de $G$, ou seja, em $\sum_{e\in E} x_e$. 
 
-    Inicialmente trataremos o caso em que $G$ não possui nenhum vértice de grau ímpar:
-    Se todos vértices de $G$ tem grau par, então o mesmo deve possuir um circuito euleriano. 
-    Por isso, o vetor $x' = \{0, 0, \dots, 0\}$ induz uma solução válida para o PCC, e possui custo zero, sendo assim esta uma solução ótima.
-    Como o conjunto de arestas duplicadas nesta solução é vazio, vale o lema para este grafo.
-
-    Provado este caso, seguiremos a demonstração assumindo que $G$ possui ao menos um vértice de grau ímpar.
-
-    Seja $T$ uma solução ótima do PCC para um grafo $G(V, E)$  em que cada aresta é copiada no máximo 1 vez, ou seja que $x_e$ valerá 0 ou 1. 
-    A existência de tal solução é garantida pelo lema \ref{lemma-pcc}.
-
-    Realizaremos uma prova por indução no número de arestas duplicadas de $G$, ou seja, em $\sum_e x_e$, para toda aresta $e \in E$. 
-
-    O caso base dessa indução é quando $\sum_e x_e = 0$. 
+    O \textbf{caso base} dessa indução é quando $\sum_{e\in E} x_e = 0$. 
     Neste caso, o grafo em questão é euleriano e o conjunto de arestas duplicadas será vazio, valendo então a propriedade do lema.
 
-    A hipótese de indução será que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
+    Na figura \ref{pcc-case2} mostra-se um exemplo deste caso.
+    Como o grafo já possui um circuito euleriano, a solução ótima do problema não deve duplicar aresta alguma, ou seja, $x = \{0, 0, \dots, 0\}$ induz uma solução ótima para o PCC.
 
-    Analisaremos agora a situação em que $\sum_e x_e = k$, com $k > 0$.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+            \node[main node] (1) {1};
+            \node[main node] (2) [below of=1] {2};
+            \node[main node] (4) [right of=1] {4};
+            \node[main node] (3) [below of=4] {3};
 
-    Sejam $v$ um vértice de $G$ de grau ímpar,  $C$ um caminho de tamanho maximal que começa em $v$ e percorre apenas arestas duplicadas e $G'$ o grafo, possivelmente desconexo, formado por $G$ decrescido das arestas de $C$.
+          \path[every node/.style={font=\sffamily\small}]
+              (1) edge node [above] {$x_{14} = 0$} (4)
+            (2) edge node [right] {0} (1)
+            (3) edge node [above] {0} (2)
+            (4) edge node [left] {0} (3)
+            ;
+        \end{tikzpicture}
+        \caption{Para um grafo euleriano a solução $\{x_e = 0 : \forall e \in E \}$ é ótima.}
+        \label{pcc-case2}
+    \end{figure}
 
+    A \textbf{hipótese de indução} é que a propriedade do lema vale para uma soma $\sum_e x_e < k$, com $k > 0$.
 
-    Todos os vértices em $G$ e $G'$ terão a mesma paridade de grau, exceto pelos vértices extremos de $C$. 
-    Como estes eram vértices de grau ímpar em $G$ e apenas uma aresta foi retirada dos mesmos, ambos terão grau par em $G'$.
+    Trataremos agora de um caso de um grafo qualquer $G(V, E)$ em que sua solução ótima é induzida por um vetor de cópias $x$ com $\sum_{e\in E} x_e = k$ e tal que cada aresta $e \in E$ é copiada no máximo 1 vez.
+    A existência de tal solução ótima é garantida pelo lema \ref{lemma-pcc}.
 
-    Sendo assim, podemos definir um vetor $x'$ que induz uma solução ótima para $G'$ do seguinte modo:
+    Sejam $v \in V$ um vértice de grau ímpar e $C$ um caminho de tamanho maximal que começa em $v$ e percorre apenas arestas duplicadas.
 
-    \[ 
-        x'_e = 
-        \begin{cases} 
-            0 & e \in C \\
-            x_e & e \notin C 
-        \end{cases}
-    \]
+    Se $C$ forma um circuito, pode-se simplesmente retirar as arestas duplicadas que formam $C$ ($x_e = 0 \text{ } \forall e \in C$) da solução, que a paridade dos vértices de $G$ não mudaria, e a nova solução induzida por $x$ sem tais arestas seria coberta pela hipótese de indução, já que após essa mudança $\sum_{e\in E} x_e < k$.
 
-
-    Vale também o seguinte:
-
-    \begin{align*}
-        \sum_e x'_e &= \sum_e x_e - |\mathcal{C}| \\ 
-        \sum_e x'_e &< \sum_e x_e \\
-        \sum_e x'_e &< k
-    \end{align*}
-
-    Sendo assim, vale a hipótese de indução para as componentes conexas do grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto apenas por arestas duplicadas, indicadas por $x'_e = 1$.
-
-    Como o grafo $G'$ não possui as arestas do caminho $C$, temos que todo caminho de $\mathcal{C}$ deverá ser aresta-disjunto com $C$.
-    
-    Deste modo, o conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar $\mathcal{C} \cup C$, que induz o grafo $T$, consistirá de uma solução ótima para o PCC em $G$.
-    Provando assim o passo da indução.
-
-    Finalizando então a prova por indução do lema.
+    Assume-se que $C$ não forma um circuito daqui em diante.
 
     \begin{figure}[H]
         \centering
@@ -178,35 +162,73 @@ Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
             \node[main node] (3) [below of=4] {3};
 
           \path[every node/.style={font=\sffamily\small}]
-            (5) edge node [above] {0} (1)
-            (5) edge node [above] {0} (4)
-            (1) edge node [above] {0} (4)
-            (2) edge node [right] {1} (1)
-            (3) edge node [above] {1} (2)
-            (4) edge node [left] {1} (3)
+              (5) edge node [above right] {$x_{45} = 1$} (4)
+              (1) edge node [above] {0} (4)
+            (1) edge node [above] {0} (3)
+            (2) edge[red] node [right] {$x_{12} =  1$} (1)
+            (3) edge[red] node [above] {$x_{23} = 1$} (2)
+            (4) edge node [left] {0} (3)
             ;
         \end{tikzpicture}
-        \caption{Possível estrutura em grafo com vértices de grau ímpar}
+        \caption{Exemplo de caminho $C$ escolhido em vermelho, para caso com $k = 3$}
         \label{pcc-case1}
     \end{figure}
+
+    Define-se $G' := (V, E \setminus C)$ como o grafo, possivelmente desconexo, formado por $G$ decrescido das arestas de $C$.
+
+    Todos os vértices em $G$ e $G'$ terão a mesma paridade de grau, exceto pelos vértices extremos de $C$. 
+    Como estes eram vértices de grau ímpar em $G$, ambos terão grau par em $G'$.
+
+    Sendo assim, podemos definir um vetor $x'$ que induz uma solução ótima do PCC para as componentes conexas de $G'$ do seguinte modo:
+
+    \[ 
+        x'_e = 
+        \begin{cases} 
+            0 & e \in C \\
+            x_e & e \notin C 
+        \end{cases}
+    \]
+
+    Isso porque as arestas do caminho $C$ foram removidas, portanto não há mais necessidade de se duplicar as mesmas na solução ótima do PCC para $G'$.
+
+    
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
-            \node[main node] (1) {1};
+            \node[main node] (5) {5};
+            \node[main node] (1) [below left of=5]{1};
             \node[main node] (2) [below of=1] {2};
-            \node[main node] (4) [right of=1] {4};
+            \node[main node] (4) [below right of=5] {4};
             \node[main node] (3) [below of=4] {3};
 
           \path[every node/.style={font=\sffamily\small}]
-            (1) edge node [above] {1} (4)
-            (2) edge node [right] {1} (1)
-            (3) edge node [above] {1} (2)
-            (4) edge node [left] {1} (3)
+              (5) edge node [above right] {$x'_{45} = 1$} (4)
+              (1) edge node [above] {0} (4)
+            (1) edge node [above] {0} (3)
+            (2) edge[gray, dotted] node [right] {} (1)
+            (3) edge[gray, dotted] node [above] {} (2)
+            (4) edge node [left] {0} (3)
             ;
         \end{tikzpicture}
-        \caption{Caso em que o grafo tratado não possui vértices de grau ímpar}
-        \label{pcc-case2}
+        \caption{Grafo $G'$ definido pelo grafo da figura \ref{pcc-case1}}
+        \label{pcc-case3}
     \end{figure}
+
+    Segue da definição de $x'$:
+
+    \begin{align*}
+        \sum_{e \in E \setminus C} x'_e &= \sum_{e \in E} x_e - |\mathcal{C}| \\ 
+        \sum_{e \in E \setminus C} x'_e &< \sum_{e \in E} x_e \\
+        \sum_{e \in E \setminus C} x'_e &< k
+    \end{align*}
+
+    Por consequência, vale a hipótese de indução para as componentes conexas do grafo $G'$, ou seja, existe um conjunto $\mathcal{C}$ de caminhos aresta-disjuntos entre vértices de grau ímpar composto apenas por arestas duplicadas, indicadas por $x'_e = 1$.
+
+    Como o grafo $G'$ não possui as arestas do caminho $C$, temos que todo caminho de $\mathcal{C}$ deverá ser aresta-disjunto com $C$.
+    
+    Deste modo, o conjunto de caminhos aresta-disjuntos entre vértices de grau ímpar $\mathcal{C} \cup C$ induzirá a solução ótima para o PCC em $G$.
+    Provando assim o passo da indução e finalizando a prova do lema.
+
 
 \end{proof}
 
