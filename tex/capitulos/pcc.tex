@@ -276,7 +276,7 @@ Comprovando assim que o grafo $G^*$ resultante é euleriano.
 Após a construção $G^*$ basta derivar um circuito euleriano do mesmo que chega-se a uma solução para o problema do PCC no grafo original $G$.
 
 
-Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algoritmo descrito.
+Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudocódigo do algoritmo descrito.
 
     % TODO: Expandir nesses assuntos:
 		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
@@ -463,7 +463,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     \end{enumerate}
 
 
-    O algoritmo \ref{di-pcc-pseudocode} é a implementação em pseudo-código da solução descrita acima.
+    O algoritmo \ref{di-pcc-pseudocode} é a implementação em pseudocódigo da solução descrita acima.
 
     Na função $PROBLEMA\_DE\_TRANSPORTE$ define-se uma redução do problema para o problema do fluxo máximo de custo mínimo. 
     Para se resolver esta redução, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede. 
@@ -893,8 +893,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
     %%%%%%%%%%%%%% REF: Paper do Frederickson, tem ao menos duas heuristicas pro misto ai: http://delivery.acm.org/10.1145/330000/322150/p538-frederickson.pdf?ip=195.176.178.182&id=322150&acc=ACTIVE%20SERVICE&key=FC66C24E42F07228%2E8FBBFD775A27C843%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1572510516_82601067be7298d3a7ff02d444c4cc9c
 
-    Trataremos, portanto, de um algoritmo de aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por Frederickson \cite{frederickson}. 
-
+    Trataremos, portanto, de uma  $2$-aproximação para solucionar este problema, publicado em 1973 por Edmonds e Johnson \cite{edmonds-johnson} e posteriormente explicado em mais detalhes por Frederickson \cite{frederickson}. 
+    
     O algoritmo é composto por três passos principais:
 
     \begin{enumerate}
@@ -904,11 +904,14 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     \end{enumerate}
     
 
-    Apresenta-se no algoritmo \ref{mixed-1} um pseudo-código adaptado de Frederickson \cite{frederickson} que segue esses passos.
+    Apresenta-se no algoritmo \ref{mixed-1} um pseudocódigo adaptado de Frederickson \cite{frederickson} que segue esses passos.
     Seja $E$ o conjunto de arestas não direcionadas, $A$ o conjunto de arcos e $c$ a função de custo destas arestas e arcos.
+
+    Precisamos também fazer algumas redefinições das funções $\delta$ que definem o grau de um vértice em um grafo misto:
+
     Tome $\delta(v)$ como a quantidade de arestas que incidem no vértice $v$, $\delta^+(v)$ como o grau de entrada de $v$, isto é, a quantidade de arcos que apontam a $v$ e $\delta^-(v)$ como o grau de saída de $v$, o número de arcos que saem de $v$.
 
-    Definiremos como \textbf{grau total} de um vértice $v$, $\delta_t(v)$ a soma do grau de arestas não direcionadas, grau de entrada e saída, ou seja $\grt(v) = \gr(v) + \gre(v) + \grs(v)$.
+    Define-se como \textbf{grau total} de um vértice $v$, $\delta_t(v)$, a soma do grau de arestas não direcionadas, grau de entrada e saída, ou seja $\grt(v) := \gr(v) + \gre(v) + \grs(v)$.
 
 
 
@@ -918,11 +921,12 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         \label{mixed-1}
         \begin{algorithmic}[1]
         \Function{Misto}{G, c} 
+        \State $(V, A, E) \leftarrow G$
             \State $G' \gets $GRAU\_TOTAL\_PAR$(G, c)$ \Comment{Torna $\delta_t$ par}
-            \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$}
-            \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{Torna $\delta$ par, mantendo $\delta^+ = \delta^-$}
-            \State $G_e = (V(G), U', M')$
-            \State \Return CIRCUITO\_EULERIANO$(G_e)$ % TODO: Provar que tem como fazer esse circuito euleriano
+            \State $M, U \gets $IGUALA\_GRAU\_DIR$(G', c)$ \Comment{Iguala $\delta^+$ e $\delta^-$ no grafo $(V, M, U)$}
+            \State $M', U' \gets $GRAU\_PAR$(G', M, U)$ \Comment{$\delta$ par e $\delta^+ = \delta^-$ em $(V, M', U')$}
+            \State $G_e \leftarrow (V, U', M')$
+            \State \Return CIRCUITO\_EULERIANO$(G_e)$ 
         \EndFunction 
         \end{algorithmic}
     \end{algorithm}
@@ -971,8 +975,10 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \State $K \gets (V', V' \times V', custMin)$ 
                 \Comment{Grafo completo de $V'$}
             \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(K)$
-            \State Expande cada aresta de $M$ nos arcos e arestas do grafo original que ela representa, adicionando ao multiconjunto $A'$ os arcos expandidos e ao multiconjunto $E'$ as arestas expandidas.
-            \State \Return $(V, E + E', A + A')$ 
+            \State Expande cada aresta de $M$ nos arcos e arestas correspondentes do grafo original
+            \State Define o multiconjunto $A'$ dos arcos expandidos
+            \State Define o multiconjunto $E'$ das arestas expandidas
+            \State \Return $(V, E + E', A + A')$  \Comment {Devolve grafo com $\grt(v)$ par $\forall v \in V$}
         \EndFunction
         \end{algorithmic}
     \end{algorithm}
@@ -999,7 +1005,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{Em destaque o arco duplicado pela função \ref{mixed-grau-total-par}}
+        \caption{Em destaque o arco duplicado em GRAU\_TOTAL\_PAR (algoritmo \ref{mixed-grau-total-par})}
         \label{mixed-exemplo-grau-total}
     \end{figure}
 
@@ -1024,17 +1030,17 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \State $F \gets \{v \in V : b(v) < 0\}$
             \State $S \gets \{v \in V : b(v) > 0\}$
             \State $f \gets $ PROBLEMA\_DE\_TRANSPORTE$(F, S, custMin, b)$
-            \State Seja $f_a$ a quantidade de fluxo que passa por cada arco $a \in A$ 
-            \State Sejam $f_{uv}$ e $f_{vu}$ as quantidades de fluxo transportadas pelas duas orientações de uma aresta $uv \in E$
+            \State Seja $f(a)$ a quantidade de fluxo que passa por cada arco $a \in A$ 
+            \State Sejam $f(uv)$ e $f(vu)$ as quantidades de fluxo transportadas pelas duas orientações de uma aresta $uv \in E$
 
             \State $M, U \gets \emptyset$
 
             \For{$a \in A$}
-                \State Insere $f_a + 1$ cópias do arco $a$ em $M$
+            \State Insere $f(a) + 1$ cópias do arco $a$ em $M$
             \EndFor
             \For{$uv \in E$}
-                \If{$f_{vu} \geq 1$ ou $f_{uv} \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f_{uv} \geq 1$ e $f_{vu} \geq 1$} ao mesmo tempo % TODO: PROVAR
-                    \State Insere $f_{uv}$ cópias de $uv$ e $f_{vu}$ cópias de $vu$ em $M$
+        \If{$f(vu) \geq 1$ ou $f(uv) \geq 1$} \Comment{Se $custMin > 0$ é impossível que $f(uv) \geq 1$ e $f(vu) \geq 1$} ao mesmo tempo % TODO: PROVAR
+    \State Insere $f(uv)$ cópias de $uv$ e $f(vu)$ cópias de $vu$ em $M$
                 \Else 
                     \State Insere $uv$ em $U$ 
                 \EndIf
@@ -1068,12 +1074,13 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 (d) edge[bend right] node [right] {2} (e)
                 ;
         \end{tikzpicture}
-        \caption{O arco $ba$ e a aresta orientada $cd$ duplicados pela função \ref{mixed-iguala-grau-dir}}
+        \caption{O arco $ba$ e a aresta orientada $cd$ duplicados pela função IGUALA\_\-GRAU\_DIR (algoritmo \ref{mixed-iguala-grau-dir})}
         \label{mixed-exemplo-grau-dir}
     \end{figure}
 
     Apesar do algoritmo \ref{mixed-iguala-grau-dir} devolver multiconjuntos $M, U$ que igualam o grau de entrada e saída dos vértices de $V$, ele não garante que o grau total desses vértices continua par, como pode-se notar no exemplo da figura \ref{mixed-exemplo-grau-dir}.
-    Por esse motivo é necessária a função GRAU PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice.
+
+    Por esse motivo é necessária a função GRAU\_PAR, do algoritmo \ref{mixed-grau-par}, que deriva de $M, U$ outros multiconjuntos $M'$ e $U'$ que tornam $\delta_t$ par, mantêm a igualdade de $\delta^+$ e $\delta^-$ e por consequência, tornam $\gr$ par para todo vértice do grafo $(V, M', U')$.
 
     \begin{algorithm}
         \floatname{algorithm}{Algoritmo}%
@@ -1174,8 +1181,9 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     No exemplo \ref{ex-grau-par} o algoritmo \ref{mixed-grau-par} toma o circuito $\{a, b, c, d, e, a\}$ para realizar a construção de $M', U'$. 
     Em azul destacam-se os arcos de $M$ e em vermelho as arestas de $U$ escolhidos.
 
-    Como o arco $ab$ é percorrido pelo circuito no sentido contrário, o mesmo é deletado do conjunto $M'$ (linha \ref{alg:deleta}), já o arco $cd$, percorrido no sentido correto, é duplicado (linha \ref{alg:duplica}).
-    As arestas do circuito são todas orientadas no sentido em que são percorridas: $bc, de, ea$ (linha \ref{alg:orienta}).
+    Como o arco $ab \in M$ é percorrido pelo circuito no sentido contrário, o mesmo é deletado do conjunto $M'$ (linha \ref{alg:deleta}), já o arco $cd \in M$, percorrido no sentido correto, é duplicado (linha \ref{alg:duplica}) em $M'$.
+
+    As arestas do circuito são todas orientadas no sentido em que são percorridas: $bc, de, ea \in E$ (linha \ref{alg:orienta}).
 
     Deste modo conseguem-se multiconjuntos $M', U'$ de mesmo custo que $M, U$ e que mantêm $\gre = \grs$ e $\gr$ par para todo vértice de $G$.
 
@@ -1185,15 +1193,16 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     \end{theorem}
 
     \begin{proof}
-        Seja $G = (V, E, A)$, sendo $E$ um multiconjunto de arestas e $A$ um multiconjunto de arcos.
-        Definimos como $G_e$ o grafo induzido pelas arestas de $E$, e de $G_a$ o grafo induzido por $A$.
-        Apesar de não necessariamente conexos, ainda valerá que todo vértice de $G_e$ possui um $\delta$ par e que todo vértice de $G_a$ tem $\gre = \grs$.
-        
-        $G_e$ será composto por diferentes componentes conexas com vértices de grau par, consequentemente cada componente será euleriana, pelo teorema \ref{euler}.
-        Sejam $C_1, C_2, \dots, C_k$  os circuitos eulerianos das $k$ componentes de $G_e$.
+        Seja $G(V, E, A)$ um grafo que respeita as hipóteses do teorema, sendo $E$ seu multiconjunto de arestas e $A$ seu multiconjunto de arcos.
 
-        A mesma análise pode ser feita com o grafo $G_a$, cada uma de suas componentes fortemente conexas possuirá grau de entrada e saída iguais, sendo assim grafos eulerianos pelo teorema \ref{euler-digraph}. 
-        Sejam $C'_1, \dots, C'_l$ os circuitos eulerianos dessas componentes.
+        Definem-se $G_e$ como o grafo induzido pelas arestas de $E$, e $G_a$ como o grafo induzido pelos arcos de $A$.
+        Apesar de não serem necessariamente conexos, valerá que todo vértice de $G_e$ possui um $\delta$ par e que todo vértice de $G_a$ tem $\gre = \grs$, já que o grafo $G$, base de ambos subgrafos, respeita a hipótese do teorema.
+        
+        Por consequência, $G_e$ será composto por diferentes componentes conexas eulerianas (já que $\gr$ é par para todos seus vértices), pelo teorema \ref{euler}.
+        Denominam-se $C_1, C_2, \dots, C_k$  os circuitos eulerianos das $k$ componentes de $G_e$.
+
+        A mesma consequência segue para o grafo $G_a$: cada uma de suas componentes fortemente conexas possuirá grau de entrada e saída iguais, sendo assim eulerianas pelo teorema \ref{euler-digraph}. 
+        Denominam-se $C'_1, \dots, C'_l$ os circuitos eulerianos dessas $l$ componentes.
 
         Pode-se definir um procedimento de união de dois circuitos em um único circuito se ambos possuem ao menos um vértice em comum:
         
@@ -1213,16 +1222,19 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \mathcal{C}_i \cup \mathcal{C}_j = \{ vw_1, w_1w_2, \dots w_nv, vu_1, u_1u_2, \dots, u_mv \}
         \]
         
-        A união de todos circuitos $C_1, \dots C_k$ e $C'_1, \dots, C'_l$ forma um circuito euleriano do grafo original $G$.
+        Usaremos este método de união de circuitos para unir os circuitos $C_1, \dots C_k$ e $C'_1, \dots, C'_l$ formando assim um circuito euleriano do grafo misto original $G$.
 
-        Como o grafo original é fortemente conexo, sempre é possível realizar a união de todos circuitos.
-    Do contrário, se não houver meio de realizar tal união deverá existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup \mathcal{C}_i = G$ não seria fortemente conexo, contradizendo a base do raciocínio.
+        Como o grafo original é fortemente conexo, sempre é possível realizar a união de todos circuitos. 
+
+    Do contrário, se não houver meio de realizar tal união deverá necessariamente existir um circuito $C_i$ que não possui vértice em comum com nenhum outro circuito, implicando assim que $\bigcup C_i, C'_i = G$ não seria fortemente conexo, contradizendo a hipótese do teorema.
+
+    Prova-se assim a existência de um circuito euleriano dado que um grafo misto é fortemente conexo e possui $\gr$ par e $\gre = \grs$ para todos seus vértices.
     \end{proof}
 
     Como o exemplo apresentado é transformado em um digrafo euleriano após a execução de \ref{mixed-grau-par}, basta tomar o circuito euleriano do mesmo para derivar uma solução do grafo misto original, como mostrado na figura \ref{fig:mixed-ex-sol}.
 
 
-    \begin{figure}
+    \begin{figure}[H]
         \begin{minipage}{.5\textwidth}
           \centering
             \begin{tikzpicture}[auto,node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
@@ -1274,17 +1286,19 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         \label{fig:mixed-ex-sol}
     \end{figure}
 
+    No caso geral em que o grafo final é um grafo misto, e não um digrafo ou grafo normal, pode-se usar uma versão especial do algoritmo de Hierholzer\footnote{O repositório do projeto possui todas implementações de algoritmos tratados nesta monografia, incluindo \href{https://github.com/gafeol/chinese-postman/blob/master/code/euler-misto.cpp}{essa implementação mencionada de caminhos eulerianos em grafos mistos}.} explicado na seção \ref{alg-hierholzer}. 
+
     \begin{lemma}
         \label{mixed-custo-igual}
         Seja $C(M,U)$ o custo dos multiconjuntos $M,U$, ou seja, a soma do custo dos arcos e arestas que compõem $M$ e $U$.
 
         Vale que $C(M', U') = C(M, U)$. 
-        Isto é, os multiconjuntos $M', U'$ retornados pela função \ref{mixed-grau-par} possuem o mesmo custo que os multiconjuntos $M, U$, retornados por \ref{mixed-iguala-grau-dir}.
+        Isto é, os multiconjuntos $M', U'$ retornados pela função GRAU PAR (algoritmo \ref{mixed-grau-par}) possuem o mesmo custo que os multiconjuntos $M, U$, retornados pela função IGUALA GRAU DIR (algoritmo \ref{mixed-iguala-grau-dir}).
     \end{lemma}
 
     \begin{proof}
-        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuímos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices de um grafo $G(V, A, E)$. 
-        Em particular, vale que $C(M', U') \geq C(M, U)$. 
+        Como os conjuntos $M, U$ foram gerados resolvendo um problema de transporte, possuímos a garantia que eles são os multiconjuntos de menor custo que igualam o grau de entrada e saída de todos vértices do grafo $(V, M, U)$. 
+        Por consequência, vale que $C(M', U') \geq C(M, U)$. 
 
         Para mostrar que $C(M', U') = C(M, U)$ chegaremos a uma contradição assumindo que $C(M', U') > C(M, U)$:
 
@@ -1298,7 +1312,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         \end{enumerate}
         
         Dos três tipos de eventos listados, apenas os dois primeiros mudam o custo dos multiconjuntos $M', U'$ em relação a $M, U$.
-        Um evento do tipo 1 aumenta o custo de $M', U'$ pelo valor do custo de $a$, assim como um evento do tipo 2 diminui o custo de $M', U'$ pelo custo de $a$, em relação ao custo de $M, U$.
+        Um evento do tipo 1 aumenta o custo de $M', U'$ pelo valor do custo do arco $a$, assim como um evento do tipo 2 diminui o custo de $M', U'$ pelo custo de $a$, em relação ao custo de $M, U$.
 
         Sendo assim, podemos definir $C(M', U')$ como $C(M', U') = C(M, U) + C_+ - C_-$, sendo $C_+$ a soma do custo dos arcos duplicados (evento 1) e $C_-$ a soma do custo dos arcos deletados no algoritmo (evento 2).
 
@@ -1370,8 +1384,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{fig:mixed-ex-lema}
         \end{figure}
 
-        Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então vale que $C(M'', U'') \geq C(M, U)$.
-        Além disso, podemos definir tal custo como $C(M'', U'') = C(M, U) + C_- - C_+$.
+        Como $M'', U''$ também igualam os graus de entrada e saída de $G$, então vale que $C(M'', U'') \geq C(M, U)$, já que $M, U$ foram gerados usando um algoritmo exato e possuem custo mínimo, como argumentado anteriormente.
+        Além disso, pela definição de $M'', U''$, podemos escrever o custo desses multiconjuntos como $C(M'', U'') = C(M, U) + C_- - C_+$.
         
         Sendo assim:
 
@@ -1381,12 +1395,16 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             C_+ - C_- &\leq 0 
         \end{align*}
 
-        Como havíamos provado anteriormente que $C_+ - C_- > 0$, chegamos a uma contradição.
-        Provando por absurdo, que $C(M', U') = C(M, U)$.
+        Como havíamos provado anteriormente que $C_+ - C_- > 0$, chega-se a uma contradição.
+        Provando, por absurdo, que $C(M', U') = C(M, U)$.
     \end{proof}
 
-    \begin{theorem}{\cite{frederickson}}
-        Seja $C$ o custo de uma solução ótima do problema do carteiro chinês em um grafo misto $G$, e $C'$ o custo da solução construída pelo algoritmo descrito, vale que:
+    Adapta-se a seguir a prova feita por Frederickson \cite{frederickson} da razão de aproximação do algoritmo.
+
+    \begin{theorem}
+        O algoritmo apresentado é uma $2$-aproximação.
+
+        Em outras palavras, seja $C$ o custo de uma solução ótima do PCC em um grafo misto $G$, e $C'$ o custo da solução construída pelo algoritmo descrito, vale que:
         \[
             C'/C \leq 2
         \]
@@ -1395,7 +1413,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     \begin{proof}
         Assume-se que todas arestas e arcos de $G$ tenham um custo positivo. 
 
-        Seja $G^*$ o grafo $G$ com todos arcos e arestas duplicadas e $C^*$ o custo da solução dada pelo algoritmo MISTO ao grafo $G^*$.
+        Define-se $G^*$ como o grafo $G$ com todos arcos e arestas duplicados e $C^*$ o custo da solução dada pelo algoritmo MISTO (algoritmo \ref{mixed-1}) ao grafo $G^*$.
 
         Como o grau total de todos vértices de $G^*$ é par, as únicas funções que modificarão o grafo $G^*$ do algoritmo serão \ref{mixed-iguala-grau-dir} e \ref{mixed-grau-par}.
         Além disso, como a função \ref{mixed-iguala-grau-dir} encontra multiconjuntos de arcos e arestas que igualam os graus de entrada e saída de $G^*$ com o menor custo possível (solucionando o problema de transporte modelado) e como a função \ref{mixed-grau-par} modifica os multiconjuntos sem modificar o seu custo (lema \ref{mixed-custo-igual}), podemos dizer que $C^*$ é o custo ótimo para a solução do PCC para o grafo misto $G^*$. 
@@ -1741,7 +1759,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
         \subsection{Grafos direcionados}
 
-        Para tratar sobre a versão direcionada do PCR, tomaremos $G = (V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
+        Para tratar sobre a versão direcionada do PCR, tomaremos $G(V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
 
         Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
 
