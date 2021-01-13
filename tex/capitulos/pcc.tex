@@ -111,6 +111,7 @@ Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 
 \begin{lemma}
     Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas consiste na união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+    \label{lema-parcial}
 \end{lemma}
 
 \begin{proof}
@@ -232,13 +233,13 @@ Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 
 \end{proof}
 
-\begin{lemma}
+\begin{corollary}
     \label{lema-final}
-    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas é a união de caminhos de custo mínimo entre vértices de grau ímpar.
-\end{lemma}
+    Para todo grafo $G$ simples e conexo, existe uma solução ótima do PCC cujo conjunto de arestas duplicadas é a união de caminhos de \textbf{custo mínimo} entre vértices de grau ímpar.
+\end{corollary}
 
 \begin{proof}
-    Seja $S$ o conjunto de arestas duplicadas em uma solução ótima do PCC para o grafo $G$, que consiste de uma união de caminhos aresta-disjuntos entre vértices de grau ímpar.
+    Seja $S$ o conjunto de arestas duplicadas em uma solução ótima do PCC para o grafo $G$, que consiste de uma união de caminhos aresta-disjuntos entre vértices de grau ímpar, segundo argumentado no lema \ref{lema-parcial}.
 
     Imagine que um caminho $C$ pertencente a $S$, que liga os vértices quaisquer $u$ e $v$, não é o caminho mínimo entre os vértices que liga. 
     Isto é, existe um caminho $C'$ de custo menor que $C$ que liga $u$ e $v$.
@@ -251,30 +252,33 @@ Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 
 \end{proof}
 
-Um algoritmo que soluciona o problema se baseia em criar um novo grafo completo $G'(V', E')$. 
-$V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar em $G$. 
-O custo de uma aresta de $E'$ entre dois vértices $u$ e $v$ quaisquer será o custo de um caminho mínimo entre $u$ e $v$ no grafo original $G$.
+Trataremos agora de explicar um algoritmo que resolve o PCC em grafos não direcionados.
 
+A ideia principal de tal algoritmo é criar um novo grafo completo $G'(V', E')$. 
+Em que $V'$ é definido como o subconjunto de vértices de $V$ que possuem um grau ímpar, e o custo de uma aresta de $E'$ entre dois vértices $u$ e $v$ quaisquer será o custo de um caminho mínimo entre $u$ e $v$ no grafo original $G$.
 
-Pelo lema \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como a união de caminhos de custo mínimo entre vértices de grau ímpar. 
-Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original a um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
+Pelo corolário \ref{lema-final}, uma solução ótima do PCC em $G$ possui um conjunto de arestas duplicadas que pode ser representado como a união de caminhos de custo mínimo entre vértices de grau ímpar. 
+Como $V'$ é o conjunto dos vértices de grau ímpar em $G$ e cada aresta de $E'$ representa um caminho de custo mínimo entre dois vértices de $V'$, podemos reduzir o problema original no grafo $G$ a um problema de emparelhamento perfeito de custo mínimo no grafo $G'$.
 
-Dado um emparelhamento perfeito $M$ em $G'$ de custo mínimo, é possível derivar uma solução ótima do PCC. Esta solução será dada por um circuito euleriano no grafo $G^*$ que construímos abaixo:
+Dado um emparelhamento perfeito de custo mínimo $M$ em $G'$, consegue-se descobrir exatamente que arestas de $G$ devem ser copiadas para gerar um supergrafo euleriano $G^*$.
+Por sua vez, um circuito euleriano de $G^*$ representará uma solução ótima do PCC no grafo original $G$.
 
-Considere $G^* = (V, E)$. Agora, para cada aresta $e = uv \in M$ (emparelhamento de $G'$), tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e faça $G^* \leftarrow G^* \cup C$, ou seja, duplique as arestas de $C$ em $G^*$.
+Para construir o grafo $G^*$ a partir do emparelhamento $M$ pode-se seguir o seguinte procedimento:
+
+Considere inicialmente $G^*(V, E)$. 
+Para cada aresta $e = uv \in M$, tome $C$ um caminho de custo mínimo de $u$ a $v$ em $G$ e duplique as arestas de $C$ em $G^*$.
 
 A duplicação das arestas de um caminho modifica apenas a paridade de grau dos vértices extremos.
 Como, no procedimento acima, estamos duplicando as arestas de todos caminhos derivados do emparelhamento perfeito $M$, isso implica que modificamos as paridades dos graus de todos os vértices de $G^*$, ou seja, modificamos apenas as paridades dos graus dos vértices de grau ímpar de $G$.
+Comprovando assim que o grafo $G^*$ resultante é euleriano. 
 
-Sendo assim, o grafo $G^*$ resultante é euleriano, e a solução para o PCC do grafo $G$ é o circuito euleriano de $G^*$.
+
+Após a construção $G^*$ basta derivar um circuito euleriano do mesmo que chega-se a uma solução para o problema do PCC no grafo original $G$.
 
 
 Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algoritmo descrito.
 
-
-
     % TODO: Expandir nesses assuntos:
-        % Complexidade de um algoritmo
 		%\item Essa solução não se aproveita do grafo ser esparso, há outra formulação do Edmonds e Johnson que leva isso em consideração.
 		%\item Um problema similar é o de cobrir todas arestas com ciclos simples, de modo que o comprimento total dos ciclos é minimizado. Para grafos planares esses problemas são equivalentes.
 
@@ -284,28 +288,28 @@ Segue no algoritmo \ref{pcc-pseudocode} uma versão em pseudo-código do algorit
         \label{pcc-pseudocode}
         \begin{algorithmic}[1]
         \Function{pcc}{G}
-        \State $(V, E, dist) \gets G$
+        \State $(V, E, dist) \gets G$ \Comment{$dist$ representa o custo de cada aresta de $E$ }
         \State $V' \gets \{v \in V : \delta[v] $ é impar$\}$
-        \State $dist' \gets $ FLOYD\_WARSHALL$(V, E, dist)$
+        \State $distMin \gets $ FLOYD\_WARSHALL$(V, E, dist)$
         \State $E' \gets V' \times V'$
-        \State $G' \gets (V', E', dist')$
+        \State $G' \gets (V', E', distMin)$
         \State $M \gets $ EMPARELHAMENTO\_PERFEITO\_MINIMO$(G')$
         \State $E^* \gets E$
         \For{$uv \in M$}
-            \State $C \gets$ EXPANDE$(uv, E, dist, dist')$
+            \State $C \gets$ EXPANDE$(uv, E, dist, distMin)$
             \State $E^* \gets E^* \cup C$
         \EndFor
         \State $G^* \gets (V, E^*)$
         \State \Return CIRCUITO\_EULERIANO$(G^*)$
         \EndFunction 
 
-        \Function{expande}{uv, E, dist, dist'}
+        \Function{expande}{uv, E, dist, distMin} \Comment{ descomprime arestas de $M$ }
         \If{$u = v$}
         \Return $\emptyset$
         \EndIf
         \For{$w : uw \in E$}
-            \If{dist'[u][v] = dist[u][w] + dist'[w][v]} 
-            \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, dist')$
+            \If{distMin[u][v] = dist[u][w] + distMin[w][v]} 
+            \State \Return $\{uw\}$  $\cup$ EXPANDE$(wv, E, dist, distMin)$
             \EndIf
         \EndFor
         \EndFunction
@@ -318,12 +322,16 @@ Apesar de tal algoritmo possuir complexidade $\mathcal{O}(|V|^3)$, ele possui um
 
 Se $G$ não possuir arestas de custo negativo, uma alternativa ao algoritmo de Floyd-Warshall é utilizar o algoritmo de Dijkstra $|V'|$ vezes, calculando a distância mínima de cada vértice de grau ímpar a todos outros vértices do grafo, possuindo assim uma complexidade $\mathcal{O}(|V'||E|\log|V|)$. 
 
+Porém, independente do algoritmo escolhido, a complexidade geral do algoritmo ainda é dominada pela complexidade do algoritmo de emparelhamento.
+
 Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds\cite{blossom}. 
 Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009\cite{kolmogorov}.
 
+A implementação do algoritmo completo desenvolvida neste trabalho tem complexidade $\mathcal{O}(|E||V|^2)$, entra-se em mais detalhes de implementação no capítulo \ref{cap:code}.
+
     \section{Grafos direcionados}
 
-    Analisaremos agora o problema do carteiro chinês aplicado a digrafos.
+    Analisaremos agora o problema do carteiro chinês aplicado a grafos direcionados, ou digrafos.
 
     \begin{lemma}
         Um digrafo $G$ possui solução para o problema do carteiro chinês se, e somente se, é fortemente conexo.
@@ -332,7 +340,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     \begin{proof}
 
 
-        ($\Rightarrow$) Começamos provando que para que um digrafo $G$ possua solução para o problema do carteiro chinês é necessário que o mesmo seja fortemente conexo.
+        ($\Rightarrow$) Começamos provando que para que um digrafo $G$ só possui solução para o problema do carteiro chinês se é fortemente conexo.
 
         Vamos assumir, por absurdo, que $G$ possui uma solução para o PCC mas não é fortemente conexo.
 
@@ -348,12 +356,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             
             Seja $P$ um passeio que liga dois vértices quaisquer, mostraremos como construir um caminho ligando esses mesmos vértices a partir de $P$.
 
-            Como $P$ é um passeio, possivelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, finalizando o método. 
+            Como $P$ é um passeio, possivelmente ele percorre um mesmo vértice mais que uma vez. Do contrário, já podemos considerar $P$ um caminho, por definição. 
 
-            Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ executa-se o seguinte passo:
-    
-
-            Retiramos de $P$ todos os vértices entre a primeira e a última aparição do vértice $v$, mantendo apenas tal vértice: 
+            Enquanto houver um vértice $v$ percorrido mais que uma vez por $P$ retira-se de $P$ todos os vértices entre a primeira e a última aparição de $v$, mantendo apenas tal vértice no lugar.
 
 
             Portanto um passeio $P$ qualquer com repetição do vértice $v$, como o seguinte:
@@ -361,7 +366,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 P = \{ u_1, \dots u_i, v, \dots, v, u_j, \dots u_n\}
             \]
 
-            Passa a ser:
+            Passa a ser, após apagarmos todos elementos entre o primeiro e último $v$:
 
 
             \[
@@ -372,31 +377,36 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \end{tcolorbox}
          
-        Sendo assim, afirmamos que todo par de vértices presentes em $T$ possui um caminho entre si.
+        Sendo assim, podemos afirmar que para todo par de vértices $u, v \in T$ existe um caminho entre $u$ e $v$.
 
-        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve ser incidente ao menos a um arco. Além disso, como todos arcos são percorridos em $T$, já que ele é uma solução do PCC, todos os vértices deverão estar presentes no passeio fechado $T$.
-        Por consequência para todo par de vértices de $G$ existe um caminho entre eles o que define $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
+        Já que não estamos considerando neste trabalho digrafos que possuem vértices isolados, cada vértice de $G$ deve ser incidente ao menos a um arco. 
+
+        Além disso, como todos arcos são percorridos em $T$ (por ser solução do PCC), todos os vértices deverão estar presentes no passeio fechado $T$.
+
+        Por consequência para todo par de vértices de $G$ existe um caminho entre eles, definindo assim $G$ como um grafo fortemente conexo, contradizendo a hipótese inicial.
 
         Provando assim que um digrafo que possua solução para o PCC é necessariamente fortemente conexo. 
 
         ($\Leftarrow$)  Provaremos agora que todo grafo fortemente conexo $G$ possui uma solução para o PCC.
 
-        Seja $v$ um vértice qualquer de $G$. Podemos construir uma solução $P$ para o problema do carteiro chinês do seguinte modo:
+        Seja $v$ um vértice qualquer de $G$, usaremos este como um pivô para construir uma solução do PCC para $G$. 
 
-
-        Para qualquer arco $uw$ de $G$ definimos um circuito $C_{uw}$ que passa por $uw$ e pelo vértice $v$ como a concatenação do caminho de $v$ a $u$, do arco $uw$ e do caminho de $w$ a $v$.
+        Para todo arco $uw$ de $G$ definimos $C_{uw}$ como um passeio fechado que passa por $uw$ e pelo vértice $v$. 
+        Uma possível construção de $C_{uw}$ é concatenar o caminho de $v$ a $u$, o arco $uw$ e o caminho de $w$ a $v$.
         
         A existência de um caminho entre quaisquer dois vértices é garantida, já que $G$ é fortemente conexo, garantindo assim a existência de $C_{uw}$.
         
-        Para construir a solução $P$, finalmente, basta realizar a concatenação dos circuitos $C_{e}$ para todo arco $e$ presente em $G$.
+        Para construir a solução $P$, finalmente, basta realizar a concatenação dos arcos de $C_{e}$ para todo arco $e$ presente em $G$.
 
-        Deste modo garantimos que toda aresta de $G$ é percorrida, provando assim a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
+        Deste modo garantimos que toda aresta de $G$ é percorrida pelo menos uma vez, provando assim a volta do lema: todo digrafo fortemente conexo possui uma solução para o problema do carteiro chinês.
 
     \end{proof}
 
-    Em linhas gerais, o algoritmo que soluciona o problema do carteiro chinês para digrafos envolve multiplicar arestas do grafo original até que o mesmo se torne euleriano. O circuito euleriano desse digrafo modificado será a solução do problema do carteiro chinês para o digrafo original, do modo similar à solução para o PCC em grafos não direcionados.
+    O algoritmo que soluciona o PCC para digrafos segue o mesmo modelo geral da solução para grafos: multiplicar arcos do grafo original até que o mesmo se torne euleriano. 
+
+    O circuito euleriano desse digrafo modificado será a solução do problema do carteiro chinês para o digrafo original.
     
-    Uma grande diferença na solução do problema do carteiro chinês é que, para digrafos, não vale o lema \ref{lemma-pcc}, que garante a existência de uma solução para todo PCC em que cada aresta do grafo é percorrida no máximo duas vezes.
+    Uma grande diferença na solução do PCC é que, para digrafos, não vale o lema \ref{lemma-pcc}, que garante a existência de uma solução para todo PCC em que cada aresta do grafo é percorrida no máximo duas vezes.
     Um contra exemplo disso é o caso ilustrado na figura \ref{counter-lemma}. 
 
     \begin{figure}[h]
@@ -416,7 +426,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
     Para que um passeio fechado percorra os três arcos de $1$ a $2$ da figura \ref{counter-lemma}, é necessário que esse mesmo passeio percorra três vezes o arco de $2$ a $1$.
 
     O lema \ref{lemma-pcc} é utilizado para justificar a utilização de um algoritmo de emparelhamento perfeito para definir quais arestas duplicar na solução do PCC.
-    Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando um algoritmo de fluxo máximo de custo mínimo, como veremos a seguir, no detalhamento do algoritmo que soluciona o PCC.
+    Como tal lema não vale para digrafos, a escolha dessas arestas deverá ser feita de um modo diferente, utilizando uma modelagem do problema de transporte\footnote{Problema de fluxo máximo que determina uma maneira de transportar produtos de certos vértices de origem até outros vértices de destino, respeitando ofertas e demandas de cada vértice, capacidade de arestas e minimizando o custo de transporte.}.
 
     A solução do PCC para um digrafo $G$ fortemente conexo pode ser dividida em 4 passos:
 
@@ -427,25 +437,28 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
         \item[\textbf{2º}] Modela-se um problema de transporte: 
         Seja $b$ uma função demanda definida para todo vértice como $b(v) = \delta^-(v) - \delta^+(v)$.
-        Os vértices de $F$ serão vértices de oferta (com função demanda $b$ negativa), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo. 
-        Já os vértices de $S$ serão vértices de demanda, cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
 
-        Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco que pode transportar qualquer quantidade de fluxo, mas que tem custo igual ao custo de um menor caminho de $u$ a $v$ por unidade de fluxo transportada, calculado no primeiro passo.
+        Os vértices de $F$ serão vértices de oferta (com $b < 0$), cada vértice $u \in F$ terá que escoar $-b(u)$ unidades de fluxo. 
+
+        Já os vértices de $S$ serão vértices de demanda (com $b > 0$), cada vértice $v \in S$ terá que receber $b(v)$ unidades de fluxo.
+
+        Todo par de vértices $u, v$ com $u \in F$ e $v \in S$ será ligado por um arco que pode transportar qualquer quantidade de fluxo, mas que tem custo igual a um menor caminho de $u$ a $v$.
 
         Deve-se resolver tal problema de transporte no grafo $F,S$-bipartido minimizando o custo total e respeitando a função demanda definida.
 
-        \item[\textbf{3º}] Usa-se a solução do problema de transporte para criar um digrafo euleriano $G^*$ a partir de $G$.
+        A solução do problema de transporte descrito será dado por uma função $f: F\times S \rightarrow \mathbb{N}$ que determina a quantidade de fluxo transportada entre cada par de vértices de $F$ e $S$.
+
+        \item[\textbf{3º}] Usa-se a solução do problema de transporte para derivar um digrafo euleriano $G^*$:
+
             Inicialmente $G^* = G$.
 
-            Uma solução do problema de transporte descrito será uma função $f: F\times S \rightarrow \mathbb{N}$ que determina a quantidade de fluxo transportada entre cada par de vértices de $F$ e $S$.
+            Se um arco $uv$ é escolhido para transportar uma quantidade $f(uv)$ positiva de fluxo, deve-se criar $f(uv)$ cópias de todos arcos de um menor caminho de $u$ a $v$ em $G^*$, chamaremos esse processo de expansão de $uv$.
 
-            Se um arco $uv$ é escolhido para transportar uma quantidade $f(uv)$ positiva de fluxo, deve-se criar $f(uv)$ cópias de todos arcos do menor caminho de $u$ a $v$ em $G^*$, chamaremos esse processo de expansão de $uv$.
+            Após a duplicação dos arcos de um caminho entre dois vértices $u$ e $v$ a diferença absoluta dos graus de entrada e saída de $u$ e $v$ diminuirá em uma unidade, essa mesma diferença de graus se manterá constante para vértices internos ao caminho. 
 
-            Após a duplicação dos arcos de um caminho entre dois vértices $u$ e $v$ a diferença absoluta dos graus de entrada e saída de $u$ e $v$ diminuirão em uma unidade, essa mesma diferença de graus se manterá constante para vértices internos ao caminho. 
+            Ao final da expansão de todos arcos que possuem valor de $f$ positivo, todos vértices de $G^*$ possuirão um mesmo valor de grau de entrada e saída, tornando $G^*$ euleriano (teorema \ref{euler-digraph}).
 
-            Ao final da expansão de todos arcos que possuem $f$ positivo, todos vértices de $G^*$ possuirão um mesmo valor de grau de entrada e saída, tornando $G^*$ euleriano pelo teorema \ref{euler-digraph}.
-
-        \item[\textbf{4º}] Encontrar o circuito euleriano de $G^*$, que será também a solução do problema do carteiro chinês para o grafo original $G$.
+        \item[\textbf{4º}] Encontrar o circuito euleriano de $G^*$, que será também a solução do problema do carteiro chinês para o digrafo original $G$.
 
     \end{enumerate}
 
@@ -454,8 +467,11 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
 
     Na função $PROBLEMA\_DE\_TRANSPORTE$ define-se uma redução do problema para o problema do fluxo máximo de custo mínimo. 
     Para se resolver esta redução, pode-se utilizar um algoritmo de Simplex para Redes como discutido por Orlin \cite{network-simplex}, de complexidade $\mathcal{O}(VE\log V\log(VC))$, sendo $C$ a capacidade máxima dos arcos da rede. 
+
     Outra solução para a redução é usar uma variação do algoritmo de Edmonds-Karp \cite{edmonds-karp} para fluxo de custo mínimo de complexidade $\mathcal{O}(V^2E^2)$. 
     A explicação e implementação dessa variação estão disponíveis online, no site E-maxx \cite{min-cost}. 
+
+    Neste trabalho seguiu-se o modelo da implementação de Edmonds-Karp, como se descreve em mais detalhes no capítulo \ref{cap:code} de implementações.
 
     \begin{algorithm}
         \floatname{algorithm}{Algoritmo}%
@@ -514,7 +530,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \end{algorithmic}
     \end{algorithm}
 
-    Aplicaremos agora o passo a passo apresentado acima em um exemplo. 
+    Apresentado o pseudocódigo deste algoritmo, trataremos em seguida de aplicar o algoritmo explicado em um exemplo, seguindo os quatro passos da explicação.
 
     \begin{figure}[H]
         \centering
@@ -603,7 +619,7 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
                 \end{tikzpicture}
             \end{figure}
 
-            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual à distância mínima dos mesmos vértices em $G$, como já calculado no primeiro passo.
+            Os arcos definidos entre os vértices de $F$ e $S$ possuem capacidade infinita e custo igual à distância mínima dos mesmos vértices em $G$, como calculado e apresentado na tabela do passo anterior.
 
             Uma solução ótima para o problema apresentado consiste em transportar uma unidade de fluxo pelos arcos de custo $4, 14$ e $9$, escoando os vértices $b, d$ e $g$ e suprindo a demanda dos vértices $a$ e $e$.
 
@@ -763,7 +779,9 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
         \end{tikzpicture}
     \end{figure}
 
-    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos os vértices possuam grau de saída e entrada iguais. Pelo teorema \ref{euler-digraph} temos que o novo grafo é euleriano. No quarto passo derivaremos um circuito euleriano para o digrafo construído.
+    As sucessivas duplicações de caminho realizadas em $G$ fazem com que todos os vértices possuam grau de saída e entrada iguais, tornando o novo grafo euleriano (teorema  \ref{euler-digraph}). 
+
+    No quarto passo deriva-se um circuito euleriano para o digrafo construído.
 
 
 \item[\textbf{4º}]  Um possível circuito euleriano $\mathcal{C}$ que se inicia no vértice $a$ é o seguinte:
@@ -808,10 +826,10 @@ Encontra-se nas referências deste trabalho uma implementação do algoritmo de 
             \path[->] (g) edge[above] node {9} (d);
             \path[->] (g) edge[red, bend left, above] node {4} (d);
         \end{tikzpicture}
-        \caption{Representa-se em preto os arcos presentes no grafo $G$ original, e em vermelho os arcos resultantes das duplicações realizadas no terceiro passo da solução.}
+        \caption{Representam-se em preto os arcos presentes no grafo $G$ original, e em vermelho os arcos resultantes das duplicações realizadas no terceiro passo da solução.}
     \end{figure}
 
-    O circuito $\mathcal{C}$ percorrido no grafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
+    O circuito $\mathcal{C}$ percorrido no digrafo original $G$ representa o passeio fechado que soluciona o Problema do Carteiro Chinês, já que percorre todo arco de $G$ ao menos uma vez.
 
     Analisando o peso dos arcos de $G$ concluímos que a solução $\mathcal{C}$ tem custo $66+27 = 93$, $66$ é o custo de se percorrer todas os arcos de $G$, representados em preto, uma única vez, e $27$ é o custo de se percorrer os arcos em vermelho.
 
