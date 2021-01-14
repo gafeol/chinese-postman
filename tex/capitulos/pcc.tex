@@ -1769,10 +1769,10 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
         Para tratar sobre a versão direcionada do PCR, tomaremos $G(V, A)$ como o digrafo original e um conjunto $R \subseteq A$ de arcos que devem ser percorridos no circuito que resolve o PCR para $G$.
 
-        Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original $G$.
+        Assim como no PCR para grafos não direcionados, a solução deste caso se baseia em estender o digrafo $G$ em um digrafo euleriano, cujo circuito euleriano representa uma solução para o PCR do digrafo original.
 
         Será apresentada uma heurística que resolve esse problema, proposta por Christofides \cite{christofides-86}, muito semelhante à heurística apresentada para o caso de grafos não direcionados.
-        Nesse caso ela a heurística é denominada \textbf{heurística da arborescência geradora mínima}.
+        Nesse caso a heurística é denominada \textbf{heurística da arborescência geradora mínima}.
 
         Para guiar a explicação toma-se, como exemplo, o digrafo $G$, a seguir:
    
@@ -1803,13 +1803,14 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{pcr-digraph}
         \end{figure}
 
-        A extensão de $G$ em um digrafo euleriano $G' = (V', A')$ se dá de modo similar àquela do caso com grafos não direcionados:
+        A extensão de $G$ em um digrafo euleriano $G'(V', A')$ se dá de modo similar àquela do caso com grafos não direcionados:
 
-        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : (u, v) \in R \text{ para algum } v \in V\}$. 
+        O conjunto de vértices possui a mesma definição, $V' = \{u \in V : uv \in R \text{ para algum } v \in V\}$. 
 
-        Como no grafo da figura \ref{pcr-digraph} todos vértices possuem ao menos um arco pertencente a $R$, define-se $V' = V$.
+        Como no grafo exemplo da figura \ref{pcr-digraph} todos vértices possuem ao menos um arco pertencente a $R$, define-se $V' = V$.
+        No caso geral em que $V' \neq V$ é necessário criar novas arestas no grafo para representar os caminhos que passavam pelos vértices apagados, exatamente como foi feito no exemplo do PCR para grafos quando o vértice $d$ foi deletado (vide figuras \ref{grafo-original} e \ref{grafo-intermediario}).
 
-        De modo semelhante, o conjunto de arcos $A'$ será inicialmente acrescido dos arcos $(v_i, v_j)$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
+        O conjunto de arcos $A'$ será inicialmente acrescido dos arcos $v_iv_j$ para todo par $v_i, v_j \in V'$, de custo igual ao custo do menor caminho de $v_i$ a $v_j$.
         Posteriormente remove-se de $A'$ todo arco que pertence também a $A \setminus R$ e cujo custo $c_{uv}$ é igual a $c_{uw} + c_{wv}$ para algum vértice $w$, removem-se também os arcos paralelos de mesmo valor que pertencem a $A \setminus R$.
 
         Realizando tal extensão no exemplo sugerido, teremos o digrafo $G'$ representado na figura \ref{extensionG}.
@@ -1851,23 +1852,11 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{extensionG}
         \end{figure}
 		O grafo $G'$ será composto por $k$ conjuntos conexos $G_1, G_2, \dots, G_k$, induzidos por $R$. 
-		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo, mas não necessariamente fortemente conexo.
+		Isto é, cada conjunto $G_i$ será composto apenas por arcos pertencentes a $R$ e será conexo desconsiderando a orientação dos arcos.
 
-        No exemplo apresentado, $G$ possui três componentes, $G_1$ composta pelos vértices $a, b$, $G_2$ composta por $c, e$ e $G_3$ composta por $d, f$.
+        No exemplo apresentado, $G$ possui três componentes, $G_1$ composta pelos vértices $a, b$, $G_2$ composta por $c, e$ e $G_3$ composta por $d, f$, representadas na figura \ref{condensated-dig}.
 
-
-	\begin{enumerate}
-
-
-        \item[\textbf{Passo 1.}] 
-			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
-
-            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds \cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
-
-            Condensando o digrafo $G'$ em suas componentes $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
-
-
-            \begin{figure}[H]
+            \begin{figure}[ht]
                 \centering
                 \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
 
@@ -1895,11 +1884,21 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 \label{condensated-dig}
             \end{figure}
 
+	\begin{enumerate}
+        \item[\textbf{Passo 1.}] 
+			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
+
+            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds \cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
+
+            Condensando o digrafo $G'$ em suas componentes $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
+
+
+
                 O primeiro passo do algoritmo de Chu-Liu/Edmonds consiste em definir um vértice raiz $r$ para a arborescência.
                 Como a heurística de Christofides não requer que um vértice específico seja tal raiz, podemos escolher o vértice condensado $G_1$ para cumprir tal função ($r = G_1$). 
 
                 Definida a raiz $r$, deve-se retirar do digrafo analisado todos arcos que tem como destino $r$.
-                Além disso, pode-se também substituir qualquer conjunto de arcos paralelos por um único arco com custo igual ao menor custo dos arcos paralelos removidos. 
+                Além disso, pode-se também substituir qualquer conjunto de arcos paralelos por um único arco de menor custo. 
                 Pode-se visualizar o efeito de tais modificações em $G'$ na figura \ref{chu-liu}.
 
             \begin{figure}[H]
@@ -1919,15 +1918,25 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
                     \end{tikzpicture}
                 }
-                \caption{Digrafo $G'$ após a remoção de arcos sugeridas pelo algoritmo de Chu-Liu/Edmonds}
+                \caption{Digrafo $G'$ após remoção de arcos do Passo 1}
                 \label{chu-liu}
             \end{figure}
 
             Para todo vértice $v$ do grafo condensado diferente da raiz ($v \neq r$) encontra-se o arco de menor custo que chega em $v$.
             Define-se como $\pi(v)$ o vértice origem de tal arco.
 
-            Se o conjunto de arcos $T = \{(\pi(v), v) | v \neq r\}$ não contém circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
+            Se o conjunto de arcos $T = \{\pi(v)v \text{ } \forall v \in \{G_1, \dots, G_k\} : v \neq r\}$ não contém circuitos, então $T$ é uma arborescência de custo mínimo enraizada em $r$.
+
             Do contrário, realiza-se uma contração dos circuitos existentes em $T$, atualizam-se os custos dos arcos e repete-se recursivamente o mesmo procedimento de criação de $T$.
+
+            Pela definição do algoritmo, quando se contrai um circuito $C \subseteq T$ em um vértice $\mathcal{C}$ a atualização de custos para um arco $uv$ segue o seguinte padrão:
+
+            \begin{itemize}
+                \item Se $v \in C$ e $u \notin C$, então define-se o arco $u\mathcal{C}$ com custo $c_{uv} - c_{\pi(v)v}$
+                \item Se $u \in C$ e $v \notin C$, então define-se o arco $\mathcal{C}v$ de custo $c_{uv}$
+                \item Se $u, v \notin C$, então o arco $uv$ não é modificado
+                \item Se $u, v \in C$ então $uv$ é condensado na criação do vértice $\mathcal{C}$
+            \end{itemize}
 
             No exemplo analisado, o conjunto $T$ consiste nos arcos de $G_1$ a $G_2$ e $G_2$ a $G_3$, ambos de custo 4.
 
@@ -1948,7 +1957,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
                     \end{tikzpicture}
                 }
-            \caption{Em azul representa-se o conjunto de arcos $T$ definidos pelo algoritmo de Chu-Liu/Edmonds.}
+            \caption{Em azul representa-se o conjunto de arcos $T$}
             \label{chu-liu-p}
             \end{figure}
 
@@ -1956,7 +1965,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             Como $T$ não possui circuitos, não é necessário realizar uma nova iteração do algoritmo.
             $T$ é o conjunto de arcos que induz a arborescência de custo mínimo enraizada em $G_1$.
 
-            Define-se como $R \cup T$ o digrafo induzido pelos arcos de $R$ e da arborescência $T$.
+            No próximo passo, tratamos de tornar o digrafo induzido pelos arcos de $R \cup T$ euleriano.
 
 
         \begin{figure}[H]
@@ -1977,25 +1986,26 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 \path[->] (d) edge[line width=2, left] node {5} (f);
                 \path[->] (e) edge[blue, below] node {4} (f);
             \end{tikzpicture}
-            \caption{Digrafo $R\cup T$, os arcos de $T$ são representados em azul}
+            \caption{Digrafo induzido por $R\cup T$, com os arcos de $T$ em azul}
             \label{graphRUT}
         \end{figure}
 
 
         \item[\textbf{Passo 2.}]
-            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o digrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices.
+            Encontrar um multiconjunto $M$ de menor custo composto por arcos de $A'$ que torna o digrafo induzido por $R \cup T$ euleriano, ou seja iguala os graus de entrada e saída de todos vértices no digrafo induzido por $R \cup T \cup M$.
 
-			Pode-se determinar $M$ a partir da resolução de um problema de transporte: 
-            O problema de transporte será definido tendo como base o grafo $G'$, porém as funções de oferta e demanda são definidas a partir dos graus dos vértices no grafo induzido por $R \cup T$.
+			Pode-se determinar $M$ a partir da resolução de um problema de transporte: cuja base é o digrafo $G'$, e cujas funções de oferta e demanda são definidas a partir dos graus dos vértices no digrafo induzido por $R \cup T$.
 
-            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao subgrafo $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença de seus graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
+            Um vértice $v \in V(G')$ cujo grau de entrada é maior que seu grau de saída (em relação ao grafo induzido por $R \cup T$) possuirá uma oferta igual ao valor absoluto da diferença de seus graus, do contrário, o valor absoluto da diferença representará a demanda do vértice $v$.
 
-            No exemplo abordado, figura \ref{graphRUT}, o vértice $f$ possui uma oferta de valor $2$, os vértices $a$ e $d$ possuem uma demanda de valor $1$ e os vértices restantes já se encontram em igualdade de grau de entrada e saída.
+            No exemplo abordado (figura \ref{graphRUT}) o vértice $f$ possui uma oferta de valor $2$, os vértices $a$ e $d$ possuem uma demanda de valor $1$ e os vértices restantes já se encontram em igualdade de grau de entrada e saída.
 
-			A resolução do problema de transporte modelado gera um conjunto de caminhos, representando a distribuição ótima da oferta. 
-            O multiconjunto dos arcos pertencentes a união dos caminhos que solucionam o problema é o multiconjunto $M$ desejado.
+            As arestas $u, v$ do problema de transporte modelado terão capacidade infinita e custo igual ao custo de menor caminho entre $u$ e $v$ no grafo original.
 
-            Sendo assim, como apenas uma origem existe no problema apresentado como exemplo, a solução do mesmo consiste na utilização dos caminhos de menor custo de $f$ a $a$ e de $f$ a $d$. 
+			A resolução do problema de transporte modelado gera um conjunto de caminhos, representando os arcos que devem ser duplicados para criar um grafo euleriano, juntamente com os arcos de $R$ e $T$. 
+
+            Voltando ao exemplo, a solução do problema de transporte consiste na utilização dos caminhos de menor custo de $f$ a $a$ e de $f$ a $d$, escoando uma unidade por cada um desses caminhos. 
+            Esta solução supre a oferta de duas unidades do vértice $f$ assim como a demanda de uma unidade dos vértices $d$ e $a$.
 
         \begin{figure}[H]
             \centering
@@ -2027,12 +2037,9 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         Note que o arco de $b$ a $a$ de custo 5 é representado duas vezes, isso pois ele pertence tanto a $R$ quanto a $M$.
 
         \item[\textbf{Passo 3.}]
-			O digrafo induzido pelo multiconjunto de arcos $R \cup T \cup M$ é, pela definição de $M$, euleriano. 
+			O digrafo induzido pelo multiconjunto de arcos $R \cup T \cup M$ é, pela escolha de $M$, euleriano. 
 			
-			Portanto, pode-se derivar um circuito euleriano de tal grafo. Por sua vez, a partir deste circuito, é possível derivar uma solução do PCR para o grafo original $G$.
-
             Um possível circuito euleriano para o exemplo apresentado é representado na figura \ref{circ-eulerianoRUTUM} a seguir.
-
 
         \begin{figure}[H]
             \centering
@@ -2060,10 +2067,10 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{circ-eulerianoRUTUM}
         \end{figure}
 
-        A partir de tal circuito pode-se encontrar uma solução para o PCR do digrafo original $G$ expandindo os arcos contraídos na construção de $G'$ e removendo as duplicatas de arcos criados no procedimento da heurística.
+        A partir de tal circuito pode-se encontrar uma solução para o PCR do digrafo original $G$ expandindo os arcos contraídos na construção de $G'$ e removendo as duplicatas de arcos artificiais da criação de um supergrafo euleriano.
         Por exemplo, o arco do nó $f$ ao $d$ de custo $26$ pertencente a $M$ consiste na condensação do caminho mínimo de $f$ a $d$: $\{f, b, a, c, e, d\}$.
 
-        Realizando a remoção dos arcos artificiais adicionados a $G$ chegamos no seguinte circuito, baseado no circuito euleriano mostrado na figura \ref{circ-eulerianoRUTUM}:
+        Após a transformação do circuito euleriano em uma solução do PCR no digrafo original temos o seguinte passeio fechado (figura \ref{solucaoPCR}):
 
         \begin{figure}[H]
             \centering
@@ -2091,34 +2098,63 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 \path[->] (d) edge[dashed, below] node {} (b);
 
             \end{tikzpicture}
-            \caption{Construção de um circuito que resolve o PCR do grafo $G$. Representam-se em pontilhado os arcos de $G$ não percorridos na solução desenvolvida.}
+            \caption{Circuito que resolve o PCR do grafo $G$. Representam-se em pontilhado os arcos de $G$ não percorridos nesta solução.}
             \label{solucaoPCR}
         \end{figure}
 	\end{enumerate}
 
-    Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62.
+    Finaliza-se assim a execução da heurística da arborescência geradora mínima, que gera uma solução para o PCR de $G$ com custo 62, um valor um pouco acima do custo da solução ótima 40, como demonstrado abaixo na figura \ref{solucaoOtimaPCR}:
 
-    %TODO: Adicionar valor da solucao otima
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, every loop/.style={},thick,main node/.style={circle,draw,font=\sffamily\Large}]
+
+                \node[main node] at (-5, 0) (f) {f};
+                \node[main node] at (-2, 3) (e) {e};
+                \node[main node] at (2, 3) (c) {c};
+                \node[main node] at (5, 0) (a) {a};
+                \node at (6, 0) (ini) {início};
+                \node[main node] at (-2, -3) (d) {d};
+                \node[main node] at (2, -3) (b) {b};
+
+                \path[->] (a) edge[line width=2, bend right, below] node {7} (b);
+                \path[->] (b) edge[line width=2, below, bend right, sloped] node {6,8} (a);
+                \path[->] (a) edge[left] node {1} (c);
+                \path[->] (c) edge[line width=2, above] node {2} (e);
+                \path[->] (e) edge[dashed, below] node {} (f);
+
+                \path[->] (e) edge[right] node {3} (d);
+
+                \path[->] (d) edge[line width=2, left] node {4} (f);
+                \path[->] (f) edge[pos=0.6, below, sloped] node {5} (b);
+                \path[->] (c) edge[dashed, above, left] node {} (b);
+                \path[->] (d) edge[dashed, below] node {} (b);
+
+            \end{tikzpicture}
+            \caption{Uma solução ótima para o PCR no grafo do exemplo}
+            \label{solucaoOtimaPCR}
+        \end{figure}
+
     \section{Problema do carteiro chinês com vento}
 
         Considere o problema em que cada aresta tem um custo diferente dependendo do sentido em que é percorrida. Este problema é conhecido como o Problema do Carteiro Chinês com Vento (PCV).
 
-        Este problema possui várias aplicações. 
-        Por exemplo, podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
-        A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar o carteiro se ele anda no sentido contrário do vento.
+        Este problema possui várias aplicações, por exemplo, podem existir estradas com uma corrente de vento que o carteiro deve percorrer. 
+        A corrente de vento tanto pode ajudar o carteiro se ele anda no mesmo sentido que a corrente, quanto pode atrapalhar se ele anda no sentido contrário do vento.
 
-        Outra ilustração possível para esta variação é imaginar que uma estrada pode ser inclinada, sendo assim mais difícil subir tal estrada do que descê-la.
+        Outra ilustração possível para esta variação é imaginar que uma estrada pode ser íngreme, sendo assim mais difícil subir tal estrada do que descê-la.
 
-        Esta variação do problema do carteiro chinês também é NP-difícil.
+        Vamos denominar um grafo que possui arestas com diferentes custos dependendo do sentido em que são percorridas de um grafo íngreme.
 
-        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCV usando um algoritmo polinomial, trataremos esse caso a seguir.
+        Esta variação do problema do carteiro chinês também é NP-difícil.  
+        Porém, como provado por Meigu Guan \cite{guan-windy}, se todo circuito de um grafo íngreme $G$ possui o mesmo custo independente do sentido em que é percorrido, então é possível encontrar uma solução para o PCV usando um algoritmo polinomial.
 
         Seja $c_{ij}$ o custo de se percorrer a aresta $ij$ de $i$ a $j$ e $c_{ji}$ o custo de percorrer a mesma aresta no sentido contrário.
 
         O algoritmo sugerido por Guan se baseia em criar uma nova função de custo $c'$ para o problema, tal que $c'_{ij} = c'_{ji} = \frac{c_{ij} + c_{ji}}{2}$ para toda aresta $ij$. 
-        Essa transformação reduz o problema a um PCC não direcionado, que possui solução polinomial, como tratado na seção \ref{sec:pcc}.
+        Essa transformação reduz o problema a um PCC em um grafo não direcionado, que possui solução exata polinomial, vide seção \ref{sec:pcc}.
 
-        O teorema \ref{windy-theorem} enunciado a seguir, garante que uma resposta ótima do PCC no grafo $(G, c')$ equivale a uma resposta ótima, de mesmo custo, do PCV no grafo original $(G, c)$.
+        Enuncia-se a seguir o teorema \ref{windy-theorem} que garante que uma resposta ótima do PCC no grafo $(G, c')$ equivale a uma resposta ótima, de mesmo custo, do PCV no grafo íngreme original $(G, c)$.
 
         \begin{lemma}
             \label{lemma:pccv}
@@ -2147,6 +2183,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 \sum_{ij \in C} c'_{ij} &= \sum_{ij \in C} c_{ij}
             \end{align*}
 
+            Finalizando assim a prova da igualdade dos quatro somatórios apresentados.
+
         \end{proof}
 
 
@@ -2154,7 +2192,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{windy-theorem}
             Seja $G$ um grafo conexo não direcionado cujos circuitos possuem o mesmo custo, independente do sentido que são percorridos. 
 
-            Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCV em $(G, c)$.
+            Qualquer solução ótima para o PCC em $(G, c')$ também é uma solução ótima do PCV  no grafo íngreme $(G, c)$.
 
         \end{theorem}
 
@@ -2179,17 +2217,15 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \path[-] (5) edge[] node {} (6);
 
             \end{tikzpicture}
-            \caption{Grafo $G$}
+            \caption{Grafo $G$, a função custo das arestas é definida na tabela \ref{tabela:exemplopccv}}
             \label{goriginal}
         \end{figure}
-
-        O custo de cada aresta será dado pela tabela \ref{tabela:exemplopccv}.
 
         \begin{table}[h!]
             \centering
             \begin{tabular}{|p{1.5cm}||p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
                 \hline
-                    & \multicolumn{6}{|c|}{Destino} \\
+                    $c$ & \multicolumn{6}{|c|}{Destino} \\
                 \hline
                    Origem & 1 & 2 & 3 & 4 & 5 & 6\\
                 \hline
@@ -2310,6 +2346,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \caption{Circuitos no sentido contrário com mesmo custo, $9$ e $7$}
         \end{figure}
 
+        Lembrando que os arcos de custo $1$ e $7$ entre os vértices $3$ e $4$ representam uma única aresta, por isso não representam um circuito.
+
         Realizando a transformação da função do custo de toda aresta $ij$ de $c_{ij}$ para $c'_{ij} = \frac{c_{ij} + c_{ji}}{2}$ temos a seguinte representação de $(G, c')$:
 
 
@@ -2351,7 +2389,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             Seja $T$ uma solução para o PCC em $(G, c')$. 
             $T$ será um passeio fechado composto por arestas orientadas de $G$.
 
-            Pode-se dividir $T$ em circuitos de arcos $C_1, C_2, \dots, C_k$, com $k \in \mathbb{N}$ . % TODO: provar que pode dividir T em circuitos
+            Pode-se dividir $T$ em $k$ circuitos de arcos $C_1, C_2, \dots, C_k$. % TODO: provar que pode dividir T em circuitos
             Podemos expressar o custo da solução $T$ como a soma dos custos de cada arco dos circuitos $C_1, C_2, \dots, C_k$. 
 
             Provaremos por indução, que para um circuito qualquer $C_i$ vale que:
@@ -2375,7 +2413,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
             No exemplo que estamos tratando, o circuito $C_2$ se enquadra no segundo tipo de caso base, já que $C_2 = \{4, 5, 6, 4\}$ está no grafo original \ref{goriginal}
 
-            Assume-se que a hipótese de indução vale para circuitos com até $k$ arcos.
+            Assume-se que a hipótese de igualdade de custos, $\sum_{ij \in C_i} c_{ij} = \sum_{ij \in C_i} c'_{ij}$, vale para circuitos com até $k$ arcos.
 
             Seja $C_i$ um circuito que não faz parte do caso base e que possui $k+1$ arcos.
 
@@ -2407,7 +2445,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 c_{uv} + c_{vu}  &= c'_{uv} + c'_{vu} 
             \end{align}
 
-            Somando as três igualdades apresentadas temos a representação do custo de $C_i$:
+            Somando as três igualdades apresentadas temos a representação do custo do circuito original $C_i$:
 
             \begin{align*}
                 \sum_{ij \in C'_i} c_{ij} +  \sum_{ij \in C''_i} c_{ij} + c_{uv} + c_{vu}  &= \sum_{ij \in C'_i} c'_{ij} + \sum_{ij \in C''_i} + c'_{ij} c'_{uv} + c'_{vu}  \\
@@ -2425,7 +2463,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \end{align*}
 
 
-            Voltando ao exemplo, temos agora que analisar o circuito $C_1$.
+            Para ilustrar os últimos passos desta prova, aplicaremos o argumento de quebra ao circuito $C_1$ do exemplo.
 
             Apesar de $C_1$ ser um circuito válido na representação direcionada de $G$ (figura \ref{exGdir}), o mesmo não pode ser considerado um circuito do grafo não direcionado $G$ pois percorre a mesma aresta $(3 - 4)$ duas vezes, devemos portanto aplicar o passo da indução a $C_1$.
             
@@ -2460,6 +2498,10 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
             Como provado, ambas funções de custo são equivalentes para o cálculo do custo da solução $T$.
         \end{proof}
+
+        Implementou-se este algoritmo utilizando o algoritmo que resolve o PCC em grafos como subrotina, o que simplificou muito esta implementação.
+
+        Implementou-se também uma função de complexidade $\mathcal{O}(|V| + |E|)$ baseada em uma busca em profundidade que checa se todos circuitos de grafo íngreme possuem o mesmo custo independente do sentido em que são percorridos. 
 
 %    \section{Problema do Carteiro Hierárquico}
 %
