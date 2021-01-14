@@ -8,6 +8,8 @@
 
         \section{Tanya and Password}
 
+        \label{prb:euler}
+
         \hspace{0.6cm}URL do problema: \href{https://codeforces.com/contest/508/problem/D}{codeforces.com/contest/508/problem/D}
 
         Solução: \href{github.com/gafeol/chinese-postman/blob/master/probs/cf/508D.cpp}{github.com/gafeol/chinese-postman/blob/master/probs/cf/508D.cpp}
@@ -23,11 +25,13 @@
 
         A solução que será apresentada para este problema envolve a teoria de caminhos eulerianos apresentada.
 
-        Iniciaremos por explicar a modelagem realizada. Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
+        Iniciaremos por explicar a modelagem realizada: 
+        Cada vértice do digrafo que construiremos representará um conjunto de duas letras. 
         
-        Representaremos cada string $w \in \mathcal{C}$ por dois vértices ligados por um arco. Um dos vértices, que chamaremos de $u$, representa os dois primeiros caracteres de $w$, enquanto que o segundo vértice, $v$, representa os dois últimos caracteres de $w$, cria-se ainda um arco de $u$ a $v$.
+        Representaremos cada string $w \in \mathcal{C}$ com um arco $uv$. 
+        O vértice $u$ representa os dois primeiros caracteres de $w$, enquanto que o vértice $v$ representa os dois últimos caracteres de $w$.
 
-        Para exemplificar tal procedimento tome $w = aca$. Criam-se primeiramente dois vértices, um representando a string $ac$ e outro representando $ca$, e liga-se ambos com um arco, como representado em \ref{fig:tanya}.
+        Para exemplificar tal procedimento tome $w = aca$. Criam-se primeiramente dois vértices, um representando a string $ac$ e outro representando $ca$, e liga-se ambos com um arco, como representado na figura \ref{fig:tanya}.
 
         \begin{figure}[H]
             \centering
@@ -43,7 +47,7 @@
             \label{fig:tanya}
         \end{figure}
 
-        \sloppy Deve repetir-se tal procedimento para toda string $w \in \mathcal{C}$. Segue a modelagem completa, que chamaremos de $G$, do exemplo inicial ($\mathcal{C} = \{aca, aba, aba, cab, bac\}$):
+        Deve repetir-se tal procedimento para toda string de $\mathcal{C}$. Segue a modelagem completa, que chamaremos de $G$, do exemplo inicial ($\mathcal{C} = \{aca, aba, aba, cab, bac\}$):
        
 
         \begin{figure}[H]
@@ -65,8 +69,7 @@
         \end{figure}
 
 
-        Cada arco criado na modelagem corresponde a uma string de $\mathcal{C}$, o arco entre $ac$ e $ca$, por exemplo, representa a string $aca$.
-        A partir dessa correspondência podemos representar também um passeio, $P$, em $G$ como uma sequência de strings, $seq$, subconjunto de $\mathcal{C}$:
+        A partir da correspondência entre arcos e strings podemos representar um passeio, $P$, em $G$ como uma sequência de strings, $seq$, subconjunto de $\mathcal{C}$:
 
         O passeio $P = \{ba, ac, ca, ab\}$, por exemplo, percorre os arcos que correspondem à sequência $seq = \{bac, aca, cab\}$.
 
@@ -81,21 +84,22 @@
             \item Se um arco $e$ é percorrido em $P$, então a string de $\mathcal{C}$ que $e$ representa será uma substring de $S$.
         \end{itemize}
 
-        Como o problema pede que encontremos uma string de tamanho $n+2$ que possua todas strings de $\mathcal{C}$ como substrings, basta encontrar, se existir, uma trilha que percorra todo arco de $G$ uma única vez, isto é, uma trilha ou um circuito euleriano.
+        Como o problema pede que encontremos uma string de tamanho $n+2$ que possua todas strings de $\mathcal{C}$ como substrings, basta encontrar, se existir, uma trilha que percorra todo arco de $G$ uma única vez, isto é, uma trilha ou um circuito euleriano do grafo modelado.
 
         Deste modo a solução do problema consiste em checar as propriedades necessárias para a existência de uma trilha euleriana, que são estabelecidas neste trabalho pelo corolário \ref{corollary-euler-digraph}.
 
         Se uma trilha ou circuito euleriano existir em $G$, podemos usar o algoritmo de Hierholzer para encontrar tal passeio.
 
         \section{Sereja and the Arrangement of Numbers}
+        \label{prb:pcc}
 
         \hspace{0.6cm} URL do problema: \href{https://codeforces.com/problemset/problem/367/C}{https://codeforces.com/problemset/problem/367/C}
 
         Solução: \href{https://github.com/gafeol/chinese-postman/blob/master/probs/cf/367C.cpp}{github.com/gafeol/chinese-postman/blob/master/probs/cf/367C.cpp}
 
-        No enunciado do problema define-se uma sequência $s$ como \textbf{bonita} quando existe um inteiro $i$ para cada par de valores distintos $u$, $v$ pertencentes a $s$, tal que $s_i = u, s_{i+1} = v$ ou $s_i = v, s_{i+1} = u$.
+        No enunciado do problema define-se uma sequência $S$ como ``bonita'' quando existe um inteiro $i$ para cada par de valores distintos $u$, $v \in S$, tal que $S_i = u, S_{i+1} = v$ ou $S_i = v, S_{i+1} = u$.
 
-        Em outras palavras, se uma sequência é bonita todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
+        Em outras palavras, uma sequência é bonita se todo par de valores distintos pertencentes à essa sequência aparecem na mesma lado a lado ao menos uma vez.
 
         Define-se também um sistema de recompensas:
         para cada valor há uma recompensa positiva associada.
@@ -119,7 +123,7 @@
         Não existe uma sequência bonita que possua os quatro valores do exemplo.
 
 
-        Como todo valor possui uma recompensa positiva, a solução final deverá usar a maior quantidade de valores distintos que for possível.
+        Como todo valor possui uma recompensa positiva, a solução final deverá usar a maior quantidade de valores distintos que for possível, priorizando a utilização dos valores de maior recompensa.
 
         Começaremos discutindo um problema mais simples: Qual o tamanho da menor sequência bonita que utiliza $x$ valores distintos?
 
@@ -129,9 +133,9 @@
 
         Para facilitar a análise deste problema, assumiremos que pode existir em um passeio dois vértices de mesmo valor em sequência, mesmo sem haver um laço neste vértice, além disso, vamos assumir que os valores distintos são $1, 2, \dots, x$.
 
-        Sendo assim, podemos interpretar uma sequência $s$ que possua apenas valores entre $1$ e $x$ como um passeio em $K_x$, os valores da sequência representam os vértices do grafo $K_x$, e dois valores adjacentes $u$ e $v$ representam que a aresta $uv$ está presente no passeio derivado de $s$. 
+        Sendo assim, podemos interpretar uma sequência $S$ que possua apenas valores entre $1$ e $x$ como um passeio em $K_x$, os valores da sequência representam os vértices do grafo $K_x$, e dois valores adjacentes $u$ e $v$ representam que a aresta $uv$ está presente no passeio derivado de $S$. 
         
-        Para que a sequência $s$ seja bonita, todo par de valores distintos $u, v$ deverá aparecer ao menos uma vez lado a lado, o que implica que o passeio derivado de $s$ deverá percorrer a aresta $uv$ ao menos uma vez.
+        Para que a sequência $S$ seja bonita, todo par de valores distintos $u, v$ deverá aparecer ao menos uma vez lado a lado, o que implica que o passeio derivado de $S$ deverá percorrer a aresta $uv$ ao menos uma vez.
 
         Concluímos então que um passeio derivado de uma sequência que seja bonita, deverá percorrer todas arestas do grafo $K_x$, sendo assim uma solução do problema do carteiro chinês para o mesmo.
 
@@ -200,10 +204,10 @@
         \end{figure}
 
 
-        Neste exemplo, todos os vértices de $K_4$ possuem grau ímpar, por isso, a primeira parte da solução do problema do carteiro chinês se baseia em duplicar algumas arestas do grafo, tornando-o um grafo euleriano.
+        Neste exemplo, todos os vértices de $K_4$ possuem grau ímpar, por isso a primeira parte da solução do PCC se baseia em duplicar algumas arestas do grafo, tornando-o euleriano.
 
         Como estamos tratando de um grafo completo, com arestas de custo unitário, não é necessário criar uma condensação do grafo $K_x$, e achar um emparelhamento perfeito de custo mínimo.
-        Basta apenas criar uma duplicação de aresta entre todo par de vértices de índices $i$ e $i+1$ para todo índice $i$ ímpar, como representado na figura \ref{k4+} para o exemplo em questão.
+        Basta apenas duplicar uma aresta entre todo par de vértices de índices $i$ e $i+1$ para todo índice $i$ ímpar, como representado na figura \ref{k4+} para o exemplo em questão.
 
         \begin{figure}[H]
             \centering
@@ -224,7 +228,7 @@
                     (3) edge[bend right] node {} (4)
                     ;
             \end{tikzpicture}
-            \caption{$K_4$ com arestas duplicadas}
+            \caption{$K_4$ com arestas duplicadas, tornando-se euleriano }
             \label{k4+}
         \end{figure}
 
@@ -232,7 +236,7 @@
 
         \[ P = \{1, 2, 3, 4, 1, 3, 4, 2, 1\} \]
 
-        Sendo assim, o tamanho mínimo de uma sequência bonita que possui 4 valores distintos é $9$, valor este composto da seguinte forma: $1 + |E(K_4)| = 1 + 6 = 7$ somado ao número de arestas duplicadas $\frac{4}{2} = 2$.
+        Sendo assim, o tamanho mínimo de uma sequência bonita que possui 4 valores distintos é $9$, valor este composto da seguinte forma: o número de arestas iniciais acrescido do vértice inicial, $1 + |E(K_4)| = 1 + 6 = 7$, somado ao número de arestas duplicadas para tornar o grafo euleriano $\frac{4}{2} = 2$.
 
 
         Podemos assim abstrair uma fórmula geral para o tamanho mínimo de uma sequência bonita $P$ que utilize $k$ valores distintos em sua composição:
@@ -246,7 +250,7 @@
             \end{cases}
         \]
 
-        Todo grafo completo com uma quantidade ímpar de vértices é euleriano, já que todos seus vértices possuem grau par, enquanto os grafos completos com quantidade par de vértices não são eulerianos. 
+        Todo grafo completo com uma quantidade ímpar de vértices é euleriano, já que todos seus vértices possuem grau par, enquanto os grafos completos com quantidade par de vértices não são eulerianos, necessitando assim de $\frac{k}{2}$ duplicações de aresta. 
         Por isso a diferença na fórmula de $|P|$.
 
         A partir dessa fórmula fechada, é possível descobrir com uma busca binária, em complexidade $\mathcal{O}(\lg{n})$, qual o maior valor de $k$ tal que $|P| \leq n$.
@@ -260,6 +264,7 @@
     Para encontrar tal valor, basta manter uma árvore de busca binária balanceada com as $k$ maiores recompensas dos valores disponíveis, o que custa tempo $\mathcal{O}(m\lg k) = \mathcal{O}(m\lg \sqrt{n})$.
 
         \section{Jogging Trails}
+        \label{prb:pcc-bitmask}
 
         \hspace{.6cm} URL do problema: \href{https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1237}{onlinejudge.org/index.php?option=\-com\_\-onli\-ne\-judge\-\&Itemid\-=8\&page=show\_problem\&problem=1237}
 
@@ -270,23 +275,22 @@
         Este problema é uma aplicação direta do problema descrito nesse trabalho. 
         Entretanto, em virtude do limite do número de vértices das instâncias, é possível resolver o problema de maneira mais simples.
 
-        Um dos últimos passos do algoritmo que resolve o problema do carteiro chinês em grafos não direcionados descrito neste trabalho é realizar a condensação do grafo original usando os vértices de grau ímpar e posteriormente construir o emparelhamento perfeito de custo mínimo usando o algoritmo de Edmonds.
+        Um dos últimos passos do algoritmo que resolve o PCC em grafos não direcionados é realizar o emparelhamento perfeito de custo mínimo usando o algoritmo de Edmonds, para determinar o supergrafo euleriano de menor custo.
 
-        Uma alternativa viável para este problema é realizar a construção do emparelhamento perfeito usando, ao invés do algoritmo de Edmonds, um algoritmo de programação dinâmica:
+        Porém, como o número de vértices é muito pequeno, é possível realizar a construção do emparelhamento perfeito usando, ao invés do algoritmo de Edmonds, um algoritmo de programação dinâmica com máscara de bits (``bitmask''):
 
-         Para esta solução devemos memoizar o custo mínimo de emparelhamento perfeito para todo subconjunto de vértices do grafo condensado.
+        Para esta solução devemos memoizar o custo mínimo de emparelhamento perfeito para todo subconjunto de vértices do grafo condensado.
 
         Seja $K$ o grafo completo condensado, $S$ um subconjunto dos vértices de $K$, $dist$ uma função que retorna a distância entre dois vértices quaisquer de $K$ e $min\_cost_S$ o menor custo de emparelhamento perfeito do subconjunto $S$ de vértices, podemos definir a seguinte recorrência:
 
         \[
             min\_cost_S = 
             \begin{cases} 
-                0 & S = \{ \} \\
+                0 & \text{se } S = \emptyset \\
                 \min_{u, v \in S} min\_cost_{S - u - v} + dist(u, v) & \text{caso contrário}
             \end{cases}
         \]
 
-        Para representar os subconjuntos de vértices pode-se utilizar uma bitmask.
-        Como foi utilizado na solução referenciada.
+        Para representar os diversos subconjuntos de vértices pode-se utilizar uma máscara de bits, isto é, um valor até $2^n - 1$, em que cada bit ativo representa um vértice presente em $S$.
         
     \end{appendices}

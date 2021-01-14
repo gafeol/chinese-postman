@@ -78,7 +78,7 @@ Sendo assim, podemos separar a solução do PCC em duas partes: Encontrar o valo
 
 Resolve-se a primeira parte do problema com um algoritmo de emparelhamento.
 
-%Seja $E(v)$ o conjunto de arestas ligadas ao vértice $v \in V$, e seja $c_e$ o custo de se percorrer uma aresta $e \in E$, que deverá ser não-negativo.
+%Seja $E(v)$ o conjunto de arestas ligadas ao vértice $v \in V$, e seja $c_e$ o custo de se percorrer uma aresta $e \in E$, que deverá ser não negativo.
 
 %Encontrar uma solução ótima para o PCC é equivalente a encontrar os valores inteiros e não negativos $x_e$ tal que $\sum_{e\in E(u)}(1 + x_e) \equiv 0 \mod 2$ para todo $u \in V$, minimizando o valor de $\sum_e c_ex_e$.
 
@@ -328,6 +328,10 @@ Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo n�
 Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009 \cite{kolmogorov}.
 
 A implementação do algoritmo completo desenvolvida neste trabalho tem complexidade $\mathcal{O}(|E||V|^2)$, entra-se em mais detalhes de implementação no capítulo \ref{cap:code}.
+
+Nos casos de grafos com um número pequeno de vértices ($\leq 24$ vértices), é possível desenvolver uma solução usando programação dinâmica para encontrar tal emparelhamento, esse caso é ilustrado na explicação do problema tratado no apêndice \ref{prb:pcc-bitmask}.
+
+Para ilustrar um uso do PCC que foge um pouco da área de grafos, explica-se no apêndice \ref{prb:pcc} o desafio ``Sereja and the Arrangement of Numbers'', do site Codeforces, que requer uma aplicação interessante do PCC para montar uma sequência de letras com uma característica especial.
 
     \section{Grafos direcionados}
 
@@ -1423,7 +1427,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         Definimos agora $G'$ como o grafo retornado pela função \ref{mixed-grau-total-par} com parâmetro $G$.
         A função \ref{mixed-grau-total-par} constrói $G'$ duplicando arcos e arestas de caminhos entre vértices de grau total ímpar de $G$, minimizando o custo de tal construção.
 
-        Pode-se afirmar que não existirá em $G'$ um arco ou aresta $uv$ que foi duplicado mais que uma vez na função \ref{mixed-grau-total-par}, pois se existisse poderia-se remover de $G'$ duas cópias de $uv$ que conseguiria-se outro grafo com mesma paridade total de vértices e custo menor.
+        Pode-se afirmar que não existirá em $G'$ um arco ou aresta $uv$ que foi duplicado mais que uma vez na função \ref{mixed-grau-total-par}, pois se existisse poderia-se remover de $G'$ duas cópias de $uv$ que teríamos outro grafo com mesma paridade total de vértices e custo menor.
 
         Assim, como cada aresta e arco de $G$ é duplicado no máximo uma vez em $G'$, podemos afirmar que os multiconjuntos de arcos e arestas de $G'$ estarão contidos nos multiconjuntos de $G^*$ e por isso, o custo $C'$ da solução dada pelo algoritmo MISTO ao grafo $G$ deverá ser menor ou igual a $C^*$.
         
@@ -2499,13 +2503,13 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             Como provado, ambas funções de custo são equivalentes para o cálculo do custo da solução $T$.
         \end{proof}
 
-        Implementou-se este algoritmo utilizando o algoritmo que resolve o PCC em grafos como subrotina, o que simplificou muito esta implementação.
+        Implementou-se este algoritmo utilizando o algoritmo que resolve o PCC em grafos como sub-rotina, o que simplificou muito esta implementação.
 
         Implementou-se também uma função de complexidade $\mathcal{O}(|V| + |E|)$ baseada em uma busca em profundidade que checa se todos circuitos de grafo íngreme possuem o mesmo custo independente do sentido em que são percorridos. 
 
 %    \section{Problema do Carteiro Hierárquico}
 %
 %    Nesta variação são definidos $k$ subconjuntos de arestas $\{A_1, A_2, \dots, A_k\}$.
-%    Como no problema do cartiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
+%    Como no problema do carteiro chinês original deve-se encontrar um passeio que passe por todas arestas de um grafo $G$, porém esse passeio só poderá percorrer uma aresta pertencente a um subconjunto $A_j$ se o mesmo já tiver percorrido todas arestas pertencentes aos conjuntos $A_i$ com $1 \leq i < j$.
 %
 %    Esta variação também é NP-difícil.

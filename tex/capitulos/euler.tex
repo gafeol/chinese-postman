@@ -179,7 +179,7 @@ Repetem-se então as mesmas verificações para os próximos vértices de $C$.
 \end{tcolorbox}
 
 
-Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que toda trilha $C_i$ possui pelo menos um vértice em $C$. Além disso, toda trilha $C_i$ deverá ter sido adicionada à $\mathcal{C}$ uma única vez, já que logo após adicionar uma trilha à $\mathcal{C}$ já a removiamos de $\mathcal{T}$, impedindo que ela fosse adicionada outra vez na trilha euleriana final.
+Ao final desse procedimento, o conjunto $\mathcal{T}$ deverá ser vazio, já que toda trilha $C_i$ possui pelo menos um vértice em $C$. Além disso, toda trilha $C_i$ deverá ter sido adicionada à $\mathcal{C}$ uma única vez, já que logo após adicionar uma trilha à $\mathcal{C}$ já a removíamos de $\mathcal{T}$, impedindo que ela fosse adicionada outra vez na trilha euleriana final.
 
 Comprovado o passo da indução, finalizamos a prova do Teorema de Euler por indução.
 
@@ -972,9 +972,11 @@ Segue agora a implementação do algoritmo de Hierholzer em C++ para digrafos (l
 
 Optou-se nesta implementação pelo uso de um \texttt{vector} para o armazenamento da lista de adjacências $adj$, pois assim é possível apagar facilmente os arcos já percorridas na busca, já que essa estrutura possui funções de acesso inserção e remoção de seu último elemento.
 
-Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $trilha\_euleriana$ tenha como parâmetro $u$ o vértice cujo grau de saída é maior que seu grau de entrada, ou seja o vértice que será necessariamente o ínico da trilha euleriana.
+Para que tal função retorne corretamente uma trilha euleriana em grafos que não possuem circuito euleriano, é necessário que a primeira chamada de $trilha\_euleriana$ tenha como parâmetro $u$ o vértice cujo grau de saída é maior que seu grau de entrada, ou seja o vértice que será necessariamente o início da trilha euleriana.
 
 Como em cada iteração deste algoritmo um arco é deletado, o número máximo de iterações que ele pode realizar é limitado pelo número de arcos de um digrafo, sendo assim o mesmo possui complexidade $\mathcal{O}(|E|)$ tanto em tempo quanto memória.
+
+Um exemplo da utilização deste algoritmo em um problema de competições de programação pode ser encontrado no apêndice \ref{prb:euler}.
 
 Pode-se adaptar este algoritmo para grafos não direcionados mudando o modo como arestas são apagadas (vide código \href{https://github.com/gafeol/chinese-postman/blob/master/code/euler-grafo.cpp}{\texttt{euler-grafo.cpp}}).
 
