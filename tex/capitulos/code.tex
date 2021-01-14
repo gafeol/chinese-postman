@@ -20,7 +20,7 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
 
         Define a \texttt{struct ArestaIngreme}, modelando uma aresta que possui custos diferentes dependendo do sentido em que é percorrida.
 
-        Além de armazenar os mesmos valores \texttt{prox} e \texttt{id} de uma aresta comum, também armazena \texttt{dirCus} e \texttt{invCus}, custos para se percorrer uma aresta na direção do vértice \texttt{prox} e no sentido inverso, a partir de \texttt{prox}, respectivamente.
+        Além de armazenar os mesmos valores \texttt{prox} e \texttt{id} de uma aresta comum, também armazena \texttt{dirCus} e \texttt{invCus}, custos para se percorrer uma aresta na direção do vértice \texttt{prox} e no sentido inverso, respectivamente.
 
     \item \texttt{grafo.hpp} 
         
@@ -31,27 +31,29 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
     \item \texttt{digrafo.hpp}
 
         Analogamente, define a \texttt{struct Digrafo}, com \texttt{n} vértices e \texttt{m} arcos, armazenados em uma lista de adjacências \texttt{adj}.
+        Além disso, também possui como parâmetros os vetores \texttt{grauEntrada} e \texttt{grauSaida} que indicam o grau dos vértices do digrafo.
 
-        Também utiliza a \texttt{struct Aresta} para representar os arcos do digrafo.
+        Assim como \texttt{grafo.hpp}, utiliza a \texttt{struct Aresta} para representar os arcos do digrafo.
+
+        A \texttt{struct} possui também um método chamado \texttt{countSCC} que conta o número de componentes fortemente conexas do digrafo em questão, utilizando o algoritmo de Tarjan, de complexidade $\mathcal{O}(|V| + |E|)$.
+
 
     \item \texttt{grafo-misto.hpp}
 
         Define a \texttt{struct Misto} que representa grafos que possuem tanto arestas quanto arcos. 
 
-        Além das propriedades \texttt{n, m, adj}, esta estrutura contem um contador \texttt{nArestas} que conta a quantidade de arestas no grafo.
-
-        Isso é especialmente útil para determinar se uma aresta com identificador \texttt{id} qualquer é uma aresta (\texttt{id $<$ nArestas}) ou um arco (\texttt{id $\geq$ nArestas}).
+        Além das propriedades \texttt{n, m, adj}, esta estrutura contem um contador \texttt{nArestas} que conta a quantidade de arestas presentes no grafo, além de auxiliar na identificação de arcos e arestas pelos seus identificadores.
 
         Para facilitar a manipulação desta estrutura, a \texttt{struct Misto} contêm métodos auxiliares como:
         \begin{itemize}
             \item  Devolver o grau total (\texttt{grauTotal(v)}), grau de entrada (\texttt{grauEntrada(v)}) e saída (\texttt{grauSaida(v)}) de todo vértice
-            \item Contar o número de componentes fortemente conexas, usando o algoritmo de Tarjan (\texttt{countSCC()}), de complexidade $\mathcal{O}(|V| + |E|)$
+            \item Contar o número de componentes fortemente conexas, usando o algoritmo de Tarjan de modo similar à \texttt{struct Digrafo}
             \item Checar se uma aresta, dada um identificador é arco (\texttt{arco(id)}) ou aresta (\texttt{aresta(id)})
         \end{itemize}
 
     \item \texttt{grafo-ingreme.hpp}
 
-    Define a \texttt{struct GrafoIngreme} usada na modelagem do problema do carteiro com vento.
+    Define a \texttt{struct GrafoIngreme} usada na modelagem do problema do carteiro com vento, que possui os parâmetros básicos \texttt{n, m, adj} representando o número de vértices, arestas e a lista de adjacências do grafo.
 
     Este grafo utiliza a estrutura \texttt{ArestaIngreme} para representar suas arestas.
 
@@ -59,6 +61,9 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
 
         Essa implementação da estrutura ``Union Find'' utiliza as otimizações de compressão de caminhos, encurtando as relações de ancestralidade sempre que possível, e a união das componentes de menor tamanho sob as componentes maiores.
         Atingindo assim uma complexidade amortizada $\mathcal{O}(\log^*|V|)$ por operações de busca e união.
+
+        O algoritmo pode ser utilizado por meio da \texttt{struct UnionFind} definida neste arquivo, que possui os métodos \texttt{raiz(v)} que encontra a raiz da componente de um vértice \texttt{v} e \texttt{join(u, v)} que une as componentes dos vértices \texttt{u} e \texttt{v}.
+
 \end{itemize}
 
 \section{Algoritmos auxiliares}
@@ -70,9 +75,11 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
         
     \item \texttt{floyd-warshall.cpp}
 
-        O algoritmo de Floyd-Warshall foi utilizado amplamente para calcular a menor distância entre quaisquer pares de vértices.
+        O algoritmo de Floyd-Warshall foi utilizado amplamente para calcular a menor distância entre todos pares de vértices de um grafo.
 
-        O código disponibilizado, como definido originalmente, possui complexidade $\mathcal{O}(|V|^3)$.
+        Neste mesmo arquivo estão dispostas três implementações do método \texttt{floyd_warshall}, uma para grafos, outra para digrafos e a última para grafos mistos.
+
+        Todas essas possuem complexidade $\mathcal{O}(|V|^3)$, como definido é característico deste algoritmo.
 
     \item \texttt{problema-transporte.cpp}
 
@@ -87,7 +94,7 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
     \item \texttt{min-cost-flow.cpp}
 
         Para resolver o problema do fluxo de custo mínimo usou-se o algoritmo de Edmonds-Karp, que possui complexidade $\mathcal{O}(|E|^2 |V|^2 )$.
-        A implementação realizada se baseou no artigo \cite{min-cost} do site \href{https://cp-algorithms.com/}{cp-algorithms.com}.
+        A implementação disponibilizada se baseou no artigo \cite{min-cost} do site \href{https://cp-algorithms.com/}{cp-algorithms.com}.
         
 \end{itemize}
 
@@ -98,12 +105,12 @@ Para facilitar o desenvolvimento, usaram-se também adaptações de implementaç
 
         O algoritmo de Chu-Liu/Edmonds que encontra uma arborescência geradora mínima foi implementado no arquivo \texttt{ssa.cpp}, que referencia o nome em inglês deste problema: \textit{shortest spanning arborescence}.
 
-        Adaptou-se o código disponibilizado pela equipe \textit{el-vasito} em seu \href{https://github.com/mhunicken/icpc-team-notebook-el-vasito}{repositório do GitHub} para implementar a \texttt{struct ChuLiu} deste arquivo.
+        Adaptou-se o código disponibilizado pela equipe argentina universitária \textit{el-vasito} em seu \href{https://github.com/mhunicken/icpc-team-notebook-el-vasito}{repositório do GitHub} para implementar a \texttt{struct ChuLiu} deste arquivo.
         Esta implementação possui complexidade $\mathcal{O}(|E||V|)$
 
     \item \texttt{min-cost-matching/}
 
-        Esta subpasta é um submódulo do GitHub para um \href{https://github.com/gafeol/Minimum-Cost-Perfect-Matching}{repositório} baseado na implementação de \href{https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching}{Dilson Lucas Pereira}.
+        Esta pasta é um submódulo do GitHub para um \href{https://github.com/gafeol/Minimum-Cost-Perfect-Matching}{repositório próprio} baseado (usou-se um ``fork'' no GitHub) na implementação de \href{https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching}{Dilson Lucas Pereira}, estudante da Universidade Federal de Lavras.
 
         São utilizados desta subpasta códigos que resolvem os problemas:
         \begin{itemize}
@@ -111,7 +118,7 @@ Para facilitar o desenvolvimento, usaram-se também adaptações de implementaç
             \item Emparelhamento de cardinalidade máxima
         \end{itemize}
 
-        Ambos problemas são resolvidos usando uma combinação de uma heurística de geração de um emparelhamento aliada ao algoritmo Blossom de Edmonds, que tem complexidade de pior caso $\mathcal{O}(|E||V|^2)$.
+        Ambos problemas são resolvidos usando uma combinação de uma heurística de geração de emparelhamento aliada ao algoritmo Blossom de Edmonds, que tem complexidade de pior caso $\mathcal{O}(|E||V|^2)$.
 
 \end{itemize}
 
@@ -155,7 +162,7 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
 
         Também implementa a \texttt{struct PCC}, porém neste caso resolve o problema do carteiro chinês para digrafos.
 
-        Utiliza o algoritmo que resolve o problema de transporte, implementado em \texttt{problema-transporte.cpp}, por isso também possui complexidade $\mathcal{O}(|E||V|^2)$.
+        Utiliza o algoritmo que resolve o problema de transporte, implementado em \texttt{problema-transporte.cpp}, por isso possui complexidade $\mathcal{O}(|E||V|^2)$.
     \item \texttt{pcc-misto.cpp}
 
         Implementa a $2$-aproximação descrita por Frederickson \cite{frederickson} que resolve o problema do carteiro chinês em grafos mistos com complexidade $\mathcal{O}(|V|^4)$, devido a utilização do algoritmo que resolve o problema de transporte em um grafo bipartido completo com $\mathcal{O}(|V|)$ vértices.
@@ -207,12 +214,24 @@ Além disso, utiliza-se o site \texttt{codecov.io} para manter atualizadas as ú
 
 Acessando o \href{https://codecov.io/gh/gafeol/chinese-postman}{codecov} é possível ver informações como: a porcentagem de linhas de código cobertas por testes (figura \ref{codecov}), quantas vezes uma linha específica é executada por testes desenvolvidos e linhas de código que ainda não são cobertas por nenhum teste (linhas em vermelho na figura \ref{codecov2}).
 
+Essa ferramenta foi extremamente útil para identificar possíveis casos de borda que não eram testados pelos algoritmos que implementei, pois apontava claramente quais linhas de código não tinham sido ainda testadas.
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{codecov}
-    \caption{Visualização do codecov para um arquivo de código}
+    \caption{Visualização antiga do codecov para o arquivo \texttt{digrafo.hpp}}
     \label{codecov}
 \end{figure}
+
+Além disso, usou-se a ferramenta Travis CI atrelada ao GitHub para automatizar as seguintes tarefas a cada ``push'' realizado no repositório:
+
+\begin{itemize}
+    \item Testar a compilação dos arquivos \latex da monografia
+    \item Rodar todos testes implementados, checando seu funcionamento, assim como é mostrado na figura \ref{maketest}  
+    \item Enviar o relatório dos testes executados ao codecov, atualizando assim as informações de cobertura mencionadas
+\end{itemize}
+
+Todas estas configurações estão definidas no arquivo \texttt{.travis.yml} do repositório.
 
 \begin{figure}[ht]
     \centering
