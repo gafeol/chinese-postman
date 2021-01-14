@@ -324,8 +324,8 @@ Se $G$ não possuir arestas de custo negativo, uma alternativa ao algoritmo de F
 
 Porém, independente do algoritmo escolhido, a complexidade geral do algoritmo ainda é dominada pela complexidade do algoritmo de emparelhamento.
 
-Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds\cite{blossom}. 
-Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009\cite{kolmogorov}.
+Uma solução para se encontrar o emparelhamento perfeito mínimo de um grafo não direcionado com custos é usar o algoritmo Blossom de Edmonds \cite{blossom}. 
+Encontra-se nas referências deste trabalho uma implementação do algoritmo de Edmonds intitulada ``Blossom V'' e publicada por Vladimir Kolmogorov em 2009 \cite{kolmogorov}.
 
 A implementação do algoritmo completo desenvolvida neste trabalho tem complexidade $\mathcal{O}(|E||V|^2)$, entra-se em mais detalhes de implementação no capítulo \ref{cap:code}.
 
@@ -557,7 +557,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \path[->] (f) edge[below] node {4} (g);
             \path[->] (g) edge[above] node {6} (d);
         \end{tikzpicture}
-        \caption{Digrafo retirado de exercício do site do MIT\cite{mit}}
+        \caption{Digrafo retirado de exercício do site do MIT \cite{mit}}
         \label{mit-ex}
     \end{figure}
 
@@ -1441,7 +1441,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
     \section{Problema do carteiro rural}
     % Ref https://core.ac.uk/download/pdf/37350985.pdf
     
-    Nesta versão mais geral do PCC devemos realizar o planejamento de um circuito de custo mínimo que passa ao menos uma vez por toda aresta pertencente a um subconjunto $R \subseteq A$. 
+    Nesta versão mais geral do PCC devemos realizar o planejamento de um circuito de custo mínimo que passa ao menos uma vez por toda aresta pertencente a um subconjunto $R \subseteq E$. 
     Isto é, não há a necessidade de se percorrer na solução todas arestas do grafo, apenas as pertencentes ao subconjunto $R$.
 
     Denomina-se esta variação de Problema do Carteiro Rural (PCR).
@@ -1452,26 +1452,29 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
     De modo similar aos outros casos do PCC, a solução aproximada para este problema consiste em estender $G$ adicionando cópias de arestas de modo que o mesmo se torne euleriano e em sequência construir uma solução a partir do circuito euleriano do grafo estendido.
 
-    Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas duas heurísticas, uma para cada tipo de grafo.
+    Para realizar a primeira parte da solução do problema, ou seja, criar uma extensão euleriana de $G$, serão apresentadas duas heurísticas, uma para cada grafos não direcionados e outra para digrafos.
+
+    As explicações e heurísticas tratadas a seguir foram baseadas no artigo de Eiselt de 1994 \cite{michel}.
 
         \subsection{Grafos não direcionados}
 
-        Em 1979 Christofides sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais provado \cite{wiki-christofides} até junho de 2020, quando uma aproximação sutilmente melhor foi desenvolvida por Karlin, Klein e Gharan \cite{klein-tsp}.
+        Em 1979 Christofides \cite{wiki-christofides} sugeriu um algoritmo aproximado para o problema do caixeiro viajante que possuiu o melhor fator de aproximação para grafos gerais por 30 anos.
+        Até que, em junho de 2020, uma aproximação sutilmente melhor foi desenvolvida por Karlin, Klein e Gharan \cite{klein-tsp}.
 
-        Será apresentada uma adaptação de tal algoritmo que pode ser aplicada ao PCR, sugerida por Frederickson \cite{frederickson}, denominada \textbf{heurística da árvore geradora mínima}.
+        Será apresentada uma adaptação do algoritmo de aproximação de Christofides para o PCR, sugerida por Frederickson \cite{frederickson} e denominada \textbf{heurística da árvore geradora mínima}.
 
-        Pode-se provar que tal algoritmo é polinomial e possui uma razão de aproximação de $3/2$ para grafos cuja função de custo respeita a desigualdade triangular.
+        O algoritmo que será apresentado é uma $\frac{3}{2}$-aproximação polinomial para o PCR em grafos cuja função de custo de suas arestas respeita a desigualdade triangular.
+        Chamaremos os grafos que respeitam essa característica quanto ao custo de grafos métricos.
 
-        Para resolver o PCR em grafos não direcionados define-se um grafo $G' = (V', A')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$.
-
-        Define-se um novo conjunto de arestas $A'$ em dois passos:
+        Para resolver o PCR em grafos não direcionados define-se um grafo $G'(V', E')$, onde $V' = \{ u \in V : (u, v) \in R$ para algum $v \in V\}$, e o novo conjunto de arestas $E'$ é definido em dois passos:
         
         \begin{enumerate}
-            \item Inicialmente adiciona-se a $A'$ as arestas $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$ em $G$
-            \item Retiram-se de $A'$ as arestas $(u, v) \in A' \setminus R$ se já existir outra aresta entre $(u, v)$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w \in V'$.
+            \item Inicialmente adiciona-se a $E'$ as arestas $(v_i, v_j)$ para todo par $v_i, v_j \in V'$ cujo custo é igual ao custo do menor caminho de $v_i$ a $v_j$ em $G$
+            \item Retiram-se de $E'$ as arestas $uv \in E' \setminus R$ se já existir outra aresta entre $u$ e $v$ de mesmo custo ou se existir um vértice $w$ tal que $c_{uv} = c_{uw} + c_{wv}$ para algum vértice $w \in V'$, isto é, o custo da aresta $uv$ é igual a soma do custo de outras duas arestas $uw$ e $wv$.
         \end{enumerate}
 
-        Este procedimento em um grafo métrico, cuja função custo respeita a desigualdade triangular, remove do grafo vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos que passariam por tais vértices removidos (por exemplo: na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e substituído por duas arestas, de custos $3$ e $5$).
+        Este procedimento em um grafo métrico remove vértices que não possuem adjacências em $R$ e cria arestas condensadas que representam os caminhos apagados pela remoção de vértices. 
+        Por exemplo, na figura \ref{grafo-intermediario} o vértice $d$, do grafo original da figura \ref{grafo-original}, é apagado e substituído por duas arestas, de custos $3$ e $5$, representando os caminhos que passavam por $d$.
 
         Pode-se visualizar um exemplo de tal separação a seguir:
 
@@ -1504,7 +1507,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         Define-se o conjunto de vértices de $G'$: $V' = \{a, b, c, e, f\}$.
         Exclui-se de tal conjunto apenas o vértice $d$, que não possui ligação com alguma aresta de $R$.
 
-    O conjunto $A'$ é definido em duas etapas: primeiramente criam-se novas arestas entre os vértices de $V'$ com custo igual ao custo da menor distância entre os mesmos vértices em $G$, tais arestas são representadas em azul na imagem \ref{grafo-intermediario}.
+    O conjunto $E'$ é definido em duas etapas: primeiramente criam-se novas arestas entre os vértices de $V'$ com custo igual ao custo da menor distância entre os mesmos vértices em $G$, tais arestas são representadas em azul na imagem \ref{grafo-intermediario}.
 
 
         \begin{figure}[H]
@@ -1535,7 +1538,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                     (e) edge[blue, bend left=50] node[below] {7} (a)
                     ;
             \end{tikzpicture}
-            \caption{Grafo intermediário na transformação de $G$ em $G'$}
+            \caption{Grafo intermediário na transformação de $G$ em $G'$ (após o passo 1.)}
             \label{grafo-intermediario}
         \end{figure}
 
@@ -1543,8 +1546,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         Após a criação das novas arestas são deletadas do grafo todas arestas $uv \notin R$ tal que existe $w \in V'$ para que $c_{uv} = c_{uw} + c_{wv}$, assim como as arestas paralelas não pertencentes a $R$ de mesmo custo.
         % CONFERIR PQ TA DIFERENTE DO PAPER
 
-        No exemplo são retiradas de $A'$ uma cópia das arestas $ab, ac, bf, ce, ef$ pois já existem arestas paralelas a estas de mesmo custo.
-        Retiram-se também as arestas: $af$ já que $c_{af} = c_{ab} + c_{bf}$, $be$ já que $c_{be} = c_{bf} + c_{fe}$, $ae$ já que $c_{ae} = c_{af} + c_{fe}$.
+        No exemplo são retiradas de $E'$ uma cópia das arestas $ab, ac, bf, ce, ef$ pois já existem arestas paralelas a estas de mesmo custo.
+        Retiram-se também as arestas: $af$ já que $c_{af} = c_{ab} + c_{bf}$, $be$ já que $c_{be} = c_{bf} + c_{fe}$ e $ae$ já que $c_{ae} = c_{af} + c_{fe}$, sobrando assim apenas a aresta $cf$ de custo $3$.
 
 
         \begin{figure}[H]
@@ -1572,7 +1575,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
         
         Considere o subgrafo de $G'$ induzido pelas arestas de $R$. Este grafo possui $k$ componentes conexas, que são denominadas $G_1, G_2, \dots, G_k$. 
 
-        No exemplo tal separação gera dois subgrafos $G_1$ e $G_2$, que são representadas na figura \ref{r-separacao}, compostas pelos conjuntos de vértices $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
+        No exemplo tal separação gera dois subgrafos $G_1$ e $G_2$, representadas na figura \ref{r-separacao}, cujos conjuntos de vértices são $V_1 = \{a, b, c\}$ e $V_2 = \{f, e\}$ respectivamente.
 
         \begin{figure}[H]
             \centering
@@ -1596,7 +1599,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{r-separacao}
         \end{figure}
 
-        Segue agora uma descrição da heurística de Frederickson (1979) como apresentado por Michel Gendreau e Gilbert Laporte\cite{michel}.
+        Segue agora uma descrição da heurística de Frederickson como apresentado por Gendreau e Laporte \cite{michel}.
 
         \begin{enumerate}
         \item[\textbf{Passo 1.}]
@@ -1643,6 +1646,8 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 			\caption{Representação de $T$ em $G'$}
 			\label{mst-2}
 		\end{figure}
+
+        Para a implementação desse passo, usou-se o algoritmo de Union-Find para comprimir as componentes $G_i$ e Kruskal para encontrar a árvore geradora mínima do grafo comprimido.
 
         \item[\textbf{Passo 2.}]
             Encontrar um emparelhamento perfeito $M$ de custo mínimo entre os vértices de grau ímpar do grafo induzido por $R \cup T$.
@@ -1717,7 +1722,7 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
                 \path[->] (c) edge node {7} (a);
 
             \end{tikzpicture}
-            \caption{Circuito euleriano em $R\cup T \cup M$}
+            \caption{Circuito euleriano no grafo induzido}
             \label{circuito-euleriano}
         \end{figure}
 
@@ -1754,8 +1759,11 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
             \label{sol-pcr}
         \end{figure}
 
+        Totalizando um circuito que passa por todas arestas de $R$ e tem custo igual a $18$, o valor ótimo para uma solução do PCR no grafo de exemplo.
 
         \end{enumerate}
+
+        A solução descrita é polinomial, e foi implementada com complexidade $\mathcal{O}(|E||V|^2)$, como comentado em mais detalhes no capítulo \ref{cap:code} de implementação.
 
         \subsection{Grafos direcionados}
 
@@ -1849,10 +1857,12 @@ A implementação do algoritmo completo desenvolvida neste trabalho tem complexi
 
 
 	\begin{enumerate}
+
+
         \item[\textbf{Passo 1.}] 
 			Encontrar uma arborescência geradora $T$ de custo mínimo que conecte os subgrafos $G_1, \dots, G_k$ e tem raiz em um vértice qualquer.
 
-            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds\cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
+            Para encontrar tal arborescência, pode-se utilizar o algoritmo proposto independentemente pela dupla Yoeng-Jin Chu e Tseng-Hong Liu e por Edmonds \cite{edmonds-ssa}, sendo, portanto, chamado de algoritmo de Chu-Liu/Edmonds.
 
             Condensando o digrafo $G'$ em suas componentes $G_1, G_2, G_3$ temos o grafo representado na figura \ref{condensated-dig}.
 

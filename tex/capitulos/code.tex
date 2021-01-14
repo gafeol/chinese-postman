@@ -164,6 +164,10 @@ Os algoritmos implementados possuem complexidade da ordem $\mathcal{O}(|V| + |E|
         
         Implementa a $\frac{3}{2}$-aproximação que resolve o problema do carteiro rural em grafos métricos, isto é, cuja função custo respeita a desigualdade triangular.  
         Tal solução foi desenvolvida a partir de um artigo de Eiselt \cite{michel} e originalmente sugerida por Frederickson \cite{frederickson}.
+
+        O algoritmo desenvolvido é polinomial, com complexidade dominada pelo algoritmo de emparelhamento perfeito de custo mínimo $\mathcal{O}(|E||V|^2)$.
+
+        Também se usam se na implementação o algoritmo de Floyd-Warshall, a estrutura de ``Union Find'' para comprimir as componentes induzidas por $R$ (conjunto de arestas essenciais do problema), o algoritmo de Kruskal para encontrar uma árvore geradora mínima e, finalmente, o algoritmo de Hierholzer, que encontra o circuito euleriano que serve como base da solução do problema.
         
     \item \texttt{pcr-digrafo.cpp}
 
