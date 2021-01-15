@@ -5,6 +5,8 @@
 
 Trabalho de Conclusão de Curso desenvolvido por Gabriel Fernandes de Oliveira no ano de 2020, com a orientação do Prof. Carlos Eduardo Ferreira.
 
+Para mais informações sobre o desenvolvimento deste trabalho acesse a página [linux.ime.usp.br/~gafeol/mac0499/](https://www.linux.ime.usp.br/~gafeol/mac0499/).
+
 ## Compilando o documento
 
 Para conseguir compilar o latex, é necessário instalar os seguintes pacotes:
@@ -25,16 +27,27 @@ Depois de instalados, basta rodar `make` que o pdf será compilado, e os arquivo
 
 Os arquivos LaTeX estão todos dispostos na pasta `tex`.
 
-O documento principal é o main.tex, que tem todas as importações de pacotes e de arquivos auxiliares.
+O documento principal é o main.tex, que tem todas as importações de pacotes e arquivos auxiliares além do resumo do trabalho, em português e inglês.
 
-- Em **euler.tex** você encontra a seção que trata sobre caminhos eulerianos.
-- Em **pcc.tex** você encontra o texto principal, sobre o problema do carteiro chinês.
-- Em **prb.tex** você encontra exercícios e problemas resolvidos relacionados aos temas tratados no trabalho.
-- Finalmente em **ref.bib** estão as referências bibliográficas da monografia.
+Cada capítulo da monografia tem um arquivo `.tex` dedicado presente na pasta `capitulos/`:
+
+- **euler.tex** trata da teoria de caminhos eulerianos.
+- **pcc.tex** possui o texto principal, sobre o problema do carteiro chinês e suas variantes.
+- **code.tex** serve como uma referência para o código desenvolvido, explicando complexidade de soluções e organização de algoritmos.
+- **prb.tex** contém o capítulo de apêndice, que trata de 3 problemas resolvidos relacionados aos temas tratados no trabalho.
+
+Usou-se BibTex para formatar as citações do trabalho.
+No arquivo **ref.bib** estão configuradas todas referências bibliográficas da monografia.
 
 ### Código
 
-Os arquivos de código estão dispostos na pasta `code/`, e seus respectivos testes se encontram na pasta `test/`;
+Os arquivos de código estão dispostos na pasta `code/`, e seus respectivos testes se encontram na pasta `test/`.
+
+Todos os códigos foram desenvolvidos usando `C++17`.
+
+A implementação do Emparelhamento Perfeito Mínimo foi baseada na implementação de [Dilson Pereira](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e adaptada para esse projeto em um [fork próprio](https://github.com/gafeol/Minimum-Cost-Perfect-Matching).
+
+A implementação do algoritmo de Chu-Liu para encontrar a arborescência geradora mínima em um digrafo foi baseada na implementação do time ["el-vasito"](https://github.com/mhunicken/icpc-team-notebook-el-vasito) disponibilizada em seu caderno de referência para a ICPC.
 
 ### Testes de Código
 
@@ -90,10 +103,3 @@ Se o comando rodou como esperado, a última linha do mesmo deverá ser da forma:
 Acessando o link dado pode-se observar o resultado de cobertura dos testes atualmente adicionados ao projeto.
 Este teste de cobertura nos oferece informações muito importantes, como por exemplo: quais linhas de código nunca foram executadas nos testes.
 
-## Referências
-
-Todas as referências bibliográficas são apresentadas na monografia, e são organizadas usando Bibtex no arquivo `tex/ref.bib`.
-
-A implementação do Emparelhamento Perfeito Mínimo foi baseada na implementação de [Dilson Pereira](https://github.com/dilsonpereira/Minimum-Cost-Perfect-Matching) e adaptada para esse projeto em um [fork próprio](https://github.com/gafeol/Minimum-Cost-Perfect-Matching).
-
-A implementação do algoritmo de Chu-Liu para encontrar a arborescência geradora mínima em um digrafo foi baseada na implementação do time ["el-vasito"](https://github.com/mhunicken/icpc-team-notebook-el-vasito) disponibilizada em seu caderno de referência para a ICPC.
