@@ -44,11 +44,11 @@ São disponibilizados códigos gerais para estruturas de dados, focados na área
 
         Além das propriedades \texttt{n, m, adj}, esta estrutura contem um contador \texttt{nArestas} que conta a quantidade de arestas presentes no grafo, além de auxiliar na identificação de arcos e arestas pelos seus identificadores.
 
-        Para facilitar a manipulação desta estrutura, a \texttt{struct Misto} contêm métodos auxiliares como:
+        Para facilitar a manipulação desta estrutura, a \texttt{struct Misto} contém métodos auxiliares como:
         \begin{itemize}
             \item  Devolver o grau total (\texttt{grauTotal(v)}), grau de entrada (\texttt{grauEntrada(v)}) e saída (\texttt{grauSaida(v)}) de todo vértice
             \item Contar o número de componentes fortemente conexas, usando o algoritmo de Tarjan de modo similar à \texttt{struct Digrafo}
-            \item Checar se uma aresta, dada um identificador é arco (\texttt{arco(id)}) ou aresta (\texttt{aresta(id)})
+            \item Checar se uma aresta, dado um identificador, é direcionada (\texttt{arco(id)}) ou não (\texttt{aresta(id)})
         \end{itemize}
 
     \item \texttt{grafo-ingreme.hpp}

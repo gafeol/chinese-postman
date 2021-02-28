@@ -249,7 +249,7 @@ Um grafo é direcionado quando suas arestas são orientadas, chamaremos de \text
 
 Numa analogia com trânsito, uma aresta é como uma estrada de mão dupla, pode-se percorrê-la nos dois sentidos, enquanto isso, um arco é como uma rua de mão única, em que apenas um sentido é permitido.
 
-Quanto tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
+Quando tratamos de grafos direcionados (ou digrafos), é necessário refinar a noção de grau de um vértice:
 Por isso, denominamos \textbf{grau de saída} de um vértice $v$, $\delta^-(v)$, como o número de arcos que têm origem em $v$, e \textbf{grau de entrada}, $\delta^+(v)$, como o número de arcos que têm seu destino em $v$. 
 
 Definimos como \textbf{fortemente conexo} um digrafo que possui um caminho entre todo par de vértices, e como \textbf{fracamente conexo} um digrafo que possui para todo par de vértices $u$ e $v$ um caminho de $u$ a $v$ ou de $v$ a $u$.
@@ -411,7 +411,7 @@ Como é possível realizar a construção de um circuito euleriano $\mathcal{C}$
 
         \end{tcolorbox}
     
-    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices a partir de de $T$. 
+    Esse procedimento pode ser utilizado para encontrar um caminho entre quaisquer dois vértices a partir de $T$. 
     Como $T$ é euleriano, por definição ele passa por todos vértices de $G$, provando-se assim que $G$ é fracamente conexo, isto é, a partir de $T$ gera-se um caminho entre qualquer par de vértices de $G$. 
 
      Basta, portanto, provar que $G$ possui todos os vértices $w$ tal que $\delta^+(w) = \delta^-(w)$ ou que existe um par de vértices $u, v$ tal que $\delta^+(u) - \delta^-(u) = 1$, $\delta^-(v) - \delta^+(v) = 1$ e $\delta^+(w) = \delta^-(w)$ para todo $w \in V(G)\setminus \{u, v\}$.
@@ -655,7 +655,7 @@ Neste exemplo, digamos que o trajeto inicial percorrido na busca é $\{A, B, C, 
     \caption{Representam-se pontilhadas as arestas percorridas na busca e em negrito o vértice atual da busca.}
 \end{figure}
 
-Após percorrido o caminho $\{A, B, C, A\}$ as arestas $AB, BC, BA$ são apagadas e a busca não consegue progredir para novas arestas a partir do vértice $A$.
+Após percorrido o caminho $\{A, B, C, A\}$ as arestas $AB, BC, CA$ são apagadas e a busca não consegue progredir para novas arestas a partir do vértice $A$.
 
 Seja $T$ uma trilha inicialmente vazia.
 Como $A$ não possui mais caminhos a se percorrer, adiciona-se o mesmo ao início da trilha $T$, e a busca continua recursivamente com o vértice $C$.
