@@ -116,6 +116,17 @@ maxbibnames=10
 \DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
 %%%
 
+
+%%% Footnote without marker
+\usepackage{lipsum}
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+%%%
+
 \begin{document}
 
 % Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
@@ -141,15 +152,24 @@ maxbibnames=10
     \large \textsc{Universidade de São Paulo} \\
     \large \textsc{Bacharelado em Ciência da Computação}\\[120pt]
     \large \textsc{Gabriel Fernandes de Oliveira} \\
-    \large \textsc{Orientador: Carlos Eduardo Ferreira}
+    \large \textsc{Orientador: Carlos Eduardo Ferreira}\\
+    \blfootnote{O conteúdo deste trabalho é publicado sob a Licença Creative Commons Atribuição 4.0 Internacional – CC BY 4.0}
     \vfill
     \normalsize{São Paulo, 2020}
+
 \end{center}
 
 % ---------------------------------------------------------------------------- %
 
+\newpage 
+
+Autorizo a reprodução e divulgação total ou parcial deste trabalho, por qualquer meio convencional ou eletrônico, para fins de estudo e pesquisa, desde que citada a fonte.
 
 \chapter*{Resumo}
+
+FERNANDES DE OLIVEIRA, Gabriel. \textbf{O Problema do Carteiro Chinês}. Dissertação (Bacharelado). Instituto de Matemática e Estatística, Universidade de São Paulo, 2020.
+
+\vspace{10pt}
 
 O Problema do Carteiro Chinês, enunciado pelo matemático chinês Meigu Guan em 1962, consiste em encontrar um trajeto fechado de custo mínimo que percorre todas arestas de um grafo ao menos uma vez.
 
@@ -164,6 +184,9 @@ Este trabalho tem como objetivos explicar e implementar a solução do Problema 
 
 \chapter*{Abstract}
 
+FERNANDES DE OLIVEIRA, Gabriel. \textbf{The Chinese Postman Problem}. Thesis (Bachelor's). Institute of Mathematics and Statistics, University of São Paulo, 2020.
+
+\vspace{10pt}
 
 The Chinese Postman Problem, originally studied by the Chinese mathematician Meigu Guan in 1962, consists of finding a minimum cost closed path that passes every edge in a graph at least once.
 
@@ -190,7 +213,9 @@ The goals of this project are to explain and implement solutions for the Chinese
 \singlespacing
 
 \newpage
+
 \tableofcontents
+
 \newpage
 
 \import{capitulos/}{euler.tex}

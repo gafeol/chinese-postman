@@ -1,0 +1,114 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {brazil}{}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Representação das sete pontes de Königsberg}}{7}{figure.1.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Representação de Euler}}{7}{figure.1.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Grafo de Königsberg}}{8}{figure.1.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Grafo $G$, foco do exemplo do algoritmo de Hierholzer}}{18}{figure.1.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Dois exemplos de partição de $G$ em circuitos. Em vermelho representou-se $C_1$, em azul $C_2$ e em verde $C_3$.}}{18}{figure.1.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Representam-se pontilhadas as arestas percorridas na busca e em negrito o vértice atual da busca.}}{19}{figure.1.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Representam-se em negrito as arestas que ainda fazem parte da pilha de recursão da busca.}}{19}{figure.1.7}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Exemplo}}{25}{figure.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Para um grafo euleriano a solução $\{x_e = 0 : \forall e \in E \}$ é ótima.}}{27}{figure.2.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Exemplo de caminho $C$ escolhido em vermelho, para caso com $k = 3$}}{28}{figure.2.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Grafo $G'$ definido pelo grafo da figura \ref {pcc-case1}}}{28}{figure.2.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Contra exemplo do lema \ref {lemma-pcc} para os digrafos}}{33}{figure.2.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Digrafo retirado de exercício do site do MIT \cite {mit}}}{36}{figure.2.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Representam-se em preto os arcos presentes no grafo $G$ original, e em vermelho os arcos resultantes das duplicações realizadas no terceiro passo da solução.}}{39}{figure.2.7}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Exemplo de grafo misto $G$}}{41}{figure.2.8}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Em destaque o arco duplicado em GRAU\_TOTAL\_PAR (algoritmo \ref {mixed-grau-total-par})}}{42}{figure.2.9}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.10}{\ignorespaces O arco $ba$ e a aresta orientada $cd$ duplicados pela função IGUALA\_\-GRAU\_DIR (algoritmo \ref {mixed-iguala-grau-dir})}}{42}{figure.2.10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Criação de $M', U'$, a partir de $M, U$ pelo algoritmo \ref {mixed-grau-par}}}{45}{figure.2.11}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Circuito euleriano de $G_e$ e solução do PCC de $G$, respectivamente}}{46}{figure.2.12}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Diferenças entre $M', U'$ e $M'', U''$, respectivamente}}{48}{figure.2.13}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.14}{\ignorespaces Exemplo de grafo $G$, destacam-se no mesmo as arestas pertencentes a $R$}}{50}{figure.2.14}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.15}{\ignorespaces Grafo intermediário na transformação de $G$ em $G'$ (após o passo 1.)}}{51}{figure.2.15}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.16}{\ignorespaces Grafo transformado $G'$}}{51}{figure.2.16}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.17}{\ignorespaces Separação induzida pelas arestas de $R$ em $G'$}}{52}{figure.2.17}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.18}{\ignorespaces Árvore geradora mínima $T$ representada em vermelho no grafo $G'$ condensado}}{52}{figure.2.18}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Representação de $T$ em $G'$}}{52}{figure.2.19}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.20}{\ignorespaces Grafo induzido por $R \cup T$ evidenciando o emparelhamento dos vértices $c$ e $e$ de custo mínimo}}{53}{figure.2.20}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.21}{\ignorespaces Grafo induzido por $R \cup T \cup M$}}{53}{figure.2.21}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.22}{\ignorespaces Circuito euleriano no grafo induzido}}{53}{figure.2.22}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.23}{\ignorespaces Solução do PCR encontrada pela heurística de Christofides}}{53}{figure.2.23}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.24}{\ignorespaces Digrafo $G$, o conjunto $R$ corresponde aos arcos em negrito}}{54}{figure.2.24}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.25}{\ignorespaces São vermelhas as arestas criadas na extensão $G'$}}{55}{figure.2.25}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.26}{\ignorespaces Digrafo $G'$ condensado em suas componentes induzidas por $R$}}{56}{figure.2.26}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.27}{\ignorespaces Digrafo $G'$ após remoção de arcos do Passo 1}}{56}{figure.2.27}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.28}{\ignorespaces Em azul representa-se o conjunto de arcos $T$}}{57}{figure.2.28}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.29}{\ignorespaces Digrafo induzido por $R\cup T$, com os arcos de $T$ em azul}}{58}{figure.2.29}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.30}{\ignorespaces Digrafo euleriano $R\cup T \cup M$ com arcos de $M$ representados em vermelho.}}{59}{figure.2.30}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.31}{\ignorespaces Circuito euleriano de $R\cup T \cup M$.}}{59}{figure.2.31}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.32}{\ignorespaces Circuito que resolve o PCR do grafo $G$. Representam-se em pontilhado os arcos de $G$ não percorridos nesta solução.}}{60}{figure.2.32}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.33}{\ignorespaces Uma solução ótima para o PCR no grafo do exemplo}}{60}{figure.2.33}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.34}{\ignorespaces Grafo $G$, a função custo das arestas é definida na tabela \ref {tabela:exemplopccv}}}{62}{figure.2.34}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.35}{\ignorespaces Representação direcionada do grafo $G$}}{63}{figure.2.35}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.36}{\ignorespaces Circuitos com custo $9$ e $7$ respectivamente}}{63}{figure.2.36}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.37}{\ignorespaces Circuitos no sentido contrário com mesmo custo, $9$ e $7$}}{63}{figure.2.37}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.38}{\ignorespaces Representação direcionada do grafo $G$ com custos $c'$}}{63}{figure.2.38}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rodando os testes usando o comando \texttt {make}}}{72}{figure.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualização antiga do codecov para o arquivo \texttt {digrafo.hpp}}}{73}{figure.3.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualização da porcentagem de cobertura}}{74}{figure.3.3}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Exemplo da modelagem usada na solução}}{78}{figure.a.A.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Exemplo com $x=5$}}{80}{figure.a.A.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Exemplo com $x=4$}}{81}{figure.a.A.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {A.4}{\ignorespaces $K_4$ com arestas duplicadas, tornando-se euleriano }}{81}{figure.a.A.4}%
